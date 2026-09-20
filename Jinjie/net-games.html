@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 游戏生成 - 根据提示词 AI / 智能体自动生成网页游戏</title>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --bg-soft: #12182a;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.45);
+      --ai-cyan: #22d3ee;
+      --ai-purple: #a78bfa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated background mesh */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99, 102, 241, 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 50% at 80% 20%, rgba(34, 211, 238, 0.12), transparent 45%),
+        radial-gradient(ellipse 60% 40% at 50% 80%, rgba(167, 139, 250, 0.1), transparent 50%),
+        var(--bg);
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ai-cyan);
+      opacity: 0.35;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.25; }
+      100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 40px 20px 28px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(18, 24, 42, 0.92) 0%, rgba(18, 24, 42, 0.6) 70%, transparent 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      margin-bottom: 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(34, 211, 238, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #c7d2fe;
+      animation: pulse-glow 2.8s ease-in-out infinite;
+    }
+
+    .ai-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ai-cyan);
+      box-shadow: 0 0 8px var(--ai-cyan);
+      animation: blink 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 12px rgba(99, 102, 241, 0.2); }
+      50% { box-shadow: 0 0 22px rgba(99, 102, 241, 0.45); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.15rem);
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #e0e7ff 0%, #a5b4fc 40%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+
+    header .subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 6px;
+    }
+
+    header .desc {
+      font-size: 0.86rem;
+      color: #64748b;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 5;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    .section-label::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--ai-cyan));
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s ease,
+                  border-color 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.12));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-image {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image .icon {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    }
+
+    .card:hover .card-image .icon {
+      transform: scale(1.15) rotate(-4deg);
+      animation: icon-bounce 0.6s ease;
+    }
+
+    @keyframes icon-bounce {
+      0% { transform: scale(1) rotate(0); }
+      40% { transform: scale(1.22) rotate(-6deg); }
+      70% { transform: scale(1.1) rotate(2deg); }
+      100% { transform: scale(1.15) rotate(-4deg); }
+    }
+
+    /* Shimmer / scan line on card image */
+    .card-image::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.12) 45%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0.12) 55%,
+        transparent 100%
+      );
+      transform: skewX(-20deg);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card:hover .card-image::after {
+      left: 120%;
+    }
+
+    .card-image .tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 3;
+      background: rgba(15, 23, 42, 0.75);
+      color: #e2e8f0;
+      font-size: 0.68rem;
+      font-weight: 650;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(6px);
+    }
+
+    .ai-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.85), rgba(34, 211, 238, 0.7));
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .card-body {
+      padding: 16px 18px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+    }
+
+    .card-body h3 {
+      font-size: 1.08rem;
+      font-weight: 650;
+      color: #f8fafc;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-body p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .card-body .play {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 650;
+      color: #a5b4fc;
+      transition: color 0.25s ease, gap 0.25s ease;
+    }
+
+    .card:hover .card-body .play {
+      color: #c7d2fe;
+      gap: 10px;
+    }
+
+    .card-body .play .arrow {
+      transition: transform 0.25s ease;
+    }
+
+    .card:hover .card-body .play .arrow {
+      transform: translateX(3px);
+    }
+
+    /* Color variants */
+    .c1 { background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 55%, #a78bfa 100%); }
+    .c2 { background: linear-gradient(145deg, #db2777 0%, #e11d48 50%, #f43f5e 100%); }
+    .c3 { background: linear-gradient(145deg, #0284c7 0%, #0ea5e9 50%, #22d3ee 100%); }
+    .c4 { background: linear-gradient(145deg, #059669 0%, #10b981 45%, #34d399 100%); }
+    .c5 { background: linear-gradient(145deg, #ea580c 0%, #f59e0b 50%, #fbbf24 100%); }
+
+    footer {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 28px 20px 36px;
+      color: #64748b;
+      font-size: 0.82rem;
+    }
+
+    footer .ai-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: #94a3b8;
+    }
+
+    footer .ai-line span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ai-cyan);
+      box-shadow: 0 0 6px var(--ai-cyan);
+    }
+
+    /* Entrance animation */
+    .card {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: card-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+    .card:nth-child(5) { animation-delay: 0.33s; }
+
+    @keyframes card-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      header {
+        padding: 28px 16px 20px;
+      }
+      .card-image {
+        height: 130px;
+        font-size: 3rem;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .card,
+      .particle,
+      .ai-badge,
+      .ai-badge .dot {
+        animation: none !important;
+      }
+      .card {
+        opacity: 1;
+        transform: none;
+      }
+      .card:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <header>
+    <div class="ai-badge">
+      <span class="dot"></span>
+      AI / 智能体驱动 · 即点即玩
+    </div>
+    <h1>AI 游戏生成 · 初学者</h1>
+    <p class="subtitle">根据提示词，由 AI 或智能体自动生成网页游戏</p>
+    <p class="desc">依托人工智能实现动态内容、智能交互与个性化体验 · 纯前端静态页面，无需下载</p>
+  </header>
+
+  <div class="container">
+    <div class="section-label">精选 AI 生成游戏</div>
+
+    <div class="grid">
+
+      <!-- 1 打字练习 -->
+      <a class="card" href="typing-exercise-game/public/typing-game.html" target="_blank" rel="noopener">
+        <div class="card-image c1">
+          <span class="ai-tag">AI 生成</span>
+          <span class="icon">⌨️</span>
+          <span class="tag">Typing</span>
+        </div>
+        <div class="card-body">
+          <h3>键盘打字练习</h3>
+          <p>极简风格打字测试，多种模式与主题，实时统计 WPM 与准确率。</p>
+          <span class="play">立即开始 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- 2 台球 -->
+      <a class="card" href="billiards-game.html" target="_blank" rel="noopener">
+        <div class="card-image c2">
+          <span class="ai-tag">AI 生成</span>
+          <span class="icon">🎱</span>
+          <span class="tag">Billiards</span>
+        </div>
+        <div class="card-body">
+          <h3>精美台球游戏</h3>
+          <p>物理引擎模拟真实台球，按住鼠标左键蓄力击球，享受精准碰撞。</p>
+          <span class="play">立即开始 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- 3 五子棋 -->
+      <a class="card" href="wuziqi.html" target="_blank" rel="noopener">
+        <div class="card-image c3">
+          <span class="ai-tag">AI 生成</span>
+          <span class="icon">⚫⚪</span>
+          <span class="tag">Gomoku</span>
+        </div>
+        <div class="card-body">
+          <h3>五子棋 / Gomoku</h3>
+          <p>经典五子棋规则，人机对战或双人对战，落子即判胜负。</p>
+          <span class="play">立即开始 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- 4 Pac-Man -->
+      <a class="card" href="Pac-Man.html" target="_blank" rel="noopener">
+        <div class="card-image c4">
+          <span class="ai-tag">AI 生成</span>
+          <span class="icon">👾</span>
+          <span class="tag">Pac-Man</span>
+        </div>
+        <div class="card-body">
+          <h3>Pac-Man（吃豆人）</h3>
+          <p>方向键控制吃豆人穿梭迷宫，躲避幽灵，吃满豆子通关。</p>
+          <span class="play">立即开始 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- 5 愤怒的小鸟 -->
+      <a class="card" href="Bird.html" target="_blank" rel="noopener">
+        <div class="card-image c5">
+          <span class="ai-tag">AI 生成</span>
+          <span class="icon">🐦</span>
+          <span class="tag">Angry Birds</span>
+        </div>
+        <div class="card-body">
+          <h3>经典愤怒的小鸟</h3>
+          <p>按住左键蓄力弹射小鸟，摧毁建筑与目标，物理弹射乐趣。</p>
+          <span class="play">立即开始 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="ai-line">
+      <span></span>
+      AI 游戏生成 · 纯前端静态页面 · 点击卡片即可开始
+    </div>
+    <div>提示词驱动 · 智能体自动生成 · 即点即玩</div>
+  </footer>
+
+  <script>
+    (function () {
+      const container = document.getElementById('particles');
+      if (!container) return;
+
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        const size = 2 + Math.random() * 4;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 14) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.background = Math.random() > 0.5 ? '#22d3ee' : '#a78bfa';
+        p.style.opacity = 0.2 + Math.random() * 0.35;
+        container.appendChild(p);
+      }
+    })();
+  </script>
+</body>
+</html>

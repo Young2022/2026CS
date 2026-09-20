@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<meta name="description" content="全国计算机等级考试二级 C++ 语言程序设计（科目 61）考点清单与真题题库 2021–2026，含官方样题与模拟题">
+<meta name="referrer" content="no-referrer">
+<title>二级 C++ 语言程序设计（61）· 考点与真题 2021–2026</title>
+<style>
+  :root {
+    /* 阅读友好配色：低刺激、高对比、长时间复习不疲劳 */
+    --bg: #f7f5f0;
+    --bg-card: #ffffff;
+    --bg-soft: #f0ede6;
+    --bg-code: #1e2430;
+    --ink: #1a1c1e;
+    --ink-2: #2c3038;
+    --ink-3: #5a606c;
+    --ink-4: #8a909c;
+    --line: #e2ddd4;
+    --line-strong: #c8c2b6;
+    --accent: #c45c4a;
+    --accent-soft: #f3e8e5;
+    --ok: #2d6a4f;
+    --ok-bg: #e8f0eb;
+    --chip-1: #d97706;
+    --chip-2: #7c3aed;
+    --chip-3: #0284c7;
+    --chip-4: #dc2626;
+    --chip-5: #ca8a04;
+    --chip-6: #059669;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+            "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #d4e5d8; color: var(--ink); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c5bfb4; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a8a296; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--accent); z-index: 2000;
+    transition: width 0.1s linear;
+  }
+
+  aside {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 228px;
+    border-right: 1px solid var(--line);
+    padding: 24px 14px 18px;
+    display: flex; flex-direction: column;
+    background: var(--bg-card);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  .brand { margin-bottom: 6px; padding: 0 6px; }
+  .brand .code {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .brand h1 {
+    font-family: var(--serif); font-size: 20px; font-weight: 700;
+    line-height: 1.35; margin-top: 8px; color: var(--ink);
+  }
+  .brand .sub {
+    font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.5;
+  }
+  nav { margin-top: 18px; flex: 1; }
+  nav a {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 7px 10px; margin-bottom: 1px;
+    text-decoration: none; color: var(--ink-3);
+    font-size: 13.5px; border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav a .n {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+    width: 18px; flex: none;
+  }
+  nav a:hover { background: var(--bg-soft); color: var(--ink); }
+  nav a.active {
+    background: var(--ink); color: #faf8f5;
+  }
+  nav a.active .n { color: #a8d5b5; }
+  .side-foot {
+    font-size: 11px; color: var(--ink-4); line-height: 1.65;
+    border-top: 1px solid var(--line); padding: 12px 6px 4px; margin-top: 12px;
+  }
+
+  main { margin-left: 228px; }
+  .wrap { max-width: 820px; padding: 0 48px 0 52px; }
+
+  header.hero {
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .hero h2 {
+    font-family: var(--serif); font-weight: 800;
+    font-size: clamp(28px, 4.2vw, 40px); line-height: 1.22;
+    color: var(--ink);
+  }
+  .hero h2 em { font-style: normal; color: var(--accent); }
+  .hero .lede {
+    margin-top: 12px; max-width: 620px; color: var(--ink-3);
+    font-size: 16px; line-height: 1.8;
+  }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+
+  .meta-grid {
+    margin-top: 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    background: var(--bg-card);
+  }
+  .meta-grid div {
+    padding: 14px 16px 12px;
+    border-right: 1px solid var(--line);
+  }
+  .meta-grid div:last-child { border-right: none; }
+  .meta-grid .k {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--ink-4); text-transform: uppercase;
+  }
+  .meta-grid .v {
+    font-family: var(--serif); font-size: 20px; font-weight: 700;
+    margin-top: 4px; color: var(--ink);
+  }
+  .meta-grid .v small {
+    font-size: 12px; font-family: var(--sans); font-weight: 400;
+    color: var(--ink-3); margin-left: 3px;
+  }
+  .hero-note {
+    margin-top: 14px; font-size: 13.5px; color: var(--ink-3);
+  }
+
+  .divider {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 44px 0 0; padding: 8px 0 6px;
+    border-top: 2px solid var(--ink);
+  }
+  .divider .no {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+  .divider .t {
+    font-family: var(--serif); font-size: 14px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--ink);
+  }
+  .divider .dots {
+    flex: 1; border-bottom: 1px dashed var(--line-strong);
+    transform: translateY(-3px);
+  }
+  .divider .pg {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+  }
+
+  section.chapter { padding: 20px 0 6px; }
+  .ch-head {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 6px;
+  }
+  .chip {
+    width: 44px; height: 44px; flex: none; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 14px; font-weight: 700; color: #fff;
+  }
+  .ch-head h3 {
+    font-family: var(--serif); font-size: 26px; font-weight: 800;
+    line-height: 1.3; color: var(--ink);
+  }
+  .ch-head .tag {
+    margin-left: auto; font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.1em; border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 12px; color: var(--ink-3);
+    white-space: nowrap; background: var(--bg-card);
+  }
+  .ch-intro {
+    color: var(--ink-3); max-width: 660px; margin: 4px 0 20px;
+    font-size: 15.5px; line-height: 1.75;
+  }
+
+  h4 {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
+    color: var(--ink);
+  }
+  h4::before {
+    content: ""; width: 7px; height: 7px; background: var(--accent);
+    flex: none; transform: rotate(45deg);
+  }
+  h5 {
+    font-size: 15px; font-weight: 700; margin: 18px 0 6px; color: var(--ink-2);
+  }
+  p { margin: 8px 0; }
+  ul.plain { margin: 6px 0; list-style: none; }
+  ul.plain li {
+    padding: 3px 0 3px 18px; position: relative; color: var(--ink);
+    font-size: 15.5px;
+  }
+  ul.plain li::before {
+    content: "–"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+  }
+  .cols2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px;
+  }
+
+  mark {
+    background: #dce9df; color: var(--ink); padding: 1px 5px; border-radius: 3px;
+  }
+  .key {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 12px 16px; margin: 14px 0; font-size: 15px;
+    border-radius: 0 8px 8px 0;
+  }
+  .key strong { color: var(--accent); }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    font-size: 14.5px; background: var(--bg-card);
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  th {
+    text-align: left; font-family: var(--mono); font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #f5f2ec; background: var(--ink-2);
+    padding: 10px 14px; font-weight: 500;
+  }
+  td {
+    padding: 9px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf9f6; }
+  td code, p code, li code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: var(--bg-soft); padding: 1px 5px;
+    border-radius: 4px; border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+
+  pre {
+    background: var(--bg-code); color: #e8e4d9;
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+    padding: 16px 18px; margin: 12px 0; border-radius: 8px;
+    overflow-x: auto; position: relative;
+  }
+  pre .lab {
+    position: absolute; top: 0; right: 0;
+    font-size: 10px; letter-spacing: 0.16em; color: var(--bg-code);
+    background: #a8d5b5; padding: 2px 10px; border-radius: 0 8px 0 6px;
+  }
+  pre .cm { color: rgba(232, 228, 217, 0.45); }
+  pre .kw { color: #8fd0a5; }
+  pre .st { color: #e8b86d; }
+  pre .at { color: #9fb8ff; }
+
+  .flow {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; margin: 16px 0; padding: 8px 0;
+  }
+  .flow .step {
+    border: 1.5px solid var(--ink-2); background: var(--bg-card);
+    padding: 8px 22px; font-size: 14px; font-weight: 600;
+    border-radius: 999px; color: var(--ink);
+  }
+  .flow .arr { color: var(--accent); font-size: 16px; line-height: 1.5; }
+
+  details.acc {
+    border: 1px solid var(--line); border-radius: 8px;
+    margin: 8px 0; background: var(--bg-card); overflow: hidden;
+  }
+  details.acc summary {
+    cursor: pointer; list-style: none; padding: 12px 16px;
+    font-weight: 600; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.15s; color: var(--ink);
+  }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::before {
+    content: "+"; font-family: var(--mono); font-size: 15px;
+    color: var(--accent); width: 20px; height: 20px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); border-radius: 5px;
+  }
+  details.acc[open] summary::before { content: "–"; }
+  details.acc summary:hover { background: var(--bg-soft); }
+  details.acc .acc-body {
+    padding: 2px 16px 14px; border-top: 1px dashed var(--line);
+  }
+
+  .year-tabs {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 4px;
+  }
+  .year-tabs button {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line-strong); background: var(--bg-card);
+    color: var(--ink-2); transition: all 0.15s;
+  }
+  .year-tabs button:hover { background: var(--bg-soft); border-color: var(--ink-3); }
+  .year-tabs button.on {
+    background: var(--ink); color: #faf8f5; border-color: var(--ink);
+  }
+  .quiz-meta {
+    font-size: 13px; color: var(--ink-3); margin: 8px 0 16px;
+    font-family: var(--mono);
+  }
+  .quiz-meta b { color: var(--accent); }
+
+  .q {
+    border: 1px solid var(--line); border-radius: 10px; margin: 12px 0;
+    background: var(--bg-card); overflow: hidden;
+  }
+  .q .q-head {
+    display: flex; gap: 8px; align-items: center;
+    padding: 10px 16px; border-bottom: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  }
+  .q .y {
+    background: var(--ink); color: #faf8f5; padding: 2px 8px; border-radius: 4px;
+  }
+  .q .tp {
+    border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px;
+    color: var(--ink-3);
+  }
+  .q .src { margin-left: auto; color: var(--ink-4); }
+  .q .q-body { padding: 14px 16px 16px; }
+  .q .qt {
+    font-weight: 600; font-size: 15.5px; margin-bottom: 10px;
+    color: var(--ink); line-height: 1.65;
+  }
+  .q .opts { display: grid; gap: 6px; }
+  .q .opt {
+    text-align: left; font-family: var(--sans); font-size: 14.5px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; border-radius: 7px;
+    padding: 9px 12px; display: flex; gap: 10px; align-items: baseline;
+    transition: all 0.12s; color: var(--ink);
+  }
+  .q .opt .L {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-4); flex: none;
+  }
+  .q .opt:hover:not(:disabled) {
+    border-color: var(--ink-3); background: var(--bg-soft);
+  }
+  .q .opt:disabled { cursor: default; opacity: 0.85; }
+  .q .opt.right {
+    background: var(--ok-bg); border-color: var(--ok); opacity: 1;
+  }
+  .q .opt.wrong {
+    background: #f8e8e6; border-color: var(--accent); opacity: 1;
+  }
+  .q .opt.right .L, .q .opt.wrong .L { color: var(--ink); }
+  .q .ans {
+    display: none; margin-top: 12px; padding: 11px 14px; font-size: 14px;
+    background: var(--ok-bg); border-left: 3px solid var(--ok);
+    border-radius: 0 7px 7px 0; line-height: 1.7; color: var(--ink-2);
+  }
+  .q .ans.show { display: block; }
+  .q .ans b { color: var(--ok); }
+
+  footer {
+    margin-top: 52px; border-top: 2px solid var(--ink);
+    padding: 28px 0 48px; font-size: 13px; color: var(--ink-3);
+  }
+  footer .src { margin-top: 10px; line-height: 1.9; }
+  footer a {
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  @media (max-width: 960px) {
+    aside {
+      position: static; width: auto; border-right: none;
+      border-bottom: 1px solid var(--line); padding: 16px 18px;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 3px; }
+    nav a { padding: 5px 9px; font-size: 12.5px; }
+    main { margin-left: 0; }
+    .wrap { padding: 0 20px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta-grid div:nth-child(2) { border-right: none; }
+    .cols2 { grid-template-columns: 1fr; }
+    .ch-head .tag { display: none; }
+    .hero h2 { font-size: 28px; }
+  }
+
+  @media print {
+    aside { display: none; }
+    main { margin-left: 0; }
+    .wrap { max-width: 100%; padding: 0 24px; }
+    header.hero { padding: 24px 0 16px; }
+    .divider { margin-top: 28px; }
+    .q .opt { border: 1px solid #ccc; }
+    .year-tabs { display: none; }
+    footer { margin-top: 32px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<aside>
+  <div class="brand">
+    <a href="../daolun/index.html" style="text-decoration:none;display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="26" height="26" rx="6" stroke="#0284c7" stroke-width="2"/>
+        <circle cx="14" cy="14" r="5" fill="#0ea5e9"/>
+        <line x1="14" y1="3" x2="14" y2="25" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <line x1="3" y1="14" x2="25" y2="14" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="2 2"/>
+      </svg>
+      <span style="font-family:var(--mono);font-size:12px;font-weight:700;background:linear-gradient(135deg,#0ea5e9,#0284c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.08em">CSAI</span>
+    </a>
+    <div class="code">NCRE · Level 2 · Subject 61</div>
+    <h1>二级 C++ 语言<br>程序设计</h1>
+    <div class="sub">考点清单 × 真题题库<br>2021 — 2026</div>
+  </div>
+  <nav id="nav">
+    <a href="#ch00"><span class="n">00</span>考试概览</a>
+    <a href="#ch01"><span class="n">01</span>C++语言概述</a>
+    <a href="#ch02"><span class="n">02</span>数据类型与运算符</a>
+    <a href="#ch03"><span class="n">03</span>基本控制结构</a>
+    <a href="#ch04"><span class="n">04</span>数组指针与引用</a>
+    <a href="#ch05"><span class="n">05</span>函数</a>
+    <a href="#ch06"><span class="n">06</span>类和对象</a>
+    <a href="#ch07"><span class="n">07</span>继承和派生</a>
+    <a href="#ch08"><span class="n">08</span>运算符重载</a>
+    <a href="#ch09"><span class="n">09</span>模板</a>
+    <a href="#ch10"><span class="n">10</span>C++ 流</a>
+    <a href="#ch11"><span class="n">11</span>公共基础知识</a>
+    <a href="#ch12"><span class="n">12</span>备考优先级</a>
+    <a href="#quiz"><span class="n">13</span>真题题库 21–26</a>
+  </nav>
+  <div class="side-foot">
+    依据《二级 C++ 语言程序设计考试大纲（2025 年版）》整理<br>
+    真题来源：中国教育考试网官方样题及历年考生回忆版
+  </div>
+</aside>
+
+<main>
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="ch00">
+  <div class="kicker">全国计算机等级考试 · 复习系统</div>
+  <h2>二级 C++ 语言程序设计<br><em>科目 61</em> · 考点与真题</h2>
+  <p class="lede">
+    C++ 是二级考试中面向对象程序设计的主流科目，它考的是<strong>语言基础 + 类与对象 + 继承与多态 + 运算符重载 + 模板 + 流 + 公共基础知识</strong>。
+    其中最难啃、也最常考的是<strong>构造函数与析构函数、继承方式与构造顺序、虚函数与动态绑定</strong>——选择题和操作题都会出现。
+    本页按 2025 年版官方大纲组织知识点，并收录 2021–2026 年真题与官方样题。
+  </p>
+  <div class="meta-grid">
+    <div><div class="k">科目代码</div><div class="v">61</div></div>
+    <div><div class="k">考试时长</div><div class="v">120<small>分钟 · 上机</small></div></div>
+    <div><div class="k">题型分值</div><div class="v">40<small>选择</small> + 60<small>操作</small></div></div>
+    <div><div class="k">考试环境</div><div class="v" style="font-size:14px;line-height:1.45;padding-top:2px">Visual C++ 2010 学习版<br>中文版 Windows 7</div></div>
+  </div>
+  <p class="hero-note">
+    选择题 40 分中含 <mark>公共基础知识 10 分</mark>；操作题 60 分 = <strong>基本操作题 + 简单应用题 + 综合应用题</strong>，均为上机编程。
+    开发环境为 <strong>Visual C++ 2010 学习版</strong>，答题前需熟悉"解决方案 + main.cpp"的项目结构。
+  </p>
+</header>
+
+<!-- ============ 01 C++语言概述 ============ -->
+<div class="divider"><span class="no">01</span><span class="t">C++ 语言概述</span><span class="dots"></span><span class="pg">01 / 13</span></div>
+<section class="chapter" id="ch01">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">01</div>
+    <h3>C++ 语言概述</h3>
+    <span class="tag">选择题必考 · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：C++ 语言的特点及基本符号；关键字、常量、运算符与标点符号的含义；标识符的组成规则；C++ 程序的基本框架；Visual C++ 2010 学习版环境的使用。</p>
+
+  <h4>语言特点与基本符号</h4>
+  <ul class="plain">
+    <li><strong>面向对象三大特征</strong>：封装（class）、继承（derivation）、多态（virtual 动态绑定）</li>
+    <li>与 C 语言<strong>兼容</strong>，支持过程化与面向对象两种风格；支持函数重载、模板、命名空间、流式 I/O</li>
+    <li>C++ 基本符号：<strong>关键字</strong>（class、virtual、friend、template、new、delete、this、inline 等）、<strong>标识符</strong>、<strong>运算符</strong>、<strong>标点符号</strong>（{ } ( ) ; ,）</li>
+    <li>注释：<code>//</code> 单行；<code>/* ... */</code> 多行</li>
+  </ul>
+
+  <h4>标识符组成规则（官方样题）</h4>
+  <pre><span class="lab">C++</span><span class="cm">// 合法标识符：由字母、数字、下划线组成，不能以数字开头，不能与关键字同名</span>
+_radius      <span class="cm">// 合法：以下划线开头</span>
+foo~bar      <span class="cm">// 非法：~ 不是字母/数字/下划线</span>
+else         <span class="cm">// 非法：是关键字</span>
+3room        <span class="cm">// 非法：以数字开头</span>
+<span class="cm">// 常见关键字：class public protected private virtual friend template typename</span>
+<span class="cm">//             new delete this inline const static namespace using</span>
+<span class="cm">// 注意：cin / cout 不是关键字，是标准库流对象名；function 也不是关键字</span></pre>
+  <div class="key">
+    <strong>官方样题 01：</strong>下列符号中可以用作 C++ 标识符的是 → <strong>A）_radius</strong>。
+    <code>foo~bar</code>（含 ~）、<code>else</code>（关键字）、<code>3room</code>（数字开头）均非法。
+  </div>
+
+  <h4>程序基本框架</h4>
+  <pre><span class="lab">C++</span><span class="kw">#include</span> &lt;iostream&gt;      <span class="cm">// 输入输出流头文件</span>
+<span class="kw">using namespace</span> <span class="st">std</span>;     <span class="cm">// 使用标准命名空间（否则写 std::cout）</span>
+
+<span class="kw">int</span> <span class="st">main</span>()
+{
+    <span class="at">cout</span> &lt;&lt; <span class="st">"Hello, C++!"</span> &lt;&lt; <span class="at">endl</span>;
+    <span class="kw">return</span> <span class="st">0</span>;                 <span class="cm">// 0 表示正常结束</span>
+}
+<span class="cm">// 结构：头文件区 → 命名空间 → 全局声明 → main 函数 → 其他函数</span>
+<span class="cm">// 操作题在 VC++ 2010 中以"解决方案 proj1 + main.cpp"形式给出</span></pre>
+  <div class="key">
+    <strong>高频考点：</strong>程序从 <strong>main 函数</strong>开始执行；<code>&lt;iostream&gt;</code> 提供 cin/cout；
+    <code>endl</code> 输出换行并刷新缓冲区；<code>using namespace std;</code> 可省略为 <code>std::cout</code>。
+  </div>
+</section>
+
+<!-- ============ 02 数据类型与运算符 ============ -->
+<div class="divider"><span class="no">02</span><span class="t">数据类型与运算符</span><span class="dots"></span><span class="pg">02 / 13</span></div>
+<section class="chapter" id="ch02">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">02</div>
+    <h3>数据类型、运算符与表达式</h3>
+    <span class="tag">选择题高频 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：基本类型、派生类型与用户定义类型；各类常量的表示；变量的定义、初始化、作用域与生存期、4 种存储类型；运算符的优先级与结合性；表达式的求值规则。</p>
+
+  <h4>数据类型总览</h4>
+  <table>
+    <tr><th>类别</th><th>类型</th><th>说明</th></tr>
+    <tr><td rowspan="5">基本类型</td><td><code>char</code></td><td>字符型，1 字节</td></tr>
+    <tr><td><code>short</code> / <code>int</code> / <code>long</code></td><td>整型，VC++2010 下 int 占 4 字节</td></tr>
+    <tr><td><code>float</code> / <code>double</code></td><td>单/双精度浮点</td></tr>
+    <tr><td><code>bool</code></td><td>逻辑型，取值 true / false（输出 1 / 0）</td></tr>
+    <tr><td><code>void</code></td><td>无值类型，用于函数返回"无值"</td></tr>
+    <tr><td>派生类型</td><td>数组、指针、引用、枚举 enum</td><td>由基本类型派生</td></tr>
+    <tr><td>用户定义类型</td><td>结构体 struct / 类 class / 共用体 union</td><td><code>struct</code> 默认公有，<code>class</code> 默认私有</td></tr>
+  </table>
+
+  <h4>常量与变量</h4>
+  <ul class="plain">
+    <li>整型常量：十进制 <code>123</code>；八进制 <strong>0</strong> 开头 <code>0123</code>（=83）；十六进制 <strong>0x</strong> 开头 <code>0x1e1f1</code></li>
+    <li>实型常量：<code>3.14</code>、<code>1e3</code>（=1000.0）、<code>-1E3</code>；字符常量：<code>'a'</code>、<code>'\n'</code>、<code>'\0'</code></li>
+    <li>字符串常量：<code>"abc"</code> 末尾自动加 <code>'\0'</code>；逻辑常量：<code>true</code> / <code>false</code></li>
+    <li>符号常量：<code>const int buffer = 256;</code>（编译期类型检查）；<code>#define PI 3.14</code>（宏替换）</li>
+    <li>枚举常量：<code>enum Color {Red, Green, Blue};</code> 依次取值 0,1,2</li>
+    <li>变量：定义时可初始化；<strong>全局变量</strong>在函数外定义、<strong>局部变量</strong>在函数内定义；存储类型 <code>auto</code>（默认）、<code>register</code>、<code>static</code>、<code>extern</code></li>
+  </ul>
+
+  <h4>运算符优先级（从高到低）</h4>
+  <pre><span class="lab">C++</span><span class="cm">// 口诀：域解析 → 括号/下标 → 单目 → 算术 → 关系 → 逻辑 → 三目 → 赋值 → 逗号</span>
+::  .  -&gt;  ()  []                <span class="cm">// 最高</span>
+!  ~  ++  --  -  *  &amp;  (类型)  new delete  <span class="cm">// 单目（右结合）</span>
+*  /  %                         <span class="cm">// 乘除取余</span>
++  -                            <span class="cm">// 加减</span>
+&lt;&lt;  &gt;&gt;                          <span class="cm">// 移位（同时也是流插入/提取运算符）</span>
+&lt;  &lt;=  &gt;  &gt;=                    <span class="cm">// 关系</span>
+==  !=                         <span class="cm">// 相等</span>
+&amp;&amp;                             <span class="cm">// 逻辑与</span>
+||                             <span class="cm">// 逻辑或</span>
+? :                            <span class="cm">// 三目</span>
+=  +=  -=  *=  /=  %=          <span class="cm">// 赋值（右结合）</span>
+,                              <span class="cm">// 逗号（最低）</span></pre>
+
+  <h4>易错计算题</h4>
+  <pre><span class="lab">C++</span><span class="cm">// 整除与取余：整数相除仍为整数；% 两侧必须是整数</span>
+<span class="st">5</span> / <span class="st">2</span>       <span class="cm">// 2；5.0 / 2 = 2.5（有浮点参与 → 浮点结果）</span>
+<span class="st">5</span> % <span class="st">2</span>       <span class="cm">// 1</span>
+
+<span class="cm">// 自增自减：++i 先加后用；i++ 先用后加</span>
+<span class="kw">int</span> i = <span class="st">3</span>, x;
+x = i++;        <span class="cm">// x = 3，i = 4</span>
+x = ++i;        <span class="cm">// i = 5，x = 5</span>
+
+<span class="cm">// 逻辑表达式结果是 true/false；0&lt;a&lt;2 是 (0&lt;a)&lt;2，不是 a 的范围判断！</span>
+<span class="st">0</span> &lt; a &lt; <span class="st">2</span>      <span class="cm">// 等价于 (0&lt;a)&lt;2：a&gt;0 时 1&lt;2 恒真（经典陷阱）</span>
+
+<span class="cm">// 类型转换：小→大自动提升；大→小需显式转换</span>
+<span class="kw">double</span> d = <span class="st">3.14</span>;  <span class="kw">int</span> n = <span class="st">static_cast</span>&lt;<span class="kw">int</span>&gt;(d);  <span class="cm">// n = 3</span></pre>
+  <div class="key">
+    <strong>官方样题 02：</strong>下列语句中错误的是 → <strong>B）const int temp;</strong>
+    （const 常量<strong>必须在定义时初始化</strong>）。A 初始化正确；C、D 是 const 指针/动态分配，均正确。
+  </div>
+</section>
+
+<!-- ============ 03 基本控制结构 ============ -->
+<div class="divider"><span class="no">03</span><span class="t">基本控制结构</span><span class="dots"></span><span class="pg">03 / 13</span></div>
+<section class="chapter" id="ch03">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">03</div>
+    <h3>基本控制结构</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：C++ 基本语句；顺序、选择（if / switch）、循环（for / while / do-while）结构；break、continue、return 跳转语句；选择与循环的嵌套。</p>
+
+  <h4>三种循环对比</h4>
+  <table>
+    <tr><th>循环</th><th>判断时机</th><th>最少执行次数</th><th>典型场景</th></tr>
+    <tr><td><code>while(条件)</code></td><td>先判断</td><td>0 次</td><td>条件循环</td></tr>
+    <tr><td><code>do{...}while(条件)</code></td><td>后判断</td><td><strong>1 次</strong></td><td>至少执行一次</td></tr>
+    <tr><td><code>for(初始化;条件;更新)</code></td><td>先判断</td><td>0 次</td><td>计数循环；<code>for(;;)</code> 为无限循环</td></tr>
+  </table>
+
+  <h4>switch 的 break 穿透</h4>
+  <pre><span class="lab">C++</span><span class="kw">switch</span> (b) {
+    <span class="kw">case</span> <span class="st">1</span>:  cout &lt;&lt; <span class="st">"A"</span>; <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="st">2</span>:  cout &lt;&lt; <span class="st">"B"</span>;     <span class="cm">// 无 break：继续往下执行</span>
+    <span class="kw">case</span> <span class="st">3</span>:  cout &lt;&lt; <span class="st">"C"</span>; <span class="kw">break</span>;
+    <span class="kw">default</span>: cout &lt;&lt; <span class="st">"D"</span>;
+}
+<span class="cm">// b=2 → 输出 BC（穿透到 case 3 的 break 才停）</span></pre>
+
+  <h4>break / continue / return</h4>
+  <ul class="plain">
+    <li><code>break</code>：跳出<strong>当前层</strong>循环或 switch；嵌套中只跳一层</li>
+    <li><code>continue</code>：跳过<strong>本次</strong>循环剩余语句，进入下一轮</li>
+    <li><code>return</code>：结束<strong>整个函数</strong>并返回；在 main 中结束程序</li>
+  </ul>
+
+  <h4>官方样题：do-while 追踪</h4>
+  <pre><span class="lab">C++</span><span class="kw">int</span> x = <span class="st">3</span>;
+<span class="kw">do</span> {
+    x -= <span class="st">2</span>;
+    cout &lt;&lt; x;
+} <span class="kw">while</span> (!(--x));
+<span class="cm">// 第 1 轮：x=1，输出 1；--x 后 x=0，!0=1 真 → 继续</span>
+<span class="cm">// 第 2 轮：x=-2，输出 -2；--x 后 x=-3，!(-3)=0 假 → 结束</span>
+<span class="cm">// 输出：1-2 → 官方样题 03 选 C</span></pre>
+  <div class="key">
+    <strong>官方样题 04：</strong><code>int k=1,num=26; do{k*=num%10; num/=10;} while(num);</code>
+    运行后 k 的值 → <strong>B）12</strong>。追踪：第 1 轮 k=6、num=2；第 2 轮 k=12、num=0 结束。
+  </div>
+</section>
+
+<!-- ============ 04 数组指针与引用 ============ -->
+<div class="divider"><span class="no">04</span><span class="t">数组指针与引用</span><span class="dots"></span><span class="pg">04 / 13</span></div>
+<section class="chapter" id="ch04">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">04</div>
+    <h3>数组、指针与引用</h3>
+    <span class="tag">选择+操作双核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：一维/多维数组的定义、初始化和访问；string 类型与字符数组、常用字符串函数；指针的概念与基本运算；引用的定义、初始化与使用；new / delete 动态存储分配。</p>
+
+  <h4>数组</h4>
+  <pre><span class="lab">C++</span><span class="kw">int</span> a[<span class="st">5</span>];                 <span class="cm">// 5 个元素，下标 0~4；a[5] 越界</span>
+<span class="kw">int</span> b[] = {<span class="st">1</span>, <span class="st">2</span>, <span class="st">3</span>};        <span class="cm">// 初始化时可省略长度</span>
+<span class="kw">int</span> m[<span class="st">3</span>][<span class="st">4</span>];               <span class="cm">// 二维数组：3 行 4 列，按行存储</span>
+<span class="at">cout</span> &lt;&lt; a[<span class="st">0</span>] &lt;&lt; b[<span class="st">2</span>] &lt;&lt; m[<span class="st">1</span>][<span class="st">2</span>];</pre>
+
+  <h4>string 与字符数组</h4>
+  <pre><span class="lab">C++</span><span class="kw">#include</span> &lt;string&gt;       <span class="cm">// string 类头文件</span>
+<span class="kw">#include</span> &lt;cstring&gt;      <span class="cm">// C 风格字符串函数（strlen 等）</span>
+<span class="kw">string</span> s = <span class="st">"hello"</span>;      <span class="cm">// 直接赋值、比较、拼接：s + "!"</span>
+<span class="kw">char</span> c[] = <span class="st">"abc"</span>;        <span class="cm">// 长度 4：'a' 'b' 'c' '\0'</span>
+strlen(c);   <span class="cm">// 3（不含 '\0'）</span>
+strcpy(s1, s2);  strcmp(a, b);  strcat(d, s);  <span class="cm">// 复制/比较/拼接</span></pre>
+
+  <h4>指针与动态分配</h4>
+  <pre><span class="lab">C++</span><span class="kw">int</span> x = <span class="st">5</span>;
+<span class="kw">int</span> *p = &amp;x;        <span class="cm">// &amp; 取地址；*p 解引用 → 5</span>
+<span class="kw">int</span> a[<span class="st">4</span>];  <span class="kw">int</span> *q = a;   <span class="cm">// 数组名是首地址；a[i] 等价于 *(a+i)</span>
+
+<span class="kw">int</span> *r = <span class="kw">new</span> <span class="kw">int</span>(<span class="st">5</span>);     <span class="cm">// 动态分配单个 int 并初始化为 5</span>
+<span class="kw">int</span> *s = <span class="kw">new</span> <span class="kw">int</span>[<span class="st">10</span>];    <span class="cm">// 动态分配 10 个 int 的数组</span>
+<span class="kw">delete</span> r;               <span class="cm">// 释放单个对象</span>
+<span class="kw">delete</span> [] s;            <span class="cm">// 释放数组（必须带 []）</span></pre>
+
+  <h4>引用</h4>
+  <pre><span class="lab">C++</span><span class="kw">int</span> x = <span class="st">5</span>;
+<span class="kw">int</span> &amp;r = x;          <span class="cm">// r 是 x 的别名：必须定义时初始化，绑定后不可改</span>
+r = <span class="st">10</span>;             <span class="cm">// x 变成 10</span>
+
+<span class="kw">void</span> <span class="st">swap</span>(<span class="kw">int</span> &amp;a, <span class="kw">int</span> &amp;b) {  <span class="cm">// 引用参数：修改的就是实参</span>
+    <span class="kw">int</span> t = a;  a = b;  b = t;
+}</pre>
+  <div class="key">
+    <strong>区分三种写法：</strong><code>new int(5)</code> = 分配 1 个 int 且值 5；<code>new int[5]</code> = 分配 5 个 int 的数组；
+    <code>new int</code> = 分配 1 个 int 未初始化。引用<strong>必须初始化</strong>且不能改变绑定，是"别名"不是拷贝。
+  </div>
+</section>
+
+<!-- ============ 05 函数 ============ -->
+<div class="divider"><span class="no">05</span><span class="t">函数</span><span class="dots"></span><span class="pg">05 / 13</span></div>
+<section class="chapter" id="ch05">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">05</div>
+    <h3>函数</h3>
+    <span class="tag">选择+操作双核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：函数定义与调用、函数原型与返回类型、参数传递方式与默认参数、函数重载、内联函数、递归函数。</p>
+
+  <h4>函数原型与参数传递</h4>
+  <pre><span class="lab">C++</span><span class="kw">int</span> <span class="st">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b);        <span class="cm">// 函数原型声明（调用前必须先声明或定义）</span>
+
+<span class="kw">int</span> <span class="st">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {          <span class="cm">// 定义</span>
+    <span class="kw">return</span> a + b;
+}
+<span class="cm">// 值传递：形参是实参的拷贝，函数内修改不影响实参</span>
+<span class="cm">// 引用/指针传递：函数内修改影响实参（swap 场景）</span>
+<span class="cm">// 默认参数：从右向左连续设置，void f(int a, int b=2, int c=3);</span></pre>
+
+  <h4>函数重载</h4>
+  <pre><span class="lab">C++</span><span class="kw">void</span> <span class="st">fun</span>(<span class="kw">int</span> val)            { <span class="at">cout</span> &lt;&lt; <span class="st">"int"</span>; }
+<span class="kw">void</span> <span class="st">fun</span>(<span class="kw">double</span> val)         { <span class="at">cout</span> &lt;&lt; <span class="st">"double"</span>; }
+<span class="kw">void</span> <span class="st">fun</span>(<span class="kw">int</span> v1, <span class="kw">double</span> v2) { <span class="at">cout</span> &lt;&lt; <span class="st">"int+double"</span>; }
+<span class="st">fun</span>(<span class="st">1</span>);   <span class="cm">// 调用第一个 → 输出 int（按实参类型匹配）</span>
+<span class="cm">// 重载条件：参数个数或类型不同；与返回值类型无关！</span></pre>
+
+  <h4>内联函数</h4>
+  <pre><span class="lab">C++</span><span class="kw">inline</span> <span class="kw">int</span> <span class="st">sq</span>(<span class="kw">int</span> x) { <span class="kw">return</span> x * x; }
+<span class="cm">// inline 只是向编译器"建议"在调用处展开，省去函数调用开销</span>
+<span class="cm">// 适合短小、频繁调用的函数；递归函数不适合做内联</span>
+<span class="cm">// 注意：内联函数 ≠ 定义在另一个函数体内部的函数（那是嵌套，C++ 不允许）</span></pre>
+  <div class="key">
+    <strong>官方样题 06：</strong>下列关于 C++ 函数的叙述中，正确的是 → <strong>C）</strong>C++ 要求在调用一个函数之前，必须先对其进行原型声明或定义。
+    （A 混淆内联与嵌套；B return 非必须；D 区分重载看<strong>参数表</strong>而非返回值。）
+  </div>
+</section>
+
+<!-- ============ 06 类和对象 ============ -->
+<div class="divider"><span class="no">06</span><span class="t">类和对象</span><span class="dots"></span><span class="pg">06 / 13</span></div>
+<section class="chapter" id="ch06">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-6)">06</div>
+    <h3>类和对象</h3>
+    <span class="tag">全卷核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：类与对象的概念、数据成员/成员函数与访问控制；构造函数与析构函数（初始化列表、默认构造、复制构造）；this 指针；静态成员；常对象与常成员函数；友元；成员对象；对象数组与自由存储对象。</p>
+
+  <h4>类定义与访问控制</h4>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">Point</span> {
+<span class="kw">private</span>:              <span class="cm">// 默认访问权限：private</span>
+    <span class="kw">int</span> xx, yy;
+<span class="kw">public</span>:
+    <span class="st">Point</span>() : xx(<span class="st">0</span>), yy(<span class="st">0</span>) {}        <span class="cm">// 构造函数（初始化列表）</span>
+    <span class="st">Point</span>(<span class="kw">int</span> x, <span class="kw">int</span> y = <span class="st">0</span>) : xx(x), yy(y) {}  <span class="cm">// 重载 + 默认参数</span>
+    <span class="kw">int</span> <span class="st">getX</span>() <span class="kw">const</span> { <span class="kw">return</span> xx; }  <span class="cm">// 常成员函数</span>
+};
+<span class="st">Point</span> a(<span class="st">2</span>), b[<span class="st">3</span>];    <span class="cm">// 对象、对象数组：a 调 1 次构造，b 调 3 次</span></pre>
+
+  <h4>构造函数与析构函数</h4>
+  <table>
+    <tr><th></th><th>构造函数</th><th>析构函数</th></tr>
+    <tr><td>名称</td><td>与类同名，可重载</td><td><code>~类名</code>，<strong>不能重载</strong>，一个类仅一个</td></tr>
+    <tr><td>参数/返回</td><td>可有参数，无返回类型</td><td><strong>无参数、无返回值</strong></td></tr>
+    <tr><td>时机</td><td>对象创建时自动调用</td><td>对象生命周期结束时自动调用</td></tr>
+    <tr><td>特殊形态</td><td>默认构造、复制构造（参数为本类<strong>引用</strong>）</td><td>可声明为 virtual（虚析构）</td></tr>
+  </table>
+  <ul class="plain">
+    <li>复制构造函数在<strong>对象按值传给函数、按值返回对象、用对象初始化另一对象</strong>时被调用</li>
+    <li>编译器仅在类<strong>没有定义任何构造函数</strong>时才自动生成默认构造函数</li>
+    <li>静态数据成员：<strong>必须在类外单独定义和初始化</strong>（<code>int Test::b = 0;</code>），所有对象共享一份</li>
+    <li>静态成员函数：只能访问静态成员；<strong>没有 this 指针</strong></li>
+  </ul>
+
+  <h4>this 指针 / 常对象 / 友元</h4>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">Test</span> {
+<span class="kw">private</span>:
+    <span class="kw">int</span> a;
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="st">set</span>(<span class="kw">int</span> v) { <span class="kw">this</span>-&gt;a = v; }   <span class="cm">// this 指向当前对象（非静态成员函数都有）</span>
+    <span class="kw">int</span> <span class="st">get</span>() <span class="kw">const</span> { <span class="kw">return</span> a; }       <span class="cm">// const 成员函数：不能修改数据成员</span>
+    <span class="kw">friend</span> <span class="kw">void</span> <span class="st">show</span>(<span class="kw">const</span> <span class="st">Test</span> &amp;t);  <span class="cm">// 友元函数：可访问私有成员，无 this 指针</span>
+};
+<span class="kw">const</span> <span class="st">Test</span> t;   <span class="cm">// 常对象：只能调用常成员函数（const 成员函数）</span></pre>
+  <div class="key">
+    <strong>官方样题 14：</strong>标注行中能被正确编译的是 → <strong>B）②</strong> <code>int getValue() const {return a;}</code>。
+    ① 返回类型不匹配（&amp;a 是 int*）；③ const 成员函数中修改 a 非法；④ 友元函数不能是 const 成员。
+  </div>
+  <div class="key">
+    <strong>官方样题 15：</strong>关于 this 指针 → <strong>D）类的非静态成员函数都有 this 指针</strong>。
+    静态成员函数与友元函数<strong>没有</strong> this 指针。
+  </div>
+</section>
+<!-- ============ 07 继承和派生 ============ -->
+<div class="divider"><span class="no">07</span><span class="t">继承和派生</span><span class="dots"></span><span class="pg">07 / 13</span></div>
+<section class="chapter" id="ch07">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">07</div>
+    <h3>继承和派生</h3>
+    <span class="tag">全卷核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：派生类的定义；不同继承方式下派生类对基类成员的访问；派生类构造与析构；多继承二义性与虚基类；子类型关系与多态；虚函数、纯虚函数、抽象类、虚析构函数。</p>
+
+  <h4>继承方式与访问控制</h4>
+  <table>
+    <tr><th>基类成员</th><th>public 继承</th><th>protected 继承</th><th>private 继承</th></tr>
+    <tr><td><code>public</code></td><td>public</td><td>protected</td><td>private</td></tr>
+    <tr><td><code>protected</code></td><td>protected</td><td>protected</td><td>private</td></tr>
+    <tr><td><code>private</code></td><td colspan="3">不可访问（永远不能被子类直接访问）</td></tr>
+  </table>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">B</span> {
+<span class="kw">public</span>:    <span class="kw">void</span> <span class="st">fun1</span>(){}
+<span class="kw">private</span>:   <span class="kw">void</span> <span class="st">fun2</span>(){}
+<span class="kw">protected</span>: <span class="kw">void</span> <span class="st">fun3</span>(){}
+};
+<span class="kw">class</span> <span class="st">D</span> : <span class="kw">public</span> <span class="st">B</span> { ... };
+<span class="cm">// D 的对象 obj：只能访问 public 的 fun1；fun2 私有不可访问；</span>
+<span class="cm">// fun3 是 protected，D 的成员函数可访问，但"对象"不能直接访问</span></pre>
+
+  <h4>构造与析构顺序（高频）</h4>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">A</span>{ <span class="kw">public</span>: <span class="st">A</span>(){<span class="at">cout</span>&lt;&lt;<span class="st">"A"</span>;} <span class="st">~A</span>(){<span class="at">cout</span>&lt;&lt;<span class="st">"~A"</span>;} };
+<span class="kw">class</span> <span class="st">B</span> : <span class="kw">public</span> <span class="st">A</span> {
+    <span class="st">A</span> *p;
+<span class="kw">public</span>: <span class="st">B</span>(){<span class="at">cout</span>&lt;&lt;<span class="st">"B"</span>; p = <span class="kw">new</span> <span class="st">A</span>();}
+          <span class="st">~B</span>(){<span class="at">cout</span>&lt;&lt;<span class="st">"~B"</span>; <span class="kw">delete</span> p;}
+};
+<span class="st">B</span> obj;
+<span class="cm">// 构造：基类 A → 派生类 B 体 → 成员（p=new A）  输出：ABA</span>
+<span class="cm">// 析构：~B（delete p 触发 ~A）→ 基类 ~A           输出：~B~A~A</span>
+<span class="cm">// 合计：ABA~B~A~A → 官方样题 23 选 B</span></pre>
+
+  <h4>虚函数与多态</h4>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="st">fun1</span>(){ <span class="at">cout</span> &lt;&lt; <span class="st">"Base\n"</span>; }                       <span class="cm">// 非虚</span>
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="st">fun2</span>(){ <span class="at">cout</span> &lt;&lt; <span class="st">"Base\n"</span>; }            <span class="cm">// 虚函数</span>
+};
+<span class="kw">class</span> <span class="st">Derived</span> : <span class="kw">public</span> <span class="st">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="st">fun1</span>(){ <span class="at">cout</span> &lt;&lt; <span class="st">"Derived\n"</span>; }                   <span class="cm">// 隐藏</span>
+    <span class="kw">void</span> <span class="st">fun2</span>(){ <span class="at">cout</span> &lt;&lt; <span class="st">"Derived\n"</span>; }                   <span class="cm">// 覆盖（重写）</span>
+};
+<span class="kw">void</span> <span class="st">f</span>(<span class="st">Base</span> &amp;b) { b.<span class="st">fun1</span>(); b.<span class="st">fun2</span>(); }
+<span class="st">Derived</span> obj;  <span class="st">f</span>(obj);
+<span class="cm">// fun1 非虚：编译期绑定 → Base；fun2 虚：运行期按实际对象 → Derived</span>
+<span class="cm">// 输出：Base / Derived → 官方样题 26 选 B</span></pre>
+  <ul class="plain">
+    <li><strong>纯虚函数</strong>：<code>virtual void f() = 0;</code>；含纯虚函数的类是<strong>抽象类</strong>，不能实例化对象</li>
+    <li><strong>虚函数</strong>：不能是静态成员函数（官方样题 16 选 B）；通过基类指针/引用调用实现运行时多态</li>
+    <li><strong>虚析构函数</strong>：基类析构声明为 virtual，保证通过基类指针 delete 派生类对象时正确调用派生析构</li>
+    <li><strong>多重继承</strong>：构造顺序按<strong>基类声明顺序</strong>（不是初始化列表顺序）；同名成员产生二义性时用<strong>虚基类 virtual</strong> 解决</li>
+  </ul>
+  <div class="key">
+    <strong>官方样题 17：</strong>关于基类和派生类关系 → <strong>D）派生类除了继承基类的成员，还可以定义新的成员</strong>。
+    （A 错：C++ 支持多继承；B 错：私有成员不可访问；C 错：基类构造在初始化列表调用而非构造体。）
+  </div>
+</section>
+
+<!-- ============ 08 运算符重载 ============ -->
+<div class="divider"><span class="no">08</span><span class="t">运算符重载</span><span class="dots"></span><span class="pg">08 / 13</span></div>
+<section class="chapter" id="ch08">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">08</div>
+    <h3>运算符重载</h3>
+    <span class="tag">选择+简单应用 · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：运算符重载的概念与注意事项；典型运算符的重载方式；作为成员函数与非成员函数（友元）重载的两种形态。</p>
+
+  <h4>重载规则与限制</h4>
+  <ul class="plain">
+    <li>只能重载 <strong>C++ 中已有的运算符</strong>，不能定义新运算符（官方样题 07 选 C）</li>
+    <li><strong>不能改变</strong>运算符的优先级和操作数个数</li>
+    <li>不能重载的运算符：<code>.</code>（成员访问）、<code>::</code>（域解析）、<code>.*</code>、<code>?:</code>（三目）、<code>sizeof</code></li>
+    <li><strong>不能重载为友元函数</strong>的：<code>=</code>（赋值）、<code>()</code>（函数调用）、<code>[]</code>（下标）、<code>-&gt;</code>（成员访问）——只能作为成员函数（官方样题 09 选 A）</li>
+  </ul>
+
+  <h4>成员函数 vs 友元函数重载</h4>
+  <pre><span class="lab">C++</span><span class="cm">// 双目运算符：成员函数重载时，左操作数由 this 提供，显式参数只需 1 个</span>
+<span class="kw">class</span> <span class="st">Complex</span> {
+<span class="kw">public</span>:
+    <span class="st">Complex</span> <span class="kw">operator</span>+(<span class="kw">const</span> <span class="st">Complex</span> &amp;c) <span class="kw">const</span>;   <span class="cm">// 成员：1 个参数</span>
+    <span class="kw">friend</span> <span class="st">Complex</span> <span class="kw">operator</span>-(<span class="kw">const</span> <span class="st">Complex</span> &amp;a, <span class="kw">const</span> <span class="st">Complex</span> &amp;b);
+};                                                 <span class="cm">// 友元：2 个参数</span>
+
+<span class="cm">// 前缀 ++ 与后缀 ++：后缀多一个 int 哑元（仅用于区分）</span>
+<span class="st">Complex</span> &amp;<span class="kw">operator</span>++();            <span class="cm">// 前缀 ++a</span>
+<span class="st">Complex</span> <span class="kw">operator</span>++(<span class="kw">int</span>);         <span class="cm">// 后缀 a++</span></pre>
+
+  <h4>流提取 &gt;&gt; / 流插入 &lt;&lt; 重载</h4>
+  <pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">MyClass</span> {
+<span class="kw">private</span>:
+    <span class="kw">int</span> data;
+<span class="kw">public</span>:
+    <span class="kw">friend</span> <span class="at">istream</span>&amp; <span class="kw">operator</span>&gt;&gt;(<span class="at">istream</span>&amp; is, <span class="st">MyClass</span>&amp; a) {
+        is &gt;&gt; a.data;   <span class="cm">// 友元：才能访问私有 data</span>
+        <span class="kw">return</span> is;
+    }
+};
+<span class="cm">// 要点：第一参数是 istream&（返回引用才能连续 >&gt;）；第二参数必须是"引用"才能改对象</span>
+<span class="cm">// 官方样题 12 选 A：friend istream&amp; operator&gt;&gt;(istream&amp; is, MyClass&amp; a);</span></pre>
+  <div class="key">
+    <strong>官方样题 07：</strong>关于运算符重载，正确的是 → <strong>C）只能重载 C++ 中已经有的运算符，不能定义新运算符</strong>。
+    A 错：基本类型（如 int）的运算符<strong>不能重载</strong>；B 错：不能改变优先级与操作数个数；D 错：部分运算符（. :: ?: 等）不可重载。
+  </div>
+</section>
+
+<!-- ============ 09 模板 ============ -->
+<div class="divider"><span class="no">09</span><span class="t">模板</span><span class="dots"></span><span class="pg">09 / 13</span></div>
+<section class="chapter" id="ch09">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">09</div>
+    <h3>模板</h3>
+    <span class="tag">选择题固定 · ★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：函数模板的概念与机制、定义和使用方式；类模板的概念与机制、定义和使用方式。</p>
+
+  <h4>函数模板</h4>
+  <pre><span class="lab">C++</span><span class="kw">template</span> &lt;<span class="kw">typename</span> T&gt;
+T <span class="st">max2</span>(T a, T b) { <span class="kw">return</span> a &gt; b ? a : b; }
+
+<span class="st">max2</span>(<span class="st">3</span>, <span class="st">5</span>);          <span class="cm">// 由实参推断 T=int</span>
+<span class="st">max2</span>(<span class="st">2.5</span>, <span class="st">1.8</span>);      <span class="cm">// T=double</span>
+
+<span class="cm">// 显式指定模板实参：cast&lt;double,int&gt;(i) 把 i 由 int 转成 double</span>
+<span class="kw">template</span> &lt;<span class="kw">typename</span> T, <span class="kw">typename</span> U&gt;
+T <span class="st">cast</span>(U u) { <span class="kw">return</span> (T)u; }        <span class="cm">// 官方样题 28 选 D</span></pre>
+
+  <h4>类模板</h4>
+  <pre><span class="lab">C++</span><span class="kw">template</span> &lt;<span class="kw">typename</span> T&gt;
+<span class="kw">class</span> <span class="st">Stack</span> {
+<span class="kw">private</span>:
+    T data[<span class="st">100</span>];  <span class="kw">int</span> top;
+<span class="kw">public</span>:
+    <span class="st">Stack</span>() : top(<span class="st">0</span>) {}
+    <span class="kw">void</span> <span class="st">push</span>(<span class="kw">const</span> T &amp;v) { data[top++] = v; }
+};
+<span class="st">Stack</span>&lt;<span class="kw">int</span>&gt; si;      <span class="cm">// 用 int 实例化 → 编译器据此生成一个 Stack&lt;int&gt; 类</span>
+<span class="st">Stack</span>&lt;<span class="kw">double</span>&gt; sd;</pre>
+  <div class="key">
+    <strong>官方样题 27：</strong>关于类模板，正确的是 → <strong>B）类模板实例化时，编译器将根据给出的模板实参生成一个类</strong>。
+    （A 错：类模板用于生成类而非抽象类；C 错：数据成员类型由模板参数决定；D 错：成员函数可有返回值。）
+  </div>
+</section>
+
+<!-- ============ 10 C++流 ============ -->
+<div class="divider"><span class="no">10</span><span class="t">C++ 流</span><span class="dots"></span><span class="pg">10 / 13</span></div>
+<section class="chapter" id="ch10">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">10</div>
+    <h3>C++ 流（输入输出与文件）</h3>
+    <span class="tag">选择+综合应用 · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：C++ 流的体系结构、预定义流对象、提取/插入运算符；默认格式与常用格式控制标志；文件流的建立与关闭。</p>
+
+  <h4>流类体系与预定义对象</h4>
+  <table>
+    <tr><th>流类</th><th>预定义对象</th><th>用途</th></tr>
+    <tr><td><code>istream</code></td><td><code>cin</code></td><td>标准输入（键盘），提取运算符 <code>&gt;&gt;</code></td></tr>
+    <tr><td><code>ostream</code></td><td><code>cout / cerr / clog</code></td><td>标准输出（屏幕），插入运算符 <code>&lt;&lt;</code></td></tr>
+    <tr><td><code>fstream / ifstream / ofstream</code></td><td>—</td><td>文件输入输出流</td></tr>
+  </table>
+
+  <h4>格式控制（iomanip）</h4>
+  <pre><span class="lab">C++</span><span class="kw">#include</span> &lt;iomanip&gt;
+<span class="at">cout</span> &lt;&lt; <span class="st">setw</span>(<span class="st">10</span>) &lt;&lt; <span class="st">123</span>;        <span class="cm">// setw：设置"下一个"输出项的宽度，一次性（非粘性）</span>
+<span class="at">cout</span> &lt;&lt; <span class="st">setprecision</span>(<span class="st">3</span>) &lt;&lt; <span class="st">3.14159</span>;  <span class="cm">// 精度（小数位数/有效数字）</span>
+<span class="at">cout</span> &lt;&lt; <span class="st">setfill</span>(<span class="st">'*'</span>) &lt;&lt; <span class="st">setw</span>(<span class="st">5</span>) &lt;&lt; <span class="st">12</span>;  <span class="cm">// 填充字符 → "***12"</span>
+<span class="at">cout</span> &lt;&lt; <span class="st">hex</span> &lt;&lt; <span class="st">255</span>;              <span class="cm">// 十六进制 ff；dec 十进制；oct 八进制</span></pre>
+
+  <h4>文件流</h4>
+  <pre><span class="lab">C++</span><span class="kw">#include</span> &lt;fstream&gt;
+<span class="at">ifstream</span> fin(<span class="st">"file.dat"</span>);      <span class="cm">// 输入文件流：默认 ios_base::in（官方样题 30 选 A）</span>
+<span class="at">ofstream</span> fout(<span class="st">"file.dat"</span>);     <span class="cm">// 输出文件流：默认 ios_base::out</span>
+<span class="at">fstream</span> fio(<span class="st">"f.dat"</span>, <span class="at">ios_base</span>::in | <span class="at">ios_base</span>::out);  <span class="cm">// 读写</span>
+
+<span class="at">ifstream</span> fin;  fin.<span class="st">open</span>(<span class="st">"file.dat"</span>);   <span class="cm">// 先定义再 open</span>
+<span class="kw">if</span> (!fin) { <span class="cm">/* 打开失败处理 */</span> }
+<span class="kw">int</span> x;  fin &gt;&gt; x;        <span class="cm">// 从文件读</span>
+fout &lt;&lt; <span class="st">"hello"</span> &lt;&lt; x;    <span class="cm">// 写入文件</span>
+fin.<span class="st">close</span>();  fout.<span class="st">close</span>();</pre>
+  <div class="key">
+    <strong>官方样题 29：</strong>建立文件流打开 file.dat 用于输入，错误的是 → <strong>A）ifstream fin = ifstream.open("file.dat");</strong>
+    —— <code>open</code> 返回 <code>void</code>，不能用来初始化对象。正确写法见上（构造、先定义再 open、指针 new 三种）。
+  </div>
+</section>
+
+<!-- ============ 11 公共基础知识 ============ -->
+<div class="divider"><span class="no">11</span><span class="t">公共基础知识</span><span class="dots"></span><span class="pg">11 / 13</span></div>
+<section class="chapter" id="ch11">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">11</div>
+    <h3>公共基础知识（10 分）</h3>
+    <span class="tag">性价比最高 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">选择题前 10 道是公共基础知识（数据结构、程序设计基础、软件工程、数据库），题目相对固定，背熟考点就能拿分，是过关的"保底分"。</p>
+
+  <h4>数据结构</h4>
+  <table>
+    <tr><th>结构</th><th>存取方式</th><th>类别</th></tr>
+    <tr><td>栈</td><td>先进后出（FILO），只在一端操作</td><td>线性结构</td></tr>
+    <tr><td>队列</td><td>先进先出（FIFO）</td><td>线性结构</td></tr>
+    <tr><td>线性表 / 链表</td><td>顺序或链式存储</td><td>线性结构</td></tr>
+    <tr><td>二叉树 / 树 / 图</td><td>分支/网状关系</td><td>非线性结构</td></tr>
+  </table>
+  <ul class="plain">
+    <li>二叉树性质：叶子结点数 <strong>N0 = N2 + 1</strong>；第 k 层最多 <code>2^(k-1)</code> 个结点；深度 h 最多 <code>2^h - 1</code> 个</li>
+    <li>算法复杂度：时间与空间复杂度；堆排序 <code>O(n·log n)</code>、希尔排序 <code>O(n^1.5)</code>（最坏较高）</li>
+  </ul>
+
+  <h4>程序设计 / 软件工程 / 数据库</h4>
+  <ul class="plain">
+    <li>结构化程序设计三原则：<strong>自顶向下、逐步求精、模块化</strong>；三种基本控制结构：顺序、选择、循环</li>
+    <li>模块划分准则：<strong>高内聚、低耦合</strong>；数据流图（DFD）用于需求分析阶段</li>
+    <li>测试：白盒（逻辑路径）/ 黑盒（等价类划分、边界值分析）</li>
+    <li>数据库系统核心：<strong>DBMS</strong>；E-R 图：实体矩形、属性椭圆、联系菱形；关系模型用二维表</li>
+  </ul>
+</section>
+
+<!-- ============ 12 备考优先级 ============ -->
+<div class="divider"><span class="no">12</span><span class="t">备考优先级</span><span class="dots"></span><span class="pg">12 / 13</span></div>
+<section class="chapter" id="ch12">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-6)">12</div>
+    <h3>备考优先级与复习路线</h3>
+    <span class="tag">策略</span>
+  </div>
+  <p class="ch-intro">时间有限时按下面的优先级投入：先啃类与对象、继承多态这两大核心，再攻操作题三题型。</p>
+
+  <table>
+    <tr><th>优先级</th><th>内容</th><th>理由</th></tr>
+    <tr><td>★★★★★</td><td>类与对象、继承与派生、虚函数与多态</td><td>选择 + 操作题双核心，简单应用几乎必考</td></tr>
+    <tr><td>★★★★</td><td>运算符重载、函数、数组指针与引用</td><td>选择题高频；基本操作题常考改错</td></tr>
+    <tr><td>★★★★</td><td>公共基础知识 10 分</td><td>记忆性内容，背熟即得分，成本最低</td></tr>
+    <tr><td>★★★</td><td>模板、C++ 流、数据类型与运算符</td><td>以选择题为主，考点固定</td></tr>
+  </table>
+
+  <h4>操作题三种题型（60 分）</h4>
+  <ul class="plain">
+    <li><strong>基本操作题</strong>：给定类定义，改正 <code>//ERROR**********found**********</code> 标记行（常见：缺返回类型、const 误用、调用写法错误）</li>
+    <li><strong>简单应用题</strong>：在横线处填写代码（常见：派生类声明、构造函数初始化列表、print 函数重写），不能改动其他部分</li>
+    <li><strong>综合应用题</strong>：在 <code>//*******333*******</code> 与 <code>//*******666*******</code> 之间编写函数（常见：运算符重载、类方法实现）</li>
+    <li>答题环境：Visual C++ 2010 学习版，编译运行通过后再提交；注意分号、括号配对与变量类型</li>
+  </ul>
+</section>
+
+<!-- ============ 13 真题题库 ============ -->
+<div class="divider"><span class="no">13</span><span class="t">真题题库 2021–2026</span><span class="dots"></span><span class="pg">13 / 13</span></div>
+<section class="chapter" id="quiz">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">13</div>
+    <h3>真题题库（2021–2026）</h3>
+    <span class="tag">点击选项即判分</span>
+  </div>
+  <p class="ch-intro">
+    题库分六个年份标签。2021–2024 为公开网络题库的历年真题（考生回忆/整理版）；2025 为中国教育考试网发布的官方样题（依据 2025 年版大纲）；2026 为按 2025 大纲编写的模拟题。
+    点击选项立即判分，自动显示参考答案与解析。
+  </p>
+
+  <div class="year-tabs" id="yearTabs">
+    <button data-y="all" class="on">全部</button>
+    <button data-y="2021">2021</button>
+    <button data-y="2022">2022</button>
+    <button data-y="2023">2023</button>
+    <button data-y="2024">2024</button>
+    <button data-y="2025">2025 官方样题</button>
+    <button data-y="2026">2026 模拟</button>
+  </div>
+  <div class="quiz-meta">共 32 道选择题 + 3 道操作题 · 来源：<b>中国教育考试网官方样题</b> 与网络公开题库（历年考生回忆）</div>
+
+  <!-- 2021 -->
+  <div class="q" data-y="2021">
+    <div class="q-head"><span class="y">2021</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">若 AA 为一个类，a 为该类的私有整型数据成员，getA() 为该类的一个非静态公有成员函数（返回 a 的值）。x 为该类的一个对象，要在类外访问 x 对象中 a 的值，正确的访问格式是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>AA.getA()</button>
+        <button class="opt" data-ok><span class="L">B</span>x.getA()</button>
+        <button class="opt"><span class="L">C</span>x.a</button>
+        <button class="opt"><span class="L">D</span>AA.a</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>私有成员不能在类外直接访问（C、D 非法）；getA() 是非静态成员函数，必须通过对象 x 调用。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2021">
+    <div class="q-head"><span class="y">2021</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列单词中，不是 C++ 关键字的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>class</button>
+        <button class="opt" data-ok><span class="L">B</span>function</button>
+        <button class="opt"><span class="L">C</span>friend</button>
+        <button class="opt"><span class="L">D</span>virtual</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>class、friend、virtual 都是 C++ 关键字；function 不是（标准库中的 std::function 是类模板，但 function 本身不是关键字）。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2021">
+    <div class="q-head"><span class="y">2021</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">双目运算符重载为类的成员函数时，显式给出的参数个数是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>1 个</button>
+        <button class="opt"><span class="L">B</span>2 个</button>
+        <button class="opt"><span class="L">C</span>0 个</button>
+        <button class="opt"><span class="L">D</span>任意个</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>作为成员函数重载时，左操作数由 this 指针隐式提供，显式参数只需 1 个（右操作数）；作为友元/全局函数重载则需要 2 个。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2021">
+    <div class="q-head"><span class="y">2021</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">在 C++ 中，编译系统自动为一个类生成默认构造函数（无参构造函数）的条件是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>该类没有定义任何有参构造函数</button>
+        <button class="opt"><span class="L">B</span>该类没有定义任何无参构造函数</button>
+        <button class="opt" data-ok><span class="L">C</span>该类没有定义任何构造函数</button>
+        <button class="opt"><span class="L">D</span>该类没有定义任何成员函数</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>只要用户定义了任意一个构造函数（有参或无参），编译器就不再自动生成默认构造函数。</div>
+    </div>
+  </div>
+
+  <!-- 2022 -->
+  <div class="q" data-y="2022">
+    <div class="q-head"><span class="y">2022</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">基类中声明为 protected 的成员，在公有继承（public）方式下，它在派生类中的访问属性是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>public，对象可直接访问</button>
+        <button class="opt" data-ok><span class="L">B</span>protected，派生类成员可访问、对象不可访问</button>
+        <button class="opt"><span class="L">C</span>private，派生类成员不可访问</button>
+        <button class="opt"><span class="L">D</span>protected，对象可直接访问</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>public 继承保持基类成员的访问属性不变：protected 仍是 protected——派生类的成员函数可以访问，但派生类的对象不能直接访问。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2022">
+    <div class="q-head"><span class="y">2022</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">在 C++ 中，用来实现运行时多态性（动态绑定）的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>重载函数</button>
+        <button class="opt"><span class="L">B</span>构造函数</button>
+        <button class="opt"><span class="L">C</span>析构函数</button>
+        <button class="opt" data-ok><span class="L">D</span>虚函数</button>
+      </div>
+      <div class="ans"><b>参考答案：D。</b>虚函数 + 基类指针/引用调用实现运行时多态；函数重载是编译期（静态）绑定。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2022">
+    <div class="q-head"><span class="y">2022</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">动态分配一个 int 型存储单元并初始化为 5 的正确语句是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>int *p = new int[5];</button>
+        <button class="opt"><span class="L">B</span>int *p = new int;</button>
+        <button class="opt" data-ok><span class="L">C</span>int *p = new int(5);</button>
+        <button class="opt"><span class="L">D</span>int p = new int(5);</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>new int(5) 分配 1 个 int 并初始化为 5；new int[5] 是分配数组；new int 未初始化；D 的 p 应为指针。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2022">
+    <div class="q-head"><span class="y">2022</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于引用（reference）的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>引用在定义时可以不用初始化</button>
+        <button class="opt" data-ok><span class="L">B</span>引用必须在定义时初始化，且绑定后不能改变</button>
+        <button class="opt"><span class="L">C</span>引用是所引对象的拷贝，修改引用不影响原对象</button>
+        <button class="opt"><span class="L">D</span>引用可以重新绑定到另一个对象</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>引用是对象的别名：定义时必须初始化、绑定后不能改变；对引用的修改就是修改原对象。</div>
+    </div>
+  </div>
+
+  <!-- 2023 -->
+  <div class="q" data-y="2023">
+    <div class="q-head"><span class="y">2023</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于拷贝构造函数（复制构造函数）的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>对象作为实参按值传递给函数时，会调用拷贝构造函数</button>
+        <button class="opt"><span class="L">B</span>拷贝构造函数的参数可以是值传递</button>
+        <button class="opt"><span class="L">C</span>拷贝构造函数可以没有参数</button>
+        <button class="opt"><span class="L">D</span>拷贝构造函数不能访问私有成员</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>按值传参、按值返回、用已有对象初始化新对象都会调用拷贝构造；其参数<strong>必须是本类的引用</strong>（值传递会无限递归），必须有参数。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2023">
+    <div class="q-head"><span class="y">2023</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于静态数据成员的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>每个对象各有一份静态数据成员</button>
+        <button class="opt" data-ok><span class="L">B</span>静态数据成员必须在类外单独定义和初始化</button>
+        <button class="opt"><span class="L">C</span>静态数据成员只能在构造函数中初始化</button>
+        <button class="opt"><span class="L">D</span>静态数据成员不能被 const 修饰</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>静态数据成员属于类（所有对象共享一份），必须在类外单独定义和初始化，如 int Test::b = 0;。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2023">
+    <div class="q-head"><span class="y">2023</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">输出语句 <code>cout &lt;&lt; setw(10) &lt;&lt; 123;</code> 中，setw(10) 的作用是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>设置下一个输出项的字段宽度，一次性有效</button>
+        <button class="opt"><span class="L">B</span>永久设置所有输出项的字段宽度</button>
+        <button class="opt"><span class="L">C</span>设置输出精度</button>
+        <button class="opt"><span class="L">D</span>设置填充字符</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>setw 只对紧随其后的一个输出项生效（非粘性）；setprecision 控制精度，setfill 控制填充字符。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2023">
+    <div class="q-head"><span class="y">2023</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于析构函数的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>析构函数可以带参数</button>
+        <button class="opt"><span class="L">B</span>析构函数可以重载</button>
+        <button class="opt"><span class="L">C</span>析构函数可以有返回值</button>
+        <button class="opt" data-ok><span class="L">D</span>析构函数无参数、无返回值、不能重载</button>
+      </div>
+      <div class="ans"><b>参考答案：D。</b>析构函数名称为 ~类名，无参数、无返回值、不能重载，一个类只能有一个析构函数。</div>
+    </div>
+  </div>
+
+  <!-- 2024 -->
+  <div class="q" data-y="2024">
+    <div class="q-head"><span class="y">2024</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于友元函数的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>友元函数是类的成员函数</button>
+        <button class="opt"><span class="L">B</span>友元函数不能访问类的私有成员</button>
+        <button class="opt" data-ok><span class="L">C</span>友元函数可以访问类的私有成员，但没有 this 指针</button>
+        <button class="opt"><span class="L">D</span>友元函数拥有 this 指针</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>友元函数不是类的成员（无 this 指针），但被授权访问类的私有成员；静态成员函数也没有 this 指针。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2024">
+    <div class="q-head"><span class="y">2024</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">重载后缀自增运算符 <code>operator++(int)</code> 时，int 形参的作用是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>传递增量值</button>
+        <button class="opt" data-ok><span class="L">B</span>用于区分前缀与后缀重载</button>
+        <button class="opt"><span class="L">C</span>指定返回值类型</button>
+        <button class="opt"><span class="L">D</span>没有实际作用，可省略</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>前缀 operator++() 无参数，后缀 operator++(int) 带一个 int 哑元，靠它区分两种重载（哑元不传值）。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2024">
+    <div class="q-head"><span class="y">2024</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">当一个类包含纯虚函数（如 <code>virtual void f() = 0;</code>）时，这个类是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>静态类</button>
+        <button class="opt"><span class="L">B</span>虚类</button>
+        <button class="opt" data-ok><span class="L">C</span>抽象类，不能直接实例化</button>
+        <button class="opt"><span class="L">D</span>普通类</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>含纯虚函数的类是抽象类，不能直接创建对象；派生类必须实现全部纯虚函数后才能实例化。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2024">
+    <div class="q-head"><span class="y">2024</span><span class="tp">选择题</span><span class="src">历年真题</span></div>
+    <div class="q-body">
+      <div class="qt">使用 <code>ofstream</code> 流类定义流对象并打开一个磁盘文件时，文件的默认打开方式是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>ios_base::in</button>
+        <button class="opt" data-ok><span class="L">B</span>ios_base::out</button>
+        <button class="opt"><span class="L">C</span>ios_base::in | ios_base::out</button>
+        <button class="opt"><span class="L">D</span>ios_base::app</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>ofstream 默认以 out（写）方式打开；ifstream 默认以 in（读）方式打开（官方样题 30 同考点）。</div>
+    </div>
+  </div>
+
+  <!-- 2025 官方样题 -->
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 01</span></div>
+    <div class="q-body">
+      <div class="qt">下列符号中可以用作 C++ 标识符的是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>_radius</button>
+        <button class="opt"><span class="L">B</span>foo~bar</button>
+        <button class="opt"><span class="L">C</span>else</button>
+        <button class="opt"><span class="L">D</span>3room</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>标识符由字母、数字、下划线组成，不能以数字开头，不能是关键字；foo~bar 含 ~，else 是关键字，3room 数字开头，均非法。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 02</span></div>
+    <div class="q-body">
+      <div class="qt">下列语句中，错误的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>const int buffer = 256;</button>
+        <button class="opt" data-ok><span class="L">B</span>const int temp;</button>
+        <button class="opt"><span class="L">C</span>const double *point;</button>
+        <button class="opt"><span class="L">D</span>const double *rt = new double(5.5);</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>const 常量必须在定义时初始化；A 正确初始化；C 是指向 const 的指针（可先不指向）；D 动态分配并初始化，正确。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 03</span></div>
+    <div class="q-body">
+      <div class="qt"><code>int x=3; do { x-=2; cout&lt;&lt;x; } while(!(--x));</code> 运行时的输出结果是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>1</button>
+        <button class="opt"><span class="L">B</span>3 0</button>
+        <button class="opt" data-ok><span class="L">C</span>1-2</button>
+        <button class="opt"><span class="L">D</span>死循环</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>第 1 轮 x=1 输出 1，--x 后为 0（!0 真）继续；第 2 轮 x=-2 输出 -2，--x 后为 -3（!(-3) 假）结束。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 05</span></div>
+    <div class="q-body">
+      <div class="qt">if 语句的语法格式：格式 1 为 if(&lt;条件&gt;)&lt;语句&gt;，格式 2 为 if(&lt;条件&gt;)&lt;语句1&gt;else&lt;语句2&gt;。下列关于 if 语句语法格式的叙述中，错误的是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>&lt;条件&gt;部分可以是一个 if 语句，例如 if(if(a==0)...)...</button>
+        <button class="opt"><span class="L">B</span>&lt;语句&gt;部分可以是一个 if 语句，例如 if(...) if(...)...</button>
+        <button class="opt"><span class="L">C</span>如果在&lt;条件&gt;前加上逻辑非运算符并交换&lt;语句1&gt;和&lt;语句2&gt;的位置，语句功能不变</button>
+        <button class="opt"><span class="L">D</span>&lt;语句&gt;部分可以是一个循环语句，例如 if(...) while(...)...</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>if 的&lt;条件&gt;必须是表达式，不能是语句（if(if(...)) 语法错误）；&lt;语句&gt;部分可以是 if 或循环等任意语句。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 06</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于 C++ 函数的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>内联函数就是定义在另一个函数体内部的函数</button>
+        <button class="opt"><span class="L">B</span>函数体的最后一条语句必须是 return 语句</button>
+        <button class="opt" data-ok><span class="L">C</span>C++ 要求在调用一个函数之前，必须先对其进行原型声明或定义</button>
+        <button class="opt"><span class="L">D</span>编译器会根据函数的返回值类型和参数表来区分函数的不同重载形式</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>A 错：C++ 不允许函数嵌套定义；B 错：void 函数可无 return；D 错：重载只依据参数表，与返回值无关。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 07</span></div>
+    <div class="q-body">
+      <div class="qt">运算符重载是对已有的运算符赋予多重含义，下列关于运算符重载的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>可以对基本类型（如 int 类型）的数据，重新定义 "+" 运算符的含义</button>
+        <button class="opt"><span class="L">B</span>可以改变一个已有运算符的优先级和操作数个数</button>
+        <button class="opt" data-ok><span class="L">C</span>只能重载 C++ 中已经有的运算符，不能定义新运算符</button>
+        <button class="opt"><span class="L">D</span>C++ 中已经有的所有运算符都可以重载</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>A 错：基本类型运算符不能重载；B 错：优先级与操作数个数不可改变；D 错：. :: ?: sizeof 等不能重载。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 08</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于内联函数的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>内联函数在调用时发生控制转移</button>
+        <button class="opt"><span class="L">B</span>内联函数必须通过关键字 inline 来定义</button>
+        <button class="opt" data-ok><span class="L">C</span>内联函数是通过编译器来实现的</button>
+        <button class="opt"><span class="L">D</span>内联函数的函数体的最后一条语句必须是 return 语句</button>
+      </div>
+      <div class="ans"><b>参考答案：C。</b>内联函数由编译器在调用处展开代码（inline 只是建议），不产生控制转移；B 错：类内定义的成员函数隐式内联；D 错：无此要求。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 13</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于常对象（const 对象）的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>通过常对象只能调用常成员函数</button>
+        <button class="opt"><span class="L">B</span>通过常对象只能调用静态成员函数</button>
+        <button class="opt"><span class="L">C</span>常对象的成员都是常成员</button>
+        <button class="opt"><span class="L">D</span>通过常对象可以调用任何不改变对象值的成员函数</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>常对象只能调用 const 成员函数（编译器无法证明普通成员函数不修改对象）；"不改变对象值"只是语义，编译期不以此判定。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 15</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于 this 指针的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>类的成员函数都有 this 指针</button>
+        <button class="opt"><span class="L">B</span>类的友元函数都有 this 指针</button>
+        <button class="opt"><span class="L">C</span>任何与类相关的函数都有 this 指针</button>
+        <button class="opt" data-ok><span class="L">D</span>类的非静态成员函数都有 this 指针</button>
+      </div>
+      <div class="ans"><b>参考答案：D。</b>this 指向当前调用对象，仅非静态成员函数拥有；静态成员函数和友元函数没有 this 指针。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 16</span></div>
+    <div class="q-body">
+      <div class="qt">下列关于虚函数的叙述中，正确的是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>从虚基类继承的函数都是虚函数</button>
+        <button class="opt" data-ok><span class="L">B</span>虚函数不得是静态成员函数</button>
+        <button class="opt"><span class="L">C</span>只能通过指针或引用调用虚函数</button>
+        <button class="opt"><span class="L">D</span>抽象类中的成员函数都是虚函数</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>静态成员函数属于类而非对象，不能是虚函数；C 错：对象直接调用虚函数也可以（只是无多态效果）。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 23</span></div>
+    <div class="q-body">
+      <div class="qt">class A 构造输出 "A"、析构输出 "~A"；class B : public A 构造输出 "B" 且 p=new A()、析构输出 "~B" 且 delete p。main 中 <code>B obj;</code> 的运行输出结果是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>BAA~A~B~A</button>
+        <button class="opt" data-ok><span class="L">B</span>ABA~B~A~A</button>
+        <button class="opt"><span class="L">C</span>BAA~B~A~A</button>
+        <button class="opt"><span class="L">D</span>ABA~A~B~A</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>构造：基类 A → 派生类 B 体 → 成员 new A()，输出 ABA；析构（与构造相反）：~B → delete p 触发 ~A → 基类 ~A，输出 ~B~A~A。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">选择题</span><span class="src">官方样题 26</span></div>
+    <div class="q-body">
+      <div class="qt">Base 中 fun1 非虚、fun2 为虚函数；Derived 重写两者。void f(Base&amp; b){b.fun1(); b.fun2();} main 中 Derived obj; f(obj); 的输出结果是？</div>
+      <div class="opts">
+        <button class="opt"><span class="L">A</span>Base / Base</button>
+        <button class="opt" data-ok><span class="L">B</span>Base / Derived</button>
+        <button class="opt"><span class="L">C</span>Derived / Base</button>
+        <button class="opt"><span class="L">D</span>Derived / Derived</button>
+      </div>
+      <div class="ans"><b>参考答案：B。</b>fun1 非虚：编译期按引用类型 Base 绑定，输出 Base；fun2 虚函数：运行期按实际对象 Derived 绑定，输出 Derived。</div>
+    </div>
+  </div>
+
+  <!-- 2026 模拟 -->
+  <div class="q" data-y="2026">
+    <div class="q-head"><span class="y">2026</span><span class="tp">选择题</span><span class="src">模拟题</span></div>
+    <div class="q-body">
+      <div class="qt">C++ 标准库中的 string 类型定义在哪个头文件中？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>&lt;string&gt;</button>
+        <button class="opt"><span class="L">B</span>&lt;cstring&gt;</button>
+        <button class="opt"><span class="L">C</span>&lt;iostream&gt;</button>
+        <button class="opt"><span class="L">D</span>&lt;fstream&gt;</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>string 类在 &lt;string&gt;；&lt;cstring&gt; 提供 C 风格字符串函数（strlen 等）；&lt;iostream&gt; 提供 cin/cout。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2026">
+    <div class="q-head"><span class="y">2026</span><span class="tp">选择题</span><span class="src">模拟题</span></div>
+    <div class="q-body">
+      <div class="qt">下列函数中，能正确交换实参 x、y 的值（调用 swap(x, y) 后 x、y 互换）的是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>void swap(int &amp;a, int &amp;b){ int t=a; a=b; b=t; }</button>
+        <button class="opt"><span class="L">B</span>void swap(int a, int b){ int t=a; a=b; b=t; }</button>
+        <button class="opt"><span class="L">C</span>void swap(const int &amp;a, const int &amp;b){ int t=a; a=b; b=t; }</button>
+        <button class="opt"><span class="L">D</span>void swap(int *a, int *b){ int t=*a; *a=*b; *b=t; } 且调用 swap(x, y)</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>引用参数直接操作实参。B 是值传递（不改实参）；C 是 const 引用（不能修改）；D 是指针版但调用时应传地址 swap(&amp;x, &amp;y)。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2026">
+    <div class="q-head"><span class="y">2026</span><span class="tp">选择题</span><span class="src">模拟题</span></div>
+    <div class="q-body">
+      <div class="qt">定义一个类模板 Stack，使 <code>Stack&lt;int&gt; s;</code> 能正确实例化，正确的声明是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>template &lt;typename T&gt; class Stack { ... };</button>
+        <button class="opt"><span class="L">B</span>class template &lt;T&gt; Stack { ... };</button>
+        <button class="opt"><span class="L">C</span>template &lt;typename T&gt; Stack class { ... };</button>
+        <button class="opt"><span class="L">D</span>class Stack&lt;T&gt; { ... };</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>类模板标准语法：template&lt;typename T&gt; class 类名 { ... };；实例化时写 Stack&lt;int&gt;，编译器按实参生成类。</div>
+    </div>
+  </div>
+  <div class="q" data-y="2026">
+    <div class="q-head"><span class="y">2026</span><span class="tp">选择题</span><span class="src">模拟题</span></div>
+    <div class="q-body">
+      <div class="qt">向文本文件写入字符串 "hello" 的正确语句组是？</div>
+      <div class="opts">
+        <button class="opt" data-ok><span class="L">A</span>ofstream out("a.txt"); out &lt;&lt; "hello";</button>
+        <button class="opt"><span class="L">B</span>ifstream out("a.txt"); out &gt;&gt; "hello";</button>
+        <button class="opt"><span class="L">C</span>ifstream out("a.txt"); out &lt;&lt; "hello";</button>
+        <button class="opt"><span class="L">D</span>ofstream out("a.txt"); out &gt;&gt; "hello";</button>
+      </div>
+      <div class="ans"><b>参考答案：A。</b>写文件用 ofstream（默认 out）配合插入运算符 &lt;&lt;；ifstream 用于读文件，&gt;&gt; 是提取（读入）方向。</div>
+    </div>
+  </div>
+
+  <!-- 操作题 -->
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">操作题·基本操作</span><span class="src">官方样题</span></div>
+    <div class="q-body">
+      <div class="qt">打开解决方案 proj1（主程序 main.cpp 含类 MyClass 的定义），程序中每个 //ERROR**********found********** 下的语句行有错误，请更正。更正后程序的输出应该是：<br>The value is 5<br>The value is 10</div>
+      <details class="acc" style="margin-top:10px">
+        <summary>参考答案（改错要点）</summary>
+        <div class="acc-body"><pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">MyClass</span> {
+    <span class="kw">int</span> value;
+<span class="kw">public</span>:
+    <span class="st">MyClass</span>(<span class="kw">int</span> v) : value(v) {}       <span class="cm">// found 常见错误：缺返回类型/构造名写错</span>
+    <span class="kw">int</span> <span class="st">getValue</span>() <span class="kw">const</span> { <span class="kw">return</span> value; }  <span class="cm">// found：const 误加/返回类型错</span>
+};
+<span class="cm">// 程序段调用处：MyClass a(5), b(10);</span>
+<span class="at">cout</span> &lt;&lt; <span class="st">"The value is "</span> &lt;&lt; a.<span class="st">getValue</span>() &lt;&lt; <span class="at">endl</span>;
+<span class="at">cout</span> &lt;&lt; <span class="st">"The value is "</span> &lt;&lt; b.<span class="st">getValue</span>() &lt;&lt; <span class="at">endl</span>;
+<span class="cm">// 只改 found 标注的那一行，不要动其他内容</span></pre></div>
+      </details>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">操作题·简单应用</span><span class="src">官方样题</span></div>
+    <div class="q-body">
+      <div class="qt">解决方案 proj2 中定义了 Employee 类（属性 name、dept，成员函数 print 输出雇员信息）和 Manager 类（Employee 的公有派生类，增加属性 level，重写 print 输出经理信息）。请在横线处填写代码，正确输出应为：<br>Name:Sally Smith<br>Dept:Sales<br>Level:2</div>
+      <details class="acc" style="margin-top:10px">
+        <summary>参考答案（填空要点）</summary>
+        <div class="acc-body"><pre><span class="lab">C++</span><span class="kw">class</span> <span class="st">Manager</span> : <span class="kw">public</span> <span class="st">Employee</span> {      <span class="cm">// 填空 1：公有派生类声明</span>
+    <span class="kw">int</span> level;
+<span class="kw">public</span>:
+    <span class="st">Manager</span>(<span class="kw">const</span> <span class="st">string</span> &amp;n, <span class="kw">const</span> <span class="st">string</span> &amp;d, <span class="kw">int</span> l)
+        : Employee(n, d), level(l) {}              <span class="cm">// 填空 2：初始化列表调基类构造</span>
+    <span class="kw">void</span> <span class="st">print</span>() <span class="kw">const</span> {                       <span class="cm">// 填空 3：重写 print（隐藏基类同名函数）</span>
+        Employee::<span class="st">print</span>();                   <span class="cm">// 先输出姓名和部门</span>
+        <span class="at">cout</span> &lt;&lt; <span class="st">"Level:"</span> &lt;&lt; level &lt;&lt; <span class="at">endl</span>;
+    }
+};
+<span class="cm">// 派生类中与基类同名的成员函数会"隐藏"基类版本，调用时用作用域限定符 Employee::print 访问</span></pre></div>
+      </details>
+    </div>
+  </div>
+  <div class="q" data-y="2025">
+    <div class="q-head"><span class="y">2025</span><span class="tp">操作题·综合应用</span><span class="src">官方样题</span></div>
+    <div class="q-body">
+      <div class="qt">解决方案 proj3 定义了表示矩阵的类 Matrix，operator+ 的功能是实现两个矩阵的加法运算（对应元素相加）。请编写 operator+ 函数：补充的内容写在 //*******333******* 与 //*******666******* 两行之间，不得修改程序的其他部分（结果已由 writeToFile 输出到 out.dat）。</div>
+      <details class="acc" style="margin-top:10px">
+        <summary>参考答案（完整函数）</summary>
+        <div class="acc-body"><pre><span class="lab">C++</span><span class="st">Matrix</span> <span class="kw">operator</span>+(<span class="kw">const</span> <span class="st">Matrix</span> &amp;m1, <span class="kw">const</span> <span class="st">Matrix</span> &amp;m2) {
+    <span class="st">Matrix</span> c(m1.<span class="st">rows</span>, m1.<span class="st">cols</span>);      <span class="cm">// 与 m1 同尺寸的结果矩阵</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="st">0</span>; i &lt; m1.<span class="st">rows</span>; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="st">0</span>; j &lt; m1.<span class="st">cols</span>; j++)
+            c.<span class="st">data</span>[i][j] = m1.<span class="st">data</span>[i][j] + m2.<span class="st">data</span>[i][j];
+                                            <span class="cm">// 对应元素相加</span>
+    <span class="kw">return</span> c;
+}
+<span class="cm">// 要点：返回新矩阵（值返回）；先构造结果对象再逐元素相加；</span>
+<span class="cm">// 成员名（rows/cols/data）以题给类定义为准，不能自己改名</span></pre></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>二级 C++ 语言程序设计（科目 61）· 考点与真题 · <a href="../daolun/index.html">返回导航首页</a></div>
+  <div class="src">
+    资料来源于网络公开资源：<a href="https://ncre.neea.edu.cn" target="_blank" rel="noopener">中国教育考试网（官方考试大纲与官方样题）</a> ·
+    <a href="https://www.dotcpp.com" target="_blank" rel="noopener">Dotcpp 编程（历年真题整理）</a> ·
+    <a href="https://blog.csdn.net" target="_blank" rel="noopener">CSDN 技术社区（真题解析与考点总结）</a> ·
+    豆丁/原创力文档等在线题库（历年考生回忆版真题）<br>
+    本站为学习整理用途，题目表述以官方样题原文为准；2021–2024 年题目标注"历年真题"，为网络公开整理版本，如有出入请以官方发布为准。
+  </div>
+</footer>
+
+</div>
+</main>
+
+<script>
+/* ===== 滚动进度条 ===== */
+(function () {
+  var bar = document.getElementById('progress');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ===== 侧边栏滚动高亮 ===== */
+(function () {
+  var links = document.querySelectorAll('#nav a');
+  var secs = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) secs.push({ id: id, el: el, link: a });
+  });
+  function onScroll() {
+    var pos = window.scrollY + 120;
+    var cur = secs[0] ? secs[0].id : null;
+    secs.forEach(function (s) {
+      if (s.el.offsetTop <= pos) cur = s.id;
+    });
+    links.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ===== 年份筛选 ===== */
+(function () {
+  var tabs = document.querySelectorAll('#yearTabs button');
+  var qs = document.querySelectorAll('.q[data-y]');
+  function apply(y) {
+    qs.forEach(function (q) {
+      q.style.display = (y === 'all' || q.getAttribute('data-y') === y) ? '' : 'none';
+    });
+  }
+  tabs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      apply(b.getAttribute('data-y'));
+    });
+  });
+})();
+
+/* ===== 选择题点击判分 ===== */
+document.querySelectorAll('.q .opt').forEach(function (opt) {
+  opt.addEventListener('click', function () {
+    var box = opt.closest('.q');
+    if (box.getAttribute('data-done')) return;
+    box.setAttribute('data-done', '1');
+    var right = opt.hasAttribute('data-ok');
+    box.querySelectorAll('.opt').forEach(function (o) {
+      o.disabled = true;
+      if (o.hasAttribute('data-ok')) o.classList.add('right');
+    });
+    if (!right) opt.classList.add('wrong');
+    var ans = box.querySelector('.ans');
+    if (ans) ans.classList.add('show');
+  });
+});
+</script>
+</body>
+</html>

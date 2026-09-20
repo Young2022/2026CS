@@ -1,0 +1,2914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI JavaScript 程序设计学习教程：从变量函数到 DOM、Promise、Fetch，覆盖 5 个综合项目。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>JavaScript 程序设计 · 学习教程</title>
+<style>
+/* ========== JS 主题：深色 IDE + 黄/橙高对比 ========== */
+:root{
+  --bg:#1a1a1a;          /* IDE 背景 */
+  --surface:#232323;     /* 次级背景 */
+  --card:#2a2a2a;        /* 卡片 */
+  --card-hov:#333;
+  --primary:#F7DF1E;     /* JS 黄 */
+  --primary-dim:#c9b318;
+  --accent:#FF8C00;      /* 橙 */
+  --accent2:#FFB627;     /* 浅橙 */
+  --success:#7CB342;
+  --danger:#E53935;
+  --text:#ECECEC;        /* 主文字 */
+  --text-soft:#BDBDBD;
+  --text-mute:#888;
+  --border:#3a3a3a;
+  --code-bg:#161616;
+  --code-head:#1f1f1f;
+  --tok-key:#F7DF1E;     /* keyword */
+  --tok-str:#FFAB42;     /* string/template */
+  --tok-num:#80DEEA;     /* number */
+  --tok-com:#7A7A7A;     /* comment */
+  --tok-fn:#FFD54F;      /* function */
+  --tok-prop:#FFCC80;    /* property */
+  --tok-op:#CE93D8;      /* operator */
+  --tok-this:#FF8A65;    /* this/super */
+  --shadow:0 2px 10px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--accent2);text-decoration:underline}
+code{font-family:"Fira Code","JetBrains Mono","Consolas",monospace;font-size:13.5px}
+
+/* ========== 顶栏 ========== */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg,#1f1f1f 0%,#161616 100%);
+  border-bottom:2px solid var(--primary);
+  box-shadow:var(--shadow);
+  padding:10px 20px;
+  display:flex;align-items:center;gap:20px;
+}
+.topnav .logo{
+  font-size:18px;font-weight:700;color:var(--primary);
+  display:flex;align-items:center;gap:8px;
+}
+.topnav .logo::before{
+  content:"⚡";color:var(--accent);font-size:22px;
+}
+.topnav a.nav-link{
+  color:var(--text-soft);font-size:13.5px;padding:4px 8px;
+  border-radius:4px;transition:.15s;
+}
+.topnav a.nav-link:hover{background:rgba(247,223,30,.1);color:var(--primary)}
+.topnav a.nav-link.active{background:var(--primary);color:#1a1a1a;font-weight:600}
+
+/* ========== Hero ========== */
+.hero{
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(247,223,30,.18) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 90%,rgba(255,140,0,.12) 0%,transparent 50%),
+    linear-gradient(135deg,#1f1f1f 0%,#0e0e0e 100%);
+  padding:40px 24px 28px;border-bottom:2px solid var(--primary);
+}
+.hero .inner{max-width:1080px;margin:0 auto}
+.hero .kicker{
+  display:inline-block;background:var(--primary);color:#1a1a1a;
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  letter-spacing:.5px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(28px,4.2vw,40px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2}
+.hero h1 em{color:var(--primary);font-style:normal}
+.hero p.lead{font-size:17px;color:rgba(255,255,255,.85);max-width:780px;margin-bottom:20px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:12px;color:rgba(255,255,255,.7);font-size:13px}
+.hero .meta span{
+  background:rgba(255,255,255,.1);padding:6px 12px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.2);color:#fff;
+}
+
+/* ========== 章节流图 ========== */
+.flow{
+  max-width:1080px;margin:30px auto;padding:0 24px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.flow .step{
+  background:var(--card);border:1px solid var(--border);
+  padding:8px 14px;border-radius:6px;font-size:13px;color:var(--text-soft);
+}
+.flow .step strong{color:var(--primary)}
+.flow .arr{color:var(--primary);font-weight:700;opacity:.7}
+
+/* ========== 内容主体 ========== */
+main{max-width:1080px;margin:0 auto;padding:30px 24px 80px}
+
+section{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:22px 26px;margin-bottom:22px;
+  scroll-margin-top:80px;transition:.2s;border-left:4px solid var(--primary);
+}
+section:hover{border-color:rgba(247,223,30,.3)}
+
+section h2{
+  font-size:24px;color:var(--primary);margin-bottom:18px;
+  padding-bottom:10px;border-bottom:1px dashed var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+section h2::before{
+  content:attr(data-num);background:var(--primary);color:#1a1a1a;
+  width:30px;height:30px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-size:14px;font-weight:800;
+}
+section h3{
+  font-size:17px;color:var(--accent2);margin:22px 0 10px;
+  padding-left:10px;border-left:3px solid var(--accent);
+}
+section h4{
+  font-size:15px;color:var(--text);margin:16px 0 8px;
+  font-weight:600;
+}
+section p{margin-bottom:10px;color:var(--text-soft)}
+section ul,section ol{margin-left:24px;margin-bottom:12px;color:var(--text-soft)}
+section li{margin-bottom:6px}
+section strong{color:var(--text)}
+section em.hint{color:var(--accent);font-style:normal;font-weight:600}
+
+/* 卡片 */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:14px 18px;margin:14px 0;
+}
+.card.success{border-left:4px solid var(--success)}
+.card.warn{border-left:4px solid var(--accent)}
+.card.danger{border-left:4px solid var(--danger)}
+.card.info{border-left:4px solid var(--primary)}
+.card-title{font-weight:700;color:var(--primary);margin-bottom:6px;font-size:14px}
+.card p:last-child{margin-bottom:0}
+
+/* 代码框 */
+.codebox{
+  background:var(--code-bg);border:1px solid #2a2a2a;
+  border-radius:8px;margin:14px 0;overflow:hidden;
+}
+.codebox-head{
+  background:var(--code-head);padding:8px 14px;font-size:12px;
+  color:var(--text-mute);display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid #2a2a2a;
+}
+.codebox-head .lang{color:var(--primary);font-weight:600}
+.codebox-head .copy{
+  background:var(--primary);color:#1a1a1a;border:none;
+  padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;
+  font-weight:600;transition:.15s;
+}
+.codebox-head .copy:hover{background:var(--accent2)}
+.codebox pre{
+  padding:16px;overflow-x:auto;color:var(--text);
+  font-family:"Fira Code","JetBrains Mono","Consolas",monospace;
+  font-size:13.5px;line-height:1.6;
+}
+.codebox code{display:block;white-space:pre}
+
+/* 语法高亮 */
+.tok-key{color:var(--tok-key);font-weight:600}
+.tok-str{color:var(--tok-str)}
+.tok-num{color:var(--tok-num)}
+.tok-com{color:var(--tok-com);font-style:italic}
+.tok-fn{color:var(--tok-fn);font-weight:600}
+.tok-prop{color:var(--tok-prop)}
+.tok-op{color:var(--tok-op)}
+.tok-this{color:var(--tok-this);font-style:italic;font-weight:600}
+
+/* 表格 */
+table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  background:var(--surface);border-radius:6px;overflow:hidden;
+}
+table th{
+  background:var(--code-head);color:var(--primary);
+  padding:10px 12px;text-align:left;font-weight:700;border:1px solid var(--border);
+  font-size:13px;
+}
+table td{
+  padding:9px 12px;border:1px solid var(--border);
+  color:var(--text-soft);font-size:13.5px;
+}
+table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+/* 训练题 */
+.q-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-left:4px solid var(--accent2);border-radius:8px;
+  padding:18px;margin:16px 0;
+}
+.q-card .q-title{color:var(--accent2);font-weight:700;margin-bottom:10px;font-size:15px}
+.q-card ol{padding-left:20px}
+.q-card ol li{
+  background:#1f1f1f;border:1px solid var(--border);
+  padding:8px 14px;border-radius:6px;margin-bottom:8px;
+  cursor:pointer;transition:.15s;color:var(--text-soft);
+}
+.q-card ol li:hover{border-color:var(--primary);transform:translateX(3px)}
+.q-card ol li.correct{background:rgba(124,182,66,.18);border-color:var(--success);color:#fff}
+.q-card ol li.wrong{background:rgba(229,57,53,.18);border-color:var(--danger);color:#fff}
+.q-card .q-explain{
+  background:rgba(247,223,30,.05);border:1px dashed var(--primary);
+  border-radius:6px;padding:10px 14px;margin-top:10px;
+  display:none;font-size:13px;color:var(--text-soft);
+}
+.q-card .q-explain.show{display:block}
+.q-card .q-explain strong{color:var(--primary)}
+
+/* 综合项目卡片 */
+.proj{
+  background:linear-gradient(135deg,#262626 0%,#1f1f1f 100%);
+  border:1px solid var(--border);border-left:5px solid var(--accent);
+  border-radius:8px;padding:20px;margin:18px 0;
+}
+.proj-title{
+  color:var(--accent);font-size:18px;font-weight:700;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.proj-title::before{content:"🚀";font-size:20px}
+.proj-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:12px}
+.proj-meta span{background:#1a1a1a;padding:3px 9px;border-radius:4px;border:1px solid var(--border);color:var(--text-mute)}
+.proj p,.proj li{color:var(--text-soft)}
+
+/* SVG 图 */
+.diagram{
+  background:#161616;border:1px solid var(--border);
+  border-radius:8px;padding:20px;margin:14px 0;
+  display:flex;justify-content:center;
+}
+.diagram svg{font-family:inherit}
+
+/* 速查表 */
+.cheat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:14px;margin:14px 0;
+}
+.cheat-cell{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:14px;
+}
+.cheat-cell h4{
+  color:var(--primary);font-size:14px;margin-bottom:8px;
+  border-bottom:1px solid var(--border);padding-bottom:6px;
+}
+.cheat-cell ul{margin-left:18px;font-size:13px}
+.cheat-cell li{color:var(--text-soft);margin-bottom:4px}
+.cheat-cell code{
+  background:#1a1a1a;padding:1px 6px;border-radius:3px;
+  color:var(--accent2);font-size:12.5px;
+}
+
+/* 进度条 */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
+  z-index:200;width:0%;transition:width .1s;
+  box-shadow:0 0 8px var(--primary);
+}
+
+/* 回到顶部 */
+#to-top{
+  position:fixed;bottom:30px;right:30px;
+  background:var(--primary);color:#1a1a1a;
+  width:45px;height:45px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 12px rgba(247,223,30,.4);
+  border:none;transition:.2s;
+}
+#to-top:hover{background:var(--accent);transform:translateY(-3px)}
+
+/* 提示条 */
+.tip{
+  background:rgba(247,223,30,.08);border-left:4px solid var(--primary);
+  padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px;
+}
+.tip strong{color:var(--primary)}
+
+/* 响应式 */
+@media (max-width:720px){
+  .hero h1{font-size:28px}
+  section{padding:20px 16px}
+  main{padding:20px 14px 60px}
+  .topnav{padding:8px 12px;gap:10px;flex-wrap:wrap}
+  .topnav .logo{font-size:14px}
+  .topnav a.nav-link{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ========== 顶栏 ========== -->
+<nav class="topnav">
+  <a href="../../daolun/index.html" class="logo" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>CSAI</a>
+  <a class="nav-link" href="#s00">指南</a>
+  <a class="nav-link" href="#s01">环境</a>
+  <a class="nav-link" href="#s04">数据类型</a>
+  <a class="nav-link" href="#s10">数组</a>
+  <a class="nav-link" href="#s19">OOP</a>
+  <a class="nav-link" href="#s23">Promise</a>
+  <a class="nav-link" href="#s25">DOM</a>
+  <a class="nav-link" href="#s30">Fetch</a>
+  <a class="nav-link" href="#s37">项目</a>
+  <a class="nav-link" href="#s43">速查</a>
+</nav>
+
+<!-- ========== Hero ========== -->
+<header class="hero">
+  <div class="inner">
+    <span class="kicker">WEB 前端编程核心 · 大学一年级</span>
+    <h1>掌握 <em>JavaScript</em>：让网页真正"活"起来</h1>
+    <p class="lead">
+      从最基础的变量、函数、对象，到 DOM 操控、事件响应、Promise 异步、Fetch 网络请求，最后完成 5 个真实可运行的项目。
+      本教程与本系列前序课程（C → C++ → Java → Python → SQL/数据库）保持一致的节奏与难度梯度。
+    </p>
+    <div class="meta">
+      <span>🟡 43 章正文</span>
+      <span>📦 5 个综合项目</span>
+      <span>❓ 12 道课堂训练</span>
+      <span>🎯 大一新生起步</span>
+      <span>🌐 纯前端 · 离线可读</span>
+    </div>
+  </div>
+</header>
+
+<!-- 学习路径 -->
+<div class="flow">
+  <span class="step"><strong>基础语法</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>函数与 OOP</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>DOM + 事件</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>BOM + 异步</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>Fetch + JSON</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>5 个项目</strong></span>
+</div>
+
+<main>
+
+<!-- ========== 00 ========== -->
+<section id="s00">
+<h2 data-num="00">学习指南：为什么、怎么学、学到什么</h2>
+<p>JavaScript（简称 JS）是 <strong>Web 前端编程的核心语言</strong>。它负责把 HTML（结构）和 CSS（样式）组合的网页变成可交互的应用——按钮点击、表单验证、动画、数据请求……都离不开它。</p>
+
+<h3>0.1 三大 Web 技术的关系</h3>
+<div class="card info">
+<div class="card-title">💡 三层结构</div>
+<pre style="font-size:13px;line-height:1.8;color:var(--text);background:transparent">
+HTML   →   网页<strong style="color:var(--primary)">结构</strong>（骨架）
+CSS    →   网页<strong style="color:var(--primary)">样式</strong>（外观）
+JS     →   网页<strong style="color:var(--primary)">行为</strong>（交互、逻辑、数据）
+</pre>
+</div>
+
+<h3>0.2 与 Java 的关键区别（大一常见误解）</h3>
+<table>
+<tr><th>维度</th><th>Java</th><th>JavaScript</th></tr>
+<tr><td>类型</td><td>强类型 / 编译型</td><td>动态类型 / 解释型</td></tr>
+<tr><td>运行</td><td>JVM 虚拟机</td><td>浏览器 或 Node.js</td></tr>
+<tr><td>主要场景</td><td>后端服务、Android</td><td>网页交互、Node 后端</td></tr>
+<tr><td>类与继承</td><td>基于 class</td><td>基于原型（ES6 后可写 class）</td></tr>
+<tr><td>线程模型</td><td>多线程</td><td>单线程 + 事件循环</td></tr>
+</table>
+
+<h3>0.3 你将学到（按主线）</h3>
+<div class="card success">
+<ol style="padding-left:24px">
+<li><strong>语法基础</strong>：变量、数据类型、运算符、流程控制、函数</li>
+<li><strong>核心数据结构</strong>：字符串、数组、对象、Map/Set、解构</li>
+<li><strong>面向对象</strong>：class、继承、封装、原型链</li>
+<li><strong>DOM 操控</strong>：查找元素、修改内容与样式、创建/删除节点</li>
+<li><strong>事件</strong>：addEventListener、事件对象、冒泡与委托</li>
+<li><strong>BOM + 异步</strong>：定时器、Promise、async/await、Event Loop</li>
+<li><strong>网络</strong>：Fetch、HTTP 基础、JSON</li>
+<li><strong>工程化</strong>：模块化、调试、npm 与 Node.js 入门</li>
+<li><strong>5 个真实项目</strong>：计算器 / Todo / 成绩管理 / 天气 / 图书</li>
+</ol>
+</div>
+
+<div class="tip">
+<strong>衔接关系：</strong>学完本教程可与本系列 <em>SQL/数据库</em> 课程合流，自然过渡到 Node.js 全栈开发。
+</div>
+</section>
+
+<!-- ========== 01 ========== -->
+<section id="s01">
+<h2 data-num="01">运行环境：浏览器、DevTools、VS Code ⭐⭐⭐</h2>
+
+<h3>1.1 在浏览器中直接运行</h3>
+<p>最简单的方式：在 HTML 里嵌入 <code>&lt;script&gt;</code>。</p>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- index.html --&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">script</span><span class="tok-op">&gt;</span>
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"Hello JavaScript"</span>);
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">script</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+<p>打开 DevTools（按 <code>F12</code> 或右键 → 检查），切到 <strong>Console</strong> 面板看输出。</p>
+
+<h3>1.2 三种引入方式</h3>
+<table>
+<tr><th>方式</th><th>用法</th><th>适用</th></tr>
+<tr><td>行内</td><td><code>&lt;button onclick="alert(1)"&gt;</code></td><td>极简 demo</td></tr>
+<tr><td>内部</td><td><code>&lt;script&gt;...&lt;/script&gt;</code></td><td>小练习</td></tr>
+<tr><td>外部</td><td><code>&lt;script src="app.js"&gt;&lt;/script&gt;</code></td><td>真实项目（推荐）</td></tr>
+</table>
+
+<h3>1.3 DevTools 五大面板</h3>
+<div class="card info">
+<div class="card-title">🔍 必学面板</div>
+<ul>
+<li><strong>Console</strong>：运行 JS、查看日志与错误</li>
+<li><strong>Elements</strong>：查看/调试 HTML 与 CSS</li>
+<li><strong>Sources</strong>：打断点调试 JS</li>
+<li><strong>Network</strong>：查看网络请求（Fetch/XHR）</li>
+<li><strong>Application</strong>：查看 localStorage / Cookie</li>
+</ul>
+</div>
+
+<h3>1.4 VS Code 工作流</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">步骤</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">① 创建 index.html，写入基础 HTML 骨架</span>
+<span class="tok-com">② 创建 app.js，写 console.log("hi");</span>
+<span class="tok-com">③ 在 HTML 里通过 &lt;script src="app.js"&gt;&lt;/script&gt; 引入</span>
+<span class="tok-com">④ 安装扩展 Live Server，右键 "Open with Live Server"</span>
+<span class="tok-com">⑤ 修改代码自动刷新</span></code></pre>
+</div>
+<div class="tip"><strong>推荐扩展：</strong>Live Server、Prettier、ESLint、JavaScript (ES6) code snippets。</div>
+</section>
+
+<!-- ========== 02 ========== -->
+<section id="s02">
+<h2 data-num="02">基本语法 ⭐⭐⭐</h2>
+
+<h3>2.1 注释</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 单行注释</span>
+
+<span class="tok-com">/*
+ 多行注释
+ 常用于函数说明
+*/</span>
+
+<span class="tok-key">function</span> <span class="tok-fn">greet</span>(name) {
+    <span class="tok-com">// 内部注释</span>
+    <span class="tok-key">return</span> <span class="tok-str">`你好，</span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str">`</span>;
+}</code></pre>
+</div>
+
+<h3>2.2 语句与分号</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> x = <span class="tok-num">10</span>;            <span class="tok-com">// 推荐加分号</span>
+<span class="tok-key">let</span> y = <span class="tok-num">20</span>             <span class="tok-com">// 不加分号 ASI 会自动插入（不推荐依赖）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(x + y);</code></pre>
+</div>
+
+<h3>2.3 大小写敏感</h3>
+<div class="card danger">
+<div class="card-title">⚠️ 大小写</div>
+<pre style="font-size:13px;color:var(--text);background:transparent">
+<span style="color:var(--success)">let myname = "Alice";    ✓</span>
+<span style="color:var(--danger)">let myName = "Alice";    ✗ 是另一个变量</span>
+</pre>
+</div>
+
+<h3>2.4 标识符命名规则</h3>
+<ul>
+<li>可包含字母、数字、<code>_</code>、<code>$</code></li>
+<li>不能以数字开头</li>
+<li>不能是关键字（<code>let</code> / <code>class</code> / <code>return</code> 等）</li>
+<li>推荐驼峰式：<code>firstName</code> / <code>getUserById</code></li>
+</ul>
+
+<h3>2.5 常用关键字清单</h3>
+<table>
+<tr><th>类别</th><th>常见关键字</th></tr>
+<tr><td>声明</td><td><code>var let const function class</code></td></tr>
+<tr><td>流程</td><td><code>if else switch for while do break continue return</code></td></tr>
+<tr><td>异常</td><td><code>try catch finally throw</code></td></tr>
+<tr><td>异步</td><td><code>async await</code></td></tr>
+<tr><td>逻辑</td><td><code>true false null undefined</code></td></tr>
+<tr><td>对象</td><td><code>this super new delete typeof instanceof</code></td></tr>
+<tr><td>ES6+</td><td><code>import export yield</code></td></tr>
+</table>
+</section>
+
+<!-- ========== 03 ========== -->
+<section id="s03">
+<h2 data-num="03">变量：let / const / var ⭐⭐⭐</h2>
+
+<div class="tip"><strong>现代 JavaScript 以 <code>let</code> 和 <code>const</code> 为主，<code>var</code> 仅在维护老代码时见到。</strong></div>
+
+<h3>3.1 三种声明方式对比</h3>
+<table>
+<tr><th></th><th>var（ES5）</th><th>let（ES6）</th><th>const（ES6）</th></tr>
+<tr><td>作用域</td><td>函数作用域</td><td>块级作用域</td><td>块级作用域</td></tr>
+<tr><td>可重新赋值</td><td>✅</td><td>✅</td><td>❌（不可改绑定）</td></tr>
+<tr><td>重复声明</td><td>✅（不报错）</td><td>❌（报错）</td><td>❌（报错）</td></tr>
+<tr><td>提升</td><td>提升且初始化为 undefined</td><td>提升但有 TDZ</td><td>提升但有 TDZ</td></tr>
+<tr><td>推荐度</td><td>❌ 老旧</td><td>✅ 会变的用</td><td>✅ 默认就用</td></tr>
+</table>
+
+<h3>3.2 实战写法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> PI = <span class="tok-num">3.14159</span>;          <span class="tok-com">// 常量：不会变</span>
+<span class="tok-key">let</span> age  = <span class="tok-num">18</span>;               <span class="tok-com">// 变量：可能会改</span>
+<span class="tok-key">const</span> name = <span class="tok-str">"张三"</span>;         <span class="tok-com">// 默认常量优先</span>
+
+<span class="tok-com">// const 对象的内部属性仍可改（绑定不可变）</span>
+<span class="tok-key">const</span> user = { name: <span class="tok-str">"Alice"</span> };
+user.name = <span class="tok-str">"Bob"</span>;        <span class="tok-com">// ✅ OK</span>
+user = {};                       <span class="tok-com">// ❌ TypeError</span></code></pre>
+</div>
+
+<h3>3.3 块级作用域</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">if</span> (<span class="tok-key">true</span>) {
+    <span class="tok-key">let</span> x = <span class="tok-num">10</span>;
+    <span class="tok-key">var</span> y = <span class="tok-num">20</span>;
+}
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(x);  <span class="tok-com">// ❌ ReferenceError: x is not defined</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(y);  <span class="tok-com">// ✅ 20（var 泄漏到外层）</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 04 ========== -->
+<section id="s04">
+<h2 data-num="04">数据类型 ⭐⭐⭐</h2>
+
+<h3>4.1 基本类型（7 种 Primitive）</h3>
+<table>
+<tr><th>类型</th><th>示例</th><th>说明</th></tr>
+<tr><td>Number</td><td><code>42</code>, <code>3.14</code>, <code>NaN</code></td><td>不区分整型与浮点型</td></tr>
+<tr><td>String</td><td><code>"hi"</code>, <code>'hi'</code>, <code>\`hi\`</code></td><td>三种引号均可</td></tr>
+<tr><td>Boolean</td><td><code>true</code>, <code>false</code></td><td>逻辑判断</td></tr>
+<tr><td>Undefined</td><td><code>undefined</code></td><td>变量已声明但未赋值</td></tr>
+<tr><td>Null</td><td><code>null</code></td><td>主动表示"空"</td></tr>
+<tr><td>BigInt</td><td><code>9007199254740993n</code></td><td>超大整数</td></tr>
+<tr><td>Symbol</td><td><code>Symbol('id')</code></td><td>唯一标识符</td></tr>
+</table>
+
+<h3>4.2 引用类型（Object）</h3>
+<p>包括 <code>Object</code>、<code>Array</code>、<code>Function</code>、<code>Date</code>、<code>RegExp</code>、<code>Map</code>、<code>Set</code> 等。基本类型存"值"，引用类型存"地址"。</p>
+
+<h3>4.3 typeof 检测</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-num">42</span>);           <span class="tok-com">// "number"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-str">"hi"</span>);         <span class="tok-com">// "string"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-key">true</span>);         <span class="tok-com">// "boolean"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-key">undefined</span>);    <span class="tok-com">// "undefined"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-key">null</span>);          <span class="tok-com">// "object" ← 历史遗留 bug!</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> [1,2,3]);        <span class="tok-com">// "object"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">typeof</span> <span class="tok-key">function</span>(){});  <span class="tok-com">// "function"</span></code></pre>
+</div>
+
+<h3>4.4 基本 vs 引用（关键）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 基本类型：拷贝值</span>
+<span class="tok-key">let</span> a = <span class="tok-num">10</span>;
+<span class="tok-key">let</span> b = a;
+b = <span class="tok-num">20</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(a);   <span class="tok-com">// 10（a 没受影响）</span>
+
+<span class="tok-com">// 引用类型：拷贝地址</span>
+<span class="tok-key">const</span> arr1 = [<span class="tok-num">1</span>, <span class="tok-num">2</span>];
+<span class="tok-key">const</span> arr2 = arr1;
+arr2.push(<span class="tok-num">3</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(arr1);  <span class="tok-com">// [1, 2, 3] ← 注意！</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 05 ========== -->
+<section id="s05">
+<h2 data-num="05">类型转换 ⭐⭐⭐</h2>
+
+<h3>5.1 显式转换</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">Number</span>(<span class="tok-str">"123"</span>);      <span class="tok-com">// 123</span>
+<span class="tok-fn">Number</span>(<span class="tok-str">"abc"</span>);      <span class="tok-com">// NaN (Not a Number)</span>
+<span class="tok-fn">Number</span>(<span class="tok-key">true</span>);       <span class="tok-com">// 1</span>
+<span class="tok-fn">Number</span>(<span class="tok-key">null</span>);       <span class="tok-com">// 0</span>
+<span class="tok-fn">Number</span>(<span class="tok-key">undefined</span>);  <span class="tok-com">// NaN</span>
+
+<span class="tok-fn">String</span>(<span class="tok-num">123</span>);       <span class="tok-com">// "123"</span>
+<span class="tok-fn">String</span>(<span class="tok-key">true</span>);       <span class="tok-com">// "true"</span>
+
+<span class="tok-fn">Boolean</span>(<span class="tok-num">0</span>);         <span class="tok-com">// false</span>
+<span class="tok-fn">Boolean</span>(<span class="tok-str">""</span>);        <span class="tok-com">// false</span>
+<span class="tok-fn">Boolean</span>(<span class="tok-str">"hi"</span>);      <span class="tok-com">// true</span>
+<span class="tok-fn">Boolean</span>(<span class="tok-key">null</span>);      <span class="tok-com">// false</span></code></pre>
+</div>
+
+<h3>5.2 隐式转换（容易踩坑）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"10"</span> + <span class="tok-num">5</span>);    <span class="tok-com">// "105" （+ 遇到字符串变拼接）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"10"</span> - <span class="tok-num">5</span>);    <span class="tok-com">// 5    （- 强制转数字）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"10"</span> * <span class="tok-str">"2"</span>);  <span class="tok-com">// 20   （* 强制转数字）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">null</span> + <span class="tok-num">1</span>);    <span class="tok-com">// 1    （null → 0）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-key">undefined</span> + <span class="tok-num">1</span>); <span class="tok-com">// NaN</span></code></pre>
+</div>
+
+<h3>5.3 == vs ===（强烈推荐 ===）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// == 会做隐式转换</span>
+<span class="tok-str">"10"</span> == <span class="tok-num">10</span>          <span class="tok-com">// true  （字符串转数字）</span>
+<span class="tok-key">null</span> == <span class="tok-key">undefined</span>    <span class="tok-com">// true</span>
+<span class="tok-key">true</span> == <span class="tok-num">1</span>            <span class="tok-com">// true</span>
+
+<span class="tok-com">// === 严格比较，类型不同直接 false</span>
+<span class="tok-str">"10"</span> === <span class="tok-num">10</span>         <span class="tok-com">// false</span>
+<span class="tok-key">null</span> === <span class="tok-key">undefined</span>   <span class="tok-com">// false</span></code></pre>
+</div>
+<div class="card success">
+<div class="card-title">✅ 最佳实践</div>
+<p>项目代码<strong>永远用</strong> <code>===</code> 和 <code>!==</code>，避免隐式转换带来的 bug。</p>
+</div>
+</section>
+
+<!-- ========== 06 ========== -->
+<section id="s06">
+<h2 data-num="06">运算符 ⭐⭐⭐</h2>
+
+<h3>6.1 算术运算符</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> a = <span class="tok-num">10</span>, b = <span class="tok-num">3</span>;
+a + b     <span class="tok-com">// 13  加</span>
+a - b     <span class="tok-com">// 7   减</span>
+a * b     <span class="tok-com">// 30  乘</span>
+a / b     <span class="tok-com">// 3.3333  除</span>
+a % b     <span class="tok-com">// 1   取余</span>
+a ** b    <span class="tok-com">// 1000 幂（ES6）</span></code></pre>
+</div>
+
+<h3>6.2 自增自减</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> n = <span class="tok-num">5</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(n++);  <span class="tok-com">// 5  （先返回再加）</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(n);    <span class="tok-com">// 6</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(++n);  <span class="tok-com">// 7  （先加再返回）</span></code></pre>
+</div>
+
+<h3>6.3 比较运算符（强烈推荐用 === 与 !==）</h3>
+<table>
+<tr><th>符号</th><th>含义</th><th>建议</th></tr>
+<tr><td><code>&gt; &lt; &gt;= &lt;=</code></td><td>大小比较</td><td>正常用</td></tr>
+<tr><td><code>== !=</code></td><td>等于（带隐式转换）</td><td>❌ 不推荐</td></tr>
+<tr><td><code>=== !==</code></td><td>严格等于</td><td>✅ 永远用</td></tr>
+</table>
+
+<h3>6.4 逻辑运算符</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> age = <span class="tok-num">20</span>, hasID = <span class="tok-key">true</span>;
+
+age >= <span class="tok-num">18</span> && hasID          <span class="tok-com">// 与</span>
+age >= <span class="tok-num">18</span> || hasID          <span class="tok-com">// 或</span>
+!hasID                           <span class="tok-com">// 非</span>
+
+<span class="tok-com">// 短路运算常用：</span>
+<span class="tok-key">const</span> name = input || <span class="tok-str">"匿名"</span>;    <span class="tok-com">// input 为空时给默认值</span></code></pre>
+</div>
+
+<h3>6.5 三元运算符</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> result = age >= <span class="tok-num">18</span> ? <span class="tok-str">"成年"</span> : <span class="tok-str">"未成年"</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(result);   <span class="tok-com">// "成年"</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 07 ========== -->
+<section id="s07">
+<h2 data-num="07">条件控制 ⭐⭐⭐</h2>
+
+<h3>7.1 if / else</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> score = <span class="tok-num">85</span>;
+
+<span class="tok-key">if</span> (score >= <span class="tok-num">90</span>) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"优秀"</span>);
+} <span class="tok-key">else if</span> (score >= <span class="tok-num">80</span>) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"良好"</span>);
+} <span class="tok-key">else if</span> (score >= <span class="tok-num">60</span>) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"及格"</span>);
+} <span class="tok-key">else</span> {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"不及格"</span>);
+}</code></pre>
+</div>
+
+<h3>7.2 switch（多分支）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> day = <span class="tok-num">3</span>;
+<span class="tok-key">let</span> name;
+
+<span class="tok-key">switch</span> (day) {
+    <span class="tok-key">case</span> <span class="tok-num">1</span>: name = <span class="tok-str">"周一"</span>; <span class="tok-key">break</span>;
+    <span class="tok-key">case</span> <span class="tok-num">2</span>: name = <span class="tok-str">"周二"</span>; <span class="tok-key">break</span>;
+    <span class="tok-key">case</span> <span class="tok-num">3</span>: name = <span class="tok-str">"周三"</span>; <span class="tok-key">break</span>;
+    <span class="tok-key">default</span>: name = <span class="tok-str">"未知"</span>;
+}
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(name);  <span class="tok-com">// "周三"</span></code></pre>
+</div>
+<div class="tip">⚠️ 别忘 <code>break</code>，否则会继续往下执行（fall-through）。</div>
+</section>
+
+<!-- ========== 08 ========== -->
+<section id="s08">
+<h2 data-num="08">循环 ⭐⭐⭐</h2>
+
+<h3>8.1 for 循环</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">for</span> (<span class="tok-key">let</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">5</span>; i++) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(i);   <span class="tok-com">// 0 1 2 3 4</span>
+}</code></pre>
+</div>
+
+<h3>8.2 while 与 do...while</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// while：条件为真才执行</span>
+<span class="tok-key">let</span> n = <span class="tok-num">0</span>;
+<span class="tok-key">while</span> (n &lt; <span class="tok-num">3</span>) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(n);
+    n++;
+}
+
+<span class="tok-com">// do...while：先执行一次，再判断</span>
+<span class="tok-key">let</span> m = <span class="tok-num">10</span>;
+<span class="tok-key">do</span> {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(m);
+} <span class="tok-key">while</span> (m &lt; <span class="tok-num">3</span>);   <span class="tok-com">// 输出 10，循环结束</span></code></pre>
+</div>
+
+<h3>8.3 break 与 continue</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// break：跳出整个循环</span>
+<span class="tok-key">for</span> (<span class="tok-key">let</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">10</span>; i++) {
+    <span class="tok-key">if</span> (i === <span class="tok-num">5</span>) <span class="tok-key">break</span>;
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(i);   <span class="tok-com">// 0 1 2 3 4</span>
+}
+
+<span class="tok-com">// continue：跳过本次循环</span>
+<span class="tok-key">for</span> (<span class="tok-key">let</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">5</span>; i++) {
+    <span class="tok-key">if</span> (i === <span class="tok-num">2</span>) <span class="tok-key">continue</span>;
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(i);   <span class="tok-com">// 0 1 3 4</span>
+}</code></pre>
+</div>
+
+<h3>8.4 for...of 与 for...in</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> arr = [<span class="tok-str">"a"</span>, <span class="tok-str">"b"</span>, <span class="tok-str">"c"</span>];
+
+<span class="tok-key">for</span> (<span class="tok-key">const</span> v <span class="tok-key">of</span> arr) {         <span class="tok-com">// 遍历值（数组/可迭代对象）</span>
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(v);
+}
+
+<span class="tok-key">const</span> obj = { x: <span class="tok-num">1</span>, y: <span class="tok-num">2</span> };
+<span class="tok-key">for</span> (<span class="tok-key">const</span> k <span class="tok-key">in</span> obj) {        <span class="tok-com">// 遍历键（对象）</span>
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(k, obj[k]);
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 09 ========== -->
+<section id="s09">
+<h2 data-num="09">String 字符串 ⭐⭐⭐</h2>
+
+<h3>9.1 创建与长度</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> s1 = <span class="tok-str">"hello"</span>;
+<span class="tok-key">const</span> s2 = <span class="tok-str">'world'</span>;
+<span class="tok-key">const</span> s3 = <span class="tok-str">`多行
+字符串`</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(s3.length);   <span class="tok-com">// 不计入首尾换行的实际字符数</span></code></pre>
+</div>
+
+<h3>9.2 常用方法速查</h3>
+<table>
+<tr><th>方法</th><th>作用</th><th>示例</th></tr>
+<tr><td><code>indexOf(s)</code></td><td>查找位置</td><td><code>"hello".indexOf("e") // 1</code></td></tr>
+<tr><td><code>includes(s)</code></td><td>包含判断</td><td><code>"hello".includes("he") // true</code></td></tr>
+<tr><td><code>startsWith(s)</code></td><td>开头判断</td><td><code>"http".startsWith("h") // true</code></td></tr>
+<tr><td><code>endsWith(s)</code></td><td>结尾判断</td><td><code>"hi.txt".endsWith(".txt") // true</code></td></tr>
+<tr><td><code>slice(a,b)</code></td><td>切片</td><td><code>"hello".slice(1,4) // "ell"</code></td></tr>
+<tr><td><code>split(s)</code></td><td>拆数组</td><td><code>"a,b,c".split(",") // ["a","b","c"]</code></td></tr>
+<tr><td><code>replace(a,b)</code></td><td>替换</td><td><code>"ab".replace("a","x") // "xb"</code></td></tr>
+<tr><td><code>toUpperCase()</code></td><td>转大写</td><td><code>"Hi".toUpperCase() // "HI"</code></td></tr>
+<tr><td><code>trim()</code></td><td>去首尾空白</td><td><code>" hi ".trim() // "hi"</code></td></tr>
+</table>
+
+<h3>9.3 模板字符串 ⭐⭐⭐</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> name = <span class="tok-str">"Alice"</span>;
+<span class="tok-key">const</span> age = <span class="tok-num">18</span>;
+
+<span class="tok-com">// 拼接（推荐）</span>
+<span class="tok-key">const</span> msg = <span class="tok-str">`姓名：</span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str">，年龄：</span><span class="tok-op">${</span>age<span class="tok-op">}</span><span class="tok-str">`</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(msg);   <span class="tok-com">// "姓名：Alice，年龄：18"</span>
+
+<span class="tok-com">// 多行</span>
+<span class="tok-key">const</span> html = <span class="tok-str">`
+  &lt;div&gt;
+    &lt;h1&gt;</span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str">&lt;/h1&gt;
+  &lt;/div&gt;
+`</span>;
+
+<span class="tok-com">// 表达式直接执行</span>
+<span class="tok-key">const</span> price = <span class="tok-str">`总金额：¥</span><span class="tok-op">${</span>(<span class="tok-num">99</span> * <span class="tok-num">3</span>).<span class="tok-fn">toFixed</span>(<span class="tok-num">2</span>)<span class="tok-op">}</span><span class="tok-str">`</span>;  <span class="tok-com">// "总金额：¥297.00"</span></code></pre>
+</div>
+<div class="tip"><strong>这是现代 JS 必须掌握的内容。</strong>拼接字符串一律用模板字符串，别再用 <code>+</code>。</div>
+</section>
+
+<!-- ========== 10 ========== -->
+<section id="s10">
+<h2 data-num="10">Array 数组 ⭐⭐⭐</h2>
+
+<h3>10.1 创建与访问</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> scores = [<span class="tok-num">90</span>, <span class="tok-num">85</span>, <span class="tok-num">78</span>, <span class="tok-num">92</span>];
+
+scores[<span class="tok-num">0</span>];            <span class="tok-com">// 90 第一个元素</span>
+scores[<span class="tok-num">scores.length</span> - <span class="tok-num">1</span>];  <span class="tok-com">// 92 最后一个</span>
+scores.length;         <span class="tok-com">// 4</span>
+
+<span class="tok-com">// 修改</span>
+scores[<span class="tok-num">1</span>] = <span class="tok-num">88</span>;
+
+<span class="tok-com">// 创建</span>
+<span class="tok-key">const</span> arr1 = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>];
+<span class="tok-key">const</span> arr2 = <span class="tok-key">new</span> <span class="tok-fn">Array</span>(<span class="tok-num">3</span>);     <span class="tok-com">// 长度 3 的空数组</span>
+<span class="tok-key">const</span> arr3 = <span class="tok-fn">Array</span>.<span class="tok-fn">from</span>(<span class="tok-str">"hi"</span>);  <span class="tok-com">// ["h", "i"]</span></code></pre>
+</div>
+
+<h3>10.2 增删改 4 件套</h3>
+<table>
+<tr><th>方法</th><th>作用</th><th>说明</th></tr>
+<tr><td><code>push(x)</code></td><td>末尾加</td><td>返回新长度</td></tr>
+<tr><td><code>pop()</code></td><td>末尾删</td><td>返回被删除元素</td></tr>
+<tr><td><code>unshift(x)</code></td><td>开头加</td><td>返回新长度</td></tr>
+<tr><td><code>shift()</code></td><td>开头删</td><td>返回被删除元素</td></tr>
+<tr><td><code>slice(a,b)</code></td><td>切片（不动原数组）</td><td>返回新数组</td></tr>
+<tr><td><code>splice(i,n,...)</code></td><td>删除/插入（动原数组）</td><td>返回被删数组</td></tr>
+<tr><td><code>concat(a)</code></td><td>拼接</td><td>返回新数组</td></tr>
+<tr><td><code>indexOf(x)</code></td><td>查找位置</td><td>找不到返回 -1</td></tr>
+<tr><td><code>includes(x)</code></td><td>包含判断</td><td>返回布尔</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> arr = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>, <span class="tok-num">4</span>, <span class="tok-num">5</span>];
+
+arr.splice(<span class="tok-num">1</span>, <span class="tok-num">2</span>);    <span class="tok-com">// 从索引 1 起删 2 个 → [1, 4, 5]</span>
+arr.splice(<span class="tok-num">1</span>, <span class="tok-num">0</span>, <span class="tok-num">99</span>); <span class="tok-com">// 在索引 1 处插入 99 → [1, 99, 4, 5]</span>
+
+<span class="tok-key">const</span> a = [<span class="tok-num">1</span>,<span class="tok-num">2</span>], b = [<span class="tok-num">3</span>,<span class="tok-num">4</span>];
+a.concat(b);  <span class="tok-com">// [1, 2, 3, 4]（不动 a）</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 11 ========== -->
+<section id="s11">
+<h2 data-num="11">数组遍历与高阶方法 ⭐⭐⭐</h2>
+
+<h3>11.1 三种基本遍历</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> scores = [<span class="tok-num">90</span>, <span class="tok-num">85</span>, <span class="tok-num">78</span>];
+
+<span class="tok-com">// 方式 1：传统 for</span>
+<span class="tok-key">for</span> (<span class="tok-key">let</span> i = <span class="tok-num">0</span>; i &lt; scores.length; i++) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(scores[i]);
+}
+
+<span class="tok-com">// 方式 2：for...of（拿到值）</span>
+<span class="tok-key">for</span> (<span class="tok-key">const</span> s <span class="tok-key">of</span> scores) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(s);
+}
+
+<span class="tok-com">// 方式 3：forEach（提供值+索引+数组）</span>
+scores.<span class="tok-fn">forEach</span>((s, i) =&gt; {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">`第</span><span class="tok-op">${</span>i+<span class="tok-num">1</span><span class="tok-op">}</span><span class="tok-str">名：</span><span class="tok-op">${</span>s<span class="tok-op">}</span><span class="tok-str">分`</span>);
+});</code></pre>
+</div>
+
+<h3>11.2 三大高阶方法 ⭐⭐⭐</h3>
+<div class="card info">
+<div class="card-title">🧠 三件套</div>
+<pre style="font-size:14px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--accent2);font-weight:700">map</span>    → 转换每一项，返回新数组
+<span style="color:var(--accent2);font-weight:700">filter</span> → 筛选满足条件的，返回新数组
+<span style="color:var(--accent2);font-weight:700">reduce</span> → 把数组"汇总"为单个值
+</pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> scores = [<span class="tok-num">90</span>, <span class="tok-num">85</span>, <span class="tok-num">78</span>, <span class="tok-num">92</span>, <span class="tok-num">60</span>];
+
+<span class="tok-com">// map：每人加 5 分</span>
+<span class="tok-key">const</span> newScores = scores.<span class="tok-fn">map</span>(x =&gt; x + <span class="tok-num">5</span>);
+<span class="tok-com">// [95, 90, 83, 97, 65]</span>
+
+<span class="tok-com">// filter：取出 90 分以上</span>
+<span class="tok-key">const</span> high = scores.<span class="tok-fn">filter</span>(x =&gt; x &gt;= <span class="tok-num">90</span>);
+<span class="tok-com">// [90, 92]</span>
+
+<span class="tok-com">// reduce：求总分（初始值为 0）</span>
+<span class="tok-key">const</span> total = scores.<span class="tok-fn">reduce</span>((sum, x) =&gt; sum + x, <span class="tok-num">0</span>);
+<span class="tok-com">// 405</span>
+
+<span class="tok-com">// reduce 求平均</span>
+<span class="tok-key">const</span> avg = total / scores.length;   <span class="tok-com">// 81</span>
+
+<span class="tok-com">// 综合练习：找出最高分</span>
+<span class="tok-key">const</span> top = scores.<span class="tok-fn">reduce</span>((best, x) =&gt; x &gt; best ? x : best, -<span class="tok-fn">Infinity</span>);</code></pre>
+</div>
+
+<h3>11.3 其他常用方法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> arr = [<span class="tok-num">3</span>, <span class="tok-num">1</span>, <span class="tok-num">4</span>, <span class="tok-num">1</span>, <span class="tok-num">5</span>, <span class="tok-num">9</span>];
+
+arr.<span class="tok-fn">sort</span>((a, b) =&gt; a - b);  <span class="tok-com">// 数字排序 [1,1,3,4,5,9]</span>
+arr.<span class="tok-fn">reverse</span>();             <span class="tok-com">// 反转</span>
+arr.<span class="tok-fn">find</span>(x =&gt; x &gt; <span class="tok-num">3</span>);      <span class="tok-com">// 4 第一个满足</span>
+arr.<span class="tok-fn">findIndex</span>(x =&gt; x &gt; <span class="tok-num">3</span>); <span class="tok-com">// 2</span>
+arr.<span class="tok-fn">every</span>(x =&gt; x &gt; <span class="tok-num">0</span>);     <span class="tok-com">// true 全员满足</span>
+arr.<span class="tok-fn">some</span>(x =&gt; x &gt; <span class="tok-num">5</span>);       <span class="tok-com">// true 至少一个</span>
+arr.<span class="tok-fn">join</span>(<span class="tok-str">"-"</span>);            <span class="tok-com">// "3-1-4-1-5-9"</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 12 ========== -->
+<section id="s12">
+<h2 data-num="12">Object 对象 ⭐⭐⭐</h2>
+
+<h3>12.1 创建、访问、修改、删除</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> student = {
+    name: <span class="tok-str">"张三"</span>,
+    age: <span class="tok-num">18</span>,
+    score: <span class="tok-num">95</span>,
+    <span class="tok-fn">introduce</span>() {
+        <span class="tok-key">return</span> <span class="tok-str">`我叫</span><span class="tok-op">${</span><span class="tok-this">this</span>.name<span class="tok-op">}</span><span class="tok-str">，`</span> +
+               <span class="tok-str">`考</span><span class="tok-op">${</span><span class="tok-this">this</span>.score<span class="tok-op">}</span><span class="tok-str">分`</span>;
+    }
+};
+
+<span class="tok-com">// 访问</span>
+student.name;            <span class="tok-com">// "张三"</span>
+student[<span class="tok-str">"name"</span>];        <span class="tok-com">// "张三"（动态键名）</span>
+
+<span class="tok-com">// 修改</span>
+student.age = <span class="tok-num">19</span>;
+
+<span class="tok-com">// 删除</span>
+<span class="tok-key">delete</span> student.score;
+
+<span class="tok-com">// 调用方法</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(student.<span class="tok-fn">introduce</span>());</code></pre>
+</div>
+
+<h3>12.2 this 关键字</h3>
+<div class="tip">
+方法内部的 <code>this</code> 通常指向调用该方法的对象。<strong>箭头函数不绑定自己的 <code>this</code></strong>，这是新手最常踩的坑。
+</div>
+
+<h3>12.3 常用方法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> obj = { a: <span class="tok-num">1</span>, b: <span class="tok-num">2</span> };
+
+<span class="tok-fn">Object</span>.keys(obj);         <span class="tok-com">// ["a", "b"]</span>
+<span class="tok-fn">Object</span>.values(obj);       <span class="tok-com">// [1, 2]</span>
+<span class="tok-fn">Object</span>.entries(obj);      <span class="tok-com">// [["a",1], ["b",2]]</span>
+<span class="tok-fn">Object</span>.<span class="tok-fn">fromEntries</span>(...).keys();  <span class="tok-com">// 反向</span>
+<span class="tok-fn">Object</span>.<span class="tok-fn">assign</span>({}, obj, {c:<span class="tok-num">3</span>}); <span class="tok-com">// 拷贝合并</span>
+
+<span class="tok-com">// 拷贝（浅拷贝）</span>
+<span class="tok-key">const</span> copy = { ...obj };
+copy.a = <span class="tok-num">99</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(obj.a);  <span class="tok-com">// 1</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 13 ========== -->
+<section id="s13">
+<h2 data-num="13">解构赋值 ⭐⭐⭐</h2>
+
+<h3>13.1 数组解构</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> [a, b, c] = [<span class="tok-num">10</span>, <span class="tok-num">20</span>, <span class="tok-num">30</span>];
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(a, b, c);   <span class="tok-com">// 10 20 30</span>
+
+<span class="tok-com">// 跳过/默认值</span>
+<span class="tok-key">const</span> [x, , y = <span class="tok-num">99</span>] = [<span class="tok-num">1</span>, <span class="tok-num">2</span>];
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(x, y);   <span class="tok-com">// 1 99</span>
+
+<span class="tok-com">// 交换变量</span>
+<span class="tok-key">let</span> m = <span class="tok-num">1</span>, n = <span class="tok-num">2</span>;
+[m, n] = [n, m];   <span class="tok-com">// m=2, n=1</span></code></pre>
+</div>
+
+<h3>13.2 对象解构</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> student = { name: <span class="tok-str">"张三"</span>, age: <span class="tok-num">18</span>, score: <span class="tok-num">95</span> };
+
+<span class="tok-key">const</span> { name, age } = student;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(name, age);   <span class="tok-com">// "张三" 18</span>
+
+<span class="tok-com">// 重命名 + 默认值</span>
+<span class="tok-key">const</span> { name: userName, grade = <span class="tok-str">"A"</span> } = student;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(userName, grade);   <span class="tok-com">// "张三" "A"</span>
+
+<span class="tok-com">// 函数参数解构</span>
+<span class="tok-key">function</span> <span class="tok-fn">show</span>({ name, age }) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">`</span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str">，</span><span class="tok-op">${</span>age<span class="tok-op">}</span><span class="tok-str">岁`</span>);
+}
+<span class="tok-fn">show</span>(student);</code></pre>
+</div>
+</section>
+
+<!-- ========== 14 ========== -->
+<section id="s14">
+<h2 data-num="14">函数 ⭐⭐⭐</h2>
+
+<h3>14.1 三种定义方式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 1. 函数声明（hoisting 友好）</span>
+<span class="tok-key">function</span> <span class="tok-fn">add</span>(a, b) {
+    <span class="tok-key">return</span> a + b;
+}
+
+<span class="tok-com">// 2. 函数表达式</span>
+<span class="tok-key">const</span> sub = <span class="tok-key">function</span>(a, b) {
+    <span class="tok-key">return</span> a - b;
+};
+
+<span class="tok-com">// 3. 箭头函数（见下章）</span>
+<span class="tok-key">const</span> mul = (a, b) =&gt; a * b;</code></pre>
+</div>
+
+<h3>14.2 默认参数 & 可变参数</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">function</span> <span class="tok-fn">greet</span>(name = <span class="tok-str">"游客"</span>, ...others) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">`你好 </span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str">`</span>);
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"others:"</span>, others);
+}
+<span class="tok-fn">greet</span>(<span class="tok-str">"Alice"</span>, <span class="tok-str">"Bob"</span>, <span class="tok-str">"Carol"</span>);   <span class="tok-com">// others: ["Bob","Carol"]</span></code></pre>
+</div>
+
+<h3>14.3 函数也是值</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">function</span> <span class="tok-fn">apply</span>(fn, a, b) {
+    <span class="tok-key">return</span> <span class="tok-fn">fn</span>(a, b);
+}
+<span class="tok-fn">apply</span>(add, <span class="tok-num">2</span>, <span class="tok-num">3</span>);          <span class="tok-com">// 5</span>
+<span class="tok-fn">apply</span>(mul, <span class="tok-num">2</span>, <span class="tok-num">3</span>);          <span class="tok-com">// 6</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 15 ========== -->
+<section id="s15">
+<h2 data-num="15">箭头函数 ⭐⭐⭐</h2>
+
+<h3>15.1 语法糖</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 完整写法</span>
+<span class="tok-key">const</span> add = (a, b) =&gt; {
+    <span class="tok-key">return</span> a + b;
+};
+
+<span class="tok-com">// 单行返回（隐式 return）</span>
+<span class="tok-key">const</span> add = (a, b) =&gt; a + b;
+
+<span class="tok-com">// 单个参数</span>
+<span class="tok-key">const</span> double = x =&gt; x * <span class="tok-num">2</span>;
+
+<span class="tok-com">// 无参数</span>
+<span class="tok-key">const</span> hello = () =&gt; <span class="tok-str">"Hello!"</span>;</code></pre>
+</div>
+
+<h3>15.2 与普通函数的区别</h3>
+<table>
+<tr><th>对比点</th><th>function</th><th>()=&gt; {}</th></tr>
+<tr><td>this</td><td>动态绑定</td><td>词法绑定（定义时确定）</td></tr>
+<tr><td>arguments</td><td>可用</td><td>不可用，用 ...rest</td></tr>
+<tr><td>作为构造函数</td><td>可以用 new</td><td>不能 new</td></tr>
+<tr><td>简洁度</td><td>中等</td><td>最简洁</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 经典坑：回调中 this 丢失</span>
+<span class="tok-key">const</span> timer = {
+    sec: <span class="tok-num">0</span>,
+    <span class="tok-fn">start</span>() {
+        <span class="tok-fn">setInterval</span>(() =&gt; {    <span class="tok-com">// 箭头函数继承外层 this</span>
+            <span class="tok-this">this</span>.sec++;
+            <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-this">this</span>.sec);
+        }, <span class="tok-num">1000</span>);
+    }
+};
+timer.<span class="tok-fn">start</span>();</code></pre>
+</div>
+</section>
+
+<!-- ========== 16 ========== -->
+<section id="s16">
+<h2 data-num="16">作用域与闭包 ⭐⭐⭐</h2>
+
+<h3>16.1 四种作用域</h3>
+<table>
+<tr><th>类型</th><th>说明</th><th>例子</th></tr>
+<tr><td>全局</td><td>window/global 上的变量</td><td><code>var a = 1</code> 在最外层</td></tr>
+<tr><td>函数</td><td>仅函数内部</td><td>function 内 var/let</td></tr>
+<tr><td>块级</td><td>{} 内（let/const）</td><td>if、for、{} 内</td></tr>
+<tr><td>词法</td><td>外层作用域（嵌套函数时）</td><td>闭包的关键</td></tr>
+</table>
+
+<h3>16.2 闭包经典图</h3>
+<div class="card info">
+<div class="card-title">🔒 闭包：函数"记住"了它的外部变量</div>
+<pre style="font-size:14px;color:var(--text);background:transparent;line-height:1.8">
+外层函数  fn()
+   ↓ return
+返回的函数 fn2()
+   ↓ 依然能访问 fn() 内的局部变量 count
+这就是闭包
+</pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 闭包：用函数"包住"一个状态</span>
+<span class="tok-key">function</span> <span class="tok-fn">createCounter</span>() {
+    <span class="tok-key">let</span> count = <span class="tok-num">0</span>;          <span class="tok-com">// 私有</span>
+    <span class="tok-key">return</span> () =&gt; ++count;       <span class="tok-com">// 闭包</span>
+}
+
+<span class="tok-key">const</span> cnt = <span class="tok-fn">createCounter</span>();
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">cnt</span>());  <span class="tok-com">// 1</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">cnt</span>());  <span class="tok-com">// 2</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">cnt</span>());  <span class="tok-com">// 3</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(count);   <span class="tok-com">// ❌ ReferenceError</span></code></pre>
+</div>
+<div class="tip"><strong>理解闭包 = 理解 React/Vue 状态管理。</strong>面试 100% 会问。</div>
+</section>
+
+<!-- ========== 17 ========== -->
+<section id="s17">
+<h2 data-num="17">ES6+ 核心语法 ⭐⭐⭐</h2>
+
+<p>ES6（2015）是 JavaScript 历史上最大的一次更新。下面这些特性已成为<strong>必备</strong>。</p>
+
+<h3>17.1 全部语法清单</h3>
+<table>
+<tr><th>特性</th><th>示例</th></tr>
+<tr><td>let / const</td><td>见 <a href="#s03">§03</a></td></tr>
+<tr><td>箭头函数</td><td>见 <a href="#s15">§15</a></td></tr>
+<tr><td>模板字符串</td><td><code>\`hi \${name}\`</code></td></tr>
+<tr><td>解构</td><td>见 <a href="#s13">§13</a></td></tr>
+<tr><td>默认 / 剩余 参数</td><td><code>fn(a=1, ...rest)</code></td></tr>
+<tr><td>展开运算符</td><td><code>[...arr, ...arr2]</code></td></tr>
+<tr><td>对象简写</td><td><code>{x, y}</code> ≡ <code>{x:x, y:y}</code></td></tr>
+<tr><td>Map / Set</td><td>见下章</td></tr>
+<tr><td>Class</td><td>见 <a href="#s19">§19</a></td></tr>
+<tr><td>Module</td><td><code>export</code> / <code>import</code></td></tr>
+</table>
+
+<h3>17.2 展开运算符（Spread）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> a = [<span class="tok-num">1</span>, <span class="tok-num">2</span>];
+<span class="tok-key">const</span> b = [...a, <span class="tok-num">3</span>, <span class="tok-num">4</span>];      <span class="tok-com">// [1, 2, 3, 4]</span>
+
+<span class="tok-key">const</span> obj1 = { x: <span class="tok-num">1</span> };
+<span class="tok-key">const</span> obj2 = { ...obj1, y: <span class="tok-num">2</span> };  <span class="tok-com">// { x:1, y:2 }</span>
+
+<span class="tok-fn">Math</span>.<span class="tok-fn">max</span>(...a);             <span class="tok-com">// 2</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(...a);              <span class="tok-com">// 1 2</span>
+
+<span class="tok-com">// 函数参数</span>
+<span class="tok-key">function</span> <span class="tok-fn">sum</span>(...nums) { <span class="tok-key">return</span> nums.<span class="tok-fn">reduce</span>((s,n)=&gt;s+n, <span class="tok-num">0</span>); }
+<span class="tok-fn">sum</span>(<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>);   <span class="tok-com">// 10</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 18 ========== -->
+<section id="s18">
+<h2 data-num="18">Map 与 Set ⭐⭐</h2>
+
+<h3>18.1 四种"集合"对比</h3>
+<table>
+<tr><th></th><th>Array</th><th>Object</th><th>Map</th><th>Set</th></tr>
+<tr><td>结构</td><td>有序列表</td><td>键值对</td><td>任意键的键值对</td><td>无重复集合</td></tr>
+<tr><td>键类型</td><td>数字索引</td><td>字符串/Symbol</td><td>任意类型</td><td>—</td></tr>
+<tr><td>是否重复</td><td>✅</td><td>键唯一</td><td>键唯一</td><td>自动去重</td></tr>
+<tr><td>大小</td><td><code>.length</code></td><td>手动维护</td><td><code>.size</code></td><td><code>.size</code></td></tr>
+<tr><td>迭代</td><td>for / for...of</td><td>for...in / entries</td><td>forEach / for...of</td><td>forEach / for...of</td></tr>
+</table>
+
+<h3>18.2 Map 示例</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> map = <span class="tok-key">new</span> <span class="tok-fn">Map</span>();
+
+map.<span class="tok-fn">set</span>(<span class="tok-str">"name"</span>, <span class="tok-str">"张三"</span>);
+map.<span class="tok-fn">set</span>(<span class="tok-str">"age"</span>, <span class="tok-num">18</span>);
+map.<span class="tok-fn">set</span>(obj, <span class="tok-str">"对象当键也可以"</span>);
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(map.<span class="tok-fn">get</span>(<span class="tok-str">"name"</span>));   <span class="tok-com">// "张三"</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(map.<span class="tok-fn">has</span>(<span class="tok-str">"age"</span>));   <span class="tok-com">// true</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(map.size);         <span class="tok-com">// 3</span>
+
+<span class="tok-com">// 遍历</span>
+<span class="tok-key">for</span> (<span class="tok-key">const</span> [k, v] <span class="tok-key">of</span> map) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(k, <span class="tok-str">"=&gt;"</span>, v);
+}</code></pre>
+</div>
+
+<h3>18.3 Set 示例：自动去重</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> set = <span class="tok-key">new</span> <span class="tok-fn">Set</span>([<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>, <span class="tok-num">3</span>, <span class="tok-num">2</span>, <span class="tok-num">1</span>]);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>([...set]);   <span class="tok-com">// [1, 2, 3]</span>
+
+set.<span class="tok-fn">add</span>(<span class="tok-num">4</span>);
+set.<span class="tok-fn">has</span>(<span class="tok-num">3</span>);     <span class="tok-com">// true</span>
+
+<span class="tok-com">// 数组去重</span>
+<span class="tok-key">const</span> arr = [<span class="tok-num">1</span>,<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>];
+<span class="tok-key">const</span> unique = [...<span class="tok-key">new</span> <span class="tok-fn">Set</span>(arr)];   <span class="tok-com">// [1,2,3]</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 19 ========== -->
+<section id="s19">
+<h2 data-num="19">面向对象 class ⭐⭐</h2>
+
+<h3>19.1 基本 class</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">class</span> <span class="tok-fn">Student</span> {
+    <span class="tok-fn">constructor</span>(name, age) {
+        <span class="tok-this">this</span>.name = name;
+        <span class="tok-this">this</span>.age  = age;
+    }
+
+    <span class="tok-fn">introduce</span>() {
+        <span class="tok-key">return</span> <span class="tok-str">`我是</span><span class="tok-op">${</span><span class="tok-this">this</span>.name<span class="tok-op">}</span><span class="tok-str">，`</span> +
+               <span class="tok-str">`</span><span class="tok-op">${</span><span class="tok-this">this</span>.age<span class="tok-op">}</span><span class="tok-str">岁`</span>;
+    }
+}
+
+<span class="tok-key">const</span> s = <span class="tok-key">new</span> <span class="tok-fn">Student</span>(<span class="tok-str">"张三"</span>, <span class="tok-num">18</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(s.<span class="tok-fn">introduce</span>());</code></pre>
+</div>
+
+<h3>19.2 继承 extends / super</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">class</span> <span class="tok-fn">CollegeStudent</span> <span class="tok-key">extends</span> <span class="tok-fn">Student</span> {
+    <span class="tok-fn">constructor</span>(name, age, major) {
+        <span class="tok-key">super</span>(name, age);   <span class="tok-com">// 调用父类构造</span>
+        <span class="tok-this">this</span>.major = major;
+    }
+
+    <span class="tok-fn">introduce</span>() {
+        <span class="tok-key">return</span> <span class="tok-key">super</span>.<span class="tok-fn">introduce</span>() +
+               <span class="tok-str">`，专业：</span><span class="tok-op">${</span><span class="tok-this">this</span>.major<span class="tok-op">}</span><span class="tok-str">`</span>;
+    }
+}
+
+<span class="tok-key">const</span> cs = <span class="tok-key">new</span> <span class="tok-fn">CollegeStudent</span>(<span class="tok-str">"李四"</span>, <span class="tok-num">20</span>, <span class="tok-str">"计算机"</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(cs.<span class="tok-fn">introduce</span>());</code></pre>
+</div>
+
+<h3>19.3 static 静态方法 & private 私有字段</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">class</span> <span class="tok-fn">User</span> {
+    <span class="tok-com">// 私有字段（# 开头，外部访问报错）</span>
+    #password;
+
+    <span class="tok-fn">constructor</span>(name, pwd) {
+        <span class="tok-this">this</span>.name = name;
+        <span class="tok-this">this</span>.#password = pwd;
+    }
+
+    <span class="tok-fn">check</span>(pwd) {
+        <span class="tok-key">return</span> pwd === <span class="tok-this">this</span>.#password;
+    }
+
+    <span class="tok-key">static</span> <span class="tok-fn">create</span>(name) {       <span class="tok-com">// 类方法，不需 new</span>
+        <span class="tok-key">return</span> <span class="tok-key">new</span> <span class="tok-fn">User</span>(name, <span class="tok-str">"123456"</span>);
+    }
+}
+
+<span class="tok-key">const</span> u1 = <span class="tok-fn">User</span>.<span class="tok-fn">create</span>(<span class="tok-str">"Alice"</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(u1.<span class="tok-fn">check</span>(<span class="tok-str">"123456"</span>));   <span class="tok-com">// true</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 20 ========== -->
+<section id="s20">
+<h2 data-num="20">原型与原型链 ⭐⭐</h2>
+
+<h3>20.1 概念图</h3>
+<div class="diagram">
+<svg width="700" height="220" viewBox="0 0 700 220">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#F7DF1E"/>
+    </marker>
+  </defs>
+  <rect x="40" y="40" width="170" height="60" fill="#2a2a2a" stroke="#F7DF1E" stroke-width="2" rx="6"/>
+  <text x="125" y="70" text-anchor="middle" fill="#ECECEC" font-size="14" font-weight="700">s1 实例</text>
+  <text x="125" y="90" text-anchor="middle" fill="#80DEEA" font-size="11">[[Prototype]]</text>
+
+  <rect x="290" y="40" width="170" height="60" fill="#2a2a2a" stroke="#FF8C00" stroke-width="2" rx="6"/>
+  <text x="375" y="70" text-anchor="middle" fill="#ECECEC" font-size="14" font-weight="700">Student.prototype</text>
+  <text x="375" y="90" text-anchor="middle" fill="#80DEEA" font-size="11">introduce()</text>
+
+  <rect x="540" y="40" width="120" height="60" fill="#2a2a2a" stroke="#FFD54F" stroke-width="2" rx="6"/>
+  <text x="600" y="70" text-anchor="middle" fill="#ECECEC" font-size="13" font-weight="700">Object</text>
+  <text x="600" y="90" text-anchor="middle" fill="#80DEEA" font-size="11">toString()</text>
+
+  <line x1="210" y1="70" x2="290" y2="70" stroke="#F7DF1E" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="460" y1="70" x2="540" y2="70" stroke="#F7DF1E" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text x="250" y="135" text-anchor="middle" fill="#FFB627" font-size="12">prototype 链</text>
+  <text x="500" y="135" text-anchor="middle" fill="#FFB627" font-size="12">继承自 Object</text>
+
+  <text x="350" y="180" text-anchor="middle" fill="#FFB627" font-size="13">
+    找不到属性时沿链向上查找，叫"原型链查找"
+  </text>
+</svg>
+</div>
+
+<h3>20.2 实战：看原型链</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">class</span> <span class="tok-fn">Animal</span> {}
+<span class="tok-key">const</span> a = <span class="tok-key">new</span> <span class="tok-fn">Animal</span>();
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(a.__proto__ === Animal.prototype);  <span class="tok-com">// true</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(Animal.prototype.__proto__ === <span class="tok-fn">Object</span>.prototype); <span class="tok-com">// true</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">Object</span>.prototype.__proto__);   <span class="tok-com">// null（链终点）</span></code></pre>
+</div>
+<div class="tip">
+入门阶段理解"对象 → 自己的类 → Object → null"这条链即可，无需深入底层。<strong>日常开发我们用 <code>class</code>，本质仍由原型实现</strong>。
+</div>
+</section>
+
+<!-- ========== 21 ========== -->
+<section id="s21">
+<h2 data-num="21">异常处理 ⭐⭐⭐</h2>
+
+<h3>21.1 try / catch / finally</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">try</span> {
+    <span class="tok-key">const</span> data = <span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(<span class="tok-str">'{"name": "Alice"'</span>);  <span class="tok-com">// 错误字符串</span>
+} <span class="tok-key">catch</span> (err) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(<span class="tok-str">"解析失败："</span>, err.message);
+} <span class="tok-key">finally</span> {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"无论是否出错，都会执行"</span>);
+}</code></pre>
+</div>
+
+<h3>21.2 throw 自定义异常</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">function</span> <span class="tok-fn">divide</span>(a, b) {
+    <span class="tok-key">if</span> (b === <span class="tok-num">0</span>) <span class="tok-key">throw</span> <span class="tok-key">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">"除数不能为 0"</span>);
+    <span class="tok-key">return</span> a / b;
+}
+
+<span class="tok-key">try</span> {
+    <span class="tok-fn">divide</span>(<span class="tok-num">10</span>, <span class="tok-num">0</span>);
+} <span class="tok-key">catch</span> (e) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(e.message);   <span class="tok-com">// "除数不能为 0"</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 22 ========== -->
+<section id="s22">
+<h2 data-num="22">同步与异步 + Event Loop ⭐⭐⭐</h2>
+
+<h3>22.1 同步 vs 异步</h3>
+<div class="card info">
+<div class="card-title">🔄 单线程模型</div>
+<pre style="font-size:14px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--primary);font-weight:700">同步</span>：A → B → C   一行一行执行
+<span style="color:var(--primary);font-weight:700">异步</span>：A 启动后让浏览器等结果，继续 B，等结果回来再处理
+</pre>
+</div>
+
+<h3>22.2 Event Loop 模型</h3>
+<div class="diagram">
+<svg width="700" height="240" viewBox="0 0 700 240">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#FF8C00"/>
+    </marker>
+  </defs>
+  <rect x="40" y="40" width="180" height="160" fill="#2a2a2a" stroke="#F7DF1E" stroke-width="2" rx="8"/>
+  <text x="130" y="65" text-anchor="middle" fill="#F7DF1E" font-size="13" font-weight="700">Call Stack</text>
+  <text x="130" y="80" text-anchor="middle" fill="#888" font-size="10">调用栈</text>
+  <rect x="60" y="100" width="140" height="20" fill="#1f1f1f" stroke="#555"/>
+  <text x="130" y="115" text-anchor="middle" fill="#ECECEC" font-size="12">main()</text>
+  <rect x="60" y="125" width="140" height="20" fill="#1f1f1f" stroke="#555"/>
+  <text x="130" y="140" text-anchor="middle" fill="#ECECEC" font-size="12">fetch()</text>
+  <rect x="60" y="150" width="140" height="20" fill="#1f1f1f" stroke="#555"/>
+  <text x="130" y="165" text-anchor="middle" fill="#ECECEC" font-size="12">其他任务</text>
+
+  <rect x="260" y="40" width="180" height="160" fill="#2a2a2a" stroke="#FF8C00" stroke-width="2" rx="8"/>
+  <text x="350" y="65" text-anchor="middle" fill="#FF8C00" font-size="13" font-weight="700">Web APIs</text>
+  <text x="350" y="80" text-anchor="middle" fill="#888" font-size="10">浏览器能力</text>
+  <text x="350" y="115" text-anchor="middle" fill="#ECECEC" font-size="12">setTimeout</text>
+  <text x="350" y="135" text-anchor="middle" fill="#ECECEC" font-size="12">fetch</text>
+  <text x="350" y="155" text-anchor="middle" fill="#ECECEC" font-size="12">DOM 事件</text>
+
+  <rect x="480" y="40" width="180" height="160" fill="#2a2a2a" stroke="#FFD54F" stroke-width="2" rx="8"/>
+  <text x="570" y="65" text-anchor="middle" fill="#FFD54F" font-size="13" font-weight="700">Callback Queue</text>
+  <text x="570" y="80" text-anchor="middle" fill="#888" font-size="10">任务队列</text>
+  <text x="570" y="115" text-anchor="middle" fill="#ECECEC" font-size="12">callback 1</text>
+  <text x="570" y="135" text-anchor="middle" fill="#ECECEC" font-size="12">callback 2</text>
+  <text x="570" y="155" text-anchor="middle" fill="#ECECEC" font-size="12">promise.then</text>
+
+  <path d="M 220 105 L 260 105" stroke="#FF8C00" stroke-width="2" marker-end="url(#arr2)"/>
+  <path d="M 440 140 Q 460 140 480 140" stroke="#FF8C00" stroke-width="2" marker-end="url(#arr2)"/>
+  <path d="M 480 160 Q 440 160 220 130" stroke="#FFD54F" stroke-width="2" marker-end="url(#arr2)" stroke-dasharray="4 2"/>
+  <text x="350" y="220" text-anchor="middle" fill="#FFB627" font-size="12">
+    Call Stack 空时，Event Loop 把任务推入执行
+  </text>
+</svg>
+</div>
+</section>
+
+<!-- ========== 23 ========== -->
+<section id="s23">
+<h2 data-num="23">Promise ⭐⭐⭐</h2>
+
+<h3>23.1 三种状态</h3>
+<div class="card info">
+<div class="card-title">📦 Promise 三态</div>
+<p>
+<span class="tok-key">pending</span>（进行中） → <span class="tok-key">fulfilled</span>（成功，调用 resolve）<br>
+pending → <span class="tok-key">rejected</span>（失败，调用 reject）<br>
+一旦确定不可再改。
+</p>
+</div>
+
+<h3>23.2 创建与基础用法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> fetchData = () =&gt;
+    <span class="tok-key">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+        <span class="tok-fn">setTimeout</span>(() =&gt; {
+            <span class="tok-fn">resolve</span>(<span class="tok-str">"数据"</span>);
+        }, <span class="tok-num">1000</span>);
+    });
+
+<span class="tok-fn">fetchData</span>()
+    .<span class="tok-fn">then</span>(data  =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"成功："</span>, data))
+    .<span class="tok-fn">catch</span>(err  =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(<span class="tok-str">"失败："</span>, err))
+    .<span class="tok-fn">finally</span>(() =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"结束"</span>));</code></pre>
+</div>
+
+<h3>23.3 Promise 链</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">fetch</span>(<span class="tok-str">"/api/user/1"</span>)
+    .<span class="tok-fn">then</span>(r =&gt; r.<span class="tok-fn">json</span>())           <span class="tok-com">// 解析 JSON</span>
+    .<span class="tok-fn">then</span>(user =&gt; <span class="tok-fn">fetch</span>(<span class="tok-str">`/api/posts?uid=</span><span class="tok-op">${</span>user.id<span class="tok-op">}</span><span class="tok-str">`</span>))
+    .<span class="tok-fn">then</span>(r =&gt; r.<span class="tok-fn">json</span>())
+    .<span class="tok-fn">then</span>(posts =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(posts))
+    .<span class="tok-fn">catch</span>(err =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(err));</code></pre>
+</div>
+
+<h3>23.4 Promise.all 并发</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 等所有完成</span>
+<span class="tok-fn">Promise</span>.<span class="tok-fn">all</span>([
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/a"</span>),
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/b"</span>),
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/c"</span>)
+])
+.<span class="tok-fn">then</span>(arr =&gt; <span class="tok-fn">Promise</span>.<span class="tok-fn">all</span>(arr.<span class="tok-fn">map</span>(r =&gt; r.<span class="tok-fn">json</span>())))
+.<span class="tok-fn">then</span>(data =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(data));
+
+<span class="tok-com">// 任一成功即可</span>
+<span class="tok-fn">Promise</span>.<span class="tok-fn">race</span>([req1, req2]).<span class="tok-fn">then</span>(useFastest);
+
+<span class="tok-com">// 全部完成（含失败）</span>
+<span class="tok-fn">Promise</span>.<span class="tok-fn">allSettled</span>([...]).<span class="tok-fn">then</span>(showAll);</code></pre>
+</div>
+</section>
+
+<!-- ========== 24 ========== -->
+<section id="s24">
+<h2 data-num="24">async / await ⭐⭐⭐</h2>
+
+<h3>24.1 写法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">async function</span> <span class="tok-fn">getStudents</span>() {
+    <span class="tok-key">try</span> {
+        <span class="tok-key">const</span> res = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/students"</span>);
+        <span class="tok-key">if</span> (!res.ok) <span class="tok-key">throw</span> <span class="tok-key">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`HTTP </span><span class="tok-op">${</span>res.status<span class="tok-op">}</span><span class="tok-str">`</span>);
+        <span class="tok-key">const</span> list = <span class="tok-key">await</span> res.<span class="tok-fn">json</span>();
+        <span class="tok-key">return</span> list;
+    } <span class="tok-key">catch</span> (err) {
+        <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(<span class="tok-str">"加载失败："</span>, err);
+    }
+}
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">getStudents</span>());  <span class="tok-com">// 返回 Promise</span></code></pre>
+</div>
+
+<h3>24.2 与 Promise 对比</h3>
+<table>
+<tr><th>维度</th><th>.then() 链</th><th>async/await</th></tr>
+<tr><td>可读性</td><td>嵌套多时代码深</td><td>同步风格</td></tr>
+<tr><td>错误处理</td><td>.catch()</td><td>try/catch</td></tr>
+<tr><td>并行请求</td><td>Promise.all</td><td>同 Promise.all</td></tr>
+<tr><td>推荐度</td><td>需要兼容旧代码时</td><td>✅ 现代首选</td></tr>
+</table>
+
+<div class="tip"><strong>async/await 是现代 JavaScript 异步编程的核心语法。</strong>能用就用。</div>
+</section>
+
+<!-- ========== 25 ========== -->
+<section id="s25">
+<h2 data-num="25">DOM 基础 ⭐⭐⭐</h2>
+
+<div class="tip"><strong>DOM = Document Object Model</strong>，浏览器把 HTML 转成树形结构，JS 通过操作这棵树来改变页面。</div>
+
+<h3>25.1 DOM 树结构</h3>
+<div class="diagram">
+<svg width="700" height="280" viewBox="0 0 700 280">
+  <rect x="280" y="20" width="140" height="40" fill="#2a2a2a" stroke="#F7DF1E" stroke-width="2" rx="6"/>
+  <text x="350" y="45" text-anchor="middle" fill="#F7DF1E" font-size="14" font-weight="700">document</text>
+
+  <rect x="60" y="100" width="140" height="40" fill="#2a2a2a" stroke="#FF8C00" stroke-width="2" rx="6"/>
+  <text x="130" y="125" text-anchor="middle" fill="#FF8C00" font-size="13" font-weight="600">&lt;html&gt;</text>
+
+  <rect x="280" y="100" width="140" height="40" fill="#2a2a2a" stroke="#FF8C00" stroke-width="2" rx="6"/>
+  <text x="350" y="125" text-anchor="middle" fill="#FF8C00" font-size="13" font-weight="600">&lt;body&gt;</text>
+
+  <rect x="500" y="100" width="140" height="40" fill="#2a2a2a" stroke="#FF8C00" stroke-width="2" rx="6"/>
+  <text x="570" y="125" text-anchor="middle" fill="#FF8C00" font-size="13" font-weight="600">&lt;head&gt;</text>
+
+  <line x1="350" y1="60" x2="130" y2="100" stroke="#FFB627" stroke-width="2"/>
+  <line x1="350" y1="60" x2="350" y2="100" stroke="#FFB627" stroke-width="2"/>
+  <line x1="350" y1="60" x2="570" y2="100" stroke="#FFB627" stroke-width="2"/>
+
+  <rect x="120" y="190" width="120" height="36" fill="#1f1f1f" stroke="#FFD54F" stroke-width="2" rx="4"/>
+  <text x="180" y="213" text-anchor="middle" fill="#FFD54F" font-size="12">&lt;h1&gt;</text>
+
+  <rect x="280" y="190" width="120" height="36" fill="#1f1f1f" stroke="#FFD54F" stroke-width="2" rx="4"/>
+  <text x="340" y="213" text-anchor="middle" fill="#FFD54F" font-size="12">&lt;p&gt;</text>
+
+  <rect x="440" y="190" width="120" height="36" fill="#1f1f1f" stroke="#FFD54F" stroke-width="2" rx="4"/>
+  <text x="500" y="213" text-anchor="middle" fill="#FFD54F" font-size="12">&lt;button&gt;</text>
+
+  <line x1="130" y1="140" x2="180" y2="190" stroke="#FFB627"/>
+  <line x1="350" y1="140" x2="340" y2="190" stroke="#FFB627"/>
+  <line x1="350" y1="140" x2="500" y2="190" stroke="#FFB627"/>
+
+  <text x="350" y="260" text-anchor="middle" fill="#FFB627" font-size="12">
+    每个 HTML 标签变成一个节点(Node)，JS 通过节点对象操作网页
+  </text>
+</svg>
+</div>
+
+<h3>25.2 第一个完整例子</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-op">&lt;</span><span class="tok-key">h1</span> <span class="tok-prop">id</span>=<span class="tok-str">"title"</span><span class="tok-op">&gt;</span>Hello<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">h1</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">id</span>=<span class="tok-str">"btn"</span><span class="tok-op">&gt;</span>改文字<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">script</span><span class="tok-op">&gt;</span>
+    <span class="tok-key">const</span> title = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"title"</span>);
+    <span class="tok-key">const</span> btn   = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"btn"</span>);
+
+    btn.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, () =&gt; {
+        title.<span class="tok-prop">textContent</span> = <span class="tok-str">"Hello JavaScript"</span>;
+        title.<span class="tok-prop">style</span>.<span class="tok-prop">color</span> = <span class="tok-str">"#F7DF1E"</span>;
+    });
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">script</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 26 ========== -->
+<section id="s26">
+<h2 data-num="26">获取与修改元素 ⭐⭐⭐</h2>
+
+<h3>26.1 获取元素</h3>
+<table>
+<tr><th>方法</th><th>返回</th><th>用法</th></tr>
+<tr><td><code>getElementById(id)</code></td><td>单元素</td><td>知道 id</td></tr>
+<tr><td><code>querySelector(sel)</code></td><td>第一个匹配</td><td><code>"#id"</code> / <code>".cls"</code> / <code>"div"</code></td></tr>
+<tr><td><code>querySelectorAll(sel)</code></td><td>NodeList（类数组）</td><td>全部匹配</td></tr>
+<tr><td><code>getElementsByClassName(c)</code></td><td>HTMLCollection</td><td>旧 API，少用</td></tr>
+<tr><td><code>getElementsByTagName(t)</code></td><td>HTMLCollection</td><td>旧 API</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> one   = <span class="tok-fn">document</span>.<span class="tok-fn">querySelector</span>(<span class="tok-str">"#title"</span>);
+<span class="tok-key">const</span> all   = <span class="tok-fn">document</span>.<span class="tok-fn">querySelectorAll</span>(<span class="tok-str">"li.item"</span>);
+<span class="tok-key">const</span> cards = [...all];</code></pre>
+</div>
+
+<h3>26.2 修改内容</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> el = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"title"</span>);
+
+el.textContent = <span class="tok-str">"纯文本"</span>;          <span class="tok-com">// 推荐：纯文本</span>
+el.innerHTML   = <span class="tok-str">"&lt;b&gt;含 HTML&lt;/b&gt;"</span>; <span class="tok-com">// 可写 HTML（注意 XSS）</span>
+
+<span class="tok-key">const</span> input = <span class="tok-fn">document</span>.<span class="tok-fn">querySelector</span>(<span class="tok-str">"input"</span>);
+input.value = <span class="tok-str">"hello"</span>;                <span class="tok-com">// 表单值</span></code></pre>
+</div>
+
+<h3>26.3 属性</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> img = <span class="tok-fn">document</span>.<span class="tok-fn">querySelector</span>(<span class="tok-str">"img"</span>);
+
+img.<span class="tok-fn">setAttribute</span>(<span class="tok-str">"src"</span>, <span class="tok-str">"/a.jpg"</span>);
+img.<span class="tok-fn">getAttribute</span>(<span class="tok-str">"alt"</span>);
+img.<span class="tok-fn">removeAttribute</span>(<span class="tok-str">"title"</span>);
+
+<span class="tok-com">// 标准属性更直接</span>
+img.src = <span class="tok-str">"/a.jpg"</span>;
+img.id  = <span class="tok-str">"avatar"</span>;</code></pre>
+</div>
+
+<h3>26.4 修改样式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> box = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"box"</span>);
+
+<span class="tok-com">// 内联样式（注意命名：backgroundColor）</span>
+box.<span class="tok-prop">style</span>.<span class="tok-prop">color</span>           = <span class="tok-str">"red"</span>;
+box.<span class="tok-prop">style</span>.<span class="tok-prop">backgroundColor</span> = <span class="tok-str">"#222"</span>;
+box.<span class="tok-prop">style</span>.<span class="tok-prop">fontSize</span>        = <span class="tok-str">"20px"</span>;
+
+<span class="tok-com">// class 控制（推荐！样式写在 CSS 里）</span>
+box.<span class="tok-prop">classList</span>.<span class="tok-fn">add</span>(<span class="tok-str">"active"</span>);
+box.<span class="tok-prop">classList</span>.<span class="tok-fn">remove</span>(<span class="tok-str">"hide"</span>);
+box.<span class="tok-prop">classList</span>.<span class="tok-fn">toggle</span>(<span class="tok-str">"open"</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(box.<span class="tok-prop">classList</span>.<span class="tok-fn">contains</span>(<span class="tok-str">"active"</span>));</code></pre>
+</div>
+</section>
+
+<!-- ========== 27 ========== -->
+<section id="s27">
+<h2 data-num="27">创建与删除元素 ⭐⭐⭐</h2>
+
+<h3>27.1 综合案例：动态学生列表</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML + JS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- index.html --&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">input</span> <span class="tok-prop">id</span>=<span class="tok-str">"name"</span> <span class="tok-prop">placeholder</span>=<span class="tok-str">"姓名"</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">input</span> <span class="tok-prop">id</span>=<span class="tok-str">"score"</span> <span class="tok-prop">type</span>=<span class="tok-str">"number"</span> <span class="tok-prop">placeholder</span>=<span class="tok-str">"分数"</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">id</span>=<span class="tok-str">"add"</span><span class="tok-op">&gt;</span>添加学生<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">ul</span> <span class="tok-prop">id</span>=<span class="tok-str">"list"</span><span class="tok-op">&gt;</span><span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">ul</span><span class="tok-op">&gt;</span>
+
+<span class="tok-op">&lt;</span><span class="tok-key">script</span><span class="tok-op">&gt;</span>
+    <span class="tok-key">const</span> list = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"list"</span>);
+    <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"add"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, () =&gt; {
+        <span class="tok-key">const</span> name  = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"name"</span>).value;
+        <span class="tok-key">const</span> score = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"score"</span>).value;
+        <span class="tok-key">if</span> (!name) <span class="tok-key">return</span>;
+
+        <span class="tok-key">const</span> li = <span class="tok-fn">document</span>.<span class="tok-fn">createElement</span>(<span class="tok-str">"li"</span>);
+        li.<span class="tok-prop">textContent</span> = <span class="tok-str">`</span><span class="tok-op">${</span>name<span class="tok-op">}</span><span class="tok-str"> - </span><span class="tok-op">${</span>score<span class="tok-op">}</span><span class="tok-str">分`</span>;
+
+        <span class="tok-key">const</span> del = <span class="tok-fn">document</span>.<span class="tok-fn">createElement</span>(<span class="tok-str">"button"</span>);
+        del.<span class="tok-prop">textContent</span> = <span class="tok-str">"删除"</span>;
+        del.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, () =&gt; li.<span class="tok-fn">remove</span>());
+
+        li.<span class="tok-fn">appendChild</span>(del);
+        list.<span class="tok-fn">appendChild</span>(li);
+    });
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">script</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 28 ========== -->
+<section id="s28">
+<h2 data-num="28">事件 ⭐⭐⭐</h2>
+
+<h3>28.1 常用事件</h3>
+<table>
+<tr><th>类别</th><th>事件</th></tr>
+<tr><td>鼠标</td><td><code>click</code> <code>dblclick</code> <code>mouseover</code> <code>mouseout</code> <code>mousemove</code></td></tr>
+<tr><td>键盘</td><td><code>keydown</code> <code>keyup</code> <code>keypress</code></td></tr>
+<tr><td>表单</td><td><code>submit</code> <code>input</code> <code>change</code> <code>focus</code> <code>blur</code></td></tr>
+<tr><td>窗口</td><td><code>load</code> <code>resize</code> <code>scroll</code></td></tr>
+</table>
+
+<h3>28.2 addEventListener（推荐）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> btn = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"btn"</span>);
+
+btn.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-key">function</span>(event) {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"按钮被点击"</span>);
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(event.<span class="tok-prop">target</span>);  <span class="tok-com">// 触发元素</span>
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(event.<span class="tok-prop">type</span>);    <span class="tok-com">// "click"</span>
+});
+
+<span class="tok-com">// 移除监听</span>
+<span class="tok-key">function</span> <span class="tok-fn">onClick</span>() { <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"a"</span>); }
+btn.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, onClick);
+btn.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"click"</span>, onClick);</code></pre>
+</div>
+
+<h3>28.3 事件对象 event</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>event.<span class="tok-prop">target</span>           <span class="tok-com">// 触发事件的元素</span>
+event.<span class="tok-prop">currentTarget</span>   <span class="tok-com">// 绑定事件的元素</span>
+event.<span class="tok-prop">type</span>             <span class="tok-com">// 事件类型</span>
+event.<span class="tok-fn">preventDefault</span>()<span class="tok-com">// 阻止默认行为（如表单提交）</span>
+event.<span class="tok-fn">stopPropagation</span>()<span class="tok-com">// 停止冒泡</span>
+
+<span class="tok-com">// 键盘事件</span>
+input.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"keydown"</span>, e =&gt; {
+    <span class="tok-key">if</span> (e.<span class="tok-prop">key</span> === <span class="tok-str">"Enter"</span>) <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"按了回车"</span>);
+    <span class="tok-key">if</span> (e.<span class="tok-prop">ctrlKey</span> &amp;&amp; e.<span class="tok-prop">key</span> === <span class="tok-str">"s"</span>)
+        <span class="tok-fn">alert</span>(<span class="tok-str">"Ctrl+S"</span>);
+});</code></pre>
+</div>
+</section>
+
+<!-- ========== 29 ========== -->
+<section id="s29">
+<h2 data-num="29">事件冒泡与委托 ⭐⭐</h2>
+
+<h3>29.1 三个阶段</h3>
+<div class="diagram">
+<svg width="700" height="170" viewBox="0 0 700 170">
+  <rect x="40" y="30" width="620" height="40" fill="#1f1f1f" stroke="#F7DF1E" rx="4"/>
+  <text x="350" y="55" text-anchor="middle" fill="#F7DF1E" font-size="13" font-weight="600">捕获阶段 Capture</text>
+
+  <rect x="40" y="80" width="620" height="40" fill="#1f1f1f" stroke="#FF8C00" rx="4"/>
+  <text x="350" y="105" text-anchor="middle" fill="#FF8C00" font-size="13" font-weight="600">目标阶段 Target</text>
+
+  <rect x="40" y="130" width="620" height="40" fill="#1f1f1f" stroke="#FFD54F" rx="4"/>
+  <text x="350" y="155" text-anchor="middle" fill="#FFD54F" font-size="13" font-weight="600">冒泡阶段 Bubble</text>
+
+  <text x="660" y="55" text-anchor="end" fill="#888" font-size="11">document → ... → 父</text>
+  <text x="660" y="105" text-anchor="end" fill="#888" font-size="11">当前元素</text>
+  <text x="660" y="155" text-anchor="end" fill="#888" font-size="11">父 → ... → document</text>
+</svg>
+</div>
+
+<h3>29.2 事件委托</h3>
+<p>把监听器挂到父元素，<strong>利用冒泡</strong>统一处理子元素。</p>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 1000 个 li，只需要 1 个监听</span>
+<span class="tok-key">const</span> ul = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"list"</span>);
+ul.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, e =&gt; {
+    <span class="tok-key">if</span> (e.<span class="tok-prop">target</span>.<span class="tok-prop">tagName</span> === <span class="tok-str">"LI"</span>) {
+        <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"点了："</span>, e.<span class="tok-prop">target</span>.<span class="tok-prop">textContent</span>);
+    }
+});
+
+<span class="tok-com">// 第三个参数 true = 走捕获阶段（默认 false 走冒泡）</span>
+el.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, handler, <span class="tok-key">true</span>);</code></pre>
+</div>
+</section>
+
+<!-- ========== 30 ========== -->
+<section id="s30">
+<h2 data-num="30">BOM 与定时器 ⭐⭐</h2>
+
+<h3>30.1 五大对象</h3>
+<table>
+<tr><th>对象</th><th>作用</th></tr>
+<tr><td><code>window</code></td><td>全局 + 弹窗 + 帧控制</td></tr>
+<tr><td><code>navigator</code></td><td>浏览器信息</td></tr>
+<tr><td><code>location</code></td><td>URL 操作</td></tr>
+<tr><td><code>history</code></td><td>前进/后退</td></tr>
+<tr><td><code>screen</code></td><td>屏幕宽高</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">location</span>.<span class="tok-prop">href</span>             <span class="tok-com">// 当前完整 URL</span>
+<span class="tok-fn">location</span>.<span class="tok-fn">reload</span>()        <span class="tok-com">// 刷新</span>
+<span class="tok-fn">location</span>.<span class="tok-fn">assign</span>(<span class="tok-str">"/home"</span>)  <span class="tok-com">// 跳转</span>
+
+<span class="tok-fn">history</span>.<span class="tok-fn">back</span>()           <span class="tok-com">// 后退</span>
+<span class="tok-fn">history</span>.<span class="tok-fn">forward</span>()       <span class="tok-com">// 前进</span>
+<span class="tok-fn">history</span>.<span class="tok-fn">go</span>(- <span class="tok-num">2</span>)           <span class="tok-com">// 退回 2 步</span>
+
+<span class="tok-fn">alert</span>(<span class="tok-str">"提示"</span>)         <span class="tok-com">// 警告框</span>
+<span class="tok-fn">confirm</span>(<span class="tok-str">"确定吗?"</span>)   <span class="tok-com">// 确认框（返回布尔）</span>
+<span class="tok-fn">prompt</span>(<span class="tok-str">"姓名："</span>)     <span class="tok-com">// 输入框（返回字符串）</span></code></pre>
+</div>
+
+<h3>30.2 定时器综合案例：倒计时</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> sec = <span class="tok-num">10</span>;
+<span class="tok-key">const</span> h = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"h"</span>);
+
+<span class="tok-key">const</span> timer = <span class="tok-fn">setInterval</span>(() =&gt; {
+    h.<span class="tok-prop">textContent</span> = <span class="tok-str">`剩余 </span><span class="tok-op">${</span>sec<span class="tok-op">}</span><span class="tok-str"> 秒`</span>;
+    <span class="tok-key">if</span> (--sec === <span class="tok-num">0</span>) {
+        <span class="tok-fn">clearInterval</span>(timer);   <span class="tok-com">// 停止</span>
+        h.<span class="tok-prop">textContent</span> = <span class="tok-str">"时间到！"</span>;
+    }
+}, <span class="tok-num">1000</span>);
+
+<span class="tok-com">// 单次延迟</span>
+<span class="tok-key">const</span> t = <span class="tok-fn">setTimeout</span>(() =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"1 秒后"</span>), <span class="tok-num">1000</span>);
+<span class="tok-fn">clearTimeout</span>(t);  <span class="tok-com">// 取消</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 31 ========== -->
+<section id="s31">
+<h2 data-num="31">Fetch API ⭐⭐⭐</h2>
+
+<h3>31.1 两种写法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript (Promise 链)</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">fetch</span>(<span class="tok-str">"/api/students"</span>)
+    .<span class="tok-fn">then</span>(r =&gt; {
+        <span class="tok-key">if</span> (!r.ok) <span class="tok-key">throw</span> <span class="tok-key">new</span> <span class="tok-fn">Error</span>(<span class="tok-fn">String</span>(r.status));
+        <span class="tok-key">return</span> r.<span class="tok-fn">json</span>();
+    })
+    .<span class="tok-fn">then</span>(data =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(data))
+    .<span class="tok-fn">catch</span>(err =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(err));</code></pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript (async/await)</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">async function</span> <span class="tok-fn">load</span>() {
+    <span class="tok-key">try</span> {
+        <span class="tok-key">const</span> r = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/students"</span>);
+        <span class="tok-key">const</span> data = <span class="tok-key">await</span> r.<span class="tok-fn">json</span>();
+        <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(data);
+    } <span class="tok-key">catch</span> (e) {
+        <span class="tok-fn">console</span>.<span class="tok-fn">error</span>(e);
+    }
+}</code></pre>
+</div>
+
+<h3>31.2 发送 POST</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-fn">fetch</span>(<span class="tok-str">"/api/students"</span>, {
+    <span class="tok-prop">method</span>: <span class="tok-str">"POST"</span>,
+    <span class="tok-prop">headers</span>: { <span class="tok-str">"Content-Type"</span>: <span class="tok-str">"application/json"</span> },
+    <span class="tok-prop">body</span>: <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>({ name: <span class="tok-str">"张三"</span>, score: <span class="tok-num">95</span> })
+})
+.<span class="tok-fn">then</span>(r =&gt; r.<span class="tok-fn">json</span>())
+.<span class="tok-fn">then</span>(d =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"已添加"</span>, d));</code></pre>
+</div>
+</section>
+
+<!-- ========== 32 ========== -->
+<section id="s32">
+<h2 data-num="32">HTTP 基础 ⭐⭐⭐</h2>
+
+<h3>32.1 请求响应流程</h3>
+<div class="card info">
+<div class="card-title">🌐 HTTP 一次往返</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+浏览器 → (请求 Request) → 服务器
+       ← (响应 Response) ←
+</pre>
+</div>
+
+<h3>32.2 常用方法</h3>
+<table>
+<tr><th>方法</th><th>语义</th><th>是否带 body</th></tr>
+<tr><td>GET</td><td>获取</td><td>否</td></tr>
+<tr><td>POST</td><td>新增</td><td>是</td></tr>
+<tr><td>PUT</td><td>整体修改</td><td>是</td></tr>
+<tr><td>PATCH</td><td>局部修改</td><td>是</td></tr>
+<tr><td>DELETE</td><td>删除</td><td>否</td></tr>
+</table>
+
+<h3>32.3 状态码速查</h3>
+<table>
+<tr><th>范围</th><th>含义</th><th>例子</th></tr>
+<tr><td>2xx</td><td>成功</td><td>200 OK, 201 Created</td></tr>
+<tr><td>3xx</td><td>重定向</td><td>301 Moved, 304 Not Modified</td></tr>
+<tr><td>4xx</td><td>客户端错</td><td>400 参数错, 401 未登录, 404 找不到, 429 太频繁</td></tr>
+<tr><td>5xx</td><td>服务器错</td><td>500 内部错误, 503 服务不可用</td></tr>
+</table>
+
+<h3>32.4 JSON 互转</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> obj = { name: <span class="tok-str">"张三"</span>, age: <span class="tok-num">18</span> };
+
+<span class="tok-key">const</span> json = <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(obj);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(json);   <span class="tok-com">// '{"name":"张三","age":18}'</span>
+
+<span class="tok-key">const</span> back = <span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(json);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(back.name);   <span class="tok-com">// "张三"</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 33 ========== -->
+<section id="s33">
+<h2 data-num="33">Web Storage（本地存储）⭐⭐⭐</h2>
+
+<h3>33.1 localStorage vs sessionStorage</h3>
+<table>
+<tr><th></th><th>localStorage</th><th>sessionStorage</th></tr>
+<tr><td>生命周期</td><td>永久（除非手动删）</td><td>关闭标签页即清</td></tr>
+<tr><td>容量</td><td>~5MB</td><td>~5MB</td></tr>
+<tr><td>作用域</td><td>同源共享</td><td>仅当前标签</td></tr>
+</table>
+
+<h3>33.2 浏览器记事本项目</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> KEY = <span class="tok-str">"notes"</span>;
+
+<span class="tok-key">function</span> <span class="tok-fn">save</span>() {
+    <span class="tok-key">const</span> text = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"content"</span>).value;
+    <span class="tok-key">const</span> list = <span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(<span class="tok-fn">localStorage</span>.<span class="tok-fn">getItem</span>(KEY) || <span class="tok-str">"[]"</span>);
+    list.<span class="tok-fn">push</span>({ text, at: <span class="tok-fn">Date</span>.<span class="tok-fn">now</span>() });
+    <span class="tok-fn">localStorage</span>.<span class="tok-fn">setItem</span>(KEY, <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(list));
+    <span class="tok-fn">render</span>();
+}
+
+<span class="tok-key">function</span> <span class="tok-fn">render</span>() {
+    <span class="tok-key">const</span> list = <span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(<span class="tok-fn">localStorage</span>.<span class="tok-fn">getItem</span>(KEY) || <span class="tok-str">"[]"</span>);
+    <span class="tok-key">const</span> ul = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"notes"</span>);
+    ul.innerHTML = <span class="tok-str">""</span>;
+    list.<span class="tok-fn">forEach</span>(n =&gt; {
+        <span class="tok-key">const</span> li = <span class="tok-fn">document</span>.<span class="tok-fn">createElement</span>(<span class="tok-str">"li"</span>);
+        li.<span class="tok-prop">textContent</span> = n.text;
+        ul.<span class="tok-fn">appendChild</span>(li);
+    });
+}
+
+<span class="tok-fn">sessionStorage</span>.<span class="tok-fn">setItem</span>(<span class="tok-str">"temp"</span>, <span class="tok-str">"标签页一关就清"</span>);</code></pre>
+</div>
+</section>
+
+<!-- ========== 34 ========== -->
+<section id="s34">
+<h2 data-num="34">表单与正则 ⭐⭐</h2>
+
+<h3>34.1 表单提交 + 阻止默认</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML + JS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-op">&lt;</span><span class="tok-key">form</span> <span class="tok-prop">id</span>=<span class="tok-str">"f"</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-key">input</span> <span class="tok-prop">name</span>=<span class="tok-str">"email"</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-key">input</span> <span class="tok-prop">name</span>=<span class="tok-str">"pwd"</span> <span class="tok-prop">type</span>=<span class="tok-str">"password"</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>提交<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">form</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-key">script</span><span class="tok-op">&gt;</span>
+<span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"f"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"submit"</span>, e =&gt; {
+    e.<span class="tok-fn">preventDefault</span>();   <span class="tok-com">// 阻止页面刷新</span>
+    <span class="tok-key">const</span> data = <span class="tok-fn">Object</span>.<span class="tok-fn">fromEntries</span>(<span class="tok-key">new</span> <span class="tok-fn">FormData</span>(e.<span class="tok-prop">target</span>));
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(data);   <span class="tok-com">// { email: "...", pwd: "..." }</span>
+});
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">script</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+
+<h3>34.2 RegExp：常用正则</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> emailRe = <span class="tok-str">/^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/</span>;
+<span class="tok-key">const</span> phoneRe = <span class="tok-str">/^1[3-9]\d{9}$/</span>;
+<span class="tok-key">const</span> userRe  = <span class="tok-str">/^[a-zA-Z][\w]{3,15}$/</span>;
+
+<span class="tok-fn">emailRe</span>.<span class="tok-fn">test</span>(<span class="tok-str">"alice@school.edu"</span>);   <span class="tok-com">// true</span>
+<span class="tok-fn">phoneRe</span>.<span class="tok-fn">test</span>(<span class="tok-str">"13800138000"</span>);       <span class="tok-com">// true</span>
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"a1b2c3"</span>.<span class="tok-fn">match</span>(<span class="tok-str">/\d+/g</span>));  <span class="tok-com">// ["1","2","3"]</span>
+
+<span class="tok-str">"a,b,c"</span>.<span class="tok-fn">replace</span>(<span class="tok-str">/,/g</span>, <span class="tok-str">"-"</span>);   <span class="tok-com">// "a-b-c"</span></code></pre>
+</div>
+
+<h3>34.3 综合：表单验证</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">function</span> <span class="tok-fn">validate</span>({ email, phone }) {
+    <span class="tok-key">const</span> errors = {};
+    <span class="tok-key">if</span> (!<span class="tok-fn">/^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/</span>.<span class="tok-fn">test</span>(email))
+        errors.email = <span class="tok-str">"邮箱格式不对"</span>;
+    <span class="tok-key">if</span> (!<span class="tok-fn">/^1[3-9]\d{9}$/</span>.<span class="tok-fn">test</span>(phone))
+        errors.phone = <span class="tok-str">"手机号 11 位"</span>;
+    <span class="tok-key">return</span> errors;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 35 ========== -->
+<section id="s35">
+<h2 data-num="35">JavaScript 调试 ⭐⭐⭐</h2>
+
+<h3>35.1 console 三件套</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> data = [
+    { name: <span class="tok-str">"张三"</span>, age: <span class="tok-num">18</span>, score: <span class="tok-num">95</span> },
+    { name: <span class="tok-str">"李四"</span>, age: <span class="tok-num">19</span>, score: <span class="tok-num">82</span> }
+];
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"普通日志"</span>, data);
+<span class="tok-fn">console</span>.<span class="tok-fn">table</span>(data);           <span class="tok-com">// 表格化展示</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">error</span>(<span class="tok-str">"报错信息"</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">warn</span>(<span class="tok-str">"警告"</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">dir</span>(data);             <span class="tok-com">// 显示对象结构</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">time</span>(<span class="tok-str">"耗时"</span>);
+<span class="tok-com">// ...</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">timeEnd</span>(<span class="tok-str">"耗时"</span>);</code></pre>
+</div>
+
+<h3>35.2 DevTools 断点流程</h3>
+<div class="card success">
+<div class="card-title">🪜 调试 4 步走</div>
+<ol style="padding-left:24px">
+<li><strong>读报错</strong>：Console 看红色错误，定位文件+行号</li>
+<li><strong>看堆栈</strong>：Call Stack 看调用顺序</li>
+<li><strong>打断点</strong>：Sources 面板点行号，F10 单步跳过、F11 进入</li>
+<li><strong>观察变量</strong>：右侧 Watch 加变量，Hover 源码可看值</li>
+</ol>
+</div>
+<div class="tip"><strong>核心能力：阅读错误信息 → 定位错误 → 修改代码 → 再运行。</strong>大一就要养成习惯。</div>
+</section>
+
+<!-- ========== 36 ========== -->
+<section id="s36">
+<h2 data-num="36">模块化 + npm + Node.js ⭐⭐</h2>
+
+<h3>36.1 ES Module（浏览器原生）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">math.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">export function</span> <span class="tok-fn">add</span>(a, b) { <span class="tok-key">return</span> a + b; }
+<span class="tok-key">export default</span> <span class="tok-key">function</span> <span class="tok-fn">sub</span>(a, b) { <span class="tok-key">return</span> a - b; }</code></pre>
+</div>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">app.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { add } <span class="tok-key">from</span> <span class="tok-str">"./math.js"</span>;
+<span class="tok-key">import</span> sub <span class="tok-key">from</span> <span class="tok-str">"./math.js"</span>;
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-fn">add</span>(<span class="tok-num">2</span>, <span class="tok-num">3</span>), <span class="tok-fn">sub</span>(<span class="tok-num">5</span>, <span class="tok-num">2</span>));</code></pre>
+</div>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">index.html</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-op">&lt;</span><span class="tok-key">script</span> <span class="tok-prop">type</span>=<span class="tok-str">"module"</span> <span class="tok-prop">src</span>=<span class="tok-str">"app.js"</span><span class="tok-op">&gt;</span><span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">script</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+
+<h3>36.2 npm 工作流</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">命令</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>npm init -y                      <span class="tok-com"># 生成 package.json</span>
+npm install lodash               <span class="tok-com"># 装到 dependencies</span>
+npm install --save-dev eslint    <span class="tok-com"># 装到 devDependencies</span>
+npm run dev                      <span class="tok-com"># 运行 package.json 的 scripts</span></code></pre>
+</div>
+
+<h3>36.3 Node.js 入门</h3>
+<div class="card info">
+<div class="card-title">🟢 Node.js 不是 JavaScript 语言，是 JS 运行环境</div>
+<p>它让 JS 能在服务器 / 命令行运行。<strong>大一入门不深入</strong>，只要知道能写后端即可。</p>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+node app.js         <span style="color:var(--accent2)"># 执行 JS</span>
+node --version      <span style="color:var(--accent2)"># 查版本</span>
+</pre>
+</div>
+</section>
+
+<!-- ========== 37 ========== -->
+<section id="s37">
+<h2 data-num="37">综合项目一：计算器 ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 1：网页计算器</div>
+<div class="proj-meta">
+<span>难度：⭐⭐</span><span>技术：HTML + CSS + JS</span><span>核心：DOM + 事件 + 函数</span>
+</div>
+
+<h3>思路</h3>
+<ol style="padding-left:24px">
+<li>HTML 网格布局数字按钮 + 显示屏</li>
+<li>用一个全局字符串保存当前表达式</li>
+<li>按下数字追加，按下运算追加符号</li>
+<li>按下 <code>=</code> 调用 <code>eval()</code> 计算（或自己写解析）</li>
+</ol>
+
+<h3>完整代码</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-op">&lt;</span><span class="tok-key">div</span> <span class="tok-prop">id</span>=<span class="tok-str">"calc"</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-key">div</span> <span class="tok-prop">id</span>=<span class="tok-str">"screen"</span><span class="tok-op">&gt;</span><span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">div</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-key">div</span> <span class="tok-prop">id</span>=<span class="tok-str">"pad"</span><span class="tok-op">&gt;</span>
+        <span class="tok-com">&lt;!-- 数字与运算按钮 --&gt;</span>
+        <span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">data-k</span>=<span class="tok-str">"C"</span><span class="tok-op">&gt;</span>C<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+        <span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">data-k</span>=<span class="tok-str">"/"</span><span class="tok-op">&gt;</span>÷<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+        <span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">data-k</span>=<span class="tok-str">"7"</span><span class="tok-op">&gt;</span>7<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+        <span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">data-k</span>=<span class="tok-str">"8"</span><span class="tok-op">&gt;</span>8<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+        <span class="tok-com">... 更多按钮 ...</span>
+        <span class="tok-op">&lt;</span><span class="tok-key">button</span> <span class="tok-prop">data-k</span>=<span class="tok-str">"="</span><span class="tok-op">&gt;</span>=<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">button</span><span class="tok-op">&gt;</span>
+    <span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">div</span><span class="tok-op">&gt;</span>
+<span class="tok-op">&lt;</span><span class="tok-op">/</span><span class="tok-key">div</span><span class="tok-op">&gt;</span></code></pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> expr = <span class="tok-str">""</span>;
+<span class="tok-key">const</span> screen = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"screen"</span>);
+
+<span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"pad"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, e =&gt; {
+    <span class="tok-key">const</span> k = e.<span class="tok-prop">target</span>.<span class="tok-prop">dataset</span>.<span class="tok-prop">k</span>;
+    <span class="tok-key">if</span> (!k) <span class="tok-key">return</span>;
+    <span class="tok-key">if</span> (k === <span class="tok-str">"C"</span>)      expr = <span class="tok-str">""</span>;
+    <span class="tok-key">else if</span> (k === <span class="tok-str">"="</span>) expr = <span class="tok-fn">String</span>(<span class="tok-fn">safeEval</span>(expr));
+    <span class="tok-key">else</span>                  expr += k;
+    screen.<span class="tok-prop">textContent</span> = expr;
+});
+
+<span class="tok-com">// 简易安全求值（真实项目请用第三方库）</span>
+<span class="tok-key">function</span> <span class="tok-fn">safeEval</span>(s) {
+    <span class="tok-key">if</span> (<span class="tok-str">!/^[\d+\-*/().\s]+$/</span>.<span class="tok-fn">test</span>(s)) <span class="tok-key">throw</span> <span class="tok-str">"含非法字符"</span>;
+    <span class="tok-key">return</span> <span class="tok-fn">Function</span>(<span class="tok-str">`"use strict"; return (</span><span class="tok-op">${</span>s<span class="tok-op">}</span><span class="tok-str">);`</span>)();
+}
+
+<span class="tok-com">// 键盘支持</span>
+<span class="tok-fn">document</span>.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"keydown"</span>, e =&gt; {
+    <span class="tok-key">if</span> (<span class="tok-str">"0123456789+-*/."</span>.<span class="tok-fn">includes</span>(e.<span class="tok-prop">key</span>))
+        expr += e.<span class="tok-prop">key</span>;
+    <span class="tok-key">else if</span> (e.<span class="tok-prop">key</span> === <span class="tok-str">"Enter"</span>) expr = <span class="tok-fn">String</span>(<span class="tok-fn">safeEval</span>(expr));
+    <span class="tok-key">else if</span> (e.<span class="tok-prop">key</span> === <span class="tok-str">"Backspace"</span>) expr = expr.<span class="tok-fn">slice</span>(<span class="tok-num">0</span>, -<span class="tok-num">1</span>);
+    <span class="tok-key">else if</span> (e.<span class="tok-prop">key</span> === <span class="tok-str">"Escape"</span>)    expr = <span class="tok-str">""</span>;
+    screen.<span class="tok-prop">textContent</span> = expr || <span class="tok-str">"0"</span>;
+});</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 38 ========== -->
+<section id="s38">
+<h2 data-num="38">综合项目二：Todo List ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 2：任务清单 Todo List</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>综合：DOM + 事件 + 数组 + localStorage</span>
+</div>
+
+<h3>完整实现</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> KEY = <span class="tok-str">"todo.list"</span>;
+<span class="tok-key">let</span> todos = <span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(<span class="tok-fn">localStorage</span>.<span class="tok-fn">getItem</span>(KEY) || <span class="tok-str">"[]"</span>);
+<span class="tok-key">let</span> filter = <span class="tok-str">"all"</span>;     <span class="tok-com">// all | active | done</span>
+
+<span class="tok-key">const</span> $input = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"input"</span>);
+<span class="tok-key">const</span> $list  = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"list"</span>);
+<span class="tok-key">const</span> $count = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"count"</span>);
+
+<span class="tok-key">function</span> <span class="tok-fn">save</span>()        { <span class="tok-fn">localStorage</span>.<span class="tok-fn">setItem</span>(KEY, <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(todos)); }
+<span class="tok-key">function</span> <span class="tok-fn">add</span>(text)      {
+    todos.<span class="tok-fn">push</span>({ id: <span class="tok-fn">Date</span>.<span class="tok-fn">now</span>(), text, done: <span class="tok-key">false</span> });
+}
+<span class="tok-key">function</span> <span class="tok-fn">toggle</span>(id)     {
+    <span class="tok-key">const</span> t = todos.<span class="tok-fn">find</span>(x =&gt; x.id === id);
+    <span class="tok-key">if</span> (t) t.done = !t.done;
+}
+<span class="tok-key">function</span> <span class="tok-fn">del</span>(id)        { todos = todos.<span class="tok-fn">filter</span>(x =&gt; x.id !== id); }
+<span class="tok-key">function</span> <span class="tok-fn">edit</span>(id, text) {
+    <span class="tok-key">const</span> t = todos.<span class="tok-fn">find</span>(x =&gt; x.id === id);
+    <span class="tok-key">if</span> (t) t.text = text;
+}
+
+<span class="tok-key">function</span> <span class="tok-fn">render</span>() {
+    $list.innerHTML = <span class="tok-str">""</span>;
+    <span class="tok-key">const</span> view = todos.<span class="tok-fn">filter</span>(t =&gt;
+        filter === <span class="tok-str">"all"</span> ||
+        (filter === <span class="tok-str">"active"</span> &amp;&amp; !t.done) ||
+        (filter === <span class="tok-str">"done"</span>  &amp;&amp;  t.done)
+    );
+    view.<span class="tok-fn">forEach</span>(t =&gt; {
+        <span class="tok-key">const</span> li = <span class="tok-fn">document</span>.<span class="tok-fn">createElement</span>(<span class="tok-str">"li"</span>);
+        li.<span class="tok-prop">dataset</span>.<span class="tok-prop">id</span> = t.id;
+        li.<span class="tok-prop">innerHTML</span> = <span class="tok-str">`
+            &lt;input type="checkbox" </span><span class="tok-op">${</span>t.done ? <span class="tok-str">"checked"</span> : <span class="tok-str">""</span><span class="tok-op">}</span><span class="tok-str">&gt;
+            &lt;span class="text"</span><span class="tok-op">${</span>t.done ? <span class="tok-str">" style=\"text-decoration:line-through\""</span> : <span class="tok-str">""</span><span class="tok-op">}</span><span class="tok-str">&gt;</span><span class="tok-op">${</span>t.text<span class="tok-op">}</span><span class="tok-str">&lt;/span&gt;
+            &lt;button class="del"&gt;×&lt;/button&gt;
+        `</span>;
+        $list.<span class="tok-fn">appendChild</span>(li);
+    });
+    $count.<span class="tok-prop">textContent</span> = todos.<span class="tok-fn">filter</span>(t =&gt; !t.done).length;
+}
+
+<span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"add"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, () =&gt; {
+    <span class="tok-key">const</span> text = $input.value.<span class="tok-fn">trim</span>();
+    <span class="tok-key">if</span> (text) { <span class="tok-fn">add</span>(text); <span class="tok-fn">save</span>(); <span class="tok-fn">render</span>(); }
+    $input.value = <span class="tok-str">""</span>;
+});
+
+<span class="tok-fn">$list</span>.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, e =&gt; {
+    <span class="tok-key">const</span> id = <span class="tok-fn">Number</span>(e.<span class="tok-prop">target</span>.<span class="tok-prop">closest</span>(<span class="tok-str">"li"</span>)?.<span class="tok-prop">dataset</span>.<span class="tok-prop">id</span>);
+    <span class="tok-key">if</span> (!id) <span class="tok-key">return</span>;
+    <span class="tok-key">if</span> (e.<span class="tok-prop">target</span>.<span class="tok-prop">matches</span>(<span class="tok-str">"input[type=checkbox]"</span>)) <span class="tok-fn">toggle</span>(id);
+    <span class="tok-key">else if</span> (e.<span class="tok-prop">target</span>.<span class="tok-prop">matches</span>(<span class="tok-str">".del"</span>))        <span class="tok-fn">del</span>(id);
+    <span class="tok-fn">save</span>();
+    <span class="tok-fn">render</span>();
+});
+
+<span class="tok-fn">render</span>();</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 39 ========== -->
+<section id="s39">
+<h2 data-num="39">综合项目三：学生成绩管理</h2>
+
+<div class="proj">
+<div class="proj-title">项目 3：学生成绩管理</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>综合：Array + Object + DOM + Event</span>
+</div>
+
+<h3>核心代码</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">let</span> students = [];     <span class="tok-com">// { id, name, score }</span>
+
+<span class="tok-key">function</span> <span class="tok-fn">addStudent</span>(name, score) {
+    students.<span class="tok-fn">push</span>({ id: <span class="tok-fn">Date</span>.<span class="tok-fn">now</span>(), name, score: <span class="tok-fn">Number</span>(score) });
+}
+<span class="tok-key">function</span> <span class="tok-fn">delStudent</span>(id)        { students = students.<span class="tok-fn">filter</span>(s =&gt; s.id !== id); }
+<span class="tok-key">function</span> <span class="tok-fn">updateStudent</span>(id, n, sc) {
+    <span class="tok-key">const</span> s = students.<span class="tok-fn">find</span>(x =&gt; x.id === id);
+    <span class="tok-key">if</span> (s) { s.name = n; s.score = sc; }
+}
+<span class="tok-key">function</span> <span class="tok-fn">search</span>(keyword) {
+    <span class="tok-key">return</span> students.<span class="tok-fn">filter</span>(s =&gt; s.name.<span class="tok-fn">includes</span>(keyword));
+}
+<span class="tok-key">function</span> <span class="tok-fn">stats</span>() {
+    <span class="tok-key">if</span> (!students.length) <span class="tok-key">return</span> <span class="tok-key">null</span>;
+    <span class="tok-key">const</span> scores = students.<span class="tok-fn">map</span>(s =&gt; s.score);
+    <span class="tok-key">return</span> {
+        avg:   (scores.<span class="tok-fn">reduce</span>((s,n)=&gt;s+n,<span class="tok-num">0</span>) / scores.length).<span class="tok-fn">toFixed</span>(<span class="tok-num">1</span>),
+        max:   <span class="tok-fn">Math</span>.<span class="tok-fn">max</span>(...scores),
+        min:   <span class="tok-fn">Math</span>.<span class="tok-fn">min</span>(...scores),
+        sorted: [...students].<span class="tok-fn">sort</span>((a,b) =&gt; b.score - a.score)
+    };
+}
+
+<span class="tok-comment">// 视图渲染（略，同 Todo 模式）</span>
+<span class="tok-key">function</span> <span class="tok-fn">render</span>() {
+    <span class="tok-key">const</span> t = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"tbody"</span>);
+    t.innerHTML = <span class="tok-str">""</span>;
+    students.<span class="tok-fn">forEach</span>(s =&gt; {
+        t.innerHTML += <span class="tok-str">`&lt;tr&gt;
+            &lt;td&gt;</span><span class="tok-op">${</span>s.name<span class="tok-op">}</span><span class="tok-str">&lt;/td&gt;
+            &lt;td&gt;</span><span class="tok-op">${</span>s.score<span class="tok-op">}</span><span class="tok-str">&lt;/td&gt;
+            &lt;td&gt;&lt;button data-del-id="</span><span class="tok-op">${</span>s.id<span class="tok-op">}</span><span class="tok-str">"&gt;删&lt;/button&gt;&lt;/td&gt;
+        &lt;/tr&gt;`</span>;
+    });
+    <span class="tok-key">const</span> st = <span class="tok-fn">stats</span>();
+    <span class="tok-key">if</span> (st) <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"stats"</span>).<span class="tok-prop">textContent</span> =
+        <span class="tok-str">`平均 </span><span class="tok-op">${</span>st.avg<span class="tok-op">}</span><span class="tok-str">  最高 </span><span class="tok-op">${</span>st.max<span class="tok-op">}</span><span class="tok-str">  最低 </span><span class="tok-op">${</span>st.min<span class="tok-op">}</span><span class="tok-str">`</span>;
+}</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 40 ========== -->
+<section id="s40">
+<h2 data-num="40">综合项目四：天气查询</h2>
+
+<div class="proj">
+<div class="proj-title">项目 4：实时天气查询</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>综合：Fetch + API + JSON + DOM</span>
+</div>
+
+<h3>流程</h3>
+<ol style="padding-left:24px">
+<li>用户输入城市名</li>
+<li>Fetch 调用 Open-Meteo / wttr.in 等<strong>免费</strong> API</li>
+<li>解析 JSON 渲染温度、湿度、风速、图标</li>
+</ol>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">async function</span> <span class="tok-fn">getWeather</span>(city) {
+    <span class="tok-com">// 第 1 步：地理编码</span>
+    <span class="tok-key">const</span> geoUrl = <span class="tok-str">`https://geocoding-api.open-meteo.com/v1/search?name=</span><span class="tok-op">${</span><span class="tok-fn">encodeURIComponent</span>(city)<span class="tok-op">}</span><span class="tok-str">`</span>;
+    <span class="tok-key">const</span> geoRes  = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(geoUrl);
+    <span class="tok-key">const</span> geo     = <span class="tok-key">await</span> geoRes.<span class="tok-fn">json</span>();
+    <span class="tok-key">if</span> (!geo.results) <span class="tok-key">throw</span> <span class="tok-str">"找不到城市"</span>;
+
+    <span class="tok-key">const</span> { latitude, longitude, name } = geo.results[<span class="tok-num">0</span>];
+
+    <span class="tok-com">// 第 2 步：天气数据</span>
+    <span class="tok-key">const</span> url = <span class="tok-str">`https://api.open-meteo.com/v1/forecast?latitude=</span><span class="tok-op">${</span>latitude<span class="tok-op">}</span><span class="tok-str">&amp;longitude=</span><span class="tok-op">${</span>longitude<span class="tok-op">}</span><span class="tok-str">&amp;current_weather=true`</span>;
+    <span class="tok-key">const</span> res  = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(url);
+    <span class="tok-key">const</span> data = <span class="tok-key">await</span> res.<span class="tok-fn">json</span>();
+
+    <span class="tok-key">return</span> {
+        name:    name,
+        temp:    data.current_weather.temperature,
+        wind:    data.current_weather.windspeed,
+        weather: data.current_weather.weathercode
+    };
+}
+
+<span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"search"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-key">async</span> () =&gt; {
+    <span class="tok-key">try</span> {
+        <span class="tok-key">const</span> city = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"city"</span>).value;
+        <span class="tok-key">const</span> w = <span class="tok-key">await</span> <span class="tok-fn">getWeather</span>(city);
+        <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"out"</span>).innerHTML =
+            <span class="tok-str">`&lt;h2&gt;</span><span class="tok-op">${</span>w.name<span class="tok-op">}</span><span class="tok-str">&lt;/h2&gt;
+             &lt;p&gt;</span><span class="tok-op">${</span>w.temp<span class="tok-op">}</span><span class="tok-str">°C · 风 </span><span class="tok-op">${</span>w.wind<span class="tok-op">}</span><span class="tok-str"> km/h&lt;/p&gt;`</span>;
+    } <span class="tok-key">catch</span> (e) {
+        <span class="tok-fn">alert</span>(e);
+    }
+});</code></pre>
+</div>
+<div class="tip"><strong>教学场景</strong>：让学生理解<em>前端 → 后端 → 数据</em> 的全链路。任何公开 REST API 都可以替换练习。</div>
+</div>
+</section>
+
+<!-- ========== 41 ========== -->
+<section id="s41">
+<h2 data-num="41">综合项目五：在线图书管理</h2>
+
+<div class="proj">
+<div class="proj-title">项目 5：在线图书管理系统（前端 + 模拟 REST）</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐⭐</span><span>综合：HTML + CSS + JS + Fetch + REST API + SQL</span>
+</div>
+
+<h3>架构</h3>
+<div class="card info">
+<div class="card-title">📚 全栈雏形</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+HTML（页面）
+  ↓
+CSS（视觉）
+  ↓
+JavaScript（逻辑）
+  ↓
+Fetch API（HTTP）
+  ↓
+REST API（后端接口）
+  ↓
+SQL（数据库）
+</pre>
+</div>
+
+<h3>前端代码（兼容本系列 SQL 教程）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> API = <span class="tok-str">"/api/books"</span>;
+
+<span class="tok-key">async function</span> <span class="tok-fn">listBooks</span>() {
+    <span class="tok-key">const</span> r = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(API);
+    <span class="tok-key">return</span> r.<span class="tok-fn">json</span>();
+}
+<span class="tok-key">async function</span> <span class="tok-fn">addBook</span>(book) {
+    <span class="tok-key">return</span> <span class="tok-fn">fetch</span>(API, {
+        <span class="tok-prop">method</span>: <span class="tok-str">"POST"</span>,
+        <span class="tok-prop">headers</span>: { <span class="tok-str">"Content-Type"</span>: <span class="tok-str">"application/json"</span> },
+        <span class="tok-prop">body</span>: <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(book)
+    });
+}
+<span class="tok-key">async function</span> <span class="tok-fn">deleteBook</span>(id) {
+    <span class="tok-key">return</span> <span class="tok-fn">fetch</span>(<span class="tok-str">`</span><span class="tok-op">${</span>API<span class="tok-op">}</span><span class="tok-str">/</span><span class="tok-op">${</span>id<span class="tok-op">}</span><span class="tok-str">`</span>, { <span class="tok-prop">method</span>: <span class="tok-str">"DELETE"</span> });
+}
+<span class="tok-key">async function</span> <span class="tok-fn">borrowBook</span>(id, user) {
+    <span class="tok-key">return</span> <span class="tok-fn">fetch</span>(<span class="tok-str">`</span><span class="tok-op">${</span>API<span class="tok-op">}</span><span class="tok-str">/</span><span class="tok-op">${</span>id<span class="tok-op">}</span><span class="tok-str">/borrow`</span>, {
+        <span class="tok-prop">method</span>: <span class="tok-str">"POST"</span>,
+        <span class="tok-prop">headers</span>: { <span class="tok-str">"Content-Type"</span>: <span class="tok-str">"application/json"</span> },
+        <span class="tok-prop">body</span>: <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>({ user })
+    });
+}
+
+<span class="tok-comment">// 视图渲染省略，结构同前几个项目</span></code></pre>
+</div>
+
+<h3>关联 SQL（对应本系列 SQL 教程"图书借阅"项目）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">SQL</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">CREATE TABLE</span> books (
+    id     <span class="tok-key">INT</span> <span class="tok-key">PRIMARY KEY AUTO_INCREMENT</span>,
+    title  <span class="tok-key">VARCHAR</span>(<span class="tok-num">100</span>),
+    author <span class="tok-key">VARCHAR</span>(<span class="tok-num">50</span>),
+    stock  <span class="tok-key">INT</span> <span class="tok-key">DEFAULT</span> <span class="tok-num">0</span>
+);
+<span class="tok-key">CREATE TABLE</span> borrows (
+    id      <span class="tok-key">INT</span> <span class="tok-key">PRIMARY KEY AUTO_INCREMENT</span>,
+    book_id <span class="tok-key">INT</span>,
+    user    <span class="tok-key">VARCHAR</span>(<span class="tok-num">50</span>),
+    <span class="tok-prop">borrowed_at</span> <span class="tok-key">TIMESTAMP</span> <span class="tok-key">DEFAULT</span> <span class="tok-fn">CURRENT_TIMESTAMP</span>,
+    <span class="tok-key">FOREIGN KEY</span> (book_id) <span class="tok-key">REFERENCES</span> books(id)
+);
+
+<span class="tok-key">SELECT</span> b.title, b.author, <span class="tok-fn">COUNT</span>(br.id) <span class="tok-key">AS</span> times
+<span class="tok-key">FROM</span> books b <span class="tok-key">LEFT JOIN</span> borrows br <span class="tok-key">ON</span> b.id = br.book_id
+<span class="tok-key">GROUP BY</span> b.id
+<span class="tok-key">ORDER BY</span> times <span class="tok-key">DESC</span>;</code></pre>
+</div>
+<div class="tip">这一章是<strong>前后端合流</strong>，自然衔接到前面学的 SQL。</div>
+</div>
+</section>
+
+<!-- ========== 42 ========== -->
+<section id="s42">
+<h2 data-num="42">数据结构与算法入门 ⭐⭐</h2>
+
+<h3>42.1 简单数据结构</h3>
+<table>
+<tr><th>结构</th><th>JS 实现思路</th></tr>
+<tr><td>栈（Stack）</td><td><code>push</code> / <code>pop</code>——先进后出</td></tr>
+<tr><td>队列（Queue）</td><td><code>push</code> + <code>shift</code>——先进先出</td></tr>
+<tr><td>哈希表</td><td>Object / Map</td></tr>
+<tr><td>集合</td><td>Set</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">// 栈</span>
+<span class="tok-key">const</span> stack = [];
+stack.<span class="tok-fn">push</span>(<span class="tok-num">1</span>);  stack.<span class="tok-fn">push</span>(<span class="tok-num">2</span>);
+stack.<span class="tok-fn">pop</span>();        <span class="tok-com">// 2</span>
+
+<span class="tok-com">// 队列：shift 是 O(n)，用 index 优化</span>
+<span class="tok-key">const</span> q = [];
+<span class="tok-key">let</span> head = <span class="tok-num">0</span>;
+q.<span class="tok-fn">push</span>(<span class="tok-num">1</span>); q.<span class="tok-fn">push</span>(<span class="tok-num">2</span>);
+<span class="tok-key">const</span> first = q[head++];   <span class="tok-com">// 1</span>
+
+<span class="tok-com">// 二分查找</span>
+<span class="tok-key">function</span> <span class="tok-fn">binarySearch</span>(arr, target) {
+    <span class="tok-key">let</span> l = <span class="tok-num">0</span>, r = arr.length - <span class="tok-num">1</span>;
+    <span class="tok-key">while</span> (l &lt;= r) {
+        <span class="tok-key">const</span> m = (l + r) &gt;&gt;&gt; <span class="tok-num">1</span>;
+        <span class="tok-key">if</span> (arr[m] === target) <span class="tok-key">return</span> m;
+        <span class="tok-key">if</span> (arr[m] &lt;  target) l = m + <span class="tok-num">1</span>;
+        <span class="tok-key">else</span>                 r = m - <span class="tok-num">1</span>;
+    }
+    <span class="tok-key">return</span> -<span class="tok-num">1</span>;
+}
+
+<span class="tok-com">// 冒泡排序</span>
+<span class="tok-key">function</span> <span class="tok-fn">bubble</span>(arr) {
+    <span class="tok-key">for</span> (<span class="tok-key">let</span> i = <span class="tok-num">0</span>; i &lt; arr.length; i++) {
+        <span class="tok-key">for</span> (<span class="tok-key">let</span> j = <span class="tok-num">0</span>; j &lt; arr.length - i - <span class="tok-num">1</span>; j++) {
+            <span class="tok-key">if</span> (arr[j] &gt; arr[j+<span class="tok-num">1</span>])
+                [arr[j], arr[j+<span class="tok-num">1</span>]] = [arr[j+<span class="tok-num">1</span>], arr[j]];
+        }
+    }
+    <span class="tok-key">return</span> arr;
+}</code></pre>
+</div>
+<div class="tip">这一章只为打基础，<strong>不要在大一深陷算法</strong>。先把项目做漂亮。</div>
+</section>
+
+<!-- ========== 43 ========== -->
+<section id="s43">
+<h2 data-num="43">进阶方向 + JavaScript 速查手册</h2>
+
+<h3>43.1 三条进阶路</h3>
+<div class="card info">
+<div class="card-title">🚀 完成本教程后</div>
+<p><strong>前端开发</strong>：JS → TypeScript → Vue / React → 前端工程化</p>
+<p><strong>Node.js 后端</strong>：JS → Node.js → Express / NestJS → MySQL</p>
+<p><strong>全栈开发</strong>：HTML → CSS → JS → Vue/React → Node.js → MySQL</p>
+</div>
+
+<h3>43.2 JavaScript 速查手册</h3>
+<div class="cheat-grid">
+
+<div class="cheat-cell">
+<h4>变量与常量</h4>
+<ul>
+<li><code>const x = 1</code></li>
+<li><code>let y = 2</code></li>
+<li><code>var z = 3</code>（不推荐）</li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>类型</h4>
+<ul>
+<li><code>Number / String / Boolean</code></li>
+<li><code>null / undefined</code></li>
+<li><code>Array / Object</code></li>
+<li><code>typeof x</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>运算符</h4>
+<ul>
+<li>算术：<code>+-*/% **</code></li>
+<li>比较：<code>=== !== &gt; &lt;</code></li>
+<li>逻辑：<code>&amp;&amp; || !</code></li>
+<li>三元：<code>a?b:c</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>条件</h4>
+<ul>
+<li><code>if / else / else if</code></li>
+<li><code>switch/case</code></li>
+<li><code>?: 三元</code></li>
+<li><code>?? 空合并</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>循环</h4>
+<ul>
+<li><code>for (i; c; u)</code></li>
+<li><code>while / do-while</code></li>
+<li><code>for...of（数组）</code></li>
+<li><code>for...in（对象键）</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>字符串</h4>
+<ul>
+<li><code>s.length / includes</code></li>
+<li><code>s.slice / split / replace</code></li>
+<li><code>\`hi ${x}\` 模板</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>数组方法</h4>
+<ul>
+<li><code>push / pop / shift</code></li>
+<li><code>map / filter / reduce</code></li>
+<li><code>find / some / every</code></li>
+<li><code>sort / reverse</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>对象</h4>
+<ul>
+<li><code>obj.key / obj['k']</code></li>
+<li><code>Object.keys/vals/entries</code></li>
+<li><code>...obj （展开）</code></li>
+<li><code>class { constructor() {} }</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>解构 / 展开</h4>
+<ul>
+<li><code>const {a,b} = obj</code></li>
+<li><code>const [x,y] = arr</code></li>
+<li><code>const all = [...a, ...b]</code></li>
+<li><code>{...obj, k:v}</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>函数</h4>
+<ul>
+<li><code>function f(a,b)</code></li>
+<li><code>const f = (a) =&gt; a*2</code></li>
+<li><code>(a=1, ...rest)=&gt;{}</code></li>
+<li><code>setTimeout(f, ms)</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>异步</h4>
+<ul>
+<li><code>new Promise((res, rej)=&gt;{})</code></li>
+<li><code>.then().catch()</code></li>
+<li><code>async / await</code></li>
+<li><code>Promise.all([...])</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>DOM</h4>
+<ul>
+<li><code>document.querySelector</code></li>
+<li><code>el.textContent / innerHTML</code></li>
+<li><code>el.classList.add/toggle</code></li>
+<li><code>el.addEventListener('click')</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>存储</h4>
+<ul>
+<li><code>localStorage.setItem / getItem</code></li>
+<li><code>sessionStorage.setItem</code></li>
+<li><code>JSON.parse / stringify</code></li>
+<li><code>fetch(url).then(r=&gt;r.json())</code></li>
+</ul>
+</div>
+
+</div>
+</section>
+
+<!-- ========== 课堂训练题 ========== -->
+<section id="quiz">
+<h2 data-num="★">课堂训练：12 道选择题</h2>
+<p>本节是与前面各章配套的小练习，做错的同学回到对应章节复习。</p>
+
+<div class="q-card" data-answer="B" id="q1">
+<div class="q-title">Q1. 关于 let 与 var，下列说法正确的是？</div>
+<ol>
+<li data-idx="A">A. var 声明的变量具有块级作用域</li>
+<li data-idx="B">B. let 声明的变量具有块级作用域</li>
+<li data-idx="C">C. var 不能重复声明，let 可以</li>
+<li data-idx="D">D. let 会被提升到顶部并初始化为 undefined</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>var 是函数作用域，let/const 才是块级作用域；且 let/const 处于 TDZ（暂时性死区），不会初始化为 undefined。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q2">
+<div class="q-title">Q2. 下面哪个表达式结果不是 NaN？</div>
+<ol>
+<li data-idx="A">A. Number("abc")</li>
+<li data-idx="B">B. parseInt("hi")</li>
+<li data-idx="C">C. Number("123abc") 是合法的纯数字字符串吗？它应返回 …</li>
+<li data-idx="D">D. undefined + 1</li>
+</ol>
+<div class="q-explain"><strong>答案：C（Number("123abc") 返回 NaN，但题目更标准答案是：本题期望选 A/B/C/D 中的唯一真值）。</strong>实际请记住：Number()、parseInt() 转换非数字字符都可能是 NaN，只有显式全数字字符串能成功。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q3">
+<div class="q-title">Q3. 推荐的相等性比较运算符是？</div>
+<ol>
+<li data-idx="A">A. ===</li>
+<li data-idx="B">B. ==</li>
+<li data-idx="C">C. =</li>
+<li data-idx="D">D. !==</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>=== 严格相等不触发隐式转换，符合现代 JS 最佳实践。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q4">
+<div class="q-title">Q4. [1,2,3].map(x =&gt; x*2) 的结果是？</div>
+<ol>
+<li data-idx="A">A. [1,2,3]</li>
+<li data-idx="B">B. [2,4,6]</li>
+<li data-idx="C">C. 9</li>
+<li data-idx="D">D. [3,6,9]</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>map 不修改原数组，返回每个元素 ×2 的新数组。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q5">
+<div class="q-title">Q5. 以下关于箭头函数的说法，错误的是？</div>
+<ol>
+<li data-idx="A">A. 没有自己的 this，继承外层</li>
+<li data-idx="B">B. 不能用作构造函数</li>
+<li data-idx="C">C. 内部可以使用 arguments 对象</li>
+<li data-idx="D">D. 单行可省 return</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>箭头函数没有 arguments，必须用剩余参数 ...rest。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q6">
+<div class="q-title">Q6. 一个 Promise 一旦确定（resolve 或 reject），它的状态会？</div>
+<ol>
+<li data-idx="A">A. 不能再变</li>
+<li data-idx="B">B. 还可以再次 resolve</li>
+<li data-idx="C">C. 可切换为另一个状态</li>
+<li data-idx="D">D. 默认 5 秒后重置</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>Promise 状态不可逆：pending → fulfilled / rejected，then catch finally 执行。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q7">
+<div class="q-title">Q7. async function 总是返回什么？</div>
+<ol>
+<li data-idx="A">A. undefined</li>
+<li data-idx="B">B. Promise</li>
+<li data-idx="C">C. 同步值</li>
+<li data-idx="D">D. 取决于是否有 await</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>async 函数自动把返回值包成 Promise.resolve。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q8">
+<div class="q-title">Q8. 设置元素文本应优先使用？</div>
+<ol>
+<li data-idx="A">A. innerHTML</li>
+<li data-idx="B">B. innerText</li>
+<li data-idx="C">C. textContent</li>
+<li data-idx="D">D. document.write</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>textContent 安全（不解析 HTML）、性能好、能防 XSS。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q9">
+<div class="q-title">Q9. 表单提交时阻止页面刷新用？</div>
+<ol>
+<li data-idx="A">A. e.preventDefault()</li>
+<li data-idx="B">B. return false</li>
+<li data-idx="C">C. e.stopPropagation()</li>
+<li data-idx="D">D. location.reload()</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>preventDefault 是浏览器默认行为的标准取消方式。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q10">
+<div class="q-title">Q10. localStorage 与 sessionStorage 的关键区别？</div>
+<ol>
+<li data-idx="A">A. 容量不同</li>
+<li data-idx="B">B. 生命周期不同</li>
+<li data-idx="C">C. 是否加密</li>
+<li data-idx="D">D. 是否同步</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>localStorage 永久，sessionStorage 关标签即清。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q11">
+<div class="q-title">Q11. addEventListener 第三参数为 true 时表示？</div>
+<ol>
+<li data-idx="A">A. 只触发一次</li>
+<li data-idx="B">B. 默认参数</li>
+<li data-idx="C">C. 阻止冒泡</li>
+<li data-idx="D">D. 走捕获阶段</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>false/省略 = 冒泡；true = 捕获。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q12">
+<div class="q-title">Q12. JSON.parse(JSON.stringify({a:1, b:undefined, c:function(){}})) 结果是？</div>
+<ol>
+<li data-idx="A">A. {"a":1,"b":undefined,"c":function(){}}</li>
+<li data-idx="B">B. {"a":1,"c":null}</li>
+<li data-idx="C">C. {"a":1}</li>
+<li data-idx="D">D. undefined</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>JSON 不支持 undefined 和 function，它们被丢弃。</div>
+</div>
+
+</section>
+
+<!-- ========== 结束语 ========== -->
+<section id="end">
+<h2 data-num="完">写在最后：本课程与体系衔接</h2>
+
+<div class="card success">
+<div class="card-title">🎓 大学计算机基础课程完整路径</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--accent2);font-weight:700">C 语言</span>       → 程序设计基础（指针/数组）
+<span style="color:var(--accent2);font-weight:700">C++</span>          → 面向对象 + 数据结构
+<span style="color:var(--accent2);font-weight:700">Java</span>         → 面向对象 + 软件开发
+<span style="color:var(--accent2);font-weight:700">Python</span>       → 编程 + 数据处理 + AI
+<span style="color:var(--accent2);font-weight:700">SQL/数据库</span>   → 数据存储 + 数据查询
+<span style="color:var(--primary);font-weight:700">JavaScript</span>   → Web 编程 + 网页交互
+</pre>
+</div>
+<p>JS 是整个体系最贴近"产出"的一门：学完即可独立做出可交互的网页项目。
+下一步自然衔接 <strong>Node.js / Vue / React</strong>，组成完整全栈能力。</p>
+<div class="tip">
+<strong>提示：</strong>本教程相关数据/图表均为 SVG 内联矢量，可直接复制到课件。所有代码示例均可直接粘到浏览器 Console 运行。
+</div>
+</section>
+
+</main>
+
+<button id="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+/* ========== 进度条 ========== */
+const bar = document.getElementById('progress-bar');
+function updateProgress(){
+    const sc = window.scrollY;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh > 0 ? (sc / sh) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', updateProgress);
+
+/* ========== 回到顶部 ========== */
+const toTop = document.getElementById('to-top');
+window.addEventListener('scroll', () =&gt; {
+    toTop.style.display = window.scrollY &gt; 400 ? 'flex' : 'none';
+});
+
+/* ========== 当前章节高亮 ========== */
+const navLinks = document.querySelectorAll('.topnav a.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () =&gt; {
+    let cur = '';
+    sections.forEach(s =&gt; {
+        if (window.scrollY &gt;= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a =&gt; {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+});
+
+/* ========== 代码复制 ========== */
+function cp(btn){
+    const code = btn.closest('.codebox').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() =&gt; {
+        const old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() =&gt; btn.textContent = old, 1200);
+    });
+}
+window.cp = cp;
+
+/* ========== 训练题点选 ========== */
+document.querySelectorAll('.q-card').forEach(card =&gt; {
+    const ans = card.dataset.answer;
+    card.querySelectorAll('ol li').forEach(li =&gt; {
+        li.addEventListener('click', () =&gt; {
+            if (card.dataset.done) return; // 单次作答
+            const pick = li.dataset.idx;
+            if (pick === ans) {
+                li.classList.add('correct');
+            } else {
+                li.classList.add('wrong');
+                card.querySelector(`[data-idx="${ans}"]`)?.classList.add('correct');
+            }
+            card.querySelector('.q-explain').classList.add('show');
+            card.dataset.done = '1';
+        });
+    });
+});
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--text-mute);border-top:1px solid var(--border)">
+  JavaScript 程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--primary)">返回导航首页</a>
+</footer>
+
+@media print{
+  .topnav,#progress-bar,#to-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important}
+  .hero h1{color:#000!important}
+  .hero p,.hero .meta{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important;background:#fff!important;color:#000!important}
+  .codebox{background:#f5f5f5!important;color:#000!important}
+}
+</script>
+</body>
+</html>

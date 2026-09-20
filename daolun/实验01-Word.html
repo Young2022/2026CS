@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI 计算机科学导论 · 实验01 Microsoft Word 初学者学习计划：8个核心模块 + 综合实训，含二级MS Office考点。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Microsoft Word 初学者学习计划</title>
+<style>
+:root{
+  --b:#0284c7; --b2:#0c4a6e; --light:#f8fafc; --dark:#0f172a;
+  --text:#334155; --muted:#64748b; --line:#dbeafe; --bg:#f8fafc;
+  --orange:#d97706; --green:#059669; --purple:#7c3aed; --red:#dc2626;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.75}
+.hero{
+  background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 55%,#38bdf8 100%);
+  color:#fff;padding:58px 24px 52px;position:relative;overflow:hidden
+}
+.hero:after{content:"W";position:absolute;right:7%;top:-45px;font-size:260px;font-weight:900;opacity:.08}
+.wrap{max-width:1180px;margin:auto}
+.hero h1{margin:0 0 10px;font-size:42px;letter-spacing:.5px}
+.hero p{margin:0;max-width:820px;font-size:18px;opacity:.92}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.badge{padding:6px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
+nav{
+  position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+}
+.navin{display:flex;gap:4px;overflow:auto;padding:8px 10px;align-items:center}
+nav a{white-space:nowrap;text-decoration:none;color:#475569;padding:5px 9px;border-radius:7px;font-size:13px}
+nav a:hover{background:var(--light);color:var(--b)}
+/* 自链接：Word真题与考点 —— 橙色 */
+nav a.ext{background:#fff7ed;border:1px solid #fed7aa;color:var(--orange);font-weight:600}
+nav a.ext:hover{background:#ffedd5;color:#9a3412}
+/* 跨页：Excel学习 —— 绿色（与02同色） */
+nav a.excel{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-weight:600}
+nav a.excel:hover{background:#d1fae5;color:#065f46}
+/* 跨页：PPT学习 —— 紫色（与03同色） */
+nav a.pp{background:#f3e8ff;border:1px solid #d8b4fe;color:#6b21a8;font-weight:600}
+nav a.pp:hover{background:#e9d5ff;color:#581c87}
+main{padding:30px 18px 60px}
+section{margin:0 0 30px;scroll-margin-top:65px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;
+  box-shadow:0 5px 20px rgba(15,23,42,.045)
+}
+.card.blue-accent{border-left:6px solid var(--b)}
+h2{margin:0 0 18px;color:var(--dark);font-size:28px;display:flex;align-items:center;gap:10px}
+h2 .icn{width:38px;height:38px;border-radius:10px;background:var(--light);color:var(--b);display:inline-flex;align-items:center;justify-content:center;font-size:20px}
+h3{color:var(--b2);margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+h4{margin:15px 0 7px;color:var(--dark);display:flex;align-items:center;gap:6px}
+.lead{font-size:16px;color:#475569}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:18px;background:var(--light);border-radius:12px;border-left:4px solid var(--b)}
+.stat b{display:block;font-size:24px;color:var(--b2)}
+.stat span{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:#f1f5f9;color:var(--dark)}
+tr:nth-child(even) td{background:#fafcff}
+.timeline{display:grid;gap:12px}
+.lesson{display:grid;grid-template-columns:95px 1fr;gap:16px;align-items:start}
+.num{background:var(--b);color:#fff;border-radius:10px;padding:10px;text-align:center;font-weight:700;font-size:18px}
+.lesson .box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+.lesson .box b{color:var(--dark)}
+.step{counter-reset:item;display:grid;gap:10px}
+.step div{counter-increment:item;padding:12px 14px 12px 48px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;position:relative}
+.step div:before{content:counter(item);position:absolute;left:13px;top:11px;width:25px;height:25px;border-radius:50%;background:var(--b);color:white;text-align:center;line-height:25px;font-size:13px;font-weight:bold}
+.example{background:#f8fafc;border-left:4px solid var(--green);padding:14px 17px;border-radius:0 10px 10px 0;margin:12px 0}
+.tip{background:#fff7ed;border-left:4px solid var(--orange);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.warn{background:#fef2f2;border-left:4px solid var(--red);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.shortcut{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.shortcut span{background:#f0f9ff;border:1px solid var(--b);border-radius:6px;padding:4px 10px;font-size:13px}
+kbd{background:#eef2f7;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:5px;padding:2px 7px;font-family:Consolas,monospace;color:#1e293b}
+.check{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.check div{padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.check div:before{content:"✓";color:var(--green);font-weight:bold;margin-right:8px}
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:18px 0}
+.path span{padding:8px 12px;background:var(--light);color:var(--b2);border-radius:8px;font-weight:600;font-size:13px}
+.path .arrow{color:#94a3b8;font-size:18px}
+ul{margin-top:8px}
+li{margin:3px 0}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+.glossary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.glossary div{padding:10px 14px;background:#fafcff;border:1px solid var(--line);border-radius:8px}
+.glossary div b{color:var(--b2);display:block;margin-bottom:4px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:32px}.glossary{grid-template-columns:1fr}.brand-title{display:none}}
+@media(max-width:600px){.grid,.check{grid-template-columns:1fr}.lesson{grid-template-columns:1fr}.hero{padding-top:42px}.card{padding:19px}h2{font-size:24px}}
+
+/* IndexOx brand logo */
+.logo-icon-wrapper {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #fff; flex-shrink: 0;
+}
+.brand-title {
+  background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+nav .brand { padding-left: 14px; border-left: 1px solid var(--line); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-weight: 800; font-size: 14px; color: var(--dark); }
+nav .brand b { color: var(--b); }
+nav .brand:hover { background: none; color: var(--dark); }
+.hero-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; text-decoration: none; }
+.hero-logo .logo-icon-wrapper { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); }
+.hero-logo .brand-title { font-size: 15px; font-weight: 800; color: #fff; background: none; -webkit-text-fill-color: #fff; }
+
+@media print{
+ nav{display:none}.hero{background:#fff;color:#111;padding:20px}.hero:after{display:none}
+ .card{box-shadow:none;break-inside:avoid}section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="../daolun/index.html" class="hero-logo">
+      <span class="logo-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></span>
+      <span class="brand-title">CSAI · 计算机科学导论</span>
+    </a>
+    <div class="badges"><span class="badge">Microsoft Word</span><span class="badge">初学者</span><span class="badge">8个核心模块 + 综合实训</span><span class="badge">含"二级MS Office"考点</span></div>
+    <h1>Word 初学者系统学习计划</h1>
+    <p>从文档创建与文字编辑开始，逐步掌握段落、样式、页面排版、表格图片、自动目录、邮件合并和文档修订，最终能够独立制作规范的课程报告、实验报告和工作文档，并具备计算机二级 MS Office 高级应用与设计的 Word 应试能力。</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap navin">
+    <a href="#m1">创建保存</a><a href="#m2">文本编辑</a>
+    <a href="#m3">段落样式</a><a href="#m4">页面排版</a><a href="#m5">表格图片图表</a>
+    <a href="#m6">目录页眉页脚</a><a href="#m7">邮件合并</a><a href="#m8">审阅修订</a>
+    <a href="#project">综合实训</a>
+    <a href="计算机二级MS_Office_Word真题与考点.html" target="_blank" class="ext">📘 Word真题</a>
+    <a href="实验02-Excel.html" target="_blank" class="excel">📗 Excel学习</a>
+    <a href="实验03-PowerPoint.html" target="_blank" class="pp">📙 PPT学习</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="overview">
+<div class="card blue-accent">
+<h2><span class="icn">📋</span>一、整体学习路线</h2>
+<p class="lead">推荐按"基础编辑 → 规范排版 → 综合对象 → 长文档 → 协作"逐步学习。不要只记菜单位置，要通过实际案例反复操作。</p>
+<div class="grid">
+  <div class="stat"><b>8</b><span>核心学习模块</span></div>
+  <div class="stat"><b>1</b><span>综合实训项目</span></div>
+  <div class="stat"><b>16</b><span>最终必须掌握的核心技能</span></div>
+  <div class="stat"><b>从零开始</b><span>面向Word初学者</span></div>
+</div>
+<div class="path">
+  <span>创建文档</span><i class="arrow">→</i><span>编辑文字</span><i class="arrow">→</i>
+  <span>段落与样式</span><i class="arrow">→</i><span>页面排版</span><i class="arrow">→</i>
+  <span>表格/图片/图表</span><i class="arrow">→</i><span>目录/页眉页脚</span><i class="arrow">→</i>
+  <span>邮件合并</span><i class="arrow">→</i><span>审阅修订</span>
+</div>
+<table>
+<thead><tr><th>模块</th><th>学习内容</th><th>建议时间</th><th>最终能力</th></tr></thead>
+<tbody>
+<tr><td>第1部分</td><td>文档创建与保存</td><td>1课时</td><td>正确创建、保存和管理文档</td></tr>
+<tr><td>第2部分</td><td>文本输入、编辑与格式化</td><td>2课时</td><td>编辑和美化文字</td></tr>
+<tr><td>第3部分</td><td>段落格式与样式</td><td>2课时</td><td>规范设置标题、正文和段落</td></tr>
+<tr><td>第4部分</td><td>页面设置与排版</td><td>2课时</td><td>制作规范正式文档</td></tr>
+<tr><td>第5部分</td><td>表格、图片、图表</td><td>2课时</td><td>制作图文并茂的文档</td></tr>
+<tr><td>第6部分</td><td>目录、页眉与页脚</td><td>2课时</td><td>制作长文档</td></tr>
+<tr><td>第7部分</td><td>邮件合并</td><td>1–2课时</td><td>批量生成通知、信函等</td></tr>
+<tr><td>第8部分</td><td>审阅与修订</td><td>1–2课时</td><td>多人协作与版本修改</td></tr>
+</tbody>
+</table>
+<h3>📖 关键术语速览</h3>
+<div class="glossary">
+  <div><b>文档 / 模板</b>新建空白文档或基于模板（.dotx）；默认扩展名为 .docx。</div>
+  <div><b>字体 / 段落</b>字体格式控制"字"（字号、字形、颜色）；段落格式控制"一段文字"（缩进、行距、段间距）。</div>
+  <div><b>样式</b>一组预设的格式组合（如"标题1""正文"），是自动目录和长文档结构的基础。</div>
+  <div><b>分页符 / 分节符</b>分页符只是换页；分节符还能让不同节拥有不同页面方向、页眉、页码格式。</div>
+  <div><b>题注 / 交叉引用</b>题注给图、表编号；交叉引用可重复引用同一编号，编号自动更新。</div>
+  <div><b>修订 / 批注</b>修订记录对原文的增删改；批注是给作者的备注，不修改正文。</div>
+</div>
+</div>
+</section>
+
+<section id="m1"><div class="card blue-accent">
+<h2><span class="icn">📁</span>① 文档的创建和保存</h2>
+<p><b>学习目标：</b>掌握新建、打开、保存、另存为以及 PDF 导出。</p>
+<h3>📌 操作步骤</h3>
+<div class="step">
+<div>打开 Word，选择 <b>新建 → 空白文档</b>。</div>
+<div>输入标题和基本信息，例如"计算机科学导论第一章"。</div>
+<div>选择 <b>文件 → 保存</b>，设置保存位置、文件名和文件类型。</div>
+<div>使用 <b>文件 → 另存为</b> 创建"计算机科学导论第一章-修改版.docx"。</div>
+<div>使用 <b>文件 → 导出 → 创建PDF/XPS</b>，生成PDF版本。</div>
+</div>
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div>新建 / 打开</div><div>保存 / 另存为</div>
+<div>PDF / XPS 导出</div><div>设置文档属性（标题、作者）</div>
+<div>模板新建（.dotx）</div><div>文件加密与权限</div>
+</div>
+<h3>⌨️ 必备快捷键</h3>
+<div class="shortcut">
+<span><kbd>Ctrl</kbd>+<kbd>N</kbd> 新建空白文档</span>
+<span><kbd>Ctrl</kbd>+<kbd>S</kbd> 保存</span>
+<span><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> 另存为</span>
+<span><kbd>Ctrl</kbd>+<kbd>O</kbd> 打开</span>
+<span><kbd>Ctrl</kbd>+<kbd>P</kbd> 打印</span>
+<span><kbd>Ctrl</kbd>+<kbd>F12</kbd> 另存为 PDF</span>
+</div>
+<div class="example"><b>练习：</b>创建"我的第一份Word文档.docx"，输入姓名、专业、学号和日期；保存后关闭，再打开修改内容，最后另存为 PDF。</div>
+<div class="tip"><b>小贴士：</b>在公司做模板时，把字体、页眉、页脚、样式都预设好，另存为 <b>.dotx</b>，团队成员基于模板新建即可保持统一格式。</div>
+</div></section>
+
+<section id="m2"><div class="card blue-accent">
+<h2><span class="icn">⌨️</span>② 文本的输入、编辑与格式化</h2>
+<p>这一部分训练最基本的文字处理能力：输入、选择、删除、复制、剪切、粘贴、查找、替换以及字体格式设置。</p>
+<h3>📌 操作步骤</h3>
+<div class="step">
+<div>输入："Microsoft Word 是一款常用的文字处理软件。"</div>
+<div>用鼠标选择"Microsoft Word"，在 <b>开始 → 字体</b> 中设置字体、字号。</div>
+<div>使用 <b>B 加粗</b>、斜体、下划线和字体颜色等功能。</div>
+<div>按 <kbd>Ctrl</kbd>+<kbd>F</kbd> 查找"Word"。</div>
+<div>按 <kbd>Ctrl</kbd>+<kbd>H</kbd>，将"Word"替换为"Microsoft Word"。</div>
+<div>尝试<b>格式刷</b>：先选已设置好格式的文字，单击格式刷，再刷另一段。</div>
+</div>
+<h3>⌨️ 必备快捷键</h3>
+<div class="shortcut">
+<span><kbd>Ctrl</kbd>+<kbd>C</kbd> 复制</span>
+<span><kbd>Ctrl</kbd>+<kbd>X</kbd> 剪切</span>
+<span><kbd>Ctrl</kbd>+<kbd>V</kbd> 粘贴</span>
+<span><kbd>Ctrl</kbd>+<kbd>Z</kbd> 撤销</span>
+<span><kbd>Ctrl</kbd>+<kbd>A</kbd> 全选</span>
+<span><kbd>Ctrl</kbd>+<kbd>F</kbd> 查找</span>
+<span><kbd>Ctrl</kbd>+<kbd>H</kbd> 替换</span>
+<span><kbd>Ctrl</kbd>+<kbd>B</kbd>/<kbd>I</kbd>/<kbd>U</kbd> 加粗/斜体/下划线</span>
+</div>
+<div class="warn"><b>常见错误：</b>直接粘贴网页内容会带格式。正确做法：<b>右键 → 仅粘贴文本</b>，或粘贴后按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd> 清除格式。</div>
+<div class="example"><b>练习：</b>输入一段约 200 字的"计算机科学简介"，分别练习复制、移动、删除、查找、替换，并对标题和关键词设置不同字体格式。</div>
+</div></section>
+
+<section id="m3"><div class="card blue-accent">
+<h2><span class="icn">🧱</span>③ 段落格式设置与样式应用</h2>
+<p class="lead">核心理念：字符格式处理"字"，段落格式处理"一段文字"，样式则用于建立整个文档的结构。</p>
+<h3>📌 段落格式</h3>
+<p>必须掌握：左对齐、居中、右对齐、两端对齐、首行缩进、左右缩进、行距、段前/段后间距、项目符号和编号。</p>
+<div class="step">
+<div>选择正文，使用 <b>开始 → 段落 → 两端对齐</b>，也可按 <kbd>Ctrl</kbd>+<kbd>J</kbd>。</div>
+<div>打开段落设置，将"特殊格式"设为<b>首行缩进 2 字符</b>。</div>
+<div>设置行距，例如 1.5 倍，并设置段后间距，例如 8 磅。</div>
+<div>对列表使用项目符号或编号，不要用空格模拟列表。</div>
+</div>
+<h3>📌 样式应用</h3>
+<div class="example">
+<b>示例结构：</b><br>
+"第一章 计算机基础" → <b>标题1</b><br>
+"1.1 计算机的发展" → <b>标题2</b><br>
+"1.1.1 早期计算机" → <b>标题3</b><br>
+正文段落 → <b>正文</b>
+</div>
+<div class="tip"><b>重要：</b>不要靠手动修改字号来制作标题。正确使用"标题1、标题2、正文"等样式，是自动目录、导航窗格和长文档排版的基础。</div>
+<div class="example"><b>练习：</b>对"计算机科学导论"作业，应用样式构建三级标题结构，在导航窗格中观察文档结构。</div>
+</div></section>
+
+<section id="m4"><div class="card blue-accent">
+<h2><span class="icn">📄</span>④ 页面设置与排版技巧</h2>
+<h3>📌 页面设置</h3>
+<div class="step">
+<div>打开 <b>布局 → 页面设置</b>。</div>
+<div>设置纸张为 <b>A4</b>，方向通常为<b>纵向</b>。</div>
+<div>根据课程或单位要求设置上下左右页边距，例如上/下 2.5 cm、左 3 cm、右 2.5 cm。</div>
+<div>设置装订线（用于装订成册的文档）。</div>
+</div>
+<h3>📌 分页、分栏与分节</h3>
+<div class="example">
+<b>换页：</b>不要连续按 Enter 换页，应使用 <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 或 <b>插入 → 分页</b>。<br>
+<b>分栏：</b>新闻稿等页面可使用 <b>布局 → 分栏 → 两栏</b>。<br>
+<b>分节：</b>当不同部分需要不同页眉、页码或页面方向时使用<b>分节符</b>。
+</div>
+<h3>⚠️ 初学者常见错误</h3>
+<div class="check">
+<div>连续敲空格来对齐</div><div>连续按 Enter 来换页</div>
+<div>手动制作目录</div><div>逐个标题手动设置格式</div>
+<div>用空格制作表格</div><div>大量下划线制作空白区域</div>
+</div>
+<div class="tip"><b>正确方法：</b>使用制表位、段落设置、样式、分页符、分节符和表格等 Word 功能。</div>
+<div class="example"><b>练习：</b>把一份 3 页文档在第 2 页后插入分节符，让前两页页码为罗马数字，第 3 页开始为阿拉伯数字并从 1 开始。</div>
+</div></section>
+
+<section id="m5"><div class="card blue-accent">
+<h2><span class="icn">🧩</span>⑤ 插入表格、图片、图表等对象</h2>
+<h3>📌 5.1 表格</h3>
+<p>例如制作学生成绩表：</p>
+<table>
+<tr><th>姓名</th><th>数学</th><th>英语</th><th>计算机</th></tr>
+<tr><td>张三</td><td>85</td><td>90</td><td>92</td></tr>
+<tr><td>李四</td><td>78</td><td>88</td><td>86</td></tr>
+<tr><td>王五</td><td>92</td><td>85</td><td>95</td></tr>
+</table>
+<p><b>操作：</b>插入 → 表格 → 选择行列；然后练习插入/删除行列、合并/拆分单元格、调整行高列宽、边框、底纹和对齐。</p>
+<h3>📌 5.2 图片</h3>
+<div class="step">
+<div>选择 <b>插入 → 图片 → 此设备</b>，插入一张 CPU 结构示意图。</div>
+<div>调整图片大小（拖动角点，按 <kbd>Shift</kbd> 等比缩放）。</div>
+<div>在 <b>图片格式 → 文字环绕</b> 中练习嵌入型、四周型、紧密型、上下型等。</div>
+<div>使用 <b>引用 → 插入题注</b> 添加"图1-1 CPU基本结构"等题注。</div>
+</div>
+<div class="tip"><b>常见问题：</b>图片"拖不动"通常与图片的文字环绕方式有关；初学者要重点理解"嵌入型"和"四周型"等环绕方式的区别。</div>
+<h3>📌 5.3 图表</h3>
+<p>选择 <b>插入 → 图表</b>，练习柱形图、折线图和饼图。例如将"张三85、李四78、王五92"的成绩制作成柱形图。</p>
+<h3>📌 5.4 文本框与形状</h3>
+<p>在排版时常用文本框做"图文穿插"或加注释；插入形状则用于流程图、标注等。两者都可以设置<b>文字环绕</b>。</p>
+</div></section>
+
+<section id="m6"><div class="card blue-accent">
+<h2><span class="icn">📚</span>⑥ 目录生成、页眉页脚设置</h2>
+<h3>📌 6.1 自动目录</h3>
+<div class="step">
+<div>将"第一章 计算机基础"设置为<b>标题1</b>。</div>
+<div>将"1.1 计算机的发展""1.2 计算机的组成"等设置为<b>标题2</b>。</div>
+<div>将光标放到文档开头，选择 <b>引用 → 目录 → 自动目录</b>。</div>
+<div>修改正文后，右键目录 → <b>更新域 → 更新整个目录</b>。</div>
+</div>
+<div class="example"><b>自动目录效果：</b><br>
+<pre>第一章 计算机基础 ………… 1
+　1.1 计算机的发展 ………… 2
+　1.2 计算机的组成 ………… 4
+第二章 计算机硬件 ………… 8</pre>
+</div>
+<h3>📌 6.2 页眉、页脚和页码</h3>
+<div class="step">
+<div>选择 <b>插入 → 页眉</b>，例如设置"计算机科学导论"。</div>
+<div>选择 <b>插入 → 页码</b>，添加页面编号。</div>
+<div>进一步练习：<b>首页不同、奇偶页不同、从指定页面开始编号</b>。</div>
+</div>
+<div class="tip"><b>核心关系：</b>标题样式 → 文档结构 → 自动目录。掌握这一链条后，长文档处理会明显容易。</div>
+<div class="warn"><b>常见错误：</b>目录页想从第 1 页开始，而封面页也想计页 — 解决方法是<b>封面/目录与正文用分节符分开</b>，并在第二节"页码格式"中重新从 1 开始编号。</div>
+</div></section>
+
+<section id="m7"><div class="card blue-accent">
+<h2><span class="icn">📨</span>⑦ 邮件合并功能</h2>
+<p class="lead">核心思想：<b>一个 Word 模板 + 一组数据 → 自动生成大量个性化文档。</b></p>
+<h3>📌 案例：批量生成学生成绩通知书</h3>
+<table>
+<tr><th>姓名</th><th>专业</th><th>成绩</th></tr>
+<tr><td>张三</td><td>计算机科学</td><td>92</td></tr>
+<tr><td>李四</td><td>软件工程</td><td>88</td></tr>
+<tr><td>王五</td><td>人工智能</td><td>95</td></tr>
+</table>
+<div class="example">
+<b>Word 模板：</b><br>
+尊敬后的{{姓名}}同学：<br>
+您所在专业为{{专业}}。成绩为{{成绩}}分。<br>
+特此通知。
+</div>
+<div class="step">
+<div>准备 Excel 数据表，第一行设置字段名：姓名、专业、成绩。</div>
+<div>打开 Word 模板，选择 <b>邮件 → 开始邮件合并 → 信函</b>。</div>
+<div>选择 <b>选择收件人 → 使用现有列表</b>，连接 Excel 文件。</div>
+<div>在模板对应位置插入"姓名""专业""成绩"等合并字段。</div>
+<div>选择 <b>完成并合并</b>，生成个性化文档。</div>
+</div>
+<div class="tip"><b>小贴士：</b>需要进一步控制称呼（先生/女士）？在 Word 中按 <kbd>Ctrl</kbd>+<kbd>F9</kbd> 插入 <code>{ IF { MERGEFIELD 性别 } = "男" "先生" "女士" }</code> 域。</div>
+<div class="example"><b>练习：</b>建立 10 名学生的 Excel 数据，一次生成 10 份学生成绩通知书。</div>
+</div></section>
+
+<section id="m8"><div class="card blue-accent">
+<h2><span class="icn">🔍</span>⑧ 文档审阅与修订功能</h2>
+<p>主要应用于老师批改作业、论文修改、同事协作和项目文档版本管理。</p>
+<h3>📌 8.1 修订</h3>
+<div class="step">
+<div>选择 <b>审阅 → 修订</b>，开启修订功能。</div>
+<div>修改句子，例如将"Word 是一款文字处理软件"修改为"Microsoft Word 是一款常用的文字处理软件"。</div>
+<div>Word 会记录增加和删除的内容。</div>
+<div>使用 <b>审阅 → 接受</b> 或 <b>审阅 → 拒绝</b> 处理修改。</div>
+</div>
+<h3>📌 8.2 批注</h3>
+<p>选择文字 → <b>审阅 → 新建批注</b>。例如："这里需要增加参考文献。"修改完成后可解决批注。</p>
+<h3>📌 8.3 比较两个版本</h3>
+<div class="example">例如已有"论文V1.docx"和"论文V2.docx"，选择 <b>审阅 → 比较 → 比较两个版本</b>，Word 可以帮助识别增加、删除和修改内容。</div>
+<div class="tip"><b>核心区别：</b><b>修订</b>是对原文的改动（要记字）；<b>批注</b>是给作者的备注（不记字）。考试常考区分两者。</div>
+<div class="example"><b>练习：</b>和同学交换一篇文档，分别开启修订模式进行修改，体验接受/拒绝/批注的操作。</div>
+</div></section>
+
+<section id="project"><div class="card blue-accent">
+<h2><span class="icn">🎯</span>综合实训：制作《人工智能发展概述》课程报告</h2>
+<p class="lead">完成 8 个模块后，用一个完整项目检验是否真正掌握 Word。</p>
+<h3>📌 项目要求</h3>
+<div class="example">
+<b>建议篇幅：</b>8–10 页<br>
+<b>文档结构：</b>封面 → 目录 → 第1章 人工智能概述 → 第2章 人工智能的发展 → 第3章 人工智能的应用 → 第4章 人工智能的发展趋势 → 参考文献
+</div>
+<h3>✅ 必须使用的 Word 功能</h3>
+<div class="check">
+<div>创建与保存</div><div>文本输入与编辑</div><div>字体格式</div><div>段落格式</div>
+<div>标题样式</div><div>多级标题</div><div>页面设置</div><div>分页</div>
+<div>表格</div><div>图片</div><div>图表</div><div>图片题注</div>
+<div>自动目录</div><div>页眉</div><div>页脚</div><div>页码</div>
+<div>邮件合并练习</div><div>修订与批注</div>
+</div>
+<h3>🪜 推荐完成步骤</h3>
+<div class="step">
+<div>新建文档，先用<b>样式</b>设置好封面 → 目录 → 章节标题层级。</div>
+<div>在"人工智能的应用"章节中插入图片与图表，添加题注（"图2-1"等）。</div>
+<div>在文档最前面插入<b>自动目录</b>（显示前两级）。</div>
+<div>封面用分节符与目录、正文分开，封面不显示页码，正文从 1 开始。</div>
+<div>页眉写"人工智能发展概述"，页脚居中显示页码。</div>
+<div>用 5 名同学的数据，练习一遍<b>邮件合并</b>，生成 5 份"邀请参加答辩"通知。</div>
+<div>交换文档练习<b>修订</b>与<b>批注</b>。</div>
+</div>
+<h3>📈 Word 核心知识体系</h3>
+<table>
+<tr><th>层次</th><th>核心内容</th><th>学习重点</th></tr>
+<tr><td>第一层：基础编辑</td><td>新建、保存、输入、删除、复制、查找、替换</td><td>快速、准确地编辑文字</td></tr>
+<tr><td>第二层：文档格式</td><td>字体、段落、样式、页面、分页、分节</td><td>建立规范的文档结构</td></tr>
+<tr><td>第三层：综合排版</td><td>表格、图片、图表、题注、目录、页眉、页脚、页码</td><td>完成正式长文档</td></tr>
+<tr><td>第四层：高级应用</td><td>邮件合并、修订、批注、比较</td><td>批量处理与协同办公</td></tr>
+</table>
+</div></section>
+
+<div class="footer">Word 初级教程 · <a href="../daolun/index.html">返回导航首页</a></div>
+</main>
+</body>
+</html>

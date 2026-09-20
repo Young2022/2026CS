@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI  · 二级 Web 程序设计（科目64）考点与真题 2021–2026：覆盖 HTML/CSS/JavaScript/DOM 全部考纲。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>二级 Web 程序设计（64）· 考点与真题 2021–2026</title>
+<style>
+  :root {
+    /* 阅读友好配色：低刺激、高对比、长时间复习不疲劳 */
+    --bg: #f7f5f0;
+    --bg-card: #ffffff;
+    --bg-soft: #f0ede6;
+    --bg-code: #1e2430;
+    --ink: #1a1c1e;
+    --ink-2: #2c3038;
+    --ink-3: #5a606c;
+    --ink-4: #8a909c;
+    --line: #e2ddd4;
+    --line-strong: #c8c2b6;
+    --accent: #c45c4a;          /* 柔和砖红，替代刺眼 crimson */
+    --accent-soft: #f3e8e5;
+    --ok: #2d6a4f;              /* 正确答案 / 成功 */
+    --ok-bg: #e8f0eb;
+    --warn: #b45309;
+    --chip-1: #d97706;
+    --chip-2: #7c3aed;
+    --chip-3: #0284c7;
+    --chip-4: #dc2626;
+    --chip-5: #ca8a04;
+    --chip-6: #059669;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+            "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #d4e5d8; color: var(--ink); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c5bfb4; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a8a296; }
+
+  /* ---------- progress ---------- */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--accent); z-index: 2000;
+    transition: width 0.1s linear;
+  }
+
+  /* ---------- sidebar ---------- */
+  aside {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 228px;
+    border-right: 1px solid var(--line);
+    padding: 24px 14px 18px;
+    display: flex; flex-direction: column;
+    background: var(--bg-card);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  .brand { margin-bottom: 6px; padding: 0 6px; }
+  .brand .code {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .brand h1 {
+    font-family: var(--serif); font-size: 20px; font-weight: 700;
+    line-height: 1.35; margin-top: 8px; color: var(--ink);
+  }
+  .brand .sub {
+    font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.5;
+  }
+  nav { margin-top: 18px; flex: 1; }
+  nav a {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 7px 10px; margin-bottom: 1px;
+    text-decoration: none; color: var(--ink-3);
+    font-size: 13.5px; border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav a .n {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+    width: 18px; flex: none;
+  }
+  nav a:hover { background: var(--bg-soft); color: var(--ink); }
+  nav a.active {
+    background: var(--ink); color: #faf8f5;
+  }
+  nav a.active .n { color: #a8d5b5; }
+  .side-foot {
+    font-size: 11px; color: var(--ink-4); line-height: 1.65;
+    border-top: 1px solid var(--line); padding: 12px 6px 4px; margin-top: 12px;
+  }
+
+  /* ---------- main ---------- */
+  main { margin-left: 228px; }
+  .wrap { max-width: 820px; padding: 0 48px 0 52px; }
+
+  /* hero */
+  header.hero {
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .hero h2 {
+    font-family: var(--serif); font-weight: 800;
+    font-size: clamp(28px, 4.2vw, 40px); line-height: 1.22;
+    color: var(--ink);
+  }
+  .hero h2 em { font-style: normal; color: var(--accent); }
+  .hero .lede {
+    margin-top: 14px; max-width: 620px; color: var(--ink-3);
+    font-size: 15px; line-height: 1.8;
+  }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+
+  .meta-grid {
+    margin-top: 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    background: var(--bg-card);
+  }
+  .meta-grid div {
+    padding: 12px 14px 10px;
+    border-right: 1px solid var(--line);
+  }
+  .meta-grid div:last-child { border-right: none; }
+  .meta-grid .k {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--ink-4); text-transform: uppercase;
+  }
+  .meta-grid .v {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    margin-top: 4px; color: var(--ink);
+  }
+  .meta-grid .v small {
+    font-size: 12px; font-family: var(--sans); font-weight: 400;
+    color: var(--ink-3); margin-left: 3px;
+  }
+  .hero-note {
+    margin-top: 14px; font-size: 13.5px; color: var(--ink-3);
+  }
+
+  /* section dividers */
+  .divider {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 44px 0 0; padding: 8px 0 6px;
+    border-top: 2px solid var(--ink);
+  }
+  .divider .no {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+  .divider .t {
+    font-family: var(--serif); font-size: 14px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--ink);
+  }
+  .divider .dots {
+    flex: 1; border-bottom: 1px dashed var(--line-strong);
+    transform: translateY(-3px);
+  }
+  .divider .pg {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+  }
+
+  section.chapter { padding: 20px 0 4px; }
+  .ch-head {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 6px;
+  }
+  .chip {
+    width: 44px; height: 44px; flex: none; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 14px; font-weight: 700; color: #fff;
+  }
+  .ch-head h3 {
+    font-family: var(--serif); font-size: 26px; font-weight: 800;
+    line-height: 1.3; color: var(--ink);
+  }
+  .ch-head .tag {
+    margin-left: auto; font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.1em; border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 12px; color: var(--ink-3);
+    white-space: nowrap; background: var(--bg-card);
+  }
+  .ch-intro {
+    color: var(--ink-3); max-width: 660px; margin: 4px 0 20px;
+    font-size: 15.5px; line-height: 1.75;
+  }
+
+  h4 {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
+    color: var(--ink);
+  }
+  h4::before {
+    content: ""; width: 7px; height: 7px; background: var(--accent);
+    flex: none; transform: rotate(45deg);
+  }
+  h5 {
+    font-size: 15px; font-weight: 700; margin: 18px 0 6px; color: var(--ink-2);
+  }
+  p { margin: 8px 0; }
+  ul.plain { margin: 6px 0; list-style: none; }
+  ul.plain li {
+    padding: 3px 0 3px 18px; position: relative; color: var(--ink);
+    font-size: 15.5px;
+  }
+  ul.plain li::before {
+    content: "–"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+  }
+  .cols2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px;
+  }
+
+  mark {
+    background: #dce9df; color: var(--ink); padding: 1px 5px; border-radius: 3px;
+  }
+  .key {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 12px 16px; margin: 14px 0; font-size: 15px;
+    border-radius: 0 8px 8px 0;
+  }
+  .key strong { color: var(--accent); }
+
+  /* tables */
+  table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    font-size: 14.5px; background: var(--bg-card);
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  th {
+    text-align: left; font-family: var(--mono); font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #f5f2ec; background: var(--ink-2);
+    padding: 10px 14px; font-weight: 500;
+  }
+  td {
+    padding: 9px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf9f6; }
+  td code, p code, li code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: var(--bg-soft); padding: 1px 5px;
+    border-radius: 4px; border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+
+  /* code blocks */
+  pre {
+    background: var(--bg-code); color: #e8e4d9;
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+    padding: 16px 18px; margin: 12px 0; border-radius: 8px;
+    overflow-x: auto; position: relative;
+  }
+  pre .lab {
+    position: absolute; top: 0; right: 0;
+    font-size: 10px; letter-spacing: 0.16em; color: var(--bg-code);
+    background: #a8d5b5; padding: 2px 10px; border-radius: 0 8px 0 6px;
+  }
+  pre .cm { color: rgba(232, 228, 217, 0.45); }
+  pre .kw { color: #8fd0a5; }
+  pre .st { color: #e8b86d; }
+  pre .at { color: #9fb8ff; }
+
+  /* flow */
+  .flow {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; margin: 16px 0; padding: 8px 0;
+  }
+  .flow .step {
+    border: 1.5px solid var(--ink-2); background: var(--bg-card);
+    padding: 8px 22px; font-size: 14px; font-weight: 600;
+    border-radius: 999px; color: var(--ink);
+  }
+  .flow .arr { color: var(--accent); font-size: 16px; line-height: 1.5; }
+
+  /* box model */
+  .boxmodel {
+    margin: 18px 0; font-family: var(--mono); font-size: 11px; text-align: center;
+  }
+  .bm {
+    margin: 0 auto; max-width: 420px;
+    border: 1.5px dashed var(--ink-4); padding: 20px; color: var(--ink-4);
+    background: #faf9f6; border-radius: 6px;
+  }
+  .bm .bd {
+    border: 12px solid #b8d4be; padding: 0; background: var(--bg-card);
+  }
+  .bm .pd {
+    border: 1.5px dashed var(--ink-4); padding: 20px;
+  }
+  .bm .ct {
+    background: var(--ink-2); color: #f5f2ec;
+    padding: 18px 8px; font-size: 12px; letter-spacing: 0.16em;
+  }
+  .bm .lb { padding-top: 4px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+  .stars {
+    font-family: var(--mono); color: var(--accent);
+    letter-spacing: 0.1em; font-size: 13px;
+  }
+
+  /* accordion */
+  details.acc {
+    border: 1px solid var(--line); border-radius: 8px;
+    margin: 8px 0; background: var(--bg-card); overflow: hidden;
+  }
+  details.acc summary {
+    cursor: pointer; list-style: none; padding: 12px 16px;
+    font-weight: 600; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.15s; color: var(--ink);
+  }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::before {
+    content: "+"; font-family: var(--mono); font-size: 15px;
+    color: var(--accent); width: 20px; height: 20px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); border-radius: 5px;
+  }
+  details.acc[open] summary::before { content: "–"; }
+  details.acc summary:hover { background: var(--bg-soft); }
+  details.acc .acc-body {
+    padding: 2px 16px 14px; border-top: 1px dashed var(--line);
+  }
+
+  /* quiz */
+  .year-tabs {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 4px;
+  }
+  .year-tabs button {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line-strong); background: var(--bg-card);
+    color: var(--ink-2); transition: all 0.15s;
+  }
+  .year-tabs button:hover { background: var(--bg-soft); border-color: var(--ink-3); }
+  .year-tabs button.on {
+    background: var(--ink); color: #faf8f5; border-color: var(--ink);
+  }
+  .quiz-meta {
+    font-size: 13px; color: var(--ink-3); margin: 8px 0 16px;
+    font-family: var(--mono);
+  }
+  .quiz-meta b { color: var(--accent); }
+
+  .q {
+    border: 1px solid var(--line); border-radius: 10px; margin: 12px 0;
+    background: var(--bg-card); overflow: hidden;
+  }
+  .q .q-head {
+    display: flex; gap: 8px; align-items: center;
+    padding: 10px 16px; border-bottom: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  }
+  .q .y {
+    background: var(--ink); color: #faf8f5; padding: 2px 8px; border-radius: 4px;
+  }
+  .q .tp {
+    border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px;
+    color: var(--ink-3);
+  }
+  .q .src { margin-left: auto; color: var(--ink-4); }
+  .q .q-body { padding: 14px 16px 16px; }
+  .q .qt {
+    font-weight: 600; font-size: 15.5px; margin-bottom: 10px;
+    color: var(--ink); line-height: 1.65;
+  }
+  .q .opts { display: grid; gap: 6px; }
+  .q .opt {
+    text-align: left; font-family: var(--sans); font-size: 14.5px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; border-radius: 7px;
+    padding: 9px 12px; display: flex; gap: 10px; align-items: baseline;
+    transition: all 0.12s; color: var(--ink);
+  }
+  .q .opt .L {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-4); flex: none;
+  }
+  .q .opt:hover:not(:disabled) {
+    border-color: var(--ink-3); background: var(--bg-soft);
+  }
+  .q .opt:disabled { cursor: default; opacity: 0.85; }
+  .q .opt.right {
+    background: var(--ok-bg); border-color: var(--ok); opacity: 1;
+  }
+  .q .opt.wrong {
+    background: #f8e8e6; border-color: var(--accent); opacity: 1;
+  }
+  .q .opt.right .L, .q .opt.wrong .L { color: var(--ink); }
+  .q .ans {
+    display: none; margin-top: 12px; padding: 11px 14px; font-size: 14px;
+    background: var(--ok-bg); border-left: 3px solid var(--ok);
+    border-radius: 0 7px 7px 0; line-height: 1.7; color: var(--ink-2);
+  }
+  .q .ans.show { display: block; }
+  .q .ans b { color: var(--ok); }
+  .q .toggle-ans {
+    margin-top: 10px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.08em; background: none; border: none;
+    color: var(--accent); cursor: pointer; padding: 3px 0;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  /* live demo */
+  .demo {
+    border: 1.5px solid var(--ink-2); border-radius: 10px;
+    overflow: hidden; margin: 16px 0; background: var(--bg-card);
+  }
+  .demo .bar {
+    background: var(--ink-2); color: #f5f2ec; font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.16em; padding: 7px 14px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .demo .bar i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #e07a6a; display: inline-block;
+  }
+  .demo .bar i:nth-child(2) { background: #e0b060; }
+  .demo .bar i:nth-child(3) { background: #6bc48a; }
+  .demo .stage {
+    padding: 20px; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; align-items: start;
+  }
+  .demo .panel {
+    border: 1px dashed var(--line-strong); border-radius: 8px;
+    min-height: 130px; padding: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: #faf9f6;
+  }
+  #demoBox {
+    transition: all 0.3s; font-size: 15px; text-align: center; padding: 12px;
+  }
+  .demo .ctrl button {
+    font-family: var(--mono); font-size: 12px; margin: 0 6px 6px 0;
+    padding: 7px 12px; border: 1px solid var(--line-strong);
+    background: var(--bg-card); border-radius: 999px; cursor: pointer;
+    transition: all 0.12s; color: var(--ink-2);
+  }
+  .demo .ctrl button:hover {
+    background: var(--ink); color: #faf8f5; border-color: var(--ink);
+  }
+
+  footer {
+    margin-top: 48px; border-top: 2px solid var(--ink);
+    padding: 28px 0 48px; font-size: 13px; color: var(--ink-3);
+  }
+  footer .src { margin-top: 10px; line-height: 1.9; }
+  footer a {
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  /* responsive */
+  @media (max-width: 960px) {
+    aside {
+      position: static; width: auto; border-right: none;
+      border-bottom: 1px solid var(--line); padding: 16px 18px;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 3px; }
+    nav a { padding: 5px 9px; font-size: 12.5px; }
+    main { margin-left: 0; }
+    .wrap { padding: 0 20px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta-grid div:nth-child(2) { border-right: none; }
+    .cols2 { grid-template-columns: 1fr; }
+    .demo .stage { grid-template-columns: 1fr; }
+    .ch-head .tag { display: none; }
+    .hero h2 { font-size: 28px; }
+  }
+  @media print {
+    aside { display: none; }
+    main { margin-left: 0; }
+    #progress { display: none; }
+    .hero { padding: 20px 0 16px; border-bottom: 1px solid #ccc; }
+    .hero h2 { font-size: 24px; }
+    .divider { margin-top: 32px; }
+    pre { break-inside: avoid; }
+    .acc[open] .acc-body { break-inside: avoid; }
+    .q { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<aside>
+  <div class="brand">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></span>
+      <a href="../daolun/index.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap" title="返回导航首页">
+        <span style="background:linear-gradient(135deg,#0f172a 0%,#0284c7 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:13px;font-weight:800">CSAI · </span>
+      </a>
+    </div>
+    <div class="code">NCRE · Level 2 · Subject 64</div>
+    <h1>二级 Web<br>程序设计</h1>
+    <div class="sub">考点清单 × 真题题库<br>2021 — 2026</div>
+  </div>
+  <nav id="nav">
+    <a href="#ch00"><span class="n">00</span>考试概览</a>
+    <a href="#ch01"><span class="n">01</span>Web 技术基础</a>
+    <a href="#ch02"><span class="n">02</span>HTTP 协议</a>
+    <a href="#ch03"><span class="n">03</span>HTML</a>
+    <a href="#ch04"><span class="n">04</span>CSS</a>
+    <a href="#ch05"><span class="n">05</span>JavaScript</a>
+    <a href="#ch06"><span class="n">06</span>BOM</a>
+    <a href="#ch07"><span class="n">07</span>DOM</a>
+    <a href="#ch08"><span class="n">08</span>事件处理</a>
+    <a href="#ch09"><span class="n">09</span>动态网页技术</a>
+    <a href="#ch10"><span class="n">10</span>公共基础知识</a>
+    <a href="#ch11"><span class="n">11</span>备考优先级</a>
+    <a href="#quiz"><span class="n">12</span>真题题库 21–26</a>
+  </nav>
+  <div class="side-foot">
+    依据《二级 Web 程序设计考试大纲（2025 年版）》整理<br>
+    真题来源：教育考试院官方样题及历年考生回忆版
+  </div>
+</aside>
+
+<main>
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="ch00">
+  <div class="kicker">全国计算机等级考试 · 复习系统</div>
+  <h2>二级 Web 程序设计<br><em>科目 64</em> · 考点与真题</h2>
+  <p class="lede">
+    这不是一门只考 HTML 的考试——它考的是 <strong>Web 基础 + HTTP + HTML + CSS + JavaScript + DOM/BOM + 动态网页技术 + 公共基础知识</strong>。
+    其中真正需要大量动手练习的是 <strong>HTML + CSS + JavaScript + DOM</strong>。
+    本页按 2025 年版官方大纲组织知识点，并收录 2021–2026 年真题与官方样题。
+  </p>
+  <div class="meta-grid">
+    <div><div class="k">科目代码</div><div class="v">64</div></div>
+    <div><div class="k">考试时长</div><div class="v">120<small>分钟 · 上机</small></div></div>
+    <div><div class="k">题型分值</div><div class="v">40<small>选择</small> + 60<small>操作</small></div></div>
+    <div><div class="k">考试环境</div><div class="v" style="font-size:14px;line-height:1.45;padding-top:2px">NetBeans 教育考试版<br>Chrome 72+</div></div>
+  </div>
+  <p class="hero-note">
+    选择题 40 分中含 <mark>公共基础知识 10 分</mark>；操作题 60 分 = 基本操作题 + 简单应用题 + 综合应用题。
+  </p>
+</header>
+
+<!-- ============ 01 WEB 基础 ============ -->
+<div class="divider"><span class="no">01</span><span class="t">WEB 技术基础</span><span class="dots"></span><span class="pg">01 / 12</span></div>
+<section class="chapter" id="ch01">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">01</div>
+    <h3>Web 技术基础</h3>
+    <span class="tag">理论 · 选择题为主</span>
+  </div>
+  <p class="ch-intro">理论基础部分。大纲要求掌握 Web 技术的基本概念、组成，以及浏览器和服务器的工作原理。</p>
+
+  <h4>必懂概念清单</h4>
+  <div class="cols2">
+    <ul class="plain">
+      <li>Internet / WWW / Web</li>
+      <li>URL（统一资源定位符）</li>
+      <li>网页 / 网站 / Web 应用</li>
+    </ul>
+    <ul class="plain">
+      <li>浏览器（客户端）</li>
+      <li>Web 服务器（服务端）</li>
+      <li>客户端 / 服务端架构</li>
+    </ul>
+  </div>
+
+  <h4>Web 工作原理（必背）</h4>
+  <div class="flow">
+    <div class="step">用户</div><div class="arr">↓</div>
+    <div class="step">浏览器 Chrome</div><div class="arr">↓ HTTP 请求 GET /index.html</div>
+    <div class="step">Web 服务器</div><div class="arr">↓ HTTP 响应 index.html</div>
+    <div class="step">浏览器渲染并显示网页</div>
+  </div>
+  <div class="key"><strong>考点：</strong>浏览器与服务器之间传输 Web 文档的协议是 <strong>HTTP</strong>（不是 FTP、DNS、NFS）。</div>
+</section>
+
+<!-- ============ 02 HTTP ============ -->
+<div class="divider"><span class="no">02</span><span class="t">HTTP 协议</span><span class="dots"></span><span class="pg">02 / 12</span></div>
+<section class="chapter" id="ch02">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">02</div>
+    <h3>HTTP 协议</h3>
+    <span class="tag">理论 · 高频考点</span>
+  </div>
+  <p class="ch-intro">大纲要求：HTTP 基本概念与交互模型、消息格式、请求消息与常用请求方法、响应消息与常用响应状态、常用消息头。</p>
+
+  <h4>HTTP 请求消息结构</h4>
+  <pre><span class="lab">HTTP</span><span class="kw">GET</span> /index.html HTTP/1.1      <span class="cm">← 请求行</span>
+<span class="at">Host</span>: www.example.com          <span class="cm">← 请求头</span>
+<span class="at">Connection</span>: keep-alive
+                              <span class="cm">← 空行</span>
+                              <span class="cm">← 请求正文（GET 通常为空）</span></pre>
+
+  <h4>GET 与 POST 对比（必考）</h4>
+  <table>
+    <tr><th style="width:50%">GET</th><th>POST</th></tr>
+    <tr><td>获取资源</td><td>提交数据</td></tr>
+    <tr><td>参数拼在 URL 中，可见</td><td>数据放在请求体，不直接显示在 URL</td></tr>
+    <tr><td>常用于查询</td><td>常用于表单提交</td></tr>
+    <tr><td>有长度限制</td><td>数据量通常更大</td></tr>
+  </table>
+
+  <h4>HTTP 状态码（必须重点掌握）</h4>
+  <table>
+    <tr><th>状态码</th><th>含义</th><th>状态码</th><th>含义</th></tr>
+    <tr><td><code>200</code></td><td>OK，请求成功</td><td><code>400</code></td><td>Bad Request</td></tr>
+    <tr><td><code>201</code></td><td>Created，创建成功</td><td><code>401</code></td><td>Unauthorized</td></tr>
+    <tr><td><code>301</code></td><td>永久重定向</td><td><code>403</code></td><td>Forbidden</td></tr>
+    <tr><td><code>302</code></td><td>临时重定向</td><td><code>404</code></td><td>Not Found</td></tr>
+    <tr><td><code>304</code></td><td>Not Modified</td><td><code>500</code></td><td>Internal Server Error</td></tr>
+  </table>
+  <div class="key">
+    <strong>速记：</strong>2xx 成功 ｜ 3xx 重定向 ｜ 4xx 客户端错误 ｜ 5xx 服务器错误。
+    HTTP/1.1 的持久连接（keep-alive）<strong>默认打开</strong>。
+  </div>
+</section>
+
+<!-- ============ 03 HTML ============ -->
+<div class="divider"><span class="no">03</span><span class="t">HTML</span><span class="dots"></span><span class="pg">03 / 12</span></div>
+<section class="chapter" id="ch03">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">03</div>
+    <h3>HTML</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：HTML 文档结构和语法、常用元素及其属性、表单与常用控件。这是操作题的核心内容之一。</p>
+
+  <h4>HTML 文档基本结构</h4>
+  <pre><span class="lab">HTML</span><span class="kw">&lt;!DOCTYPE html&gt;</span>
+&lt;<span class="kw">html</span>&gt;
+&lt;<span class="kw">head</span>&gt;
+    &lt;<span class="kw">title</span>&gt;网页标题&lt;/<span class="kw">title</span>&gt;
+&lt;/<span class="kw">head</span>&gt;
+&lt;<span class="kw">body</span>&gt;
+
+&lt;/<span class="kw">body</span>&gt;
+&lt;/<span class="kw">html</span>&gt;</pre>
+
+  <details class="acc" open>
+    <summary>文本 · 超链接 · 图像</summary>
+    <div class="acc-body">
+      <pre><span class="lab">HTML</span>&lt;<span class="kw">h1</span>&gt;一级标题&lt;/<span class="kw">h1</span>&gt;  &lt;<span class="kw">p</span>&gt;段落&lt;/<span class="kw">p</span>&gt;
+&lt;<span class="kw">strong</span>&gt;重要文本&lt;/<span class="kw">strong</span>&gt;  &lt;<span class="kw">em</span>&gt;强调&lt;/<span class="kw">em</span>&gt;  &lt;<span class="kw">br</span>&gt;  &lt;<span class="kw">hr</span>&gt;
+
+<span class="cm">&lt;!-- 超链接：重点属性 href / target / title --&gt;</span>
+&lt;<span class="kw">a</span> <span class="at">href</span>=<span class="st">"page2.html"</span> <span class="at">target</span>=<span class="st">"_blank"</span>&gt;打开页面&lt;/<span class="kw">a</span>&gt;
+
+<span class="cm">&lt;!-- 图像：重点属性 src / alt / width / height --&gt;</span>
+&lt;<span class="kw">img</span> <span class="at">src</span>=<span class="st">"images/a.jpg"</span> <span class="at">alt</span>=<span class="st">"图片"</span>&gt;</pre>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>列表 · 表格（rowspan / colspan 高频）</summary>
+    <div class="acc-body">
+      <pre><span class="lab">HTML</span>&lt;<span class="kw">ul</span>&gt;&lt;<span class="kw">li</span>&gt;HTML&lt;/<span class="kw">li</span>&gt;&lt;<span class="kw">li</span>&gt;CSS&lt;/<span class="kw">li</span>&gt;&lt;/<span class="kw">ul</span>&gt;   <span class="cm">&lt;!-- 无序列表 --&gt;</span>
+&lt;<span class="kw">ol</span>&gt;&lt;<span class="kw">li</span>&gt;HTML&lt;/<span class="kw">li</span>&gt;&lt;<span class="kw">li</span>&gt;CSS&lt;/<span class="kw">li</span>&gt;&lt;/<span class="kw">ol</span>&gt;   <span class="cm">&lt;!-- 有序列表 --&gt;</span>
+
+&lt;<span class="kw">table</span>&gt;
+  &lt;<span class="kw">tr</span>&gt;&lt;<span class="kw">th</span>&gt;姓名&lt;/<span class="kw">th</span>&gt;&lt;<span class="kw">th</span>&gt;成绩&lt;/<span class="kw">th</span>&gt;&lt;/<span class="kw">tr</span>&gt;
+  &lt;<span class="kw">tr</span>&gt;&lt;<span class="kw">td</span> <span class="at">rowspan</span>=<span class="st">"2"</span>&gt;张三&lt;/<span class="kw">td</span>&gt;&lt;<span class="kw">td</span>&gt;90&lt;/<span class="kw">td</span>&gt;&lt;/<span class="kw">tr</span>&gt;
+&lt;/<span class="kw">table</span>&gt;
+<span class="cm">&lt;!-- table / tr / th / td / caption / thead / tbody / tfoot --&gt;</span>
+<span class="cm">&lt;!-- rowspan 跨行，colspan 跨列，操作题常考 --&gt;</span></pre>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>表单与控件（操作题重点）</summary>
+    <div class="acc-body">
+      <pre><span class="lab">HTML</span>&lt;<span class="kw">form</span> <span class="at">action</span>=<span class="st">"login.php"</span> <span class="at">method</span>=<span class="st">"post"</span>&gt;
+  用户名：&lt;<span class="kw">input</span> <span class="at">type</span>=<span class="st">"text"</span>&gt;
+  密码：&lt;<span class="kw">input</span> <span class="at">type</span>=<span class="st">"password"</span>&gt;
+  性别：&lt;<span class="kw">input</span> <span class="at">type</span>=<span class="st">"radio"</span> <span class="at">name</span>=<span class="st">"sex"</span>&gt;男
+        &lt;<span class="kw">input</span> <span class="at">type</span>=<span class="st">"radio"</span> <span class="at">name</span>=<span class="st">"sex"</span>&gt;女
+  &lt;<span class="kw">input</span> <span class="at">type</span>=<span class="st">"submit"</span> <span class="at">value</span>=<span class="st">"登录"</span>&gt;
+&lt;/<span class="kw">form</span>&gt;
+
+<span class="cm">&lt;!-- input 类型必背 --&gt;</span>
+text · password · radio · checkbox · file · submit · reset · button
+<span class="cm">&lt;!-- 其他控件 --&gt;</span>
+label · textarea · select · option · button</pre>
+      <div class="key"><strong>易错点：</strong>同一组单选按钮必须设置<strong>相同的 name</strong> 才能互斥。</div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ 04 CSS ============ -->
+<div class="divider"><span class="no">04</span><span class="t">CSS</span><span class="dots"></span><span class="pg">04 / 12</span></div>
+<section class="chapter" id="ch04">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">04</div>
+    <h3>CSS</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：基本概念、基本语法、使用方法、选择器、层次及优先级、布局设计。是必须重点掌握的操作部分。</p>
+
+  <h4>三种使用方式与优先级</h4>
+  <pre><span class="lab">CSS</span><span class="cm">/* 1. 行内样式 */</span>
+&lt;p <span class="at">style</span>=<span class="st">"color:red;"</span>&gt;
+
+<span class="cm">/* 2. 内部样式（head 中） */</span>
+&lt;<span class="kw">style</span>&gt; p { <span class="at">color</span>: red; } &lt;/<span class="kw">style</span>&gt;
+
+<span class="cm">/* 3. 外部样式 */</span>
+&lt;<span class="kw">link</span> <span class="at">rel</span>=<span class="st">"stylesheet"</span> <span class="at">href</span>=<span class="st">"style.css"</span>&gt;</pre>
+  <div class="key"><strong>优先级：</strong>行内样式 &gt; 内部（文档）样式 &gt; 外部样式；选择器之间：<strong>ID 选择器 &gt; 类选择器 &gt; 标签选择器</strong>，可用 <code>!important</code> 提升优先级。</div>
+
+  <h4>选择器（非常重要的考点）</h4>
+  <table>
+    <tr><th>选择器</th><th>写法</th><th>含义</th></tr>
+    <tr><td>标签选择器</td><td><code>p { color:red; }</code></td><td>所有 p 元素</td></tr>
+    <tr><td>类选择器</td><td><code>.title { color:blue; }</code></td><td>class="title" 的元素</td></tr>
+    <tr><td>ID 选择器</td><td><code>#header { height:80px; }</code></td><td>id="header" 的唯一元素</td></tr>
+    <tr><td>后代选择器</td><td><code>div p { }</code></td><td>div 内部<strong>所有</strong> p</td></tr>
+    <tr><td>子元素选择器</td><td><code>div &gt; p { }</code></td><td>div 的<strong>直接子级</strong> p</td></tr>
+  </table>
+
+  <h4>常用属性速查</h4>
+  <div class="cols2">
+    <ul class="plain">
+      <li>字体：<code>font-family / font-size / font-weight / font-style</code></li>
+      <li>文本：<code>color / text-align / text-decoration / line-height / letter-spacing</code></li>
+      <li>背景：<code>background / background-color / background-image</code></li>
+    </ul>
+    <ul class="plain">
+      <li>尺寸：<code>width / height</code></li>
+      <li>边框：<code>border / border-radius</code></li>
+      <li>间距：<code>margin</code>（外边距）/ <code>padding</code>（内边距）</li>
+    </ul>
+  </div>
+
+  <h4>Box Model 盒模型（必理解）</h4>
+  <div class="boxmodel">
+    <div class="bm">MARGIN
+      <div class="bd">
+        <div class="pd">PADDING
+          <div class="ct">CONTENT</div>
+        </div>
+        <div class="lb">border</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;color:var(--ink-3);font-size:14px;margin-top:8px">由内向外：<strong>content → padding → border → margin</strong></p>
+
+  <h4>布局与定位</h4>
+  <pre><span class="lab">CSS</span><span class="at">display</span>: block | inline | inline-block | none;
+
+<span class="at">position</span>: static | relative | absolute | fixed;
+<span class="cm">/* 考试尤其要理解 relative + absolute 的配合：
+   父元素 relative，子元素 absolute 相对父元素定位 */</span></pre>
+</section>
+
+<!-- ============ 05 JS ============ -->
+<div class="divider"><span class="no">05</span><span class="t">JAVASCRIPT</span><span class="dots"></span><span class="pg">05 / 12</span></div>
+<section class="chapter" id="ch05">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">05</div>
+    <h3>JavaScript</h3>
+    <span class="tag">最重要部分之一 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：基本概念和语法、常用内置对象、事件处理，以及 BOM、DOM。JavaScript 代码在<strong>浏览器端</strong>执行。</p>
+
+  <h4>变量与数据类型</h4>
+  <pre><span class="lab">JS</span><span class="kw">var</span> a = 10;   <span class="kw">let</span> b = 20;   <span class="kw">const</span> c = 30;
+
+<span class="cm">// 数据类型</span>
+Number · String · Boolean · Undefined · Null · Object · Array</pre>
+
+  <h4>运算符（易错点必背）</h4>
+  <pre><span class="lab">JS</span>5 == <span class="st">"5"</span>    <span class="cm">// true   —— == 会做类型转换</span>
+5 === <span class="st">"5"</span>   <span class="cm">// false  —— === 同时比较类型和值</span></pre>
+
+  <div class="cols2">
+    <div>
+      <h4>流程控制</h4>
+      <pre><span class="lab">JS</span><span class="kw">if</span> (score &gt;= 60) { ... } <span class="kw">else</span> { ... }
+
+<span class="kw">switch</span> (grade) {
+  <span class="kw">case</span> <span class="st">"A"</span>: ...; <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="st">"B"</span>: ...; <span class="kw">break</span>;
+}
+
+<span class="kw">for</span> (<span class="kw">let</span> i = 0; i &lt; 10; i++) { ... }
+<span class="cm">// while / do...while / break / continue</span></pre>
+    </div>
+    <div>
+      <h4>函数</h4>
+      <pre><span class="lab">JS</span><span class="kw">function</span> <span class="st">add</span>(a, b) {
+  <span class="kw">return</span> a + b;
+}
+<span class="kw">let</span> result = add(10, 20);
+
+<span class="cm">// 掌握：定义 / 参数 / 返回值
+// 局部变量（函数内 var/let）
+// 全局变量</span></pre>
+    </div>
+  </div>
+
+  <h4>数组与字符串常用方法</h4>
+  <table>
+    <tr><th>数组</th><th>字符串</th></tr>
+    <tr><td><code>arr.length</code> 长度</td><td><code>str.length</code> 长度</td></tr>
+    <tr><td><code>push()</code> 尾加 / <code>pop()</code> 尾删</td><td><code>indexOf()</code> 查找位置</td></tr>
+    <tr><td><code>shift()</code> 头删 / <code>unshift()</code> 头加</td><td><code>substring()</code> / <code>substr()</code> 截取</td></tr>
+    <tr><td><code>arr[0]</code> 下标访问</td><td><code>split()</code> 分割 / <code>toUpperCase()</code> / <code>toLowerCase()</code></td></tr>
+  </table>
+
+  <h4>内置对象（大纲明确考点）</h4>
+  <pre><span class="lab">JS</span>Math.<span class="st">random</span>()  Math.<span class="st">round</span>()  Math.<span class="st">floor</span>()  Math.<span class="st">ceil</span>()
+Math.<span class="st">max</span>()  Math.<span class="st">min</span>()
+
+<span class="kw">new</span> <span class="st">Date</span>()   <span class="cm">// 日期对象</span>
+
+<span class="cm">// String · Array · Math · Date · RegExp · Number · Object</span></pre>
+  <div class="key"><strong>真题高频：</strong>把 6.25 四舍五入为最接近的整数用 <code>Math.round(6.25)</code>——注意没有 <code>Math.rnd()</code> 这个函数。</div>
+</section>
+
+<!-- ============ 06 BOM ============ -->
+<div class="divider"><span class="no">06</span><span class="t">BOM</span><span class="dots"></span><span class="pg">06 / 12</span></div>
+<section class="chapter" id="ch06">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-6)">06</div>
+    <h3>BOM 浏览器对象模型</h3>
+    <span class="tag">Browser Object Model</span>
+  </div>
+  <p class="ch-intro">主要对象：window / navigator / location / history / screen。<strong>document 对象从属于 window 对象</strong>（常见判断题）。</p>
+  <pre><span class="lab">JS</span>window.alert(<span class="st">"Hello"</span>);   <span class="cm">// 常省略 window 直接写 alert()</span>
+
+location.href = <span class="st">"index.html"</span>;   <span class="cm">// 页面跳转</span>
+
+history.back();      <span class="cm">// 后退</span>
+history.forward();   <span class="cm">// 前进</span></pre>
+</section>
+
+<!-- ============ 07 DOM ============ -->
+<div class="divider"><span class="no">07</span><span class="t">DOM</span><span class="dots"></span><span class="pg">07 / 12</span></div>
+<section class="chapter" id="ch07">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">07</div>
+    <h3>DOM 文档对象模型</h3>
+    <span class="tag">重点中的重点 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">DOM（Document Object Model）把网页表示为树形结构，JavaScript 通过 DOM 操作网页元素。<strong>控制文档结构的是 DOM，不是 CSS。</strong></p>
+
+  <div class="flow" style="align-items:flex-start;margin-left:12px">
+    <div class="step" style="border-radius:8px">document</div>
+    <div class="arr" style="margin-left:28px">└─ html</div>
+    <div class="step" style="border-radius:8px;margin-left:48px">head</div>
+    <div class="step" style="border-radius:8px;margin-left:48px">body → div / p / input / button …</div>
+  </div>
+
+  <h4>获取元素（必须熟练）</h4>
+  <pre><span class="lab">JS</span>document.<span class="st">getElementById</span>(<span class="st">"box"</span>)          <span class="cm">// 按 id，返回单个元素</span>
+document.<span class="st">getElementsByTagName</span>(<span class="st">"p"</span>)     <span class="cm">// 按标签，返回集合</span>
+document.<span class="st">getElementsByClassName</span>(<span class="st">"item"</span>) <span class="cm">// 按类名，返回集合</span>
+document.<span class="st">querySelector</span>(<span class="st">"#box"</span>)         <span class="cm">// CSS 选择器，第一个</span>
+document.<span class="st">querySelectorAll</span>(<span class="st">".item"</span>)     <span class="cm">// CSS 选择器，全部</span></pre>
+
+  <h4>修改内容与样式</h4>
+  <pre><span class="lab">JS</span><span class="cm">// 修改 HTML 内容</span>
+document.getElementById(<span class="st">"text"</span>).innerHTML = <span class="st">"Hello World"</span>;
+document.getElementById(<span class="st">"text"</span>).textContent = <span class="st">"Hello World"</span>;
+
+<span class="cm">// 修改 CSS（注意驼峰命名）</span>
+<span class="kw">let</span> box = document.getElementById(<span class="st">"box"</span>);
+box.style.width = <span class="st">"200px"</span>;
+box.style.backgroundColor = <span class="st">"yellow"</span>;</pre>
+
+  <h4>亲手试一试 · DOM 操作演示</h4>
+  <div class="demo">
+    <div class="bar"><i></i><i></i><i></i>&nbsp;LIVE DEMO — document.getElementById("demoBox")</div>
+    <div class="stage">
+      <div class="panel"><div id="demoBox">我是 #demoBox<br>点右边按钮操作我</div></div>
+      <div class="ctrl">
+        <button onclick="dmText()">innerHTML 改文字</button>
+        <button onclick="dmColor()">style.color 变红</button>
+        <button onclick="dmBg()">style.background 变色</button>
+        <button onclick="dmSize()">style.fontSize 放大</button>
+        <button onclick="dmReset()">复位</button>
+        <p style="font-size:12.5px;color:var(--ink-3);margin-top:6px">每个按钮对应一行真题级别的 DOM 代码。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 事件 ============ -->
+<div class="divider"><span class="no">08</span><span class="t">JAVASCRIPT 事件</span><span class="dots"></span><span class="pg">08 / 12</span></div>
+<section class="chapter" id="ch08">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">08</div>
+    <h3>事件处理</h3>
+    <span class="tag">实操重点 · ★★★★★</span>
+  </div>
+  <pre><span class="lab">HTML</span>&lt;<span class="kw">button</span> <span class="at">onclick</span>=<span class="st">"showMessage()"</span>&gt;点击&lt;/<span class="kw">button</span>&gt;
+
+&lt;<span class="kw">script</span>&gt;
+<span class="kw">function</span> <span class="st">showMessage</span>() { alert(<span class="st">"Hello"</span>); }
+&lt;/<span class="kw">script</span>&gt;</pre>
+  <h4>常见事件必背</h4>
+  <table>
+    <tr><th>事件</th><th>触发时机</th><th>事件</th><th>触发时机</th></tr>
+    <tr><td><code>onclick</code></td><td>单击</td><td><code>onchange</code></td><td>表单值改变</td></tr>
+    <tr><td><code>ondblclick</code></td><td>双击</td><td><code>onfocus</code></td><td>获得焦点</td></tr>
+    <tr><td><code>onmouseover</code></td><td>鼠标移入</td><td><code>onblur</code></td><td>失去焦点</td></tr>
+    <tr><td><code>onmouseout</code></td><td>鼠标移出</td><td><code>onload</code></td><td>页面加载完成</td></tr>
+    <tr><td colspan="2"><code>onsubmit</code> 表单提交</td><td colspan="2"><mark>样题考过：onmouseover 实现悬停加粗变红</mark></td></tr>
+  </table>
+</section>
+
+<!-- ============ 09 动态网页 ============ -->
+<div class="divider"><span class="no">09</span><span class="t">动态网页技术</span><span class="dots"></span><span class="pg">09 / 12</span></div>
+<section class="chapter" id="ch09">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">09</div>
+    <h3>动态网页技术</h3>
+    <span class="tag">了解概念即可 · ★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求<mark>了解基本概念和原理</mark>：Java Servlet、JSP、ASP.NET、PHP、AJAX。<strong>这部分不要求像 JavaScript 那样大量编程。</strong></p>
+  <table>
+    <tr><th>技术</th><th>要点</th></tr>
+    <tr><td>Java Servlet / JSP</td><td>Java 系服务器端技术；JSP 内置对象：request / response / session / out / application（<strong>cookie 不是 JSP 内置对象</strong>）</td></tr>
+    <tr><td>ASP.NET</td><td>微软服务器端技术，常用 C# 编写</td></tr>
+    <tr><td>PHP</td><td>开源服务器端脚本语言，代码在<strong>服务器端</strong>执行</td></tr>
+    <tr><td>AJAX</td><td>不重新加载整个页面，与服务器交换数据并局部更新网页</td></tr>
+  </table>
+  <h4>AJAX 工作原理</h4>
+  <div class="flow">
+    <div class="step">浏览器</div><div class="arr">↓ JavaScript 发起 AJAX 请求</div>
+    <div class="step">服务器</div><div class="arr">↓ 返回数据</div>
+    <div class="step">JavaScript 修改 DOM，局部更新页面</div>
+  </div>
+</section>
+
+<!-- ============ 10 公共基础 ============ -->
+<div class="divider"><span class="no">10</span><span class="t">公共基础知识</span><span class="dots"></span><span class="pg">10 / 12</span></div>
+<section class="chapter" id="ch10">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">10</div>
+    <h3>公共基础知识</h3>
+    <span class="tag">选择题 10 分 · 别丢</span>
+  </div>
+  <p class="ch-intro">虽然只有 10 分，但属于系统复习后比较容易拿到的分数，不要忽略。</p>
+  <div class="cols2">
+    <div>
+      <h5>数据结构</h5>
+      <ul class="plain">
+        <li>栈（后进先出）/ 队列（先进先出）</li>
+        <li>线性表 / 树 / 二叉树</li>
+        <li>查找 / 排序</li>
+      </ul>
+      <h5>程序设计基础</h5>
+      <ul class="plain">
+        <li>算法 / 结构化程序设计</li>
+        <li>面向对象程序设计</li>
+      </ul>
+    </div>
+    <div>
+      <h5>软件工程</h5>
+      <ul class="plain">
+        <li>软件生命周期</li>
+        <li>需求分析 → 概要设计 → 详细设计 → 测试 → 维护</li>
+      </ul>
+      <h5>数据库基础</h5>
+      <ul class="plain">
+        <li>数据模型 / 关系数据库</li>
+        <li>关系 / 元组 / 属性 / 主键</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 优先级 ============ -->
+<div class="divider"><span class="no">11</span><span class="t">备考优先级</span><span class="dots"></span><span class="pg">11 / 12</span></div>
+<section class="chapter" id="ch11">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">11</div>
+    <h3>按重要性排序复习</h3>
+    <span class="tag">不要平均用力</span>
+  </div>
+  <table>
+    <tr><th style="width:120px">优先级</th><th>内容</th><th>说明</th></tr>
+    <tr><td><span class="stars">★★★★★</span></td><td>HTML · CSS · JavaScript · DOM · 事件处理</td><td>最需要实际编写代码的部分</td></tr>
+    <tr><td><span class="stars">★★★★</span></td><td>HTTP · BOM · 内置对象 · 表单 · CSS 布局</td><td>选择与操作双高频</td></tr>
+    <tr><td><span class="stars">★★★</span></td><td>Web 基本概念 · AJAX · Servlet · JSP · PHP · ASP.NET</td><td>以概念题为主</td></tr>
+    <tr><td><span class="stars">★★★</span></td><td>公共基础知识</td><td>10 分，系统复习易拿分</td></tr>
+  </table>
+  <div class="key" style="font-size:15.5px">
+    <strong>核心闭环：</strong>HTML 建页面 → CSS 美化页面 → JavaScript 编写逻辑 → DOM 获取/修改元素 → 事件触发交互。把这条链练到肌肉记忆，操作题 60 分就稳了。
+  </div>
+</section>
+
+<!-- ============ 12 真题 ============ -->
+<div class="divider"><span class="no">12</span><span class="t">真题题库</span><span class="dots"></span><span class="pg">12 / 12</span></div>
+<section class="chapter" id="quiz">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--accent)">12</div>
+    <h3>真题与样题 · 2021–2026</h3>
+    <span class="tag">点击选项即判分</span>
+  </div>
+  <p class="ch-intro">
+    收录 2021–2024 年考生回忆版真题、2025 年教育考试院官方样题，以及依据 2025 年版大纲编写的 2026 模拟预测题。
+    选择题点击选项立即判分；操作题点击「查看参考答案」展开解析。
+  </p>
+
+  <div class="year-tabs" id="yearTabs">
+    <button class="on" data-y="all">全部</button>
+    <button data-y="2021">2021</button>
+    <button data-y="2022">2022</button>
+    <button data-y="2023">2023</button>
+    <button data-y="2024">2024</button>
+    <button data-y="2025">2025 官方样题</button>
+    <button data-y="2026">2026 模拟</button>
+  </div>
+  <div class="quiz-meta">已作答 <b id="doneCnt">0</b> 题 ｜ 答对 <b id="rightCnt">0</b> 题</div>
+
+  <div id="qlist">
+
+    <!-- ===== 2021 ===== -->
+    <div class="q" data-y="2021" data-t="op">
+      <div class="q-head"><span class="y">2021</span><span class="tp">基本操作题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">在页面中展示一张图片 turtle.jpg：点击该图片链接到 www.petsWorld.com/turtles.htm；限制图片显示大小为 800×600；鼠标悬停时显示"欢迎点击图片进入一个新的世界"；图像无法显示时显示"可爱的小乌龟"。请补全代码。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">HTML</span>&lt;<span class="kw">a</span> <span class="at">href</span>=<span class="st">"www.petsWorld.com/turtles.htm"</span>&gt;
+  &lt;<span class="kw">img</span> <span class="at">src</span>=<span class="st">"turtle.jpg"</span> <span class="at">width</span>=<span class="st">"800"</span> <span class="at">height</span>=<span class="st">"600"</span>
+      <span class="at">title</span>=<span class="st">"欢迎点击图片进入一个新的世界"</span>
+      <span class="at">alt</span>=<span class="st">"可爱的小乌龟"</span>&gt;
+&lt;/<span class="kw">a</span>&gt;</pre>
+          <b>解析：</b>图片链接 = <code>&lt;a&gt;</code> 包裹 <code>&lt;img&gt;</code>；悬停提示用 <code>title</code>，加载失败替代文本用 <code>alt</code>——这是操作题的高频填空点。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2021" data-t="op">
+      <div class="q-head"><span class="y">2021</span><span class="tp">基本操作题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">将前两行文字以 25pt 大小、行间距为正常 0.8 倍、左对齐显示；后两行文字行间距放大 2 倍、字间距 20px、右对齐显示。请补全样式。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">CSS</span>p.small { <span class="at">line-height</span>: 80%; <span class="at">font-size</span>: 25pt; }
+#big    { <span class="at">line-height</span>: 200%; <span class="at">float</span>: right; <span class="at">letter-spacing</span>: 20px; }</pre>
+          <b>解析：</b>行间距 <code>line-height</code>（百分比 = 相对正常值的倍数）、字间距 <code>letter-spacing</code>、类选择器 <code>.small</code> 与 ID 选择器 <code>#big</code> 的写法都是采分点。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2022 ===== -->
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">下列协议中，用于在 Web 浏览器和服务器之间传输 Web 文档的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>NFS</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>FTP</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>HTTP</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>DNS</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>HTTP（超文本传输协议）负责浏览器与 Web 服务器之间的文档传输；FTP 是文件传输，DNS 负责域名解析。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">下列语言编写的代码中，在浏览器端执行的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>Web 页面中的 C# 代码</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>Web 页面中的 Java 代码</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>Web 页面中的 PHP 代码</button>
+          <button class="opt" data-ok="1"><span class="L">D</span>Web 页面中的 JavaScript 代码</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 D。</b>JavaScript 是客户端脚本，在浏览器中执行；C#（ASP.NET）、PHP、JSP/Servlet 都在服务器端执行。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">下列技术中，控制文档结构的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="1"><span class="L">A</span>DOM</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>CSS</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>JavaScript</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>XMLHttpRequest</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 A。</b>DOM（文档对象模型）定义文档的结构；CSS 控制外观样式，JavaScript 是操作 DOM 的语言。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2023 ===== -->
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">HTTP 协议是一种什么协议？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>文件传输协议</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>邮件协议</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>远程登录协议</button>
+          <button class="opt" data-ok="1"><span class="L">D</span>超文本传输协议</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 D。</b>HTTP = HyperText Transfer Protocol，超文本传输协议。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">在 HTTP/1.1 协议中，持久连接（keep-alive）选项是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>默认关闭</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>默认打开</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>不可协商</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>以上都不对</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>HTTP/1.1 默认启用持久连接，同一连接可传输多个请求/响应，减少连接建立开销。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">以下哪一项<strong>不是</strong> HTTP 协议的特点？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>支持持久连接</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>请求/响应模式</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>只能传输文本数据</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>简单、高效</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>HTTP 响应的 MIME 消息体可同时包含文本、图片、视频、音频等多种类型数据。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2024 ===== -->
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">下列函数中，能够把 6.25 四舍五入为最接近整数的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>round(6.25)</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>rnd(6.25)</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>Math.rnd(6.25)</button>
+          <button class="opt" data-ok="1"><span class="L">D</span>Math.round(6.25)</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 D。</b>JavaScript 数学函数必须通过 Math 对象调用，且没有 rnd 方法；Math.round() 四舍五入，Math.floor() 向下取整，Math.ceil() 向上取整。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">HTTP 请求消息中可以不包含的是？（① 请求行　② 消息头　③ 消息体实体数据）</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>仅 ①</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>仅 ① 和 ②</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>② 和 ③</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>仅 ③</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>请求行是必须的；GET 请求通常没有消息体，部分简单请求也可以不带消息头。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">关于浏览器对象之间的从属关系，正确的说法是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>window 对象从属于 document 对象</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>document 对象从属于 window 对象</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>window 与 document 互相独立</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>document 是 BOM 的顶层对象</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>window 是 BOM 的顶层对象，document 是 window 的属性（DOM 的入口），所以 alert() 可省略 window 前缀。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">下列哪个<strong>不是</strong> JSP 的内置对象？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>session</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>request</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>cookie</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>out</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>JSP 九大内置对象包括 request、response、session、out、application 等；cookie 不是内置对象。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2025 官方样题 ===== -->
+    <div class="q" data-y="2025" data-t="mc">
+      <div class="q-head"><span class="y">2025</span><span class="tp">单项选择题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">下列关于域名系统 DNS 的描述中，正确的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>DNS 用于在浏览器和服务器之间传输网页</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>DNS 完成域名与 IP 地址之间的解析</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>DNS 是一种文件传输协议</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>DNS 只能解析 IPv4 地址，且为集中式系统</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>DNS（域名系统）是分布式数据库，负责把便于记忆的域名解析为 IP 地址；传输网页是 HTTP 的职责。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="op">
+      <div class="q-head"><span class="y">2025</span><span class="tp">基本操作题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">补全代码：设计"每日膳食建议"表格页面，要求正确使用 table / tr / th / td 及 caption 等元素呈现三餐建议。</div>
+        <button class="toggle-ans">查看参考要点 +</button>
+        <div class="ans">
+          <b>采分点：</b>正确使用 <code>&lt;caption&gt;</code> 表格标题、<code>&lt;th&gt;</code> 表头、<code>&lt;td&gt;</code> 单元格；跨行/跨列处用 <code>rowspan</code> / <code>colspan</code>；表格边框通过 <code>border</code> 属性或 CSS 设置。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="op">
+      <div class="q-head"><span class="y">2025</span><span class="tp">基本操作题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">补全代码：当鼠标移动到"运动选项"上时，字体加粗且颜色变红。</div>
+        <button class="toggle-ans">查看参考要点 +</button>
+        <div class="ans">
+<pre><span class="lab">JS</span>&lt;<span class="kw">li</span> <span class="at">onmouseover</span>=<span class="st">"this.style.fontWeight='bold';this.style.color='red'"</span>
+    <span class="at">onmouseout</span>=<span class="st">"this.style.fontWeight='normal';this.style.color=''"</span>&gt;跑步&lt;/<span class="kw">li</span>&gt;</pre>
+          <b>采分点：</b>事件 <code>onmouseover</code> / <code>onmouseout</code>，DOM 样式属性 <code>style.fontWeight</code>、<code>style.color</code>（驼峰命名）。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="op">
+      <div class="q-head"><span class="y">2025</span><span class="tp">简单应用题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">设计个人注册页面：实现密码的隐藏/显示切换，并对上传文件做格式限制。</div>
+        <button class="toggle-ans">查看参考要点 +</button>
+        <div class="ans">
+          <b>采分点：</b>密码框用 <code>type="password"</code>，切换时修改 <code>type</code> 为 <code>"text"</code>；文件控件用 <code>&lt;input type="file" accept=".jpg,.png"&gt;</code> 限制格式；配合 <code>onclick</code> 事件完成交互。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="op">
+      <div class="q-head"><span class="y">2025</span><span class="tp">简单应用题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">设计房贷计算器页面：输入贷款金额、年利率、贷款年限，点击按钮计算并显示每月还款金额。</div>
+        <button class="toggle-ans">查看参考要点 +</button>
+        <div class="ans">
+          <b>采分点：</b>用 <code>document.getElementById().value</code> 读取输入；<code>parseFloat()</code> 转数值；等额本息公式 月供 = 本金 × 月利率 × (1+月利率)ⁿ ÷ [(1+月利率)ⁿ − 1]；结果用 <code>innerHTML</code> 写回页面，<code>Math.pow()</code> 或循环求幂。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="op">
+      <div class="q-head"><span class="y">2025</span><span class="tp">综合应用题</span><span class="src">教育考试院官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">设计购物车页面：商品可"加入购物车"，实时显示商品总价，点击结账弹出成功提示。</div>
+        <button class="toggle-ans">查看参考要点 +</button>
+        <div class="ans">
+          <b>采分点：</b>商品数据用数组存储；<code>onclick</code> 触发加入操作；遍历数组累加总价并用 <code>innerHTML</code> 更新显示；结账用 <code>alert()</code> 提示。综合考查数组、函数、DOM、事件四大核心。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2026 模拟 ===== -->
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测 · 依据 2025 版大纲</span></div>
+      <div class="q-body">
+        <div class="qt">浏览器请求一个并不存在的页面时，服务器返回的状态码通常是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>200</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>301</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>404</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>500</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>404 Not Found 表示资源不存在；500 是服务器内部错误，301/302 是重定向。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测 · 依据 2025 版大纲</span></div>
+      <div class="q-body">
+        <div class="qt">执行 <code>5 === "5"</code> 的结果是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>true</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>false</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>5</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>语法错误</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>=== 严格相等，同时比较类型和值：Number 与 String 类型不同，结果为 false；若用 == 则为 true。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测 · 依据 2025 版大纲</span></div>
+      <div class="q-body">
+        <div class="qt">关于 GET 与 POST 方法，下列说法错误的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>GET 的参数通常附加在 URL 之后</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>POST 的数据通常放在请求体中</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>POST 传输的数据量受 URL 长度限制</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>GET 常用于查询，POST 常用于表单提交</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>POST 数据在请求体中，不受 URL 长度限制；受 URL 长度限制的是 GET。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测 · 公共基础</span></div>
+      <div class="q-body">
+        <div class="qt">数据结构中的"栈"具有什么特点？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>先进先出</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>后进先出</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>随机存取</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>按关键字排序存取</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>栈是后进先出（LIFO）；先进先出（FIFO）是队列的特点。公共基础知识占选择题 10 分。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <strong>资料来源</strong>
+  <div class="src">
+    · 《二级 Web 程序设计考试大纲（2025 年版）》— 教育部教育考试院<br>
+    · 《二级 Web 程序设计——样题及参考答案》— 中国教育考试网 ncre.neea.edu.cn（2025-01 发布）<br>
+    · 2021–2024 年真题为考生回忆版与公开题库精选，2026 年为依据现行大纲编写的模拟预测题<br>
+    · 本页面为学习整理用途，考试信息请以教育部教育考试院最新公告为准<br>
+    <a href="../daolun/index.html">二级 Web 程序设计 · 返回导航首页</a>
+  </div>
+</footer>
+
+</div>
+</main>
+
+<script>
+/* ---------- progress bar ---------- */
+const prog = document.getElementById('progress');
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  prog.style.width = max > 0 ? (h.scrollTop / max * 100) + '%' : '0%';
+});
+
+/* ---------- scroll spy ---------- */
+const links = [...document.querySelectorAll('#nav a')];
+const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+const spy = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+secs.forEach(s => s && spy.observe(s));
+
+/* ---------- quiz: options ---------- */
+let done = 0, right = 0;
+document.querySelectorAll('.q[data-t="mc"]').forEach(q => {
+  const opts = q.querySelectorAll('.opt');
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (q.dataset.done) return;
+    q.dataset.done = '1';
+    opts.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.ok === '1') b.classList.add('right');
+    });
+    const ok = o.dataset.ok === '1';
+    if (!ok) o.classList.add('wrong');
+    done++; if (ok) right++;
+    document.getElementById('doneCnt').textContent = done;
+    document.getElementById('rightCnt').textContent = right;
+    const ans = q.querySelector('.ans');
+    if (ans) ans.classList.add('show');
+  }));
+});
+
+/* ---------- quiz: answer toggle ---------- */
+document.querySelectorAll('.toggle-ans').forEach(b => {
+  b.addEventListener('click', () => {
+    const ans = b.parentElement.querySelector('.ans');
+    const show = ans.classList.toggle('show');
+    b.textContent = b.textContent.replace(/[+\-−]$/, show ? '−' : '+');
+  });
+});
+
+/* ---------- year filter ---------- */
+document.querySelectorAll('#yearTabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#yearTabs button').forEach(x => x.classList.remove('on'));
+    btn.classList.add('on');
+    const y = btn.dataset.y;
+    document.querySelectorAll('#qlist .q').forEach(q => {
+      q.style.display = (y === 'all' || q.dataset.y === y) ? '' : 'none';
+    });
+  });
+});
+
+/* ---------- DOM live demo ---------- */
+function dmText(){ document.getElementById('demoBox').innerHTML = 'innerHTML 已修改！<br>Hello NCRE'; }
+function dmColor(){ document.getElementById('demoBox').style.color = '#c45c4a'; }
+function dmBg(){ document.getElementById('demoBox').style.backgroundColor = '#dce9df'; }
+function dmSize(){ document.getElementById('demoBox').style.fontSize = '20px'; }
+function dmReset(){
+  const b = document.getElementById('demoBox');
+  b.innerHTML = '我是 #demoBox<br>点右边按钮操作我';
+  b.style.color = ''; b.style.backgroundColor = ''; b.style.fontSize = '';
+}
+</script>
+</body>
+</html>

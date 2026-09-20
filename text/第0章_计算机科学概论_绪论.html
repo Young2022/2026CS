@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>计算机科学概论 · 第0章 绪论</title>
+<style>
+:root{
+  --navy:#0b1f3a; --navy2:#102b4f; --cyan:#18b6d9; --cyan2:#8be7f5;
+  --ink:#17283b; --muted:#64748b; --line:#d9e2ec; --paper:#f7f9fc;
+  --white:#fff; --accent:#e36b3a; --shadow:0 12px 34px rgba(11,31,58,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}
+button{font:inherit}
+a{color:inherit}
+.deck{min-height:100vh}
+.topbar{
+ position:fixed;z-index:100;left:0;right:0;top:0;height:58px;background:rgba(247,249,252,.94);
+ border-bottom:1px solid var(--line);backdrop-filter:blur(10px);display:flex;align-items:center;
+ padding:0 24px;gap:18px
+}
+.brand{font-weight:800;color:var(--navy);white-space:nowrap}
+.progress{height:4px;flex:1;background:#dce6ef;border-radius:9px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0;background:var(--cyan);transition:width .25s}
+.controls{display:flex;gap:6px}
+.controls button,.nav button{
+ border:1px solid var(--line);background:var(--white);color:var(--navy);border-radius:8px;
+ width:34px;height:34px;cursor:pointer
+}
+.controls button:hover,.nav button:hover{border-color:var(--cyan);color:#087f9b}
+.nav{
+ position:fixed;z-index:90;right:18px;top:78px;display:flex;flex-direction:column;gap:5px
+}
+.nav button{width:30px;height:26px;font-size:11px;border-radius:6px}
+.nav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+main{padding-top:58px}
+.slide{
+ min-height:calc(100vh - 58px);padding:76px 8vw 70px;display:flex;align-items:center;
+ border-bottom:1px solid #dfe7ef;position:relative;overflow:hidden
+}
+.slide-inner{width:min(1180px,100%);margin:auto}
+.eyebrow{font-size:12px;letter-spacing:2px;color:#0799ba;font-weight:800;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:clamp(30px,4vw,54px);line-height:1.18;color:var(--navy);margin:0 0 24px;font-weight:800}
+h2{font-size:clamp(22px,2.5vw,34px);line-height:1.25;color:var(--navy);margin:0 0 24px}
+h3{color:var(--navy);margin:0 0 8px}
+.lead{font-size:18px;color:#34485d;max-width:880px}
+.meta{font-size:13px;color:var(--muted)}
+.rule{height:1px;background:var(--line);margin:25px 0}
+.core{font-size:20px;font-weight:800;color:var(--navy);max-width:850px}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:48px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:#fff;border:1px solid var(--line);padding:22px;border-radius:12px;box-shadow:var(--shadow)}
+.clean{background:transparent;border:0;box-shadow:none;padding:0}
+.cn{font-weight:800;color:var(--navy)}
+.en{font-size:12px;color:var(--muted);margin-left:6px}
+.ticklist{list-style:none;padding:0;margin:12px 0}
+.ticklist li{padding:9px 0 9px 26px;border-bottom:1px solid #e8eef4;position:relative}
+.ticklist li:before{content:"✓";position:absolute;left:0;color:var(--cyan);font-weight:900}
+.numlist{list-style:none;padding:0;margin:0}
+.numlist li{display:grid;grid-template-columns:50px 1fr;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+.num{font-weight:900;color:var(--cyan);font-size:20px}
+.tag{display:inline-block;border:1px solid #b9dbe3;color:#087f9b;border-radius:99px;padding:3px 9px;font-size:11px;margin:3px}
+.quote{border-left:4px solid var(--cyan);padding:13px 18px;background:#eefafd;color:#29465d;border-radius:0 8px 8px 0}
+.formula{font-family:Consolas,monospace;background:var(--navy);color:#e8f7fb;padding:18px;border-radius:10px;line-height:1.8}
+.timeline{position:relative;margin:34px 0 10px;padding:12px 0}
+.timeline:before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;background:var(--navy2)}
+.titems{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;position:relative}
+.titem{min-width:0}
+.titem:nth-child(even){padding-top:150px}
+.dot{width:16px;height:16px;background:var(--cyan);border:4px solid #d8f6fb;border-radius:50%;margin:0 auto 8px;position:relative;z-index:2}
+.ttext{font-size:12px;background:#fff;border:1px solid var(--line);padding:10px;border-radius:8px}
+.tyear{font-weight:900;color:var(--navy)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+th{background:#edf4fa;color:var(--navy)}
+.yes{color:#087f9b;font-weight:900}
+.layers{display:flex;flex-direction:column;gap:8px}
+.layer{border-top:2px solid var(--navy);padding:16px 18px;background:#fff}
+.layer b{color:var(--navy)}
+.layer small{color:var(--muted)}
+.big7{font-size:76px;line-height:1;color:var(--cyan);font-weight:900}
+.questions{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.q{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}
+.q p{margin:6px 0 12px;font-weight:700}
+.q label{display:block;padding:5px 8px;cursor:pointer;border-radius:6px}
+.q label:hover{background:#f0f7fa}
+.q .answer{display:none;margin-top:10px;color:#087f9b;font-weight:800}
+.q.show .answer{display:block}
+.term{display:grid;grid-template-columns:1fr 1fr 2fr}
+.term>div{padding:9px 12px;border-bottom:1px solid var(--line)}
+.term.header{font-weight:800;color:var(--navy);background:#edf4fa}
+footer{font-size:12px;color:var(--muted);margin-top:30px}
+.badge{font-size:12px;padding:5px 9px;border-radius:99px;background:#eaf8fb;color:#087f9b}
+.hero-visual{min-height:310px;display:flex;align-items:center;justify-content:center}
+.chip{width:280px;height:220px;border:3px solid var(--navy);border-radius:20px;position:relative;background:#fff;box-shadow:var(--shadow)}
+.chip:before,.chip:after{content:"";position:absolute;left:-26px;right:-26px;height:24px;border-top:3px solid var(--cyan);border-bottom:3px solid var(--cyan);top:45px}
+.chip:after{top:auto;bottom:45px}
+.chipcore{position:absolute;inset:45px 50px;background:var(--navy);color:#fff;border-radius:12px;display:grid;place-items:center;text-align:center;font-weight:800}
+.pulse{animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(24,182,217,.08),0 0 28px rgba(24,182,217,.25)}}
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
+.js .reveal.shown{opacity:1;transform:none}
+.no-js-note{display:none}
+@media(max-width:850px){
+ .grid2,.grid3,.questions{grid-template-columns:1fr}
+ .slide{padding:74px 5vw 58px}
+ .nav{display:none}
+ .timeline{overflow-x:auto;padding-bottom:12px}
+ .titems{min-width:900px}
+ .titem:nth-child(even){padding-top:0}
+ .timeline:before{display:none}
+ .term{grid-template-columns:1fr}
+ .term.header{display:none}
+ .topbar{padding:0 12px}.brand{font-size:13px}
+}
+@media print{
+ .topbar,.nav{display:none!important}
+ main{padding:0}.slide{min-height:auto;page-break-after:always;padding:35px}
+ .js .reveal{opacity:1!important;transform:none!important}
+}
+</style>
+<script>
+/* Progressive enhancement: content is visible even if JS, IntersectionObserver or local-file execution fails. */
+document.documentElement.classList.add('js');
+</script>
+</head>
+<body>
+<div class="deck">
+<header class="topbar">
+  <div class="brand">CS: An Overview · 第0章</div>
+  <div class="progress" aria-label="课程进度"><i id="bar"></i></div>
+  <div class="controls">
+    <button onclick="prev()" title="上一页">‹</button>
+    <button onclick="next()" title="下一页">›</button>
+    <button onclick="window.print()" title="打印">⎙</button>
+  </div>
+</header>
+
+<nav class="nav" id="nav"></nav>
+
+<main>
+<section class="slide" id="s1"><div class="slide-inner">
+  <div class="grid2">
+    <div>
+      <div class="eyebrow">Computer Science · An Overview</div>
+      <h1>第0章 绪论<br><span style="color:var(--cyan)">Introduction</span></h1>
+      <p class="lead">走进计算学科：从算法、计算历史，到本课程的学习路线与七大思想。</p>
+      <div class="rule"></div>
+      <p class="meta">教材：J. Glenn Brookshear · <i>Computer Science: An Overview</i> · 13th Global Edition · 2022</p>
+      <p class="core">计算机科学是算法的科学——它既是当今计算机应用的支柱，也是未来计算基础设施的基础。</p>
+      <p class="meta">关键词：算法 Algorithm · 抽象 Abstraction · 七大思想 Seven Big Ideas</p>
+    </div>
+    <div class="hero-visual">
+      <div class="chip pulse"><div class="chipcore">ALGORITHM<br><span style="font-size:12px;color:var(--cyan2)">→ PROGRAM → SOFTWARE</span></div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s2"><div class="slide-inner reveal">
+  <div class="eyebrow">Overview · 本章导览</div><h2>本章回答四个问题：什么是计算机科学？我们从哪里来？到哪里去？</h2>
+  <div class="grid2">
+    <ol class="numlist">
+      <li><span class="num">01</span><div><b>算法的作用</b> <span class="en">The Role of Algorithms</span><br>算法、程序、软件、硬件等基本术语。</div></li>
+      <li><span class="num">02</span><div><b>计算的历史</b> <span class="en">The History of Computing</span><br>从算盘到智能手机的关键里程碑。</div></li>
+      <li><span class="num">03</span><div><b>学习大纲</b> <span class="en">An Outline of Our Study</span><br>全书12章的自底向上路线。</div></li>
+      <li><span class="num">04</span><div><b>首要主题</b> <span class="en">Overarching Themes</span><br>贯穿全书的“七大思想”。</div></li>
+    </ol>
+    <div class="card"><h3>学习目标</h3><ul class="ticklist">
+      <li>解释算法在计算机科学中的重要性</li>
+      <li>识别计算史上的主要里程碑</li>
+      <li>讨论计算技术引发的社会、伦理与法律问题</li>
+    </ul></div>
+  </div>
+  <p class="quote"><b>学完本章，你应当能用自己的话说明：</b> 算法是什么、计算如何演变、这门课学什么。</p>
+</div></section>
+
+<section class="slide" id="s3"><div class="slide-inner reveal">
+  <div class="eyebrow">0.1 学科定义 · Definition</div><h2>计算机科学：为“计算”建立科学基础的学科</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>中文定义</h3>
+      <p>计算机科学是寻求为计算机设计、计算机程序设计、信息处理、问题的算法解决方案和算法过程本身等主题建立科学基础的学科。</p>
+      <div class="quote"><b>EN:</b> Computer science is the discipline that seeks to build a scientific foundation for computer design, programming, information processing, algorithmic solutions, and the algorithmic process itself.</div>
+    </div>
+    <div><h3>研究对象</h3><ul class="ticklist">
+      <li>计算机设计 <span class="en">Computer design</span></li>
+      <li>计算机程序设计 <span class="en">Computer programming</span></li>
+      <li>信息处理 <span class="en">Information processing</span></li>
+      <li>问题的算法解决方案 <span class="en">Algorithmic solutions</span></li>
+      <li>算法过程本身 <span class="en">The algorithmic process</span></li>
+    </ul></div>
+  </div>
+  <p class="core">它既支撑今天的应用，也奠定未来计算基础设施的基础。</p>
+</div></section>
+
+<section class="slide" id="s4"><div class="slide-inner reveal">
+  <div class="eyebrow">0.1 The Role of Algorithms</div><h2>算法是完成一项任务所遵循的一系列步骤</h2>
+  <div class="grid2">
+    <div>
+      <div class="card"><h3>算法 Algorithm</h3><p>完成一项任务所遵循的一系列步骤。</p><p class="en">An algorithm is a set of steps that defines how a task is performed.</p></div>
+      <h3 style="margin-top:22px">生活中的算法</h3>
+      <ul class="ticklist"><li>菜谱 Recipe</li><li>路线指引 Directions</li><li>乐谱 Sheet music</li><li>操作说明 Instructions</li></ul>
+    </div>
+    <div>
+      <h3>经典示例：欧几里得算法 <span class="en">Euclidean Algorithm</span></h3>
+      <div class="formula">M ← 较大值，N ← 较小值<br>
+      用 N 除 M，余数记为 R<br>
+      若 R ≠ 0：M ← N，N ← R，回到第2步<br>
+      否则：N 即为最大公约数</div>
+      <p><span class="badge">例</span> GCD(24,18) → R=6 → GCD(18,6) → R=0 → <b>答案 6</b></p>
+    </div>
+  </div>
+  <p class="quote">一旦找到算法，执行任务便不再需要理解其原理——解题的“智能”被编码进了算法。</p>
+</div></section>
+
+<section class="slide" id="s5"><div class="slide-inner reveal">
+  <div class="eyebrow">0.1 基本术语 · Key Terms</div><h2>算法需要被表示、被编码，最终由机器执行</h2>
+  <div class="grid3">
+    <div class="card"><div class="num">01</div><h3>算法 <span class="en">Algorithm</span></h3><p>完成任务的步骤序列。</p></div>
+    <div class="card"><div class="num">02</div><h3>程序 <span class="en">Program</span></h3><p>算法的表示。</p></div>
+    <div class="card"><div class="num">03</div><h3>软件 <span class="en">Software</span></h3><p>程序及其所表示算法的统称。</p></div>
+  </div>
+  <div class="grid2" style="margin-top:22px">
+    <div class="card"><h3>编程 / 编码 <span class="en">Programming / Coding</span></h3><p>开发程序、以机器兼容形式编码并输入机器的过程。</p></div>
+    <div class="card"><h3>硬件 <span class="en">Hardware</span></h3><p>运行软件的机器本身。</p></div>
+  </div>
+  <p class="core">算法（思想）→ 程序（表示）→ 软件（统称）→ 硬件（载体）</p>
+</div></section>
+
+<section class="slide" id="s6"><div class="slide-inner reveal">
+  <div class="eyebrow">0.1 算法的局限 · Limits</div><h2>哥德尔不完备性定理：算法能力也存在边界</h2>
+  <div class="grid2">
+    <div><h3>从算法到机器能力</h3><ul class="ticklist">
+      <li>解题智能可以被编码进算法</li>
+      <li>只有存在完成任务的算法，才能造出完成该任务的机器</li>
+      <li>若不存在解决某问题的算法，该问题超出这种机器能力</li>
+    </ul></div>
+    <div class="card"><h3>1931 · Kurt Gödel</h3><p>在任何包含传统算术系统的数学理论中，总存在这样的命题：其真假无法通过算法手段判定。</p><p><span class="tag">Incompleteness Theorem</span><span class="tag">可判定性</span><span class="tag">算法边界</span></p></div>
+  </div>
+  <p class="quote"><b>意义：</b> 对算法能力及其局限的研究，成为后来计算机科学形成的重要思想基础。</p>
+</div></section>
+
+<section class="slide" id="s7"><div class="slide-inner reveal">
+  <div class="eyebrow">0.2 计算的历史 · History of Computing</div><h2>从存储数据的算盘，到可编程的机器</h2>
+  <div class="timeline"><div class="titems">
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">古代</div><b>算盘 Abacus</b><br>珠的位置存储数据；算法靠人执行。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1642–1673</div><b>Pascal / Leibniz</b><br>齿轮结构实现运算。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1801</div><b>Jacquard</b><br>穿孔卡片思想。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1830s</div><b>Babbage</b><br>分析机：设计层面的可编程。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1843</div><b>Ada Lovelace</b><br>阐述分析机编程方法。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1890</div><b>Hollerith</b><br>穿孔卡用于人口普查。</div></div>
+    <div class="titem"><div class="dot"></div><div class="ttext"><div class="tyear">1946+</div><b>ENIAC → Transistor → IC</b><br>电子化与微型化。</div></div>
+  </div></div>
+  <p class="core">可编程性是计算史的重要主线：算法从“固化在机器结构里”走向“可读取、可更换的指令”。</p>
+</div></section>
+
+<section class="slide" id="s8"><div class="slide-inner reveal">
+  <div class="eyebrow">0.2 关键跃迁 · Milestones</div><h2>数据存储 → 固定算法 → 可编程 → 电子通用</h2>
+  <table>
+    <thead><tr><th>机器</th><th>数据表示</th><th>算法控制</th><th>可编程性</th></tr></thead>
+    <tbody>
+      <tr><td>算盘 Abacus</td><td>算珠位置</td><td>人（操作者）</td><td>否</td></tr>
+      <tr><td>帕斯卡 / 莱布尼茨机</td><td>齿轮位置</td><td>固化在机器结构中</td><td>否</td></tr>
+      <tr><td>巴贝奇分析机</td><td>齿轮 + 穿孔卡片</td><td>读取卡片上的指令</td><td class="yes">是（设计层面）</td></tr>
+      <tr><td>ENIAC 及以后</td><td>电子信号</td><td>存储 / 输入的程序</td><td class="yes">是（工程实现）</td></tr>
+    </tbody>
+  </table>
+  <p class="lead"><b>后续：</b> 家用电脑 → IBM PC → Internet / Web → 搜索引擎 → Smartphone。</p>
+</div></section>
+
+<section class="slide" id="s9"><div class="slide-inner reveal">
+  <div class="eyebrow">0.3 学习大纲 · An Outline of Our Study</div><h2>全书路线：自底向上，从具象的机器到抽象的理论</h2>
+  <div class="layers">
+    <div class="layer"><b>第1–2章 · 机器层</b>　数据存储 Data Storage · 数据操控 Data Manipulation<br><small>信息如何编码、存储，以及机器如何执行基本操作。</small></div>
+    <div class="layer"><b>第3–4章 · 系统层</b>　操作系统 Operating Systems · Networking and the Internet<br><small>计算机系统如何管理资源并彼此连接。</small></div>
+    <div class="layer"><b>第5–7章 · 算法与软件层</b>　Algorithms · Programming Languages · Software Engineering<br><small>从算法到语言，再到大型软件系统。</small></div>
+    <div class="layer"><b>第8–12章 · 数据与理论层</b>　Data Abstraction · Databases · Graphics · AI · Theory of Computation<br><small>抽象程度不断提高，研究范围从数据到智能与计算边界。</small></div>
+  </div>
+  <p class="core">学习将由浅入深、从具象到抽象推进：先理解机器，再构建越来越强大的抽象工具。</p>
+</div></section>
+
+<section class="slide" id="s10"><div class="slide-inner reveal">
+  <div class="eyebrow">0.4 Seven Big Ideas</div><h2>七大思想贯穿全书：算法是核心</h2>
+  <div class="grid2">
+    <div class="big7">7</div>
+    <ol class="numlist">
+      <li><span class="num">01</span><div><b>算法 Algorithms</b> — 计算学科的核心</div></li>
+      <li><span class="num">02</span><div><b>抽象 Abstraction</b> — 分离外部特征与内部细节</div></li>
+      <li><span class="num">03</span><div><b>创新 Creativity</b> — 发现并应用新算法</div></li>
+      <li><span class="num">04</span><div><b>数据 Data</b> — 离散化、数字化的信息</div></li>
+      <li><span class="num">05</span><div><b>程序设计 Programming</b> — 将意图翻译成可执行算法</div></li>
+      <li><span class="num">06</span><div><b>因特网 The Internet</b> — 连接全球计算与信息</div></li>
+      <li><span class="num">07</span><div><b>影响 Impact</b> — 技术对社会、伦理与法律的冲击</div></li>
+    </ol>
+  </div>
+</div></section>
+
+<section class="slide" id="s11"><div class="slide-inner reveal">
+  <div class="eyebrow">0.4 Algorithms & Abstraction</div><h2>算法是核心；抽象是驾驭复杂的方法</h2>
+  <div class="grid2">
+    <div><h3>算法研究的焦点问题</h3><ul class="ticklist">
+      <li>哪些问题可由算法过程解决？</li>
+      <li>如何更容易地发现算法？</li>
+      <li>如何改进算法的表示与传达？</li>
+      <li>如何分析与比较算法的特征？</li>
+      <li>如何用算法操作信息、产生智能行为？</li>
+      <li>算法的应用如何影响社会？</li>
+    </ul></div>
+    <div class="card"><h3>抽象 Abstraction</h3><p><b>定义：</b> 一个实体的外部特征与其内部构成细节之间的分离。</p><p class="en">the distinction between the external properties of an entity and the details of its internal composition.</p><div class="quote">例：开车不必懂发动机原理；使用微波炉不必懂磁控管；计算器可以即取即用。</div></div>
+  </div>
+  <p class="core">抽象把复杂系统变成“可用的整体”。</p>
+</div></section>
+
+<section class="slide" id="s12"><div class="slide-inner reveal">
+  <div class="eyebrow">0.4 Creativity · Data · Programming</div><h2>创新是人的本能，数据驱动发现，编程连接意图与执行</h2>
+  <div class="grid3">
+    <div class="card"><div class="num">03</div><h3>创新 <span class="en">Creativity</span></h3><p>发现并应用新算法是人类的活动，源于用工具解决问题的欲望。</p></div>
+    <div class="card"><div class="num">04</div><h3>数据 <span class="en">Data</span></h3><p>计算机能表示可被离散化与数字化的信息。数据处理可以产生新的知识和见解。</p></div>
+    <div class="card"><div class="num">05</div><h3>程序设计 <span class="en">Programming</span></h3><p>将人类意图翻译成可执行的计算机算法；抽象语言帮助我们表达复杂解法。</p></div>
+  </div>
+  <p class="quote">数据不只是被搬来搬去——算法对数据的处理正在产生新知识和新见解。</p>
+</div></section>
+
+<section class="slide" id="s13"><div class="slide-inner reveal">
+  <div class="eyebrow">0.4 The Internet & Impact</div><h2>因特网连接了世界，也把隐私、安全与伦理问题推到台前</h2>
+  <div class="grid2">
+    <div><h3>因特网 <span class="en">The Internet</span></h3><ul class="ticklist">
+      <li>连接全世界的计算机与电子设备</li>
+      <li>改变信息存储、检索与共享方式</li>
+      <li>商业、新闻、娱乐、通信日益依赖网络</li>
+      <li>隐私与个人信息安全使密码学和网络安全更加重要</li>
+    </ul></div>
+    <div><h3>影响 <span class="en">Impact</span></h3><ul class="ticklist">
+      <li><b>法律：</b>知识产权的归属与责任</li>
+      <li><b>伦理：</b>新选择挑战传统社会行为准则</li>
+      <li><b>政府：</b>技术及其应用应如何监管</li>
+      <li><b>哲学：</b>智能行为与智能本身</li>
+    </ul></div>
+  </div>
+  <p class="quote">技术的每次跃迁都同时带来新自由与新约束——这正是本课程要反复讨论的问题。</p>
+</div></section>
+
+<section class="slide" id="s14"><div class="slide-inner reveal">
+  <div class="eyebrow">0.4 Social Issues</div><h2>许多问题没有标准答案：解决方案常常是多方观点的折中</h2>
+  <div class="grid2">
+    <div>
+      <h3>讨论方法</h3>
+      <p><span class="tag">倾听</span> → <span class="tag">辨别其他观点</span> → <span class="tag">理性讨论</span> → <span class="tag">修正观点</span></p>
+      <h3>三个意识</h3><ul class="ticklist">
+        <li>一个问题牵扯多位利益相关者 <b>stakeholders</b></li>
+        <li>一个问题有多个解决方案</li>
+        <li>每个方案同时具有短期与长期效应</li>
+      </ul>
+    </div>
+    <div class="card"><h3>课堂讨论</h3>
+      <p>① 有没有计算机革命，我们的社会会更好还是更糟？</p>
+      <p>② 公民是否有义务理解他们投票决定其用途的技术？</p>
+      <p>③ 自动化提高后，政府监控公民活动是好事还是坏事？</p>
+    </div>
+  </div>
+  <p class="quote">伦理思考可从结果、义务、契约、品格等不同视角展开。</p>
+</div></section>
+
+<section class="slide" id="s15"><div class="slide-inner reveal">
+  <div class="eyebrow">Summary · 本章小结</div><h2>一条主线：算法是核心；三个事实：历史、路线、主题</h2>
+  <div class="grid2">
+    <ol class="numlist">
+      <li><span class="num">01</span><div>计算机科学围绕算法建立：<b>算法 → 程序 → 软件 → 硬件</b>。</div></li>
+      <li><span class="num">02</span><div>计算史的重要主线是可编程性的演进：算盘 → 分析机 → 电子计算机 → PC / Smartphone。</div></li>
+      <li><span class="num">03</span><div>全书自底向上，从数据存储走向计算理论，抽象工具逐层增强。</div></li>
+      <li><span class="num">04</span><div>七大思想——算法、抽象、创新、数据、程序设计、因特网、影响——将贯穿全书。</div></li>
+    </ol>
+    <div class="card"><h3>留给你的问题</h3><p>你身边哪个日常流程可以被写成算法？</p><p>哪个问题可能永远没有算法？</p></div>
+  </div>
+</div></section>
+
+<section class="slide" id="s16"><div class="slide-inner reveal">
+  <div class="eyebrow">Key Terms · 中英术语对照</div><h2>本章关键术语</h2>
+  <div class="term header"><div>中文</div><div>English</div><div>一句话说明</div></div>
+  <div class="term"><div class="cn">算法</div><div>Algorithm</div><div>完成一项任务所遵循的一系列步骤</div></div>
+  <div class="term"><div class="cn">程序</div><div>Program</div><div>算法的表示</div></div>
+  <div class="term"><div class="cn">编程 / 编码</div><div>Programming / Coding</div><div>开发程序并以机器兼容形式编码输入机器的过程</div></div>
+  <div class="term"><div class="cn">软件</div><div>Software</div><div>程序及其所表示的算法的统称</div></div>
+  <div class="term"><div class="cn">硬件</div><div>Hardware</div><div>运行软件的机器本身</div></div>
+  <div class="term"><div class="cn">抽象</div><div>Abstraction</div><div>实体外部特征与内部构成细节的分离</div></div>
+  <div class="term"><div class="cn">个人计算机</div><div>Personal Computer (PC)</div><div>通用的个人计算设备</div></div>
+  <div class="term"><div class="cn">万维网</div><div>World Wide Web</div><div>通过因特网把文档相互链接的信息系统</div></div>
+  <div class="term"><div class="cn">搜索引擎</div><div>Search engine</div><div>筛选并归类Web信息的软件系统</div></div>
+  <div class="term"><div class="cn">智能手机</div><div>Smartphone</div><div>手持通用计算机，通话只是其应用之一</div></div>
+  <div class="term"><div class="cn">哥德尔不完备性定理</div><div>Gödel's Incompleteness Theorem</div><div>存在无法通过算法手段判定其真假的命题</div></div>
+  <footer>课后任务：预习第1章 Data Storage；从 Social Issues 中任选一题，写200字观点。</footer>
+</div></section>
+
+<section class="slide" id="quiz"><div class="slide-inner">
+  <div class="eyebrow">Classroom Quiz · 课堂练习</div><h2>快速检查：选择题（A / B / C / D）</h2>
+  <div class="questions">
+    <div class="q"><p>1. 下列哪项最符合“算法”的定义？</p>
+      <label><input type="radio" name="q1"> A. 一台计算机</label><label><input type="radio" name="q1"> B. 完成任务的一系列步骤</label><label><input type="radio" name="q1"> C. 一个显示器</label><label><input type="radio" name="q1"> D. 一种网络协议</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：B</div></div>
+    <div class="q"><p>2. 欧几里得算法主要用于求什么？</p>
+      <label><input type="radio" name="q2"> A. 最短路径</label><label><input type="radio" name="q2"> B. 最大公约数</label><label><input type="radio" name="q2"> C. 图像分辨率</label><label><input type="radio" name="q2"> D. 网络带宽</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：B</div></div>
+    <div class="q"><p>3. 巴贝奇分析机的重要思想是什么？</p>
+      <label><input type="radio" name="q3"> A. 只能手工计算</label><label><input type="radio" name="q3"> B. 可编程性</label><label><input type="radio" name="q3"> C. 只能存储图像</label><label><input type="radio" name="q3"> D. 无需指令</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：B</div></div>
+    <div class="q"><p>4. “抽象”的核心作用是什么？</p>
+      <label><input type="radio" name="q4"> A. 增加所有内部细节</label><label><input type="radio" name="q4"> B. 隐藏外部特征</label><label><input type="radio" name="q4"> C. 分离外部特征与内部细节</label><label><input type="radio" name="q4"> D. 取消所有算法</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：C</div></div>
+    <div class="q"><p>5. 下列哪一项属于“七大思想”？</p>
+      <label><input type="radio" name="q5"> A. 影响 Impact</label><label><input type="radio" name="q5"> B. 电池 Battery</label><label><input type="radio" name="q5"> C. 显示器 Monitor</label><label><input type="radio" name="q5"> D. 键盘 Keyboard</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：A</div></div>
+    <div class="q"><p>6. 本课程的学习路线总体上是怎样的？</p>
+      <label><input type="radio" name="q6"> A. 从应用到硬件</label><label><input type="radio" name="q6"> B. 从抽象理论直接到手机</label><label><input type="radio" name="q6"> C. 从具象机器逐步走向抽象理论</label><label><input type="radio" name="q6"> D. 没有学习顺序</label>
+      <button onclick="this.parentElement.classList.add('show')">显示答案</button><div class="answer">参考答案：C</div></div>
+  </div>
+  <footer>提示：课堂演示时可先让学生独立作答，再逐题显示参考答案。</footer>
+</div></section>
+</main>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const nav=document.getElementById('nav');
+  const bar=document.getElementById('bar');
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.textContent=i<16?String(i+1):'Q';
+    b.title=i<16?'第'+(i+1)+'页':'课堂练习';
+    b.onclick=()=>s.scrollIntoView({behavior:'smooth'});
+    nav.appendChild(b);
+  });
+  function update(){
+    let best=0, dist=Infinity;
+    slides.forEach((s,i)=>{const d=Math.abs(s.getBoundingClientRect().top-70);if(d<dist){dist=d;best=i}});
+    [...nav.children].forEach((b,i)=>b.classList.toggle('active',i===best));
+    bar.style.width=((best+1)/slides.length*100)+'%';
+  }
+  window.next=function(){let i=slides.findIndex(s=>s.getBoundingClientRect().top>90); if(i<0)i=slides.length-1; slides[Math.min(i,slides.length-1)].scrollIntoView({behavior:'smooth'});}
+  window.prev=function(){let i=slides.findIndex(s=>s.getBoundingClientRect().top>90); i=i<=0?0:i-1; slides[i].scrollIntoView({behavior:'smooth'});}
+  window.addEventListener('scroll',update,{passive:true});
+  document.addEventListener('keydown',e=>{
+    if(['INPUT','BUTTON'].includes(document.activeElement.tagName)) return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ') {e.preventDefault();next();}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    if(e.key==='Home'){slides[0].scrollIntoView({behavior:'smooth'});}
+    if(e.key==='End'){slides[slides.length-1].scrollIntoView({behavior:'smooth'});}
+  });
+  // Reveal enhancement only; the page remains readable without this observer.
+  const els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(entries=>entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('shown')}),{threshold:.08});
+    els.forEach(e=>io.observe(e));
+  }else els.forEach(e=>e.classList.add('shown'));
+  setTimeout(()=>els.forEach(e=>e.classList.add('shown')),1200);
+  update();
+})();
+</script>
+</body>
+</html>

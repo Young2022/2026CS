@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI SQL 与数据库学习教程：从 SELECT 查询到综合项目实战，覆盖 MySQL 核心技能。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>SQL 与数据库 · 从基础到综合项目 学习教程</title>
+<style>
+:root {
+  --bg: #f5f5f8;
+  --bg2: #e7e8ee;
+  --card: #ffffff;
+  --line: rgba(20, 20, 35, 0.10);
+  --line2: rgba(20, 20, 35, 0.16);
+  --txt: #131422;
+  --mut: #2f2f3a;
+  --dim: #65657a;
+  /* SQL 主题色：深蓝/靛青（数据库专业感） */
+  --s1: #1e3a8a;            /* 主深蓝 */
+  --s1-soft: rgba(30, 58, 138, 0.10);
+  --s1-dark: #0f1e4d;
+  --s2: #0e7490;            /* 青蓝/Teal 蓝 */
+  --s2-soft: rgba(14, 116, 144, 0.10);
+  --s3: #7c3aed;            /* 紫（用于强调） */
+  --s3-soft: rgba(124, 58, 237, 0.10);
+  --teal: #0c6b63;
+  --coral: #b53a0a;
+  --coral-soft: rgba(181, 58, 10, 0.12);
+  --green: #166534;
+  --green-soft: rgba(22, 101, 52, 0.12);
+  --amber: #a34a08;
+  --amber-soft: rgba(163, 74, 8, 0.12);
+  --code-bg: #14182c;       /* 深蓝暗背景，匹配 SQL 数据库调性 */
+  --code-fg: #e6e6ee;
+  --sans: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--sans);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(30, 58, 138, 0.18); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--s1); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--s1-soft);
+  border: 1px solid rgba(30, 58, 138, 0.22);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: var(--s1-dark);
+}
+h2 { font-size: 1.55rem; line-height: 1.35; font-weight: 700; }
+h3 { font-size: 1.18rem; line-height: 1.4; font-weight: 700; }
+h4 { font-size: 1.02rem; line-height: 1.4; font-weight: 650; }
+
+/* 进度条 */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--s1), var(--s2));
+  z-index: 2000; transition: width 0.08s linear;
+}
+
+/* 导航 */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 245, 248, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap {
+  display: flex; align-items: center; gap: 10px; height: 54px;
+}
+nav .brand {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800; font-size: 14.5px; white-space: nowrap; color: var(--txt);
+}
+nav .brand b { color: var(--s1); }
+nav .navlinks {
+  display: flex; gap: 1px; overflow-x: auto; scrollbar-width: none; flex: 1;
+}
+nav .navlinks::-webkit-scrollbar { display: none; }
+nav .navlinks a {
+  color: var(--mut); font-size: 12.5px; padding: 5px 7px;
+  border-radius: 7px; white-space: nowrap; transition: 0.15s;
+  text-align: center; line-height: 1.25;
+}
+nav .navlinks a small {
+  display: block; font-size: 10px; color: var(--dim); font-weight: 600;
+}
+nav .navlinks a:hover { color: var(--txt); background: var(--bg2); text-decoration: none; }
+nav .navlinks a.cur {
+  color: var(--s1); background: var(--s1-soft); font-weight: 600;
+}
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  padding: 36px 0 28px;
+  background: linear-gradient(165deg, #1a2a5c 0%, #2a3050 60%);
+}
+.hero .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.kicker {
+  display: inline-block;
+  font-size: 13px; font-weight: 650; letter-spacing: 0.04em;
+  color: var(--s1-dark);
+  background: var(--s1-soft);
+  border: 1px solid rgba(30, 58, 138, 0.25);
+  padding: 5px 12px; border-radius: 999px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 12px; color: #fff;
+}
+.hero h1 em {
+  font-style: normal;
+  background: rgba(255,255,255,.15);
+  color: #7dd3fc; padding: 0 6px; border-radius: 6px;
+  border-bottom: 2px solid rgba(125,211,252,.4);
+}
+.hero .sub {
+  font-size: 1.02rem; color: rgba(255,255,255,.75); max-width: 820px;
+  line-height: 1.7; margin-bottom: 26px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; max-width: 760px; }
+.hero-chips .chip {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  flex: 0 1 auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.hero-chips .chip b {
+  display: block; font-size: 14.5px; font-weight: 800;
+  color: #7dd3fc; line-height: 1.3; margin-bottom: 2px;
+}
+.hero-chips .chip span { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.scrollhint { margin-top: 16px; font-size: 13.5px; color: rgba(255,255,255,.6); }
+
+/* Section */
+section { padding: 36px 0 10px; }
+.sec-head {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 14px;
+}
+.sec-num {
+  width: 42px; height: 42px; border-radius: 12px;
+  border: 2px solid var(--s1); color: var(--s1);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 13.5px; flex: 0 0 auto;
+}
+.sec-head h2 { margin-bottom: 4px; }
+.sec-lead {
+  font-size: 1rem; color: var(--mut);
+  margin-bottom: 24px; max-width: 880px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 8px rgba(40, 35, 30, 0.03);
+  border-left: 4px solid var(--acc, var(--s1));
+}
+.card h3 {
+  margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+}
+.card h3 .dot {
+  display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; margin-right: 4px;
+}
+.card > p { margin-bottom: 10px; color: var(--mut); font-size: 16px; line-height: 1.75; }
+.card > p b, .card strong { color: var(--txt); }
+.card ul, .card ol { margin: 8px 0 8px 20px; color: var(--mut); font-size: 15.5px; }
+.card ul li, .card ol li { margin-bottom: 5px; line-height: 1.7; }
+.card ul li strong, .card ol li strong { color: var(--txt); }
+.card ul li code, .card ol li code { font-size: 0.85em; }
+
+/* 双栏 */
+.two {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin: 10px 0;
+}
+@media (max-width: 720px) {
+  .two { grid-template-columns: 1fr; }
+}
+
+/* 代码块 */
+.codebox {
+  background: var(--code-bg); color: var(--code-fg);
+  border-radius: 10px; margin: 12px 0;
+  border: 1px solid #1f243a;
+  overflow: hidden;
+}
+.codebox .ch {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #1a1f33; color: #b0b5c8;
+  font-size: 12.5px; padding: 6px 12px;
+  border-bottom: 1px solid #1f243a;
+  font-family: var(--mono);
+}
+.codebox .ch .lang { color: #74c5b3; font-weight: 650; }
+.codebox .ch .copybtn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  color: #c8cdd8; padding: 2px 10px; border-radius: 5px;
+  cursor: pointer; font-size: 11.5px; transition: 0.15s;
+  font-family: inherit;
+}
+.codebox .ch .copybtn:hover { background: rgba(255,255,255,0.12); }
+.codebox pre {
+  margin: 0; padding: 14px 16px;
+  font-family: var(--mono); font-size: 13.5px;
+  line-height: 1.65; overflow-x: auto;
+  white-space: pre; color: var(--code-fg);
+}
+.codebox code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+/* SQL 语法高亮 */
+.tok-kw { color: #f0a050; }     /* SQL 关键字 SELECT FROM WHERE */
+.tok-ty { color: #6fc1ff; }     /* 数据类型 */
+.tok-st { color: #b0d99a; }     /* 字符串 */
+.tok-nm { color: #d8a0df; }     /* 数字 */
+.tok-cm { color: #7a8580; font-style: italic; }  /* 注释 */
+.tok-fn { color: #74c5b3; }    /* 函数 */
+.tok-op { color: #ff9d6b; }     /* 操作符 */
+
+/* 重要度标签 */
+.tag-std {
+  display: inline-block;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 5px;
+  margin-left: 6px; vertical-align: middle;
+}
+.tag-must { background: rgba(217, 70, 24, 0.18); color: #b53a0a; border: 1px solid rgba(217, 70, 24, 0.4); }
+.tag-key  { background: rgba(245, 158, 11, 0.20); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.4); }
+.tag-rec  { background: rgba(30, 58, 138, 0.16); color: var(--s1-dark); border: 1px solid rgba(30, 58, 138, 0.32); }
+.tag-opt  { background: rgba(14, 116, 144, 0.14); color: var(--s2); border: 1px solid rgba(14, 116, 144, 0.3); }
+.tag-adv  { background: rgba(124, 58, 237, 0.13); color: #5b21b6; border: 1px solid rgba(124, 58, 237, 0.3); }
+
+/* 表格 */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; }
+table.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 15px;
+}
+table.tbl th, table.tbl td {
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+table.tbl th {
+  background: var(--bg2); font-weight: 650;
+  color: var(--txt); font-size: 14.5px;
+}
+table.tbl td { color: var(--mut); }
+table.tbl td.hl { color: var(--s1); font-weight: 600; }
+table.tbl tr:hover td { background: rgba(30, 58, 138, 0.03); }
+
+/* 提示框 */
+.warn, .tipbox, .sum1 {
+  border-radius: 12px; padding: 14px 18px; margin: 14px 0;
+  font-size: 16px; line-height: 1.7;
+}
+.warn {
+  background: var(--amber-soft);
+  border: 1px solid rgba(163, 74, 8, 0.28);
+  color: #6b3206;
+}
+.tipbox {
+  background: var(--s1-soft);
+  border: 1px solid rgba(30, 58, 138, 0.25);
+  color: var(--s1-dark);
+}
+.sum1 {
+  background: linear-gradient(135deg, var(--s1-soft), rgba(14, 116, 144, 0.06));
+  border: 1px solid rgba(30, 58, 138, 0.18);
+  font-weight: 500;
+}
+.sum1 b { color: var(--s1); }
+
+/* 小结框 */
+.summary-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 18px 0 22px;
+  border-top: 3px solid var(--acc, var(--s1));
+}
+.summary-box .t {
+  font-weight: 700; font-size: 16px; margin-bottom: 10px;
+  color: var(--txt);
+}
+.summary-box ul {
+  padding-left: 20px; color: var(--mut); font-size: 15.5px;
+}
+.summary-box li { margin-bottom: 6px; line-height: 1.65; }
+
+/* 图示 */
+.fig {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.fig .cap {
+  font-size: 13.5px; color: var(--mut);
+  margin-bottom: 10px; text-align: center;
+}
+.fig svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+/* 流程图 */
+.flow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px;
+  margin: 12px 0;
+}
+.flow .node {
+  background: var(--bg);
+  border: 1.5px solid var(--line2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13.5px; font-weight: 650;
+  text-align: center; min-width: 80px;
+}
+.flow .arr {
+  color: var(--mut); font-size: 17px; font-weight: 700;
+  line-height: 1; padding: 0 2px; user-select: none;
+}
+
+/* 练习题 */
+.quiz h4 {
+  font-size: 1rem; margin-bottom: 12px;
+  color: var(--acc, var(--s1));
+}
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.q-head {
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 10px;
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--txt);
+}
+.q-head .qn {
+  background: var(--bg2); color: var(--mut);
+  font-size: 13px; font-weight: 700;
+  min-width: 24px; height: 24px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+}
+.q-opts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+@media (max-width: 640px) {
+  .q-opts { grid-template-columns: 1fr; }
+}
+.q-card .opt {
+  text-align: left; font-family: inherit; font-size: 14.5px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1.5px solid var(--line2);
+  background: var(--bg); color: var(--txt);
+  cursor: pointer; transition: 0.15s;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.q-card .opt:hover:not(.disabled) {
+  border-color: var(--s1); background: var(--s1-soft);
+}
+.q-card .opt .k {
+  font-weight: 700; color: var(--s1); min-width: 18px;
+}
+.q-card .opt.correct {
+  border-color: var(--green); background: var(--green-soft);
+}
+.q-card .opt.wrong {
+  border-color: #dc2626; background: rgba(220, 38, 38, 0.08);
+}
+.q-card .opt.disabled { cursor: default; opacity: 0.95; }
+.q-exp {
+  display: none;
+  margin-top: 10px; padding: 11px 13px;
+  background: var(--bg); border-radius: 9px;
+  font-size: 14.5px; color: var(--mut); line-height: 1.7;
+}
+.q-exp.show { display: block; }
+.q-exp b { color: var(--green); }
+
+/* 项目卡片 */
+.proj {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+.proj h4 { color: var(--s1); margin-bottom: 8px; font-size: 1.05rem; }
+.proj .meta { font-size: 13px; color: var(--dim); margin-bottom: 8px; }
+
+/* 标签云 */
+.tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--s1-soft);
+  color: var(--s1);
+  border: 1px solid rgba(30, 58, 138, 0.25);
+  padding: 3px 9px;
+  border-radius: 6px;
+  margin: 2px;
+}
+.tag.cyan { background: var(--s2-soft); color: var(--s2); border-color: rgba(14,116,144,0.25); }
+.tag.green { background: var(--green-soft); color: var(--green); border-color: rgba(22,101,52,0.25); }
+.tag.amber { background: rgba(217, 119, 6, 0.12); color: #b45309; border-color: rgba(217, 119, 6, 0.28); }
+.tag.violet { background: var(--s3-soft); color: var(--s3); border-color: rgba(124,58,237,0.25); }
+.tag.coral { background: var(--coral-soft); color: var(--coral); border-color: rgba(181,58,10,0.25); }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 80px;
+  margin-top: 48px;
+  color: var(--dim); font-size: 14px;
+  text-align: center; line-height: 1.9;
+}
+
+/* 返回顶部 */
+.back-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: 0.2s; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.back-top.show { opacity: 1; pointer-events: auto; }
+.back-top:hover { background: var(--bg2); border-color: var(--s1); }
+.back-top svg { width: 20px; height: 20px; color: var(--s1); }
+
+/* 响应式 */
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  section { padding: 36px 0 8px; }
+  .hero { padding: 36px 0 32px; }
+  nav .brand { font-size: 13px; }
+  h2 { font-size: 1.3rem; }
+  .card { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav id="topnav">
+  <div class="wrap">
+    <a href="../../daolun/index.html" class="brand" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--s1-dark)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span><b>CSAI</b> · SQL</span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#s0"><small>00</small>指南</a>
+      <a href="#s1"><small>01</small>概念</a>
+      <a href="#s2"><small>02</small>SQL分类</a>
+      <a href="#s3"><small>03</small>数据库</a>
+      <a href="#s4"><small>04</small>表操作</a>
+      <a href="#s5"><small>05</small>INSERT</a>
+      <a href="#s6"><small>06</small>UPDATE</a>
+      <a href="#s7"><small>07</small>DELETE</a>
+      <a href="#s8"><small>08</small>SELECT</a>
+      <a href="#s9"><small>09</small>WHERE</a>
+      <a href="#s10"><small>10</small>LIKE/IN</a>
+      <a href="#s11"><small>11</small>聚合/GROUP</a>
+      <a href="#s12"><small>12</small>ORDER/LIMIT</a>
+      <a href="#s13"><small>13</small>JOIN</a>
+      <a href="#s14"><small>14</small>子查询</a>
+      <a href="#s15"><small>15</small>设计/ER</a>
+      <a href="#s16"><small>16</small>约束</a>
+      <a href="#s17"><small>17</small>MySQL</a>
+      <a href="#s18"><small>18</small>索引</a>
+      <a href="#s19"><small>19</small>事务</a>
+      <a href="#s20"><small>20</small>视图</a>
+      <a href="#s21"><small>21</small>窗口函数</a>
+      <a href="#s22"><small>22</small>Python+SQL</a>
+      <a href="#s23"><small>23</small>SQL注入</a>
+      <a href="#s24"><small>24</small>项目</a>
+      <a href="#ref"><small>↗</small>速查</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">大学计算机专业 · 数据库原理与应用（MySQL 8.x）</span>
+    <h1>SQL 与数据库：<br>从<em>SELECT 查询</em>到综合项目实战</h1>
+    <p class="sub">本教程面向<strong>大学一年级</strong>学生，按"基础概念 → SQL 语句 → 查询 → 多表 → 数据库设计 → MySQL 实践 → 索引事务 → 数据库编程 → 综合项目"的路线展开。重点突出<strong>SELECT 查询、JOIN 多表查询、数据库设计、索引优化</strong>—— 这是每个开发者的<strong>核心技能</strong>。</p>
+    <div class="hero-chips">
+      <div class="chip"><b>关系数据库</b><span>用表来组织数据</span></div>
+      <div class="chip"><b>SQL 标准</b><span>ANSI / ISO 通用查询语言</span></div>
+      <div class="chip"><b>MySQL / PostgreSQL</b><span>主流开源数据库</span></div>
+      <div class="chip"><b>JDBC / PyMySQL</b><span>数据库编程接口</span></div>
+    </div>
+    <div class="scrollhint">↓ 向下滚动，按章节系统学习并完成课堂练习（第 08-13 章是 SELECT 核心）</div>
+  </div>
+</header>
+
+<!-- ============= 00 学习指南 ============= -->
+<section id="s0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s2);border-color:rgba(14,116,144,.4)">00</div>
+      <div>
+        <h2>学习指南：为什么学、怎么学、学到什么</h2>
+        <p>在动手写 SQL 之前，先建立对"数据库"和"SQL"的基本认知。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>0.1 什么是数据库</h3>
+      <div class="two">
+        <div>
+          <p><strong>数据库（Database）</strong>是<strong>长期存储在计算机内的、有组织的、可共享的数据集合</strong>。</p>
+          <ul>
+            <li><strong>DBMS</strong>（数据库管理系统）：管理数据库的软件，如 MySQL、PostgreSQL；</li>
+            <li><strong>数据库系统</strong> = 数据库 + DBMS + 应用程序 + 数据库管理员；</li>
+            <li><strong>数据库服务器</strong>：运行 DBMS 的进程，对外提供数据库服务；</li>
+            <li><strong>数据库应用程序</strong>：使用数据库的业务系统（如学生管理系统）。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>为什么需要数据库</h4>
+          <ul>
+            <li><strong>解决文件存储的问题</strong>：并发访问、备份恢复、数据一致性；</li>
+            <li><strong>减少数据冗余</strong>：数据集中管理，避免重复；</li>
+            <li><strong>保证数据一致性</strong>：约束 + 事务；</li>
+            <li><strong>数据共享</strong>：多用户、多应用同时访问；</li>
+            <li><strong>数据安全</strong>：权限控制、加密、审计；</li>
+            <li><strong>高性能查询</strong>：索引、查询优化器。</li>
+          </ul>
+        </div>
+      </div>
+      <p class="sum1" style="--acc:var(--s2)"><b>一句话总结：</b>数据库是<strong>几乎所有软件系统的核心</strong> —— 学好 SQL，就是掌握打开数据世界大门的钥匙。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>0.2 SQL 是什么</h3>
+      <div class="two">
+        <div>
+          <p><strong>SQL（Structured Query Language）</strong>是用于<strong>操作关系数据库</strong>的标准编程语言。</p>
+          <ul>
+            <li><strong>SQL ≠ MySQL</strong>：SQL 是标准，MySQL 是实现该标准的一个具体数据库；</li>
+            <li><strong>SQL 标准</strong>：ANSI / ISO 维护，多个版本（SQL-92、SQL:1999、SQL:2003、SQL:2008 等）；</li>
+            <li><strong>方言</strong>：MySQL、PostgreSQL、Oracle、SQL Server 都遵循 SQL 标准，但各有"方言"扩展。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>主流数据库产品</h4>
+          <ul>
+            <li><strong>MySQL</strong>：开源、免费、Web 主流（教学首选）；</li>
+            <li><strong>PostgreSQL</strong>：功能更强的高级开源数据库；</li>
+            <li><strong>SQLite</strong>：嵌入式文件型数据库（Python 内置）；</li>
+            <li><strong>Oracle</strong>：商业旗舰，企业级常用；</li>
+            <li><strong>SQL Server</strong>：微软产品，与 .NET 生态深度结合。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>0.3 学习路线（按 SQL 大纲）</h3>
+      <div class="flow" style="margin-top:8px">
+        <div class="node">数据库基础<em>第 01-04 章</em></div><div class="arr">→</div>
+        <div class="node" style="border-color:var(--s1);background:var(--s1-soft)"><b>SQL 查询</b><em>第 05-12 章 ⭐⭐</em></div><div class="arr">→</div>
+        <div class="node">多表 / JOIN<em>第 13-14 章 ⭐</em></div><div class="arr">→</div>
+        <div class="node">数据库设计<em>第 15-16 章</em></div><div class="arr">→</div>
+        <div class="node">MySQL 实践<em>第 17 章</em></div><div class="arr">→</div>
+        <div class="node">索引 / 事务<em>第 18-20 章</em></div><div class="arr">→</div>
+        <div class="node">数据库编程<em>第 22-23 章</em></div><div class="arr">→</div>
+        <div class="node">综合项目<em>第 24 章</em></div>
+      </div>
+      <h4 style="margin-top:14px">三档学习目标</h4>
+      <ul>
+        <li><span class="tag-must" style="font-size:11px;padding:1px 7px;border-radius:4px;font-weight:700">必须掌握</span> <strong>⭐⭐⭐</strong>：数据库概念 → 表 → 主键/外键 → CRUD → SELECT → WHERE → ORDER BY → GROUP BY → 聚合函数 → JOIN → 数据库设计 → MySQL</li>
+        <li><span class="tag-key" style="font-size:11px;padding:1px 7px;border-radius:4px;font-weight:700">应该掌握</span> <strong>⭐⭐</strong>：索引 → 事务 → ACID → 视图 → 窗口函数 → Python/Java 数据库编程</li>
+        <li><span class="tag-opt" style="font-size:11px;padding:1px 7px;border-radius:4px;font-weight:700">拓展</span> <strong>⭐</strong>：存储过程 → 触发器 → B+树 → SQL 注入 → 分布式数据库</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 01 数据库基本概念 ============= -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4)">01</div>
+      <div>
+        <h2>数据库基本概念 ⭐⭐⭐</h2>
+        <p>本节介绍数据库中最常用的"词汇" —— 理解它们能让你后续学习事半功倍。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>1.1 数据库中的基本对象</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>术语</th><th>含义</th><th>类比</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">数据库 (Database)</td><td>一组相关表的集合</td><td>一个 Excel 工作簿</td></tr>
+          <tr><td class="hl">表 (Table)</td><td>二维数据结构，行 + 列</td><td>工作簿中一个 sheet</td></tr>
+          <tr><td class="hl">行 (Row) / 记录 (Record)</td><td>表中的一行数据</td><td>Excel 一行</td></tr>
+          <tr><td class="hl">列 (Column) / 字段 (Field)</td><td>表中的一列</td><td>Excel 一列</td></tr>
+          <tr><td class="hl">主键 (Primary Key)</td><td>唯一标识一行</td><td>学号、身份证号</td></tr>
+          <tr><td class="hl">外键 (Foreign Key)</td><td>关联另一张表的主键</td><td>成绩表的"学号"</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>1.2 常用数据类型</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类别</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">数值</td><td>INT, BIGINT, DECIMAL, FLOAT, DOUBLE</td><td>整数 / 小数</td></tr>
+          <tr><td class="hl">字符串</td><td>CHAR, VARCHAR, TEXT</td><td>CHAR 定长、VARCHAR 变长</td></tr>
+          <tr><td class="hl">日期时间</td><td>DATE, TIME, DATETIME, TIMESTAMP</td><td>YYYY-MM-DD 等</td></tr>
+          <tr><td class="hl">布尔</td><td>BOOLEAN / TINYINT(1)</td><td>真 / 假</td></tr>
+          <tr><td class="hl">特殊</td><td>NULL</td><td>"无值"，与 0 / '' 不同</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>1.3 主键 Primary Key ⭐⭐⭐</h3>
+      <ul>
+        <li><strong>唯一</strong>：每行主键值都不相同；</li>
+        <li><strong>非空</strong>：主键列不允许 NULL；</li>
+        <li><strong>每张表只能有一个主键</strong>（可以是复合主键）；</li>
+        <li><strong>自增主键</strong>：MySQL 中 <code>INT AUTO_INCREMENT PRIMARY KEY</code>，由数据库自动生成。</li>
+      </ul>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>1.4 表之间的三种关系 ⭐⭐</h3>
+      <div class="fig">
+        <svg viewBox="0 0 660 180" style="width:100%;max-width:660px">
+          <g font-size="13" text-anchor="middle">
+            <!-- 一对一 -->
+            <rect x="20" y="20" width="100" height="40" rx="8" fill="#fff" stroke="#1e3a8a" stroke-width="1.6"/>
+            <text x="70" y="45" fill="#1e3a8a" font-weight="700">用户</text>
+            <line x1="120" y1="40" x2="180" y2="40" stroke="#6a635c" stroke-width="1.5"/>
+            <text x="150" y="32" fill="#6a635c" font-size="11">1 : 1</text>
+            <rect x="180" y="20" width="100" height="40" rx="8" fill="#fff" stroke="#1e3a8a" stroke-width="1.6"/>
+            <text x="230" y="45" fill="#1e3a8a" font-weight="700">身份证</text>
+            <text x="70" y="80" fill="#6a635c" font-size="11">一对一：每个用户只有一张身份证</text>
+
+            <!-- 一对多 -->
+            <rect x="20" y="100" width="100" height="40" rx="8" fill="#fff" stroke="#166534" stroke-width="1.6"/>
+            <text x="70" y="125" fill="#166534" font-weight="700">班级</text>
+            <line x1="120" y1="120" x2="180" y2="120" stroke="#6a635c" stroke-width="1.5"/>
+            <text x="150" y="112" fill="#6a635c" font-size="11">1 : N</text>
+            <rect x="180" y="100" width="100" height="40" rx="8" fill="#fff" stroke="#166534" stroke-width="1.6"/>
+            <text x="230" y="125" fill="#166534" font-weight="700">学生</text>
+            <text x="70" y="160" fill="#6a635c" font-size="11">一对多：一个班级有多个学生</text>
+
+            <!-- 多对多 -->
+            <rect x="340" y="20" width="100" height="40" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.6"/>
+            <text x="390" y="45" fill="#7c3aed" font-weight="700">学生</text>
+            <line x1="440" y1="40" x2="500" y2="40" stroke="#6a635c" stroke-width="1.5"/>
+            <line x1="500" y1="40" x2="560" y2="40" stroke="#6a635c" stroke-width="1.5"/>
+            <text x="500" y="32" fill="#6a635c" font-size="11">M : N</text>
+            <rect x="560" y="20" width="100" height="40" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.6"/>
+            <text x="610" y="45" fill="#7c3aed" font-weight="700">课程</text>
+            <text x="610" y="80" fill="#6a635c" font-size="11">多对多：一个学生选多门课，</text>
+            <text x="610" y="95" fill="#6a635c" font-size="11">一门课被多个学生选</text>
+
+            <text x="610" y="130" fill="#6a635c" font-size="11">→ 通常拆成"中间表"</text>
+          </g>
+        </svg>
+        <div class="cap">数据库表之间的三种关系</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 02 SQL 语句分类 ============= -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4)">02</div>
+      <div>
+        <h2>SQL 语句分类 ⭐⭐⭐</h2>
+        <p>SQL 语句按功能可分为五类。掌握分类后，看到任何 SQL 都能立刻知道它的"作用"。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>SQL 五大类语句</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类型</th><th>含义</th><th>主要语句</th><th>举例</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">DDL</td><td>数据定义语言</td><td>CREATE / ALTER / DROP</td><td>建表、改表、删表</td></tr>
+          <tr><td class="hl">DML</td><td>数据操作语言</td><td>INSERT / UPDATE / DELETE</td><td>增、改、删数据</td></tr>
+          <tr><td class="hl">DQL</td><td>数据查询语言</td><td>SELECT</td><td>查询数据</td></tr>
+          <tr><td class="hl">DCL</td><td>数据控制语言</td><td>GRANT / REVOKE</td><td>权限管理</td></tr>
+          <tr><td class="hl">TCL</td><td>事务控制语言</td><td>COMMIT / ROLLBACK</td><td>事务提交与回滚</td></tr>
+        </tbody>
+      </table></div>
+      <p class="sum1" style="--acc:var(--s1)"><b>学习优先级：</b>大一阶段重点掌握 <strong>DQL（SELECT）、DML（CRUD）、DDL</strong> —— 这三类覆盖了 95% 的日常工作。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 03 数据库操作 ============= -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s2);border-color:rgba(14,116,144,.4)">03</div>
+      <div>
+        <h2>数据库操作 ⭐⭐⭐</h2>
+        <p>数据库 = 多个表的"容器"。本节学如何创建、查看、使用、删除数据库。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>3.1 四大操作</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>db_ops.sql</span><button class="copybtn" data-target="d-db">复制</button></div><pre id="d-db"><code><span class="tok-cm">-- 创建数据库（指定字符集）</span>
+<span class="tok-kw">CREATE DATABASE</span> school <span class="tok-kw">DEFAULT CHARACTER SET</span> utf8mb4;
+
+<span class="tok-cm">-- 查看所有数据库</span>
+<span class="tok-kw">SHOW DATABASES</span>;
+
+<span class="tok-cm">-- 切换到目标数据库</span>
+<span class="tok-kw">USE</span> school;
+
+<span class="tok-cm">-- 删除数据库（⚠️ 高危操作）</span>
+<span class="tok-kw">DROP DATABASE</span> school;</code></pre></div>
+      <div class="warn"><b>DROP DATABASE 是高危操作：</b>它会删除整个数据库及其下所有表与数据，<strong>无法恢复</strong>。生产环境务必先备份再执行。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 04 表操作 ============= -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s2);border-color:rgba(14,116,144,.4)">04</div>
+      <div>
+        <h2>数据表操作 ⭐⭐⭐</h2>
+        <p>表是数据库的核心。本节学 CREATE / ALTER / DROP 表。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>4.1 CREATE TABLE</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>create_table.sql</span><button class="copybtn" data-target="d-create">复制</button></div><pre id="d-create"><code><span class="tok-kw">CREATE TABLE</span> student (
+    <span class="tok-ty">id</span>          <span class="tok-ty">INT</span>          <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    <span class="tok-ty">name</span>        <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>)  <span class="tok-kw">NOT NULL</span>,
+    <span class="tok-ty">age</span>         <span class="tok-ty">INT</span>          <span class="tok-kw">CHECK</span> (age &gt;= <span class="tok-nm">0</span> <span class="tok-kw">AND</span> age &lt;= <span class="tok-nm">150</span>),
+    <span class="tok-ty">gender</span>      <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">10</span>)  <span class="tok-kw">DEFAULT</span> <span class="tok-st">'未知'</span>,
+    <span class="tok-ty">email</span>       <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>) <span class="tok-kw">UNIQUE</span>,
+    <span class="tok-ty">created_at</span>  <span class="tok-ty">DATETIME</span>     <span class="tok-kw">DEFAULT CURRENT_TIMESTAMP</span>
+);
+
+<span class="tok-cm">-- 查看表结构</span>
+<span class="tok-kw">DESC</span> student;
+
+<span class="tok-cm">-- 查看建表 SQL</span>
+<span class="tok-kw">SHOW CREATE TABLE</span> student;</code></pre></div>
+      <div class="tipbox"><b>命名规范：</b>表名/列名小写 + 下划线（<code>student_name</code>）；表名复数（<code>students</code>、<code>orders</code>）；避免 SQL 关键字。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>4.2 ALTER TABLE：修改表</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>alter_table.sql</span><button class="copybtn" data-target="d-alter">复制</button></div><pre id="d-alter"><code><span class="tok-cm">-- 添加列</span>
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">ADD</span> phone <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">20</span>);
+
+<span class="tok-cm">-- 修改列类型</span>
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">MODIFY</span> name <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>);
+
+<span class="tok-cm">-- 重命名列</span>
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">CHANGE</span> phone mobile <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">20</span>);
+
+<span class="tok-cm">-- 删除列</span>
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">DROP COLUMN</span> mobile;
+
+<span class="tok-cm">-- 重命名表</span>
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">RENAME TO</span> students;
+
+<span class="tok-cm">-- 删除表</span>
+<span class="tok-kw">DROP TABLE</span> student;</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 05 INSERT ============= -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">05</div>
+      <div>
+        <h2>INSERT 插入数据 ⭐⭐⭐</h2>
+        <p>DML 三大操作之一：<strong>增</strong>。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>5.1 单条 / 多条 / 指定字段插入</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>insert.sql</span><button class="copybtn" data-target="d-ins">复制</button></div><pre id="d-ins"><code><span class="tok-cm">-- 单条插入（推荐：指定字段名）</span>
+<span class="tok-kw">INSERT INTO</span> student (name, age, gender)
+<span class="tok-kw">VALUES</span> (<span class="tok-st">'张三'</span>, <span class="tok-nm">18</span>, <span class="tok-st">'男'</span>);
+
+<span class="tok-cm">-- 多条插入</span>
+<span class="tok-kw">INSERT INTO</span> student (name, age, gender)
+<span class="tok-kw">VALUES</span>
+    (<span class="tok-st">'李四'</span>, <span class="tok-nm">19</span>, <span class="tok-st">'女'</span>),
+    (<span class="tok-st">'王五'</span>, <span class="tok-nm">20</span>, <span class="tok-st">'男'</span>),
+    (<span class="tok-st">'赵六'</span>, <span class="tok-nm">21</span>, <span class="tok-st">'女'</span>);
+
+<span class="tok-cm">-- 从另一张表复制</span>
+<span class="tok-kw">INSERT INTO</span> student_backup
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">WHERE</span> age &gt;= <span class="tok-nm">18</span>;</code></pre></div>
+      <div class="tipbox"><b>最佳实践：</b>永远<strong>指定列名</strong>插入 —— 即使是所有列。这样表结构变更时不会出错。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 06 UPDATE ============= -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">06</div>
+      <div>
+        <h2>UPDATE 修改数据 ⭐⭐⭐</h2>
+        <p>DML 第二大操作：<strong>改</strong>。<strong>UPDATE 必带 WHERE</strong> 是铁律。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>6.1 UPDATE + WHERE</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>update.sql</span><button class="copybtn" data-target="d-upd">复制</button></div><pre id="d-upd"><code><span class="tok-cm">-- ✔ 正确：带 WHERE 条件</span>
+<span class="tok-kw">UPDATE</span> student
+<span class="tok-kw">SET</span> age = <span class="tok-nm">19</span>
+<span class="tok-kw">WHERE</span> id = <span class="tok-nm">1</span>;
+
+<span class="tok-cm">-- 多字段更新</span>
+<span class="tok-kw">UPDATE</span> student
+<span class="tok-kw">SET</span> age = <span class="tok-nm">20</span>, gender = <span class="tok-st">'女'</span>
+<span class="tok-kw">WHERE</span> name = <span class="tok-st">'李四'</span>;
+
+<span class="tok-cm">-- ❌ 灾难性错误：忘记 WHERE</span>
+<span class="tok-cm">-- UPDATE student SET age = 20;</span>
+<span class="tok-cm">-- → 会把所有学生的年龄都改成 20！</span></code></pre></div>
+      <div class="warn"><b>UPDATE 没有 WHERE 子句 = 整张表被更新</b>。这是最常见的"生产事故"。建议执行前先 <code>SELECT ... WHERE ...</code> 验证条件。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 07 DELETE vs DROP vs TRUNCATE ============= -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">07</div>
+      <div>
+        <h2>DELETE 删除数据 ⭐⭐⭐</h2>
+        <p>DML 第三大操作：<strong>删</strong>。三种"删"的区别是高频考点。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>7.1 DELETE / DROP / TRUNCATE 区别</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>操作</th><th>对象</th><th>回滚？</th><th>自增？</th><th>速度</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">DELETE FROM t WHERE ...</td><td>数据</td><td>✔ 可回滚</td><td>保留</td><td>慢</td></tr>
+          <tr><td class="hl">TRUNCATE TABLE t</td><td>数据</td><td>❌ 不能回滚</td><td>重置</td><td>快</td></tr>
+          <tr><td class="hl">DROP TABLE t</td><td>表</td><td>❌ 不能回滚</td><td>删除表本身</td><td>最快</td></tr>
+        </tbody>
+      </table></div>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>delete.sql</span><button class="copybtn" data-target="d-del">复制</button></div><pre id="d-del"><code><span class="tok-cm">-- ✔ 删除指定行</span>
+<span class="tok-kw">DELETE FROM</span> student <span class="tok-kw">WHERE</span> id = <span class="tok-nm">1</span>;
+
+<span class="tok-cm">-- 慎用：清空整张表</span>
+<span class="tok-kw">TRUNCATE TABLE</span> student;
+
+<span class="tok-cm">-- 慎用：删除整张表</span>
+<span class="tok-kw">DROP TABLE</span> student;</code></pre></div>
+    </div>
+
+    <div class="quiz" data-acc="green">
+      <h4 style="color:var(--green)">课堂练习 · 第03-07章 DDL/DML</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="DDL = 数据定义语言（建表、改表、删表）。">
+        <div class="q-head"><span class="qn">1</span>CREATE TABLE 属于 SQL 五大类的哪一类？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>DML（数据操作）</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>DDL（数据定义）</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>DQL（数据查询）</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>DCL（数据控制）</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="TRUNCATE 删除所有行但保留表结构，不能回滚；自增计数器会被重置。">
+        <div class="q-head"><span class="qn">2</span>关于 TRUNCATE TABLE 说法正确的是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>可以回滚</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>会删除表本身</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>清空所有行，自增 ID 重置</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>只能删一行</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="B" data-exp="UPDATE 不带 WHERE 会更新整张表，是典型的"生产事故"原因。">
+        <div class="q-head"><span class="qn">3</span><code>UPDATE student SET age = 20</code> 没带 WHERE 会怎样？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>只更新一行</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>更新整张表所有行</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>语法错误</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>只更新 age=NULL 的行</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 08 SELECT 基础 ============= -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4);background:var(--s1-soft);box-shadow:0 0 0 4px var(--s1-soft)">08</div>
+      <div>
+        <h2>SELECT 查询 ⭐⭐⭐ —— SQL 真正的核心</h2>
+        <p>SELECT 是 SQL 中最重要、使用频率最高的语句。整个数据分析、报表、业务功能都依赖它。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>8.1 SELECT 语法骨架</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>select_skeleton.sql</span><button class="copybtn" data-target="d-sel">复制</button></div><pre id="d-sel"><code><span class="tok-kw">SELECT</span>    [DISTINCT]  列1, 列2 <span class="tok-kw">AS</span> 别名, 聚合函数(列)
+<span class="tok-kw">FROM</span>      表名
+<span class="tok-kw">WHERE</span>     行过滤条件
+<span class="tok-kw">GROUP BY</span>  分组列
+<span class="tok-kw">HAVING</span>    分组后过滤
+<span class="tok-kw">ORDER BY</span>  排序列 [ASC | DESC]
+<span class="tok-kw">LIMIT</span>     [偏移,] 行数;</code></pre></div>
+      <div class="tipbox"><b>执行顺序（重要）：</b>FROM → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT。SQL 是<strong>声明式</strong>语言，写法的顺序 ≠ 执行的顺序。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>8.2 基本查询：列选择 / 别名 / DISTINCT</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>basic_select.sql</span><button class="copybtn" data-target="d-basic">复制</button></div><pre id="d-basic"><code><span class="tok-cm">-- 查询所有列（生产环境慎用 *）</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student;
+
+<span class="tok-cm">-- 查询指定列（推荐：按需取列）</span>
+<span class="tok-kw">SELECT</span> name, age <span class="tok-kw">FROM</span> student;
+
+<span class="tok-cm">-- AS 别名（可省略 AS）</span>
+<span class="tok-kw">SELECT</span> name <span class="tok-kw">AS</span> 姓名, age <span class="tok-kw">AS</span> 年龄
+<span class="tok-kw">FROM</span> student;
+
+<span class="tok-cm">-- DISTINCT 去重</span>
+<span class="tok-kw">SELECT DISTINCT</span> gender <span class="tok-kw">FROM</span> student;</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 09 WHERE ============= -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4)">09</div>
+      <div>
+        <h2>WHERE 条件查询 ⭐⭐⭐</h2>
+        <p>WHERE 是 SELECT 的"过滤器"—— 决定返回哪些行。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>9.1 比较与逻辑运算符</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>where.sql</span><button class="copybtn" data-target="d-where">复制</button></div><pre id="d-where"><code><span class="tok-cm">-- 比较</span>
+<span class="tok-kw">WHERE</span> age &gt;= <span class="tok-nm">18</span>
+
+<span class="tok-cm">-- AND / OR / NOT</span>
+<span class="tok-kw">WHERE</span> age &gt;= <span class="tok-nm">18</span> <span class="tok-kw">AND</span> age &lt;= <span class="tok-nm">22</span>
+<span class="tok-kw">WHERE</span> gender = <span class="tok-st">'男'</span> <span class="tok-kw">OR</span> gender = <span class="tok-st">'女'</span>
+<span class="tok-kw">WHERE NOT</span> (age = <span class="tok-nm">18</span>)
+
+<span class="tok-cm">-- BETWEEN：闭区间 [18, 22]</span>
+<span class="tok-kw">WHERE</span> age <span class="tok-kw">BETWEEN</span> <span class="tok-nm">18</span> <span class="tok-kw">AND</span> <span class="tok-nm">22</span>
+
+<span class="tok-cm">-- IN：等于列表中任一值</span>
+<span class="tok-kw">WHERE</span> id <span class="tok-kw">IN</span> (<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>)
+
+<span class="tok-cm">-- IS NULL / IS NOT NULL</span>
+<span class="tok-kw">WHERE</span> email <span class="tok-kw">IS NULL</span>
+<span class="tok-kw">WHERE</span> email <span class="tok-kw">IS NOT NULL</span></code></pre></div>
+      <div class="warn"><b>陷阱：</b><code>NULL</code> 不能用 <code>= NULL</code> 或 <code>!= NULL</code>，必须用 <code>IS NULL</code> / <code>IS NOT NULL</code>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 10 LIKE / IN / BETWEEN ============= -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4)">10</div>
+      <div>
+        <h2>模糊匹配与条件组合 ⭐⭐⭐</h2>
+        <p>LIKE、IN、BETWEEN —— 让查询更灵活。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3><span class="dot" style="background:var(--s1)"></span>10.1 LIKE 模糊匹配</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>like.sql</span><button class="copybtn" data-target="d-like">复制</button></div><pre id="d-like"><code><span class="tok-cm">-- 两种通配符：</span>
+<span class="tok-cm">--   %   匹配任意数量字符（含 0 个）</span>
+<span class="tok-cm">--   _   匹配恰好 1 个字符</span>
+
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student
+<span class="tok-kw">WHERE</span> name <span class="tok-kw">LIKE</span> <span class="tok-st">'张%'</span>;           <span class="tok-cm">-- 张三、张三丰、张飞(非姓张的不行)</span>
+
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student
+<span class="tok-kw">WHERE</span> name <span class="tok-kw">LIKE</span> <span class="tok-st">'张_'</span>;           <span class="tok-cm">-- 张三、张四（恰好 2 字）</span>
+
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student
+<span class="tok-kw">WHERE</span> email <span class="tok-kw">LIKE</span> <span class="tok-st">'%@gmail.com'</span>;   <span class="tok-cm">-- 以 @gmail.com 结尾</span>
+
+<span class="tok-cm">-- 包含"小"的：%小%</span>
+<span class="tok-cm">-- 第 2 个字是"小"的：_小%</span>
+
+<span class="tok-cm">-- 转义特殊字符（MySQL 默认 \）</span>
+<span class="tok-kw">WHERE</span> name <span class="tok-kw">LIKE</span> <span class="tok-st">'50\%'</span> <span class="tok-kw">ESCAPE</span> <span class="tok-st">'\'</span>;     <span class="tok-cm">-- 匹配 "50%"</span></code></pre></div>
+      <div class="tipbox"><b>LIKE 的代价：</b><code>%abc</code> 这类"前缀为通配符"的查询<strong>无法使用索引</strong>，会全表扫描。<strong>慎用</strong>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 11 聚合 / GROUP BY ============= -->
+<section id="s11">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s3);border-color:rgba(124,58,237,.4)">11</div>
+      <div>
+        <h2>聚合函数与 GROUP BY ⭐⭐⭐</h2>
+        <p>聚合函数把多行"压缩"成一个值；GROUP BY 把数据分组。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3><span class="dot" style="background:var(--s3)"></span>11.1 五大聚合函数</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>函数</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">COUNT(*)</td><td>行数</td></tr>
+          <tr><td class="hl">COUNT(col)</td><td>col 非 NULL 的行数</td></tr>
+          <tr><td class="hl">SUM(col)</td><td>求和</td></tr>
+          <tr><td class="hl">AVG(col)</td><td>平均</td></tr>
+          <tr><td class="hl">MAX(col) / MIN(col)</td><td>最大 / 最小</td></tr>
+        </tbody>
+      </table></div>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>agg.sql</span><button class="copybtn" data-target="d-agg">复制</button></div><pre id="d-agg"><code><span class="tok-cm">-- 总人数</span>
+<span class="tok-kw">SELECT</span> <span class="tok-fn">COUNT</span>(*) <span class="tok-kw">AS</span> total <span class="tok-kw">FROM</span> student;
+
+<span class="tok-cm">-- 平均年龄</span>
+<span class="tok-kw">SELECT</span> <span class="tok-fn">AVG</span>(age) <span class="tok-kw">FROM</span> student;
+
+<span class="tok-cm">-- 按性别分组</span>
+<span class="tok-kw">SELECT</span> gender, <span class="tok-fn">COUNT</span>(*) <span class="tok-kw">AS</span> cnt, <span class="tok-fn">AVG</span>(age) <span class="tok-kw">AS</span> avg_age
+<span class="tok-kw">FROM</span> student
+<span class="tok-kw">GROUP BY</span> gender;
+
+<span class="tok-cm">-- 加上 WHERE 过滤（先过滤再分组）</span>
+<span class="tok-kw">SELECT</span> class_id, <span class="tok-fn">AVG</span>(score) <span class="tok-kw">AS</span> avg_score
+<span class="tok-kw">FROM</span> score
+<span class="tok-kw">WHERE</span> score &gt;= <span class="tok-nm">60</span>          <span class="tok-cm">-- 只看及格的</span>
+<span class="tok-kw">GROUP BY</span> class_id;</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3><span class="dot" style="background:var(--s3)"></span>11.2 HAVING：分组后过滤</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>having.sql</span><button class="copybtn" data-target="d-having">复制</button></div><pre id="d-having"><code><span class="tok-cm">-- 各班平均分超过 80 分的班级</span>
+<span class="tok-kw">SELECT</span> class_id, <span class="tok-fn">AVG</span>(score) <span class="tok-kw">AS</span> avg_score
+<span class="tok-kw">FROM</span> score
+<span class="tok-kw">GROUP BY</span> class_id
+<span class="tok-kw">HAVING</span> <span class="tok-fn">AVG</span>(score) &gt; <span class="tok-nm">80</span>;   <span class="tok-cm">-- 分组后的过滤</span></code></pre></div>
+      <p class="sum1" style="--acc:var(--s3)"><b>WHERE vs HAVING：</b>WHERE 是<strong>分组前</strong>对原始行过滤；HAVING 是<strong>分组后</strong>对聚合结果过滤。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 12 ORDER BY / LIMIT ============= -->
+<section id="s12">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s2);border-color:rgba(14,116,144,.4)">12</div>
+      <div>
+        <h2>排序与分页 ⭐⭐⭐</h2>
+        <p>ORDER BY 让结果有序，LIMIT 实现分页 —— Web 应用的核心。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s2)">
+      <h3><span class="dot" style="background:var(--s2)"></span>12.1 ORDER BY + LIMIT</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>order_limit.sql</span><button class="copybtn" data-target="d-order">复制</button></div><pre id="d-order"><code><span class="tok-cm">-- 单字段排序</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">ORDER BY</span> age <span class="tok-kw">ASC</span>;     <span class="tok-cm">-- 升序（默认）</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">ORDER BY</span> age <span class="tok-kw">DESC</span>;    <span class="tok-cm">-- 降序</span>
+
+<span class="tok-cm">-- 多字段排序：先按 age 降序，再按 id 升序</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">ORDER BY</span> age <span class="tok-kw">DESC</span>, id <span class="tok-kw">ASC</span>;
+
+<span class="tok-cm">-- LIMIT：取前 N 条</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">LIMIT</span> <span class="tok-nm">10</span>;
+
+<span class="tok-cm">-- LIMIT offset, count：分页（offset 从 0 开始）</span>
+<span class="tok-cm">-- 跳过前 10 条，取接下来的 10 条（第 2 页）</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">ORDER BY</span> id <span class="tok-kw">LIMIT</span> <span class="tok-nm">10</span>, <span class="tok-nm">10</span>;
+
+<span class="tok-cm">-- 分页公式：LIMIT (页码 - 1) * 每页, 每页</span></code></pre></div>
+      <div class="tipbox"><b>分页优化：</b>超大表上 LIMIT 1000000, 10 会非常慢。可用<strong>WHERE id &gt; last_id</strong> 的"游标分页"代替。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 13 JOIN ============= -->
+<section id="s13">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s3);border-color:rgba(124,58,237,.4);background:var(--s3-soft);box-shadow:0 0 0 4px var(--s3-soft)">13</div>
+      <div>
+        <h2>JOIN 多表查询 ⭐⭐⭐</h2>
+        <p>JOIN 是 SQL 第二个核心 —— 把多张表"拼"起来。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3><span class="dot" style="background:var(--s3)"></span>13.1 四种 JOIN 直观图示</h3>
+      <div class="fig">
+        <svg viewBox="0 0 680 240" style="width:100%;max-width:680px">
+          <g font-size="12" text-anchor="middle">
+            <!-- INNER JOIN -->
+            <ellipse cx="80"  cy="80" rx="60" ry="40" fill="#7c3aed" fill-opacity="0.18" stroke="#7c3aed" stroke-width="1.5"/>
+            <ellipse cx="160" cy="80" rx="60" ry="40" fill="#166534" fill-opacity="0.18" stroke="#166534" stroke-width="1.5"/>
+            <path d="M80 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0 M160 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0" fill="#5b21b6" fill-opacity="0.45"/>
+            <text x="80" y="80" fill="#1a1816" font-weight="700">A</text>
+            <text x="160" y="80" fill="#1a1816" font-weight="700">B</text>
+            <text x="120" y="170" fill="#5b21b6" font-weight="700">INNER JOIN = A ∩ B</text>
+            <text x="120" y="188" fill="#6a635c" font-size="11">只返回两表都有匹配的行</text>
+
+            <!-- LEFT JOIN -->
+            <ellipse cx="320" cy="80" rx="60" ry="40" fill="#7c3aed" fill-opacity="0.18" stroke="#7c3aed" stroke-width="1.5"/>
+            <ellipse cx="400" cy="80" rx="60" ry="40" fill="#166534" fill-opacity="0.18" stroke="#166534" stroke-width="1.5"/>
+            <path d="M320 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0 M400 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0" fill="#7c3aed" fill-opacity="0.45"/>
+            <text x="320" y="80" fill="#1a1816" font-weight="700">A</text>
+            <text x="400" y="80" fill="#1a1816" font-weight="700">B</text>
+            <text x="360" y="170" fill="#7c3aed" font-weight="700">LEFT JOIN = A 全部 + 交集</text>
+            <text x="360" y="188" fill="#6a635c" font-size="11">左表全保留，右表无匹配则填 NULL</text>
+
+            <!-- RIGHT JOIN -->
+            <ellipse cx="560" cy="80" rx="60" ry="40" fill="#7c3aed" fill-opacity="0.18" stroke="#7c3aed" stroke-width="1.6"/>
+            <ellipse cx="640" cy="80" rx="60" ry="40" fill="#166534" fill-opacity="0.18" stroke="#166534" stroke-width="1.6"/>
+            <path d="M560 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0 M640 80 m-40,0 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0" fill="#166534" fill-opacity="0.45"/>
+            <text x="560" y="80" fill="#1a1816" font-weight="700">A</text>
+            <text x="640" y="80" fill="#1a1816" font-weight="700">B</text>
+            <text x="600" y="170" fill="#166534" font-weight="700">RIGHT JOIN = B 全部 + 交集</text>
+            <text x="600" y="188" fill="#6a635c" font-size="11">右表全保留</text>
+          </g>
+        </svg>
+        <div class="cap">JOIN 类型示意图</div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3><span class="dot" style="background:var(--s3)"></span>13.2 JOIN 实战</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>join_demo.sql</span><button class="copybtn" data-target="d-join">复制</button></div><pre id="d-join"><code><span class="tok-cm">-- INNER JOIN：只返回两表都匹配的行</span>
+<span class="tok-kw">SELECT</span> s.id, s.name, c.class_name
+<span class="tok-kw">FROM</span> student s
+<span class="tok-kw">INNER JOIN</span> <span class="tok-ty">class</span> c <span class="tok-kw">ON</span> s.class_id = c.id;
+
+<span class="tok-cm">-- LEFT JOIN：保留左表全部</span>
+<span class="tok-kw">SELECT</span> s.id, s.name, c.class_name
+<span class="tok-kw">FROM</span> student s
+<span class="tok-kw">LEFT JOIN</span> <span class="tok-ty">class</span> c <span class="tok-kw">ON</span> s.class_id = c.id;
+
+<span class="tok-cm">-- 三表 JOIN：查张三的课程成绩</span>
+<span class="tok-kw">SELECT</span> s.name, co.course_name, sc.score
+<span class="tok-kw">FROM</span> student s
+<span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> s.id = sc.student_id
+<span class="tok-kw">JOIN</span> course co <span class="tok-kw">ON</span> sc.course_id = co.id
+<span class="tok-kw">WHERE</span> s.name = <span class="tok-st">'张三'</span>;</code></pre></div>
+      <div class="warn"><b>避免笛卡尔积：</b>JOIN 一定要写 <code>ON</code> 条件，否则返回两表<strong>行数相乘</strong>的"笛卡尔积"，数据量爆炸。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 14 子查询 ============= -->
+<section id="s14">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4)">14</div>
+      <div>
+        <h2>子查询 ⭐⭐</h2>
+        <p>"查询中的查询" —— 把多个 SELECT 嵌套使用。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>14.1 子查询的四种位置</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>subquery.sql</span><button class="copybtn" data-target="d-sub">复制</button></div><pre id="d-sub"><code><span class="tok-cm">-- 1) WHERE 子查询：年龄大于平均年龄</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student
+<span class="tok-kw">WHERE</span> age &gt; (<span class="tok-kw">SELECT</span> <span class="tok-fn">AVG</span>(age) <span class="tok-kw">FROM</span> student);
+
+<span class="tok-cm">-- 2) IN 子查询：选修了"数据库"的学生</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student
+<span class="tok-kw">WHERE</span> id <span class="tok-kw">IN</span> (
+    <span class="tok-kw">SELECT</span> student_id <span class="tok-kw">FROM</span> score
+    <span class="tok-kw">WHERE</span> course_id = (<span class="tok-kw">SELECT</span> id <span class="tok-kw">FROM</span> course <span class="tok-kw">WHERE</span> name = <span class="tok-st">'数据库'</span>)
+);
+
+<span class="tok-cm">-- 3) FROM 子查询：当作临时表</span>
+<span class="tok-kw">SELECT</span> class_id, avg_score
+<span class="tok-kw">FROM</span> (<span class="tok-kw">SELECT</span> class_id, <span class="tok-fn">AVG</span>(score) <span class="tok-kw">AS</span> avg_score <span class="tok-kw">FROM</span> score <span class="tok-kw">GROUP BY</span> class_id) <span class="tok-kw">AS</span> t
+<span class="tok-kw">WHERE</span> avg_score &gt; <span class="tok-nm">80</span>;
+
+<span class="tok-cm">-- 4) EXISTS：是否存在</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> course c
+<span class="tok-kw">WHERE EXISTS</span> (<span class="tok-kw">SELECT</span> <span class="tok-nm">1</span> <span class="tok-kw">FROM</span> score <span class="tok-kw">WHERE</span> course_id = c.id);</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 15 数据库设计 ============= -->
+<section id="s15">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">15</div>
+      <div>
+        <h2>数据库设计基础 ⭐⭐⭐</h2>
+        <p>好的设计 = 减少数据冗余 + 避免更新异常。本节讲 ER 模型与三大范式。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>15.1 为什么需要数据库设计</h3>
+      <div class="two">
+        <div>
+          <h4>❌ 错误设计：所有字段塞一张表</h4>
+          <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>bad_design.sql</span><button class="copybtn" data-target="d-bad">复制</button></div><pre id="d-bad"><code><span class="tok-kw">CREATE TABLE</span> student (
+    name        <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>),
+    class_name  <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>),
+    course_1    <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>), score_1 <span class="tok-ty">INT</span>,
+    course_2    <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>), score_2 <span class="tok-ty">INT</span>,
+    course_3    <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>), score_3 <span class="tok-ty">INT</span>,
+    <span class="tok-cm">-- 每多一门课就要改表结构</span>
+);</code></pre></div>
+        </div>
+        <div>
+          <h4>✔ 正确设计：拆成 4 张表</h4>
+          <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>good_design.sql</span><button class="copybtn" data-target="d-good">复制</button></div><pre id="d-good"><code><span class="tok-kw">CREATE TABLE</span> student(id, name, class_id);
+<span class="tok-kw">CREATE TABLE</span> <span class="tok-ty">class</span>(id, class_name);
+<span class="tok-kw">CREATE TABLE</span> course(id, course_name);
+<span class="tok-kw">CREATE TABLE</span> score(id, student_id, course_id, score);</code></pre></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>15.2 ER 模型（Entity-Relationship） ⭐⭐⭐</h3>
+      <div class="fig">
+        <svg viewBox="0 0 460 200" style="width:100%;max-width:460px">
+          <g font-size="13">
+            <!-- 实体 -->
+            <rect x="30" y="30" width="80" height="40" rx="20" fill="#dde3f1" stroke="#1e3a8a" stroke-width="1.5"/>
+            <text x="70" y="55" text-anchor="middle" fill="#1e3a8a" font-weight="700">学生</text>
+
+            <rect x="180" y="30" width="80" height="40" rx="20" fill="#dde3f1" stroke="#1e3a8a" stroke-width="1.5"/>
+            <text x="220" y="55" text-anchor="middle" fill="#1e3a8a" font-weight="700">课程</text>
+
+            <rect x="330" y="30" width="80" height="40" rx="20" fill="#dde3f1" stroke="#1e3a8a" stroke-width="1.5"/>
+            <text x="370" y="55" text-anchor="middle" fill="#1e3a8a" font-weight="700">成绩</text>
+
+            <!-- 关系菱形 -->
+            <polygon points="170,130 130,110 130,150" fill="#7c3aed" fill-opacity="0.18" stroke="#7c3aed" stroke-width="1.5"/>
+            <text x="148" y="135" text-anchor="middle" fill="#5b21b6" font-size="11">选修</text>
+
+            <polygon points="320,130 280,110 280,150" fill="#166534" fill-opacity="0.18" stroke="#166534" stroke-width="1.5"/>
+            <text x="298" y="135" text-anchor="middle" fill="#166534" font-size="11">属于</text>
+
+            <!-- 连线 -->
+            <line x1="70" y1="70" x2="150" y2="110" stroke="#6a635c" stroke-width="1.3"/>
+            <text x="90" y="92" fill="#6a635c" font-size="10">M</text>
+            <line x1="220" y1="70" x2="180" y2="110" stroke="#6a635c" stroke-width="1.3"/>
+            <text x="200" y="92" fill="#6a635c" font-size="10">N</text>
+
+            <line x1="240" y1="55" x2="320" y2="55" stroke="#6a635c" stroke-width="1.3"/>
+            <text x="280" y="50" fill="#6a635c" font-size="10">1 : N</text>
+
+            <!-- 属性（椭圆示意） -->
+            <ellipse cx="30" y="100" rx="35" ry="14" fill="none" stroke="#6a635c" stroke-width="1"/>
+            <text x="30" y="104" text-anchor="middle" fill="#3f3a35" font-size="11">学号</text>
+            <ellipse cx="180" y="100" rx="35" ry="14" fill="none" stroke="#6a635c" stroke-width="1"/>
+            <text x="180" y="104" text-anchor="middle" fill="#3f3a35" font-size="11">课程名</text>
+            <ellipse cx="370" y="100" rx="40" ry="14" fill="none" stroke="#6a635c" stroke-width="1"/>
+            <text x="370" y="104" text-anchor="middle" fill="#3f3a35" font-size="11">分数</text>
+          </g>
+        </svg>
+        <div class="cap">ER 图：实体（矩形）、关系（菱形）、属性（椭圆）</div>
+      </div>
+      <h4>三大范式 ⭐⭐</h4>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>范式</th><th>要求</th><th>目的</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">1NF</td><td>字段不可再分（原子性）</td><td>每个字段只存一个值</td></tr>
+          <tr><td class="hl">2NF</td><td>非主属性完全依赖主键</td><td>消除部分依赖</td></tr>
+          <tr><td class="hl">3NF</td><td>非主属性不传递依赖主键</td><td>消除"学号 → 班级 → 班主任"的传递</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="quiz" data-acc="s3">
+      <h4 style="color:var(--s3)">课堂练习 · 第11-15章 SQL 查询</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="SELECT 是 DQL（数据查询语言）。">
+        <div class="q-head"><span class="qn">4</span>SELECT 属于 SQL 五大类的哪一类？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>DML</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>DQL</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>DDL</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>DCL</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="GROUP BY 后的过滤必须用 HAVING（不能用 WHERE 过滤聚合结果）。">
+        <div class="q-head"><span class="qn">5</span>要筛选出"班级人数超过 30 人"的班级，应使用？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>WHERE COUNT(*) > 30</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>WHERE SUM &gt; 30</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>HAVING COUNT(*) &gt; 30</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>FILTER</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="INNER JOIN 只返回两表都匹配的行；LEFT JOIN 保留左表全部；FULL OUTER JOIN 是 MySQL 不直接支持（需用 UNION）。">
+        <div class="q-head"><span class="qn">6</span>关于 JOIN 说法错误的是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>INNER JOIN 只返回交集</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>LEFT JOIN 保留左表全部</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>FULL OUTER JOIN MySQL 直接支持</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>JOIN 必须写 ON 条件</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 16 约束 ============= -->
+<section id="s16">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--amber);border-color:rgba(163,74,8,.4)">16</div>
+      <div>
+        <h2>数据完整性约束 ⭐⭐⭐</h2>
+        <p>约束 = 数据库保证数据合法性的内置机制。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>16.1 六大约束</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>约束</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">PRIMARY KEY</td><td>主键：唯一 + 非空</td></tr>
+          <tr><td class="hl">FOREIGN KEY</td><td>外键：引用另一张表的主键</td></tr>
+          <tr><td class="hl">UNIQUE</td><td>唯一约束（可空，但非 NULL 值必须唯一）</td></tr>
+          <tr><td class="hl">NOT NULL</td><td>非空约束</td></tr>
+          <tr><td class="hl">DEFAULT</td><td>默认值约束</td></tr>
+          <tr><td class="hl">CHECK</td><td>检查约束（MySQL 8.0.16+ 才真正生效）</td></tr>
+        </tbody>
+      </table></div>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>constraints.sql</span><button class="copybtn" data-target="d-cons">复制</button></div><pre id="d-cons"><code><span class="tok-kw">CREATE TABLE</span> student (
+    <span class="tok-ty">id</span>     <span class="tok-ty">INT</span>          <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    <span class="tok-ty">name</span>   <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>)  <span class="tok-kw">NOT NULL</span>,
+    <span class="tok-ty">email</span>  <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>) <span class="tok-kw">UNIQUE</span>,
+    <span class="tok-ty">age</span>    <span class="tok-ty">INT</span>          <span class="tok-kw">CHECK</span> (age &gt;= <span class="tok-nm">0</span> <span class="tok-kw">AND</span> age &lt;= <span class="tok-nm">150</span>),
+    <span class="tok-ty">gender</span> <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">10</span>)  <span class="tok-kw">DEFAULT</span> <span class="tok-st">'未知'</span>,
+    <span class="tok-ty">class_id</span> <span class="tok-ty">INT</span>,
+    <span class="tok-kw">FOREIGN KEY</span> (class_id) <span class="tok-kw">REFERENCES</span> <span class="tok-ty">class</span>(id)
+        <span class="tok-kw">ON DELETE</span> <span class="tok-kw">CASCADE</span>
+);
+
+<span class="tok-cm">-- 外键级联：删班级时自动删其学生（慎用）</span>
+<span class="tok-cm">-- ON DELETE CASCADE / SET NULL / RESTRICT / NO ACTION</span></code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 17 MySQL 实践 ============= -->
+<section id="s17">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">17</div>
+      <div>
+        <h2>MySQL 实践 ⭐⭐⭐</h2>
+        <p>从安装到登录到第一个查询 —— 把 MySQL 用起来。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>17.1 安装与登录</h3>
+      <div class="codebox"><div class="ch"><span class="lang">shell</span><span>terminal</span><button class="copybtn" data-target="d-mysql">复制</button></div><pre id="d-mysql"><code><span class="tok-cm"># macOS 安装</span>
+brew install mysql
+
+<span class="tok-cm"># 启动服务</span>
+brew services start mysql
+
+<span class="tok-cm"># Linux</span>
+sudo systemctl start mysql
+
+<span class="tok-cm"># Windows：从官网下载 MSI 安装包</span>
+
+<span class="tok-cm"># 登录</span>
+mysql -u root -p
+
+<span class="tok-cm"># 查看数据库</span>
+mysql&gt; SHOW DATABASES;
+
+<span class="tok-cm"># 退出</span>
+mysql&gt; exit;</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>17.2 MySQL 数据类型速查</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类别</th><th>类型</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">整数</td><td>TINYINT(1B) · SMALLINT(2B) · INT(4B) · BIGINT(8B)</td></tr>
+          <tr><td class="hl">小数</td><td>FLOAT · DOUBLE · <strong>DECIMAL(p,s)</strong>（精确）</td></tr>
+          <tr><td class="hl">字符串</td><td><strong>CHAR(n)</strong> 定长 · <strong>VARCHAR(n)</strong> 变长 · TEXT · LONGTEXT</td></tr>
+          <tr><td class="hl">日期</td><td>DATE · TIME · DATETIME · <strong>TIMESTAMP</strong>（自动时区）· YEAR</td></tr>
+          <tr><td class="hl">其他</td><td>JSON（MySQL 5.7+）· ENUM · BLOB</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tipbox"><b>DECIMAL vs FLOAT：</b>金额、分数必须用 <strong>DECIMAL</strong>（精确），不能用 FLOAT/DOUBLE（会精度丢失）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 18 索引 ============= -->
+<section id="s18">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4)">18</div>
+      <div>
+        <h2>索引 Index ⭐⭐</h2>
+        <p>索引 = 数据库的"目录" —— 让查询从全表扫变为快速定位。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>18.1 索引的增删与失效</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>index.sql</span><button class="copybtn" data-target="d-idx">复制</button></div><pre id="d-idx"><code><span class="tok-cm">-- 创建索引（CREATE 时）</span>
+<span class="tok-kw">CREATE TABLE</span> student (
+    <span class="tok-ty">id</span>    <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    <span class="tok-ty">name</span>  <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>),
+    <span class="tok-ty">email</span> <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>),
+    <span class="tok-kw">UNIQUE KEY</span> uk_email (email),      <span class="tok-cm">-- 唯一索引</span>
+    <span class="tok-kw">KEY</span> idx_name (name)               <span class="tok-cm">-- 普通索引</span>
+);
+
+<span class="tok-cm">-- 事后添加 / 删除索引</span>
+<span class="tok-kw">CREATE INDEX</span> idx_age <span class="tok-kw">ON</span> student(age);
+<span class="tok-kw">ALTER TABLE</span> student <span class="tok-kw">ADD INDEX</span> idx_class_name(class_name);
+<span class="tok-kw">DROP INDEX</span> idx_age <span class="tok-kw">ON</span> student;
+
+<span class="tok-cm">-- 联合索引（多字段索引，列顺序很重要！）</span>
+<span class="tok-kw">CREATE INDEX</span> idx_name_age <span class="tok-kw">ON</span> student(name, age);
+
+<span class="tok-cm">-- 查看索引</span>
+<span class="tok-kw">SHOW INDEX FROM</span> student;
+
+<span class="tok-cm">-- EXPLAIN：分析查询是否用上了索引</span>
+<span class="tok-kw">EXPLAIN</span> <span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> student <span class="tok-kw">WHERE</span> name = <span class="tok-st">'张三'</span>;</code></pre></div>
+      <div class="warn"><b>索引失效的常见原因：</b><code>LIKE '%abc%'</code>（前缀通配符）；<code>WHERE func(col)</code>（函数运算）；<code>OR</code> 中部分条件没索引；类型不一致（如 <code>name = 123</code>）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 19 事务 ============= -->
+<section id="s19">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4);background:var(--coral-soft);box-shadow:0 0 0 4px var(--coral-soft)">19</div>
+      <div>
+        <h2>事务 Transaction ⭐⭐⭐</h2>
+        <p>事务 = 一组 SQL 要么全部成功，要么全部失败 —— 数据库正确性的基石。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>19.1 ACID ⭐⭐⭐</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>特性</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Atomicity 原子性</td><td>事务内操作要么全成功，要么全失败</td></tr>
+          <tr><td class="hl">Consistency 一致性</td><td>事务前后数据满足所有约束</td></tr>
+          <tr><td class="hl">Isolation 隔离性</td><td>并发事务互不干扰</td></tr>
+          <tr><td class="hl">Durability 持久性</td><td>提交后永久保存，即使断电</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>19.2 事务实战：银行转账</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>transfer.sql</span><button class="copybtn" data-target="d-tx">复制</button></div><pre id="d-tx"><code><span class="tok-kw">START TRANSACTION</span>;   <span class="tok-cm">-- 或 BEGIN</span>
+
+<span class="tok-kw">UPDATE</span> account <span class="tok-kw">SET</span> balance = balance - <span class="tok-nm">100</span> <span class="tok-kw">WHERE</span> id = <span class="tok-nm">1</span>;
+<span class="tok-cm">-- 假设这里程序崩溃 / 网络中断……</span>
+<span class="tok-kw">UPDATE</span> account <span class="tok-kw">SET</span> balance = balance + <span class="tok-nm">100</span> <span class="tok-kw">WHERE</span> id = <span class="tok-nm">2</span>;
+
+<span class="tok-cm">-- 两步都成功</span>
+<span class="tok-kw">COMMIT</span>;
+
+<span class="tok-cm">-- 任一步失败：</span>
+<span class="tok-cm">-- ROLLBACK;   -- 撤销所有改动</span></code></pre></div>
+      <div class="tipbox"><b>MySQL 默认模式：</b>InnoDB 引擎 + autocommit=ON → 每条 SQL 自动提交。需要时显式 <code>START TRANSACTION</code>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 20 视图 ============= -->
+<section id="s20">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--teal,#0c6b63);border-color:rgba(12,107,99,.4)">20</div>
+      <div>
+        <h2>视图 VIEW ⭐⭐</h2>
+        <p>视图 = 一条 SELECT 查询的<strong>命名快照</strong>，可以像表一样查询。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3><span class="dot" style="background:var(--teal)"></span>20.1 视图 CRUD</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>view.sql</span><button class="copybtn" data-target="d-view">复制</button></div><pre id="d-view"><code><span class="tok-cm">-- 创建视图</span>
+<span class="tok-kw">CREATE VIEW</span> v_student_score <span class="tok-kw">AS</span>
+<span class="tok-kw">SELECT</span> s.id, s.name, co.course_name, sc.score
+<span class="tok-kw">FROM</span> student s
+<span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> s.id = sc.student_id
+<span class="tok-kw">JOIN</span> course co <span class="tok-kw">ON</span> sc.course_id = co.id;
+
+<span class="tok-cm">-- 查询视图（和查询表一样）</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> v_student_score <span class="tok-kw">WHERE</span> score &gt;= <span class="tok-nm">60</span>;
+
+<span class="tok-cm">-- 修改视图</span>
+<span class="tok-kw">CREATE OR REPLACE VIEW</span> v_student_score <span class="tok-kw">AS</span> ...;
+
+<span class="tok-cm">-- 删除视图</span>
+<span class="tok-kw">DROP VIEW</span> v_student_score;</code></pre></div>
+      <p class="sum1" style="--acc:var(--teal)"><b>视图的好处：</b>① 简化复杂查询 ② 隐藏表结构（安全）③ 数据独立。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 21 窗口函数 ============= -->
+<section id="s21">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s3);border-color:rgba(124,58,237,.4);background:var(--s3-soft);box-shadow:0 0 0 4px var(--s3-soft)">21</div>
+      <div>
+        <h2>窗口函数 Window Function <span class="tag-std tag-opt">C 拓展</span></h2>
+        <p>SQL 进阶 —— "分组但保留每行的细节"。MySQL 8.0+ / PostgreSQL / Oracle / SQL Server 全部支持。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3><span class="dot" style="background:var(--s3)"></span>21.1 ROW_NUMBER / RANK / DENSE_RANK</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>window.sql</span><button class="copybtn" data-target="d-win">复制</button></div><pre id="d-win"><code><span class="tok-cm">-- 查每个班成绩前 3 名</span>
+<span class="tok-kw">SELECT</span> * <span class="tok-kw">FROM</span> (
+    <span class="tok-kw">SELECT</span>
+        s.class_id,
+        s.name,
+        sc.score,
+        <span class="tok-fn">ROW_NUMBER</span>() <span class="tok-kw">OVER</span> (<span class="tok-kw">PARTITION BY</span> s.class_id <span class="tok-kw">ORDER BY</span> sc.score <span class="tok-kw">DESC</span>) <span class="tok-kw">AS</span> rk
+    <span class="tok-kw">FROM</span> student s
+    <span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> s.id = sc.student_id
+) t
+<span class="tok-kw">WHERE</span> rk &lt;= <span class="tok-nm">3</span>;
+
+<span class="tok-cm">-- ROW_NUMBER()：连续编号（1, 2, 3, 4）</span>
+<span class="tok-cm">-- RANK()：       同分同名，下一空位（1, 2, 2, 4）</span>
+<span class="tok-cm">-- DENSE_RANK()： 同分同名，下一连续（1, 2, 2, 3）</span>
+
+<span class="tok-cm">-- 每行的累计求和</span>
+<span class="tok-kw">SELECT</span> name, score,
+       <span class="tok-fn">SUM</span>(score) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> id) <span class="tok-kw">AS</span> cumulative
+<span class="tok-kw">FROM</span> score;</code></pre></div>
+      <div class="tipbox"><b>窗口函数 vs 聚合函数：</b>聚合函数把多行压缩成一行；窗口函数给每行"附加"一个聚合结果，<strong>保留原行</strong>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 22 Python+SQL ============= -->
+<section id="s22">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">22</div>
+      <div>
+        <h2>Python + MySQL 数据库编程 ⭐⭐</h2>
+        <p>Python 通过 <code>mysql-connector</code> 或 <code>PyMySQL</code> 连接 MySQL。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>22.1 PyMySQL 实战</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>py_mysql.py</span><button class="copybtn" data-target="d-pymysql">复制</button></div><pre id="d-pymysql"><code><span class="tok-kw">import</span> pymysql
+
+<span class="tok-cm"># 1) 建立连接</span>
+conn = pymysql.<span class="tok-fn">connect</span>(
+    host=<span class="tok-st">"localhost"</span>,
+    user=<span class="tok-st">"root"</span>,
+    password=<span class="tok-st">"123456"</span>,
+    database=<span class="tok-st">"school"</span>,
+    charset=<span class="tok-st">"utf8mb4"</span>,
+)
+
+<span class="tok-cm"># 2) 获取游标</span>
+<span class="tok-kw">with</span> conn.<span class="tok-fn">cursor</span>() <span class="tok-kw">as</span> cur:
+    <span class="tok-cm"># 3) 执行 SQL（参数化防注入！）</span>
+    cur.<span class="tok-fn">execute</span>(
+        <span class="tok-st">"SELECT * FROM student WHERE name = %s"</span>,
+        (<span class="tok-st">"张三"</span>,)
+    )
+    rows = cur.<span class="tok-fn">fetchall</span>()
+    <span class="tok-kw">for</span> row <span class="tok-kw">in</span> rows:
+        <span class="tok-fn">print</span>(row)
+
+    <span class="tok-cm"># 4) 插入 + 提交事务</span>
+    cur.<span class="tok-fn">execute</span>(
+        <span class="tok-st">"INSERT INTO student(name, age) VALUES(%s, %s)"</span>,
+        (<span class="tok-st">"李四"</span>, <span class="tok-nm">20</span>)
+    )
+    conn.<span class="tok-fn">commit</span>()
+
+conn.<span class="tok-fn">close</span>()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 23 SQL 注入 ============= -->
+<section id="s23">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4);background:var(--coral-soft);box-shadow:0 0 0 4px var(--coral-soft)">23</div>
+      <div>
+        <h2>SQL 注入与安全 ⭐⭐⭐</h2>
+        <p>SQL 注入是 Web 安全第一杀手 —— 必须掌握防范方法。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>23.1 注入原理</h3>
+      <div class="two">
+        <div>
+          <h4>❌ 危险代码：字符串拼接</h4>
+          <div class="codebox"><div class="ch"><span class="lang">Python</span><span>bad.py</span><button class="copybtn" data-target="d-bad">复制</button></div><pre id="d-bad"><code>username = <span class="tok-fn">input</span>(<span class="tok-st">"用户名："</span>)
+sql = <span class="tok-st">f"SELECT * FROM user WHERE name = '</span><span class="tok-cm">{</span>username<span class="tok-cm">}</span><span class="tok-st">'"</span>
+cur.<span class="tok-fn">execute</span>(sql)
+
+<span class="tok-cm"># 如果用户输入：</span>
+<span class="tok-cm">#   ' OR '1'='1</span>
+<span class="tok-cm"># SQL 变成：</span>
+<span class="tok-cm"># SELECT * FROM user WHERE name = '' OR '1'='1'</span>
+<span class="tok-cm"># → 返回所有用户！</span></code></pre></div>
+        </div>
+        <div>
+          <h4>✔ 安全代码：参数化查询</h4>
+          <div class="codebox"><div class="ch"><span class="lang">Python</span><span>good.py</span><button class="copybtn" data-target="d-good2">复制</button></div><pre id="d-good2"><code>username = <span class="tok-fn">input</span>(<span class="tok-st">"用户名："</span>)
+sql = <span class="tok-st">"SELECT * FROM user WHERE name = %s"</span>
+cur.<span class="tok-fn">execute</span>(sql, (username,))
+<span class="tok-cm"># 数据库驱动会自动转义恶意字符</span></code></pre></div>
+        </div>
+      </div>
+      <div class="warn"><b>铁律：</b>任何来自<strong>用户输入</strong>的数据都不能直接拼到 SQL 里 —— 必须用参数化查询 / 预编译语句。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 24 综合项目 ============= -->
+<section id="s24">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--s1);border-color:rgba(30,58,138,.4)">24</div>
+      <div>
+        <h2>综合项目：数据库设计实战</h2>
+        <p>3 个项目覆盖学生管理、图书管理、电商三大场景 —— 体现"前端 → 后端 → SQL → MySQL"完整链路。</p>
+      </div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--s2)">
+      <h4>项目一：学生成绩管理系统 ⭐⭐⭐</h4>
+      <div class="meta">难度 ★★★ · SQL DDL + DML + JOIN + 聚合</div>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>school.sql</span><button class="copybtn" data-target="d-pj1">复制</button></div><pre id="d-pj1"><code><span class="tok-kw">CREATE DATABASE</span> school <span class="tok-kw">DEFAULT CHARACTER SET</span> utf8mb4;
+<span class="tok-kw">USE</span> school;
+
+<span class="tok-kw">CREATE TABLE</span> <span class="tok-ty">class</span> (
+    id   <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    name <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>) <span class="tok-kw">NOT NULL</span>
+);
+
+<span class="tok-kw">CREATE TABLE</span> student (
+    id       <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    name     <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>) <span class="tok-kw">NOT NULL</span>,
+    class_id <span class="tok-ty">INT</span>,
+    <span class="tok-kw">FOREIGN KEY</span> (class_id) <span class="tok-kw">REFERENCES</span> <span class="tok-ty">class</span>(id)
+);
+
+<span class="tok-kw">CREATE TABLE</span> course (
+    id   <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    name <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>) <span class="tok-kw">NOT NULL</span>
+);
+
+<span class="tok-kw">CREATE TABLE</span> score (
+    id         <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    student_id <span class="tok-ty">INT</span>,
+    course_id  <span class="tok-ty">INT</span>,
+    score      <span class="tok-ty">DECIMAL</span>(<span class="tok-nm">5</span>,<span class="tok-nm">2</span>),
+    <span class="tok-kw">FOREIGN KEY</span> (student_id) <span class="tok-kw">REFERENCES</span> student(id),
+    <span class="tok-kw">FOREIGN KEY</span> (course_id)  <span class="tok-kw">REFERENCES</span> course(id)
+);
+
+<span class="tok-cm">-- 常用查询</span>
+<span class="tok-cm">-- 1. 查每个学生的总分、平均分</span>
+<span class="tok-kw">SELECT</span> s.name, <span class="tok-fn">SUM</span>(sc.score) <span class="tok-kw">AS</span> total, <span class="tok-fn">AVG</span>(sc.score) <span class="tok-kw">AS</span> avg
+<span class="tok-kw">FROM</span> student s <span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> s.id = sc.student_id
+<span class="tok-kw">GROUP BY</span> s.id, s.name;
+
+<span class="tok-cm">-- 2. 查每门课的最高分、最低分、参考人数</span>
+<span class="tok-kw">SELECT</span> c.name, <span class="tok-fn">MAX</span>(sc.score), <span class="tok-fn">MIN</span>(sc.score), <span class="tok-fn">COUNT</span>(*)
+<span class="tok-kw">FROM</span> course c <span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> c.id = sc.course_id
+<span class="tok-kw">GROUP BY</span> c.id;
+
+<span class="tok-cm">-- 3. 各班平均分排名（窗口函数）</span>
+<span class="tok-kw">SELECT</span> c.name, <span class="tok-fn">AVG</span>(sc.score) <span class="tok-kw">AS</span> avg_score,
+       <span class="tok-fn">RANK</span>() <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> <span class="tok-fn">AVG</span>(sc.score) <span class="tok-kw">DESC</span>) <span class="tok-kw">AS</span> rk
+<span class="tok-kw">FROM</span> <span class="tok-ty">class</span> c
+<span class="tok-kw">JOIN</span> student s <span class="tok-kw">ON</span> c.id = s.class_id
+<span class="tok-kw">JOIN</span> score sc <span class="tok-kw">ON</span> s.id = sc.student_id
+<span class="tok-kw">GROUP BY</span> c.id, c.name;</code></pre></div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--green)">
+      <h4>项目二：图书管理系统 ⭐⭐⭐</h4>
+      <div class="meta">难度 ★★★ · SQL + 视图 + 存储过程</div>
+      <p>含图书 / 读者 / 借阅记录 / 分类四张表。实现借书、还书、逾期查询。</p>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--s3)">
+      <h4>项目三：电商数据库 ⭐⭐⭐</h4>
+      <div class="meta">难度 ★★★★ · 一对多 / 多对多 / 事务 / 索引</div>
+      <p>用户、商品、订单、订单项、支付表。涉及一对多 + 多对多关系，需要用中间表（如收藏夹）实现。重点学习：JOIN + 事务 + 索引优化。</p>
+    </div>
+
+    <div class="summary-box" style="--acc:var(--s1)">
+      <div class="t">综合项目学习建议</div>
+      <ul>
+        <li>从 SQL 设计开始：先在纸上画 ER 图，再写 CREATE TABLE；</li>
+        <li>用真实数据填充每张表（5~10 条即可）；</li>
+        <li>每个功能写出对应的 SELECT 语句；</li>
+        <li>最后接入 Python / Java：体会"前端 → 后端 → SQL"的完整链路；</li>
+        <li>加分项：用 EXPLAIN 分析你的 SQL 是否用上了索引。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 速查 ============= -->
+<section id="ref">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--dim);border-color:var(--line2)">↗</div>
+      <div>
+        <h2>SQL 速查手册</h2>
+        <p>写 SQL 时随手翻一翻 —— 比每次去搜更快。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--s1)">
+      <h3>DDL 数据定义速查</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>DDL cheat</span><button class="copybtn" data-target="d-ddl">复制</button></div><pre id="d-ddl"><code><span class="tok-kw">CREATE DATABASE</span> db_name;
+
+<span class="tok-kw">CREATE TABLE</span> t (
+    id    <span class="tok-ty">INT</span> <span class="tok-kw">PRIMARY KEY AUTO_INCREMENT</span>,
+    name  <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">50</span>) <span class="tok-kw">NOT NULL</span> <span class="tok-kw">DEFAULT</span> <span class="tok-st">''</span>,
+    age   <span class="tok-ty">INT</span> <span class="tok-kw">CHECK</span> (age &gt;= <span class="tok-nm">0</span>),
+    email <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>) <span class="tok-kw">UNIQUE</span>,
+    <span class="tok-kw">FOREIGN KEY</span> (dept_id) <span class="tok-kw">REFERENCES</span> dept(id)
+);
+
+<span class="tok-kw">ALTER TABLE</span> t
+    <span class="tok-kw">ADD COLUMN</span> phone <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">20</span>),
+    <span class="tok-kw">DROP COLUMN</span> phone,
+    <span class="tok-kw">MODIFY</span> name <span class="tok-ty">VARCHAR</span>(<span class="tok-nm">100</span>),
+    <span class="tok-kw">RENAME TO</span> new_t;
+
+<span class="tok-kw">DROP TABLE</span> t;
+<span class="tok-kw">TRUNCATE TABLE</span> t;</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3>DML + DQL 速查</h3>
+      <div class="codebox"><div class="ch"><span class="lang">SQL</span><span>DML/DQL</span><button class="copybtn" data-target="d-dmldql">复制</button></div><pre id="d-dmldql"><code><span class="tok-kw">INSERT INTO</span> t (a, b) <span class="tok-kw">VALUES</span> (<span class="tok-nm">1</span>, <span class="tok-st">'x'</span>);
+
+<span class="tok-kw">UPDATE</span> t <span class="tok-kw">SET</span> a = <span class="tok-nm">2</span> <span class="tok-kw">WHERE</span> id = <span class="tok-nm">1</span>;
+
+<span class="tok-kw">DELETE FROM</span> t <span class="tok-kw">WHERE</span> a &gt; <span class="tok-nm">0</span>;
+
+<span class="tok-kw">SELECT</span> col1, col2, <span class="tok-fn">COUNT</span>(*), <span class="tok-fn">SUM</span>(col3)
+<span class="tok-kw">FROM</span> t
+<span class="tok-kw">WHERE</span> col1 <span class="tok-kw">LIKE</span> <span class="tok-st">'a%'</span> <span class="tok-kw">AND</span> col2 <span class="tok-kw">BETWEEN</span> <span class="tok-nm">1</span> <span class="tok-kw">AND</span> <span class="tok-nm">10</span>
+<span class="tok-kw">GROUP BY</span> col1
+<span class="tok-kw">HAVING</span> <span class="tok-fn">COUNT</span>(*) &gt; <span class="tok-nm">3</span>
+<span class="tok-kw">ORDER BY</span> col2 <span class="tok-kw">DESC</span>
+<span class="tok-kw">LIMIT</span> <span class="tok-nm">10</span>;</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--s3)">
+      <h3>JOIN 类型速查</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类型</th><th>结果</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">INNER JOIN</td><td>两表都有匹配的行</td></tr>
+          <tr><td class="hl">LEFT JOIN</td><td>左表全部 + 右表匹配（无匹配则 NULL）</td></tr>
+          <tr><td class="hl">RIGHT JOIN</td><td>右表全部 + 左表匹配</td></tr>
+          <tr><td class="hl">CROSS JOIN</td><td>笛卡尔积（慎用）</td></tr>
+          <tr><td class="hl">SELF JOIN</td><td>自己连自己（解决"行内比较"）</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3>常见错误与防范</h3>
+      <ul>
+        <li>❌ <code>UPDATE / DELETE</code> 忘带 WHERE → 整表更新/删除</li>
+        <li>❌ <code>SELECT *</code> 在生产环境 → 浪费 IO、不稳定</li>
+        <li>❌ 字符串拼接用户输入 → SQL 注入</li>
+        <li>❌ 主键没有索引 → 全表扫描</li>
+        <li>❌ 大表 <code>LIMIT 1000000, 10</code> → 性能灾难</li>
+        <li>❌ <code>WHERE</code> 过滤 <code>聚合函数</code> → 应改为 <code>HAVING</code></li>
+        <li>❌ <code>NULL = NULL</code> 比较 → 永远为 NULL，应改为 <code>IS NULL</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>SQL 与数据库学习教程</b> · 大学计算机专业核心课程</p>
+    <p>本教程以 <strong>MySQL 8.x</strong> 为实践标准，覆盖从基础概念、SELECT 查询、JOIN 多表、数据库设计、索引事务到综合项目的完整知识体系。</p>
+    <p style="margin-top:8px">参考：菜鸟教程 · 廖雪峰 SQL 教程 · 《SQL 必知必会》· 《高性能 MySQL》</p>
+  </div>
+</footer>
+
+<div class="back-top" id="backTop" title="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</div>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var backTop = document.getElementById('backTop');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (progress) progress.style.width = p + '%';
+    if (backTop) backTop.classList.toggle('show', h.scrollTop > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  if (backTop) backTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+(function () {
+  var links = document.querySelectorAll('#navlinks a');
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if (sec) sections.push({ id: id, el: sec, link: a });
+  });
+  function update() {
+    var top = window.scrollY + 80;
+    var cur = sections[0];
+    sections.forEach(function (s) {
+      if (s.el.offsetTop <= top) cur = s;
+    });
+    links.forEach(function (a) { a.classList.remove('cur'); });
+    if (cur) cur.link.classList.add('cur');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+(function () {
+  var cards = document.querySelectorAll('.q-card');
+  cards.forEach(function (card) {
+    var answer = card.getAttribute('data-answer');
+    var expText = card.getAttribute('data-exp') || '';
+    var opts = card.querySelectorAll('.opt');
+    var exp = card.querySelector('.q-exp');
+    opts.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        if (card.classList.contains('answered')) return;
+        card.classList.add('answered');
+        var chosen = opt.getAttribute('data-v');
+        opts.forEach(function (o) { o.classList.add('disabled'); });
+        if (chosen === answer) {
+          opt.classList.add('correct');
+          exp.innerHTML = '<b>参考答案：' + answer + '</b> · ' + expText;
+        } else {
+          opt.classList.add('wrong');
+          opts.forEach(function (o) {
+            if (o.getAttribute('data-v') === answer) o.classList.add('correct');
+          });
+          exp.innerHTML = '<b>参考答案：' + answer + '</b>（你选了 ' + chosen + '）· ' + expText;
+        }
+        exp.classList.add('show');
+      });
+    });
+  });
+})();
+
+(function () {
+  document.querySelectorAll('.copybtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-target');
+      var el = document.getElementById(id);
+      if (!el) return;
+      var text = el.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        var old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        btn.style.color = '#74c5b3';
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.style.color = '';
+        }, 1500);
+      }, function () {
+        btn.textContent = '复制失败';
+      });
+    });
+  });
+})();
+</script>
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--dim);border-top:1px solid var(--line)">
+  SQL 与数据库 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--s2)">返回导航首页</a>
+</footer>
+
+@media print{
+  #topnav,#progress,.back-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important;color:#000!important}
+  .hero h1{color:#000!important}
+  .hero .sub,.hero .hero-chips{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  pre{background:#f5f5f5!important;color:#000!important}
+}
+</body>
+</html>

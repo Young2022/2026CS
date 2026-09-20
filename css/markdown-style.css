@@ -1,0 +1,38 @@
+/* markdown-style.css — 博客 Markdown 渲染样式 */
+.markdown-body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #1e293b;
+    word-wrap: break-word;
+}
+.markdown-body h1 { font-size: 1.8rem; font-weight: 800; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+.markdown-body h2 { font-size: 1.4rem; font-weight: 700; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+.markdown-body h3 { font-size: 1.15rem; font-weight: 700; margin: 22px 0 8px; }
+.markdown-body h4 { font-size: 1rem; font-weight: 600; margin: 18px 0 6px; }
+.markdown-body p { margin: 0 0 14px; }
+.markdown-body ul, .markdown-body ol { margin: 0 0 14px 24px; }
+.markdown-body li { margin-bottom: 4px; }
+.markdown-body blockquote {
+    margin: 16px 0; padding: 12px 18px;
+    border-left: 4px solid #0284c7; background: #f0f9ff;
+    color: #475569; border-radius: 0 6px 6px 0;
+}
+.markdown-body code {
+    font-family: "Fira Code", "JetBrains Mono", Consolas, monospace;
+    background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+    font-size: 0.88em; color: #0f172a;
+}
+.markdown-body pre {
+    background: #1e293b; color: #e2e8f0; padding: 16px;
+    border-radius: 8px; overflow-x: auto; margin: 14px 0;
+    line-height: 1.5;
+}
+.markdown-body pre code { background: none; padding: 0; color: inherit; font-size: 0.85em; }
+.markdown-body img { max-width: 100%; border-radius: 8px; margin: 10px 0; }
+.markdown-body table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+.markdown-body th, .markdown-body td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; }
+.markdown-body th { background: #f1f5f9; font-weight: 700; }
+.markdown-body hr { border: none; border-top: 2px solid #e2e8f0; margin: 24px 0; }
+.markdown-body a { color: #0284c7; text-decoration: none; }
+.markdown-body a:hover { text-decoration: underline; }

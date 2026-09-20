@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI Python 程序设计学习教程：从语法基础到 AI 应用，覆盖面向对象、标准库、数据分析。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Python 程序设计 · 从入门到 AI 学习教程</title>
+<style>
+:root {
+  --bg: #f6f5f1;
+  --bg2: #e8e6df;
+  --card: #ffffff;
+  --line: rgba(30, 26, 22, 0.10);
+  --line2: rgba(30, 26, 22, 0.16);
+  --txt: #1a1816;
+  --mut: #3f3a35;
+  --dim: #6a635c;
+  /* Python 主题色：蓝 + 绿（致敬 Python 官方色） */
+  --p1: #2c7a4d;            /* 主深绿（蛇眼绿） */
+  --p1-soft: rgba(44, 122, 77, 0.10);
+  --p1-dark: #1f5436;
+  --p2: #1f5fa0;            /* Python 蓝 */
+  --p2-soft: rgba(31, 95, 160, 0.10);
+  --p3: #c08400;            /* Python 黄（用于高亮） */
+  --p3-soft: rgba(192, 132, 0, 0.10);
+  --coral: #b53a0a;
+  --coral-soft: rgba(181, 58, 10, 0.12);
+  --violet: #5b21b6;
+  --violet-soft: rgba(91, 33, 182, 0.10);
+  --green: #166534;
+  --green-soft: rgba(22, 101, 52, 0.12);
+  --amber: #a34a08;
+  --amber-soft: rgba(163, 74, 8, 0.12);
+  --code-bg: #1a2330;       /* Python 蓝色暗背景 */
+  --code-fg: #f0f4ee;
+  --sans: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--sans);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(44, 122, 77, 0.18); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--p1); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--p1-soft);
+  border: 1px solid rgba(44, 122, 77, 0.22);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: var(--p1-dark);
+}
+h2 { font-size: 1.55rem; line-height: 1.35; font-weight: 700; }
+h3 { font-size: 1.18rem; line-height: 1.4; font-weight: 700; }
+h4 { font-size: 1.02rem; line-height: 1.4; font-weight: 650; }
+
+/* 进度条 */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--p1), var(--p2));
+  z-index: 2000; transition: width 0.08s linear;
+}
+
+/* 导航 */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(246, 245, 241, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap {
+  display: flex; align-items: center; gap: 10px; height: 54px;
+}
+nav .brand {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800; font-size: 14.5px; white-space: nowrap; color: var(--txt);
+}
+nav .brand b { color: var(--p1); }
+nav .navlinks {
+  display: flex; gap: 1px; overflow-x: auto; scrollbar-width: none; flex: 1;
+}
+nav .navlinks::-webkit-scrollbar { display: none; }
+nav .navlinks a {
+  color: var(--mut); font-size: 12.5px; padding: 5px 7px;
+  border-radius: 7px; white-space: nowrap; transition: 0.15s;
+  text-align: center; line-height: 1.25;
+}
+nav .navlinks a small {
+  display: block; font-size: 10px; color: var(--dim); font-weight: 600;
+}
+nav .navlinks a:hover { color: var(--txt); background: var(--bg2); text-decoration: none; }
+nav .navlinks a.cur {
+  color: var(--p1); background: var(--p1-soft); font-weight: 600;
+}
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  padding: 36px 0 28px;
+  background: linear-gradient(165deg, #1a3a20 0%, #2a3520 60%);
+}
+.hero .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.kicker {
+  display: inline-block;
+  font-size: 13px; font-weight: 650; letter-spacing: 0.04em;
+  color: var(--p1-dark);
+  background: var(--p1-soft);
+  border: 1px solid rgba(44, 122, 77, 0.25);
+  padding: 5px 12px; border-radius: 999px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 12px; color: #fff;
+}
+.hero h1 em {
+  font-style: normal;
+  background: rgba(255,255,255,.15);
+  color: #86efac; padding: 0 6px; border-radius: 6px;
+  border-bottom: 2px solid rgba(134,239,172,.4);
+}
+.hero .sub {
+  font-size: 1.02rem; color: rgba(255,255,255,.75); max-width: 820px;
+  line-height: 1.7; margin-bottom: 26px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; max-width: 760px; }
+.hero-chips .chip {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  flex: 0 1 auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.hero-chips .chip b {
+  display: block; font-size: 14.5px; font-weight: 800;
+  color: #86efac; line-height: 1.3; margin-bottom: 2px;
+}
+.hero-chips .chip span { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.scrollhint { margin-top: 16px; font-size: 13.5px; color: rgba(255,255,255,.6); }
+
+/* Section */
+section { padding: 36px 0 10px; }
+.sec-head {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 14px;
+}
+.sec-num {
+  width: 42px; height: 42px; border-radius: 12px;
+  border: 2px solid var(--p1); color: var(--p1);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 13.5px; flex: 0 0 auto;
+}
+.sec-head h2 { margin-bottom: 4px; }
+.sec-lead {
+  font-size: 1rem; color: var(--mut);
+  margin-bottom: 24px; max-width: 880px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 8px rgba(40, 35, 30, 0.03);
+  border-left: 4px solid var(--acc, var(--p1));
+}
+.card h3 {
+  margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+}
+.card h3 .dot {
+  display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; margin-right: 4px;
+}
+.card > p { margin-bottom: 10px; color: var(--mut); font-size: 16px; line-height: 1.75; }
+.card > p b, .card strong { color: var(--txt); }
+.card ul, .card ol { margin: 8px 0 8px 20px; color: var(--mut); font-size: 15.5px; }
+.card ul li, .card ol li { margin-bottom: 5px; line-height: 1.7; }
+.card ul li strong, .card ol li strong { color: var(--txt); }
+.card ul li code, .card ol li code { font-size: 0.85em; }
+
+/* 双栏 */
+.two {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin: 10px 0;
+}
+@media (max-width: 720px) {
+  .two { grid-template-columns: 1fr; }
+}
+
+/* 代码块 */
+.codebox {
+  background: var(--code-bg); color: var(--code-fg);
+  border-radius: 10px; margin: 12px 0;
+  border: 1px solid #243040;
+  overflow: hidden;
+}
+.codebox .ch {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #232f3d; color: #b8c5d0;
+  font-size: 12.5px; padding: 6px 12px;
+  border-bottom: 1px solid #243040;
+  font-family: var(--mono);
+}
+.codebox .ch .lang { color: #6fc1ff; font-weight: 650; }
+.codebox .ch .copybtn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  color: #d8e0e8; padding: 2px 10px; border-radius: 5px;
+  cursor: pointer; font-size: 11.5px; transition: 0.15s;
+  font-family: inherit;
+}
+.codebox .ch .copybtn:hover { background: rgba(255,255,255,0.12); }
+.codebox pre {
+  margin: 0; padding: 14px 16px;
+  font-family: var(--mono); font-size: 13.5px;
+  line-height: 1.65; overflow-x: auto;
+  white-space: pre; color: var(--code-fg);
+}
+.codebox code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+/* Python 语法高亮 */
+.tok-kw { color: #ff9d6b; }     /* 关键字 def class return */
+.tok-ty { color: #6fc1ff; }     /* 类型名 / 内置 */
+.tok-st { color: #b0d99a; }     /* 字符串 */
+.tok-nm { color: #d8a0df; }     /* 数字 */
+.tok-cm { color: #7a8580; font-style: italic; }  /* 注释 */
+.tok-fn { color: #74c5b3; }    /* 函数名 */
+.tok-df { color: #f5c06f; }     /* Python 内置 / 装饰器 */
+.tok-op { color: #ff9d6b; }     /* 操作符 */
+
+/* 版本标签 */
+.tag-std {
+  display: inline-block;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 5px;
+  margin-left: 6px; vertical-align: middle;
+}
+.tag-py3 { background: rgba(44, 122, 77, 0.16); color: var(--p1-dark); border: 1px solid rgba(44, 122, 77, 0.32); }
+.tag-py310 { background: rgba(31, 95, 160, 0.15); color: #1f5fa0; border: 1px solid rgba(31, 95, 160, 0.3); }
+.tag-py311 { background: rgba(91, 33, 182, 0.13); color: #5b21b6; border: 1px solid rgba(91, 33, 182, 0.3); }
+.tag-py312 { background: rgba(192, 132, 0, 0.16); color: #c08400; border: 1px solid rgba(192, 132, 0, 0.35); }
+.tag-must { background: rgba(192, 132, 0, 0.16); color: #c08400; border: 1px solid rgba(192, 132, 0, 0.35); }
+.tag-key { background: rgba(245, 158, 11, 0.18); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+/* 表格 */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; }
+table.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 15px;
+}
+table.tbl th, table.tbl td {
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+table.tbl th {
+  background: var(--bg2); font-weight: 650;
+  color: var(--txt); font-size: 14.5px;
+}
+table.tbl td { color: var(--mut); }
+table.tbl td.hl { color: var(--p1); font-weight: 600; }
+table.tbl tr:hover td { background: rgba(44, 122, 77, 0.03); }
+
+/* 步骤 */
+.steps-v { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.steps-v .step {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 16px; line-height: 1.65;
+}
+.steps-v .step .n {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 26px; border-radius: 8px;
+  background: var(--p1-soft); color: var(--p1);
+  font-size: 13.5px; font-weight: 800; flex: 0 0 auto;
+}
+
+/* 提示框 */
+.warn, .tipbox, .sum1 {
+  border-radius: 12px; padding: 14px 18px; margin: 14px 0;
+  font-size: 16px; line-height: 1.7;
+}
+.warn {
+  background: var(--amber-soft);
+  border: 1px solid rgba(163, 74, 8, 0.28);
+  color: #6b3206;
+}
+.tipbox {
+  background: var(--p1-soft);
+  border: 1px solid rgba(44, 122, 77, 0.25);
+  color: var(--p1-dark);
+}
+.sum1 {
+  background: linear-gradient(135deg, var(--p1-soft), rgba(31, 95, 160, 0.06));
+  border: 1px solid rgba(44, 122, 77, 0.18);
+  font-weight: 500;
+}
+.sum1 b { color: var(--p1); }
+
+/* 小结框 */
+.summary-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 18px 0 22px;
+  border-top: 3px solid var(--acc, var(--p1));
+}
+.summary-box .t {
+  font-weight: 700; font-size: 16px; margin-bottom: 10px;
+  color: var(--txt);
+}
+.summary-box ul {
+  padding-left: 20px; color: var(--mut); font-size: 15.5px;
+}
+.summary-box li { margin-bottom: 6px; line-height: 1.65; }
+
+/* 图示 */
+.fig {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.fig .cap {
+  font-size: 13.5px; color: var(--mut);
+  margin-bottom: 10px; text-align: center;
+}
+.fig svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+/* 流程图 */
+.flow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px;
+  margin: 12px 0;
+}
+.flow .node {
+  background: var(--bg);
+  border: 1.5px solid var(--line2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13.5px; font-weight: 650;
+  text-align: center; min-width: 80px;
+}
+.flow .node em {
+  display: block; font-style: normal; font-size: 12px;
+  font-weight: 500; color: var(--mut); margin-top: 2px;
+}
+.flow .arr {
+  color: var(--mut); font-size: 17px; font-weight: 700;
+  line-height: 1; padding: 0 2px; user-select: none;
+}
+
+/* 练习题 */
+.quiz h4 {
+  font-size: 1rem; margin-bottom: 12px;
+  color: var(--acc, var(--p1));
+}
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.q-head {
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 10px;
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--txt);
+}
+.q-head .qn {
+  background: var(--bg2); color: var(--mut);
+  font-size: 13px; font-weight: 700;
+  min-width: 24px; height: 24px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+}
+.q-opts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+@media (max-width: 640px) {
+  .q-opts { grid-template-columns: 1fr; }
+}
+.q-card .opt {
+  text-align: left; font-family: inherit; font-size: 14.5px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1.5px solid var(--line2);
+  background: var(--bg); color: var(--txt);
+  cursor: pointer; transition: 0.15s;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.q-card .opt:hover:not(.disabled) {
+  border-color: var(--p1); background: var(--p1-soft);
+}
+.q-card .opt .k {
+  font-weight: 700; color: var(--p1); min-width: 18px;
+}
+.q-card .opt.correct {
+  border-color: var(--green); background: var(--green-soft);
+}
+.q-card .opt.wrong {
+  border-color: #dc2626; background: rgba(220, 38, 38, 0.08);
+}
+.q-card .opt.disabled { cursor: default; opacity: 0.95; }
+.q-exp {
+  display: none;
+  margin-top: 10px; padding: 11px 13px;
+  background: var(--bg); border-radius: 9px;
+  font-size: 14.5px; color: var(--mut); line-height: 1.7;
+}
+.q-exp.show { display: block; }
+.q-exp b { color: var(--green); }
+
+/* 项目卡片 */
+.proj {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+.proj h4 { color: var(--p1); margin-bottom: 8px; font-size: 1.05rem; }
+.proj .meta { font-size: 13px; color: var(--dim); margin-bottom: 8px; }
+
+/* 标签云 */
+.tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--p1-soft);
+  color: var(--p1);
+  border: 1px solid rgba(44, 122, 77, 0.25);
+  padding: 3px 9px;
+  border-radius: 6px;
+  margin: 2px;
+}
+.tag.blue { background: var(--p2-soft); color: var(--p2); border-color: rgba(31,95,160,0.25); }
+.tag.amber { background: rgba(192, 132, 0, 0.12); color: #c08400; border-color: rgba(192, 132, 0, 0.28); }
+.tag.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(91,33,182,0.25); }
+.tag.coral { background: var(--coral-soft); color: var(--coral); border-color: rgba(181,58,10,0.25); }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 80px;
+  margin-top: 48px;
+  color: var(--dim); font-size: 14px;
+  text-align: center; line-height: 1.9;
+}
+
+/* 返回顶部 */
+.back-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: 0.2s; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.back-top.show { opacity: 1; pointer-events: auto; }
+.back-top:hover { background: var(--bg2); border-color: var(--p1); }
+.back-top svg { width: 20px; height: 20px; color: var(--p1); }
+
+/* 响应式 */
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  section { padding: 36px 0 8px; }
+  .hero { padding: 36px 0 32px; }
+  nav .brand { font-size: 13px; }
+  h2 { font-size: 1.3rem; }
+  .card { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav id="topnav">
+  <div class="wrap">
+    <a href="../../daolun/index.html" class="brand" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--p1-dark)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span><b>CSAI</b> · Python</span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#s0"><small>00</small>指南</a>
+      <a href="#s1"><small>01</small>入门</a>
+      <a href="#s2"><small>02</small>语法</a>
+      <a href="#s3"><small>03</small>类型</a>
+      <a href="#s4"><small>04</small>字符串</a>
+      <a href="#s5"><small>05</small>列表</a>
+      <a href="#s6"><small>06</small>字典</a>
+      <a href="#s7"><small>07</small>控制</a>
+      <a href="#s8"><small>08</small>函数</a>
+      <a href="#s9"><small>09</small>推导式</a>
+      <a href="#s10"><small>10</small>模块</a>
+      <a href="#s11"><small>11</small>文件</a>
+      <a href="#s12"><small>12</small>异常</a>
+      <a href="#s13"><small>13</small>类 ⭐</a>
+      <a href="#s14"><small>14</small>迭代器</a>
+      <a href="#s15"><small>15</small>Lambda</a>
+      <a href="#s16"><small>16</small>装饰器</a>
+      <a href="#s17"><small>17</small>正则</a>
+      <a href="#s18"><small>18</small>日期</a>
+      <a href="#s19"><small>19</small>标准库</a>
+      <a href="#s20"><small>20</small>pip</a>
+      <a href="#s21"><small>21</small>类型</a>
+      <a href="#s22"><small>22</small>并发</a>
+      <a href="#s23"><small>23</small>异步</a>
+      <a href="#s24"><small>24</small>网络</a>
+      <a href="#s25"><small>25</small>JSON</a>
+      <a href="#s26"><small>26</small>数据库</a>
+      <a href="#s27"><small>27</small>工程化</a>
+      <a href="#s28"><small>28</small>数据分析</a>
+      <a href="#s29"><small>29</small>AI</a>
+      <a href="#s30"><small>30</small>算法</a>
+      <a href="#s31"><small>31</small>项目</a>
+      <a href="#ref"><small>↗</small>速查</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">大学计算机专业 · Python 程序设计（Python 3.10 / 3.11 / 3.12）</span>
+    <h1>Python 程序设计：<br>从<em>语法基础到 AI 应用</em>的完整学习教程</h1>
+    <p class="sub">本教程面向<strong>大学一年级</strong>学生，从<strong>语法基础 → 数据结构 → 函数与模块 → 面向对象 → 文件与异常 → Python 高级特性 → 标准库 → 工具与工程化 → 数据分析 / AI 方向 → 综合项目</strong>。完成后你将能<strong>独立用 Python 完成脚本、爬虫、数据分析，乃至 AI 应用开发</strong>。</p>
+    <div class="hero-chips">
+      <div class="chip"><b>1991</b><span>Guido van Rossum 发布 Python</span></div>
+      <div class="chip"><b>解释型</b><span>无需编译，交互式运行</span></div>
+      <div class="chip"><b>Python 3.12</b><span>当前主流稳定版本</span></div>
+      <div class="chip"><b>AI / 数据科学</b><span>NumPy · Pandas · PyTorch</span></div>
+    </div>
+    <div class="scrollhint">↓ 向下滚动，按章节系统学习。学完基础后可分流到 数据科学 / Web / AI 方向</div>
+  </div>
+</header>
+
+<!-- ============= 00 学习指南 ============= -->
+<section id="s0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">00</div>
+      <div>
+        <h2>学习指南：为什么学、怎么学、学到什么</h2>
+        <p>Python 是<strong>最易学、最强大</strong>的通用语言之一，也是 AI / 数据科学的事实标准。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>00.1 什么是 Python</h3>
+      <div class="two">
+        <div>
+          <p>Python 由 <strong>Guido van Rossum</strong> 于 <strong>1989</strong> 年开始设计，<strong>1991</strong> 年首次发布。它是一门<strong>解释型、动态类型、面向对象</strong>的高级语言。</p>
+          <h4>Python 的核心特点</h4>
+          <ul>
+            <li><strong>语法简洁优雅</strong>：用缩进而非括号，接近自然语言；</li>
+            <li><strong>动态类型</strong>：无需声明变量类型；</li>
+            <li><strong>解释执行</strong>：无需编译，交互式运行；</li>
+            <li><strong>多范式</strong>：面向对象、函数式、过程式；</li>
+            <li><strong>丰富标准库与第三方库</strong>："电池自带" + PyPI 50万+ 包；</li>
+            <li><strong>跨平台</strong>：Windows / macOS / Linux 全支持。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Python 应用领域</h4>
+          <ul>
+            <li><strong>AI / 机器学习</strong>：PyTorch、TensorFlow、Scikit-learn；</li>
+            <li><strong>数据科学</strong>：Pandas、NumPy、Matplotlib；</li>
+            <li><strong>Web 开发</strong>：Django、Flask、FastAPI；</li>
+            <li><strong>自动化 / 脚本</strong>：运维、办公自动化；</li>
+            <li><strong>爬虫 / 数据采集</strong>：requests、Scrapy；</li>
+            <li><strong>科学计算 / 教学</strong>：MIT、Stanford 等采用。</li>
+          </ul>
+        </div>
+      </div>
+      <p class="sum1" style="--acc:var(--p2)"><b>一句话总结：</b>Python 是"易学 + 强大"的代名词 —— 用最少代码做最多事，是 AI 时代的入门首选。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>00.2 五阶段学习路线（学完基础后可分流）</h3>
+      <div class="flow" style="margin-top:8px">
+        <div class="node">Python 基础<em>第 01-09 章</em></div><div class="arr">→</div>
+        <div class="node">程序设计<em>第 10-13 章</em></div><div class="arr">→</div>
+        <div class="node">Python 核心<em>第 14-19 章</em></div><div class="arr">→</div>
+        <div class="node">应用方向<em>第 20-26 章</em></div><div class="arr">→</div>
+        <div class="node">专业方向<em>第 27-30 章</em></div><div class="arr">→</div>
+        <div class="node" style="border-color:var(--p1);background:var(--p1-soft)"><b>综合项目</b><em>第 31 章</em></div>
+      </div>
+      <h4 style="margin-top:14px">学完基础后的三条分流路线</h4>
+      <div class="flow">
+        <div class="node" style="border-color:var(--p1)">🧮 数据科学<br><em>NumPy · Pandas · Matplotlib · Scikit-learn</em></div>
+        <div class="node" style="border-color:var(--p2)">🌐 Web 开发<br><em>Flask · FastAPI · Django · 数据库</em></div>
+        <div class="node" style="border-color:var(--p3)">🤖 人工智能<br><em>PyTorch · API · AI Agent · LLM</em></div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>00.3 Python 与其他语言的对比</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>特性</th><th>Python</th><th>C</th><th>C++</th><th>Java</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">类型</td><td>动态</td><td>静态</td><td>静态</td><td>静态</td></tr>
+          <tr><td class="hl">执行</td><td>解释型</td><td>编译型</td><td>编译型</td><td>JVM 字节码</td></tr>
+          <tr><td class="hl">内存管理</td><td>自动（GC）</td><td>手动</td><td>手动 / 智能指针</td><td>自动（GC）</td></tr>
+          <tr><td class="hl">运行速度</td><td>慢</td><td>最快</td><td>接近 C</td><td>中等</td></tr>
+          <tr><td class="hl">学习曲线</td><td>平缓</td><td>陡</td><td>陡</td><td>中等</td></tr>
+          <tr><td class="hl">应用领域</td><td>AI / 数据 / 脚本</td><td>系统 / 嵌入式</td><td>系统 / 游戏</td><td>企业级后端</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 01 入门 ============= -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4)">01</div>
+      <div>
+        <h2>Python 入门：安装与第一个程序</h2>
+        <p>Python 安装简单，三行代码就能写出一个完整程序。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>1.1 安装 Python</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>平台</th><th>方法</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Windows</td><td>官网 python.org 下载安装包；勾选 "Add Python to PATH"</td></tr>
+          <tr><td class="hl">macOS</td><td>brew install python3（推荐）或官网 pkg</td></tr>
+          <tr><td class="hl">Linux</td><td>通常自带，或 <code>sudo apt install python3</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="codebox"><div class="ch"><span class="lang">shell</span><span>验证安装</span><button class="copybtn" data-target="p-cmd">复制</button></div><pre id="p-cmd"><code><span class="tok-cm"># 检查版本</span>
+$ python3 --version
+Python 3.12.0
+
+<span class="tok-cm"># 进入交互式解释器</span>
+$ python3
+&gt;&gt;&gt; 2 + 3
+5
+&gt;&gt;&gt; print("Hello")
+Hello
+&gt;&gt;&gt; exit()</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>1.2 第一个 Python 程序</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>hello.py</span><button class="copybtn" data-target="p-hello">复制</button></div><pre id="p-hello"><code><span class="tok-cm"># hello.py —— 最简单的 Python 程序</span>
+<span class="tok-fn">print</span>(<span class="tok-st">"Hello, World!"</span>)</code></pre></div>
+      <div class="codebox"><div class="ch"><span class="lang">shell</span><span>运行</span><button class="copybtn" data-target="p-hellorun">复制</button></div><pre id="p-hellorun"><code>$ python3 hello.py
+Hello, World!</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>1.3 主流 IDE</h3>
+      <div class="two">
+        <div>
+          <h4>VS Code（推荐入门）</h4>
+          <ul>
+            <li>微软出品，免费跨平台；</li>
+            <li>安装 "Python" 扩展；</li>
+            <li>轻量，调试方便；</li>
+            <li>适合脚本、Web 项目。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>PyCharm（专业 Python IDE）</h4>
+          <ul>
+            <li>JetBrains 出品，Python 专业 IDE；</li>
+            <li>Community 版免费；</li>
+            <li>智能补全、调试、虚拟环境管理；</li>
+            <li>适合大型项目。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tipbox"><b>数据科学方向：</b>推荐 Jupyter Notebook（<code>pip install jupyter</code>），逐块运行 + 富文本 + 可视化，AI 教学首选。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 02 基本语法 ============= -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">02</div>
+      <div>
+        <h2>Python 基本语法：缩进、注释与标识符</h2>
+        <p>Python 最与众不同的语法：<strong>用缩进代替大括号</strong> —— 简洁却严格。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>2.1 缩进：Python 的灵魂 <span class="tag-std tag-must">必须</span></h3>
+      <p>Python 用<strong>相同缩进</strong>表示同一代码块（其他语言用 <code>{ }</code>）：</p>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>indent.py</span><button class="copybtn" data-target="p-ind">复制</button></div><pre id="p-ind"><code><span class="tok-kw">if</span> score &gt;= <span class="tok-nm">60</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"及格"</span>)
+    <span class="tok-fn">print</span>(<span class="tok-st">"加油"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"不及格"</span>)
+
+<span class="tok-cm"># 缩进不一致会报错</span>
+<span class="tok-cm"># IndentationError: unexpected indent</span></code></pre></div>
+      <div class="tipbox"><b>规范：</b>每级缩进<strong>4 个空格</strong>（PEP 8）。不要混用 Tab 和空格（多数 IDE 会自动转换）。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>2.2 注释与多行字符串</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>comments.py</span><button class="copybtn" data-target="p-cm">复制</button></div><pre id="p-cm"><code><span class="tok-cm"># 单行注释：以 # 开头</span>
+
+<span class="tok-cm">"""
+多行字符串 / 文档字符串（docstring）：
+- 模块、类、函数的首行可以用三引号说明
+- 可以通过 __doc__ 访问
+"""</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">add</span>(a, b):
+    <span class="tok-st">"""返回 a + b 的和"""</span>
+    <span class="tok-kw">return</span> a + b</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>2.3 标识符与关键字</h3>
+      <p>Python 关键字约 35 个（Python 3.12）：</p>
+      <p style="margin-bottom:6px">
+        <span class="tag">False</span><span class="tag">None</span><span class="tag">True</span><span class="tag">and</span><span class="tag">as</span><span class="tag">assert</span><span class="tag">async</span><span class="tag">await</span><span class="tag">break</span><span class="tag">class</span><span class="tag">continue</span><span class="tag">def</span><span class="tag">del</span><span class="tag">elif</span><span class="tag">else</span><span class="tag">except</span><span class="tag">finally</span><span class="tag">for</span><span class="tag">from</span><span class="tag">global</span><span class="tag">if</span><span class="tag">import</span><span class="tag">in</span><span class="tag">is</span><span class="tag">lambda</span><span class="tag">nonlocal</span><span class="tag">not</span><span class="tag">or</span><span class="tag">pass</span><span class="tag">raise</span><span class="tag">return</span><span class="tag">try</span><span class="tag">while</span><span class="tag">with</span><span class="tag">yield</span><span class="tag">match</span><span class="tag">case</span>
+      </p>
+      <p class="tipbox"><b>命名规范：</b>变量/函数 <code>snake_case</code>；类 <code>PascalCase</code>；常量 <code>UPPER_SNAKE</code>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 03 变量与数据类型 ============= -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">03</div>
+      <div>
+        <h2>变量、动态类型与运算符</h2>
+        <p>Python 是<strong>动态类型</strong>：变量没有类型，值有类型。同一个变量可以随时指向不同类型的值。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>3.1 变量与基本类型</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>types.py</span><button class="copybtn" data-target="p-typ">复制</button></div><pre id="p-typ"><code><span class="tok-cm"># 整数 int</span>
+age = <span class="tok-nm">18</span>
+
+<span class="tok-cm"># 浮点 float</span>
+score = <span class="tok-nm">95.5</span>
+
+<span class="tok-cm"># 复数 complex</span>
+z = <span class="tok-nm">1</span> + <span class="tok-nm">2j</span>
+
+<span class="tok-cm"># 字符串 str</span>
+name = <span class="tok-st">"Python"</span>
+
+<span class="tok-cm"># 布尔 bool</span>
+ok = <span class="tok-kw">True</span>
+
+<span class="tok-cm"># 空值 NoneType</span>
+result = <span class="tok-kw">None</span>
+
+<span class="tok-cm"># 动态类型：变量可随时指向新类型</span>
+x = <span class="tok-nm">10</span>
+x = <span class="tok-st">"hello"</span>      <span class="tok-cm"># ✔ OK</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>3.2 类型判断与转换</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>cast.py</span><button class="copybtn" data-target="p-cast">复制</button></div><pre id="p-cast"><code>x = <span class="tok-nm">3.14</span>
+
+<span class="tok-fn">type</span>(x)              <span class="tok-cm"># &lt;class 'float'&gt;</span>
+<span class="tok-fn">isinstance</span>(x, <span class="tok-ty">float</span>)  <span class="tok-cm"># True（推荐）</span>
+
+<span class="tok-cm"># 显式转换</span>
+<span class="tok-fn">int</span>(<span class="tok-st">"123"</span>)         <span class="tok-cm"># 123</span>
+<span class="tok-fn">float</span>(<span class="tok-st">"3.14"</span>)     <span class="tok-cm"># 3.14</span>
+<span class="tok-fn">str</span>(<span class="tok-nm">42</span>)           <span class="tok-cm"># '42'</span>
+<span class="tok-fn">bool</span>(<span class="tok-nm">0</span>)           <span class="tok-cm"># False</span>
+<span class="tok-fn">list</span>(<span class="tok-st">"abc"</span>)       <span class="tok-cm"># ['a', 'b', 'c']</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>3.3 运算符</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类别</th><th>运算符</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">算术</td><td><code>+ - * / // % **</code>（// 整除，** 幂）</td></tr>
+          <tr><td class="hl">比较</td><td><code>== != &gt; &lt; &gt;= &lt;=</code></td></tr>
+          <tr><td class="hl">逻辑</td><td><code>and or not</code>（英文单词）</td></tr>
+          <tr><td class="hl">成员</td><td><code>in</code> · <code>not in</code></td></tr>
+          <tr><td class="hl">身份</td><td><code>is</code> · <code>is not</code></td></tr>
+          <tr><td class="hl">位运算</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>operator.py</span><button class="copybtn" data-target="p-op">复制</button></div><pre id="p-op"><code><span class="tok-cm"># Python 特有的</span>
+<span class="tok-nm">7</span> / <span class="tok-nm">2</span>     <span class="tok-cm"># 3.5（真除法）</span>
+<span class="tok-nm">7</span> // <span class="tok-nm">2</span>    <span class="tok-cm"># 3（整除，向下取整）</span>
+<span class="tok-nm">2</span> ** <span class="tok-nm">10</span>   <span class="tok-cm"># 1024</span>
+
+<span class="tok-cm"># 链式比较</span>
+<span class="tok-nm">1</span> &lt; x &lt; <span class="tok-nm">10</span>     <span class="tok-cm"># ✔ Python 支持链式比较</span>
+
+<span class="tok-cm"># 海象运算符（Python 3.8+）</span>
+<span class="tok-kw">if</span> (n := <span class="tok-fn">len</span>(name)) &gt; <span class="tok-nm">5</span>:
+    <span class="tok-fn">print</span>(n)</code></pre></div>
+      <div class="warn"><b>is vs ==：</b><code>==</code> 比较"值相等"；<code>is</code> 比较"是不是同一个对象"。判断 <code>None</code> 必须用 <code>is None</code>。</div>
+    </div>
+
+    <div class="quiz" data-acc="p3">
+      <h4 style="color:var(--p3)">课堂练习 · 第03章</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="Python / 是真除法，返回 float；// 是整除（向下取整）。">
+        <div class="q-head"><span class="qn">1</span>表达式 <code>7 / 2</code> 与 <code>7 // 2</code> 的结果分别是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>3 与 4</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>3.5 与 3</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>3.5 与 3.5</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>编译错误</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="is 比较身份（同一个对象），== 比较值。None 必须用 is。">
+        <div class="q-head"><span class="qn">2</span>判断变量 <code>x</code> 是否为 None，正确的写法是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>x == None</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>x equals None</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>x is None</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>x &amp;&amp; None</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 04 字符串 ⭐ ============= -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4)">04</div>
+      <div>
+        <h2>字符串 ⭐</h2>
+        <p>字符串是 Python 使用最频繁的类型之一 —— 切片、f-string、各种方法都极为强大。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>4.1 创建与索引</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>str.py</span><button class="copybtn" data-target="p-str">复制</button></div><pre id="p-str"><code>s = <span class="tok-st">"Python"</span>
+s[<span class="tok-nm">0</span>]      <span class="tok-cm"># 'P'   （正向）</span>
+s[-<span class="tok-nm">1</span>]     <span class="tok-cm"># 'n'   （反向）</span>
+
+<span class="tok-cm"># 多行字符串</span>
+text = <span class="tok-st">"""第一行
+第二行
+第三行"""</span>
+
+<span class="tok-cm"># 转义</span>
+s = <span class="tok-st">"他说：\"你好\""</span>
+<span class="tok-fn">print</span>(<span class="tok-st">"a\nb"</span>)   <span class="tok-cm"># 换行</span>
+<span class="tok-fn">print</span>(<span class="tok-st">r"C:\Users"</span>)  <span class="tok-cm"># 原始字符串，不转义</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>4.2 切片 [start:end:step] ⭐⭐⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>slice.py</span><button class="copybtn" data-target="p-slice">复制</button></div><pre id="p-slice"><code>s = <span class="tok-st">"Hello, World!"</span>
+
+s[<span class="tok-nm">0</span>:<span class="tok-nm">5</span>]       <span class="tok-cm"># 'Hello'    （包头不包尾）</span>
+s[<span class="tok-nm">7</span>:]        <span class="tok-cm"># 'World!'   （从 7 到最后）</span>
+s[:-<span class="tok-nm">1</span>]      <span class="tok-cm"># 'Hello, World' （去掉最后）</span>
+s[::<span class="tok-nm">2</span>]      <span class="tok-cm"># 'Hlo ol!'   （步长 2）</span>
+s[::-<span class="tok-nm">1</span>]     <span class="tok-cm"># '!dlroW ,olleH' （反转）</span></code></pre></div>
+      <p class="sum1" style="--acc:var(--p1)"><b>记忆口诀：</b>"包头不包尾，负数反向走"。切片是 Python 数据处理的灵魂。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>4.3 f-string 格式化 <span class="tag-std tag-py310">Python 3.6+</span></h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>fstring.py</span><button class="copybtn" data-target="p-fstr">复制</button></div><pre id="p-fstr"><code>name = <span class="tok-st">"Tom"</span>
+age = <span class="tok-nm">20</span>
+pi = <span class="tok-nm">3.14159</span>
+
+<span class="tok-fn">print</span>(<span class="tok-st">f"姓名：</span><span class="tok-cm">{</span>name<span class="tok-cm">}</span><span class="tok-st">, 年龄：</span><span class="tok-cm">{</span>age<span class="tok-cm">}</span><span class="tok-st">"</span>)             <span class="tok-cm"># 姓名：Tom, 年龄：20</span>
+<span class="tok-fn">print</span>(<span class="tok-st">f"PI 保留两位：</span><span class="tok-cm">{</span>pi:<span class="tok-nm">.2</span>f<span class="tok-cm">}</span><span class="tok-st">"</span>)          <span class="tok-cm"># 3.14</span>
+<span class="tok-fn">print</span>(<span class="tok-st">f"十六进制：</span><span class="tok-cm">{</span><span class="tok-nm">255</span>:#x<span class="tok-cm">}</span><span class="tok-st">"</span>)            <span class="tok-cm"># 0xff</span>
+<span class="tok-fn">print</span>(<span class="tok-st">f"右对齐：</span><span class="tok-cm">{</span><span class="tok-st">'hi'</span>:&gt;<span class="tok-nm">10</span><span class="tok-cm">}</span><span class="tok-st">|"</span>)      <span class="tok-cm"># '        hi|'</span>
+
+<span class="tok-cm"># 表达式与调试 = （Python 3.8+）</span>
+<span class="tok-fn">print</span>(<span class="tok-st">f"</span><span class="tok-cm">{</span>name=<span class="tok-cm">}</span><span class="tok-st">, </span><span class="tok-cm">{</span>age=<span class="tok-cm">}</span><span class="tok-st">"</span>)            <span class="tok-cm"># name='Tom', age=20</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>4.4 常用字符串方法</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>方法</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">len(s)</td><td>长度</td></tr>
+          <tr><td class="hl">s.upper() / s.lower()</td><td>大小写转换</td></tr>
+          <tr><td class="hl">s.strip() / s.lstrip() / s.rstrip()</td><td>去首尾空白</td></tr>
+          <tr><td class="hl">s.split(sep)</td><td>拆分成列表</td></tr>
+          <tr><td class="tok-df">sep.join(list)</td><td>用分隔符拼接列表</td></tr>
+          <tr><td class="hl">s.replace(old, new)</td><td>替换</td></tr>
+          <tr><td class="hl">s.find(sub) / s.index(sub)</td><td>查找（找不到 -1 / 抛异常）</td></tr>
+          <tr><td class="hl">s.startswith(p) / s.endswith(p)</td><td>前缀/后缀</td></tr>
+          <tr><td class="hl">s.count(sub)</td><td>出现次数</td></tr>
+          <tr><td class="hl">s.isdigit() / s.isalpha() / s.isspace()</td><td>字符判断</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tipbox"><b>字符串不可变：</b>所有"修改"方法都返回新字符串，原字符串不变。如需高效拼接大量字符串，用 <code>str.join()</code> 或 <code>io.StringIO</code>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 05 列表 ⭐⭐⭐ ============= -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4);background:var(--p1-soft);box-shadow:0 0 0 4px var(--p1-soft)">05</div>
+      <div>
+        <h2>列表 ⭐⭐⭐ —— 最常用的数据结构</h2>
+        <p>列表（list）是 Python 的<strong>主力容器</strong>：有序、可变、支持任意类型元素。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>5.1 创建、索引、切片</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>list.py</span><button class="copybtn" data-target="p-list">复制</button></div><pre id="p-list"><code>nums = [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>, <span class="tok-nm">5</span>]
+mixed = [<span class="tok-nm">1</span>, <span class="tok-st">"hello"</span>, <span class="tok-nm">3.14</span>, <span class="tok-kw">True</span>, [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>]]    <span class="tok-cm"># 元素类型可以混合</span>
+
+nums[<span class="tok-nm">0</span>]          <span class="tok-cm"># 1</span>
+nums[-<span class="tok-nm">1</span>]         <span class="tok-cm"># 5（最后一个）</span>
+nums[<span class="tok-nm">1</span>:<span class="tok-nm">4</span>]        <span class="tok-cm"># [2, 3, 4]</span>
+nums[::<span class="tok-nm">2</span>]        <span class="tok-cm"># [1, 3, 5]</span>
+nums[::-<span class="tok-nm">1</span>]       <span class="tok-cm"># [5, 4, 3, 2, 1]（反转）</span>
+
+<span class="tok-fn">len</span>(nums)        <span class="tok-cm"># 5</span>
+nums[<span class="tok-nm">0</span>] = <span class="tok-nm">100</span>      <span class="tok-cm"># ✔ 可修改</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>5.2 增删改</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>list_ops.py</span><button class="copybtn" data-target="p-listmod">复制</button></div><pre id="p-listmod"><code>a = [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>]
+
+<span class="tok-cm"># 添加</span>
+a.<span class="tok-fn">append</span>(<span class="tok-nm">4</span>)             <span class="tok-cm"># [1,2,3,4]</span>
+a.<span class="tok-fn">extend</span>([<span class="tok-nm">5</span>, <span class="tok-nm">6</span>])         <span class="tok-cm"># [1,2,3,4,5,6]</span>
+a.<span class="tok-fn">insert</span>(<span class="tok-nm">1</span>, <span class="tok-nm">99</span>)         <span class="tok-cm"># [1,99,2,3,4,5,6]</span>
+
+<span class="tok-cm"># 删除</span>
+a.<span class="tok-fn">remove</span>(<span class="tok-nm">99</span>)            <span class="tok-cm"># 按值删第一个 99</span>
+a.<span class="tok-fn">pop</span>()                 <span class="tok-cm"># 删末尾，返回值</span>
+a.<span class="tok-fn">pop</span>(<span class="tok-nm">0</span>)               <span class="tok-cm"># 删第一个</span>
+<span class="tok-kw">del</span> a[<span class="tok-nm">0</span>]              <span class="tok-cm"># 按下标删</span>
+a.<span class="tok-fn">clear</span>()               <span class="tok-cm"># 清空 → []</span>
+
+<span class="tok-cm"># 排序</span>
+a.<span class="tok-fn">sort</span>()                <span class="tok-cm"># 升序，原地</span>
+a.<span class="tok-fn">sort</span>(reverse=<span class="tok-kw">True</span>)   <span class="tok-cm"># 降序</span>
+<span class="tok-fn">sorted</span>(a)             <span class="tok-cm"># 返回新列表，原列表不变</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>5.3 列表推导式 ⭐⭐⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>comprehension.py</span><button class="copybtn" data-target="p-comp">复制</button></div><pre id="p-comp"><code><span class="tok-cm"># 1~10 的平方</span>
+squares = [x * x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">1</span>, <span class="tok-nm">11</span>)]
+
+<span class="tok-cm"># 偶数</span>
+evens = [x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span>) <span class="tok-kw">if</span> x % <span class="tok-nm">2</span> == <span class="tok-nm">0</span>]
+
+<span class="tok-cm"># 嵌套：二维拍平</span>
+matrix = [[<span class="tok-nm">1</span>,<span class="tok-nm">2</span>], [<span class="tok-nm">3</span>,<span class="tok-nm">4</span>], [<span class="tok-nm">5</span>,<span class="tok-nm">6</span>]]
+flat = [x <span class="tok-kw">for</span> row <span class="tok-kw">in</span> matrix <span class="tok-kw">for</span> x <span class="tok-kw">in</span> row]   <span class="tok-cm"># [1,2,3,4,5,6]</span></code></pre></div>
+      <div class="tipbox"><b>性能：</b>列表推导式比等价的 for 循环快约 30%。但嵌套不超过 2 层，否则可读性下降。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 06 元组/集合/字典 ============= -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4);background:var(--p2-soft);box-shadow:0 0 0 4px var(--p2-soft)">06</div>
+      <div>
+        <h2>元组、集合与字典 ⭐⭐⭐</h2>
+        <p>Python 内置容器的"全家福"：tuple（不可变序列）、set（去重）、dict（键值映射）。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>6.1 元组 tuple：不可变序列</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>tuple.py</span><button class="copybtn" data-target="p-tuple">复制</button></div><pre id="p-tuple"><code>point = (<span class="tok-nm">10</span>, <span class="tok-nm">20</span>)
+x, y = point       <span class="tok-cm"># 解包</span>
+
+<span class="tok-cm"># 单元素元组必须有逗号</span>
+t = (<span class="tok-nm">42</span>,)         <span class="tok-cm"># tuple</span>
+t = (<span class="tok-nm">42</span>)          <span class="tok-cm"># int</span>
+
+<span class="tok-cm"># 不可变：</span>
+<span class="tok-cm"># point[0] = 99    # ❌ TypeError</span>
+
+<span class="tok-cm"># 常见用途：作为字典的 key、函数多返回值</span>
+<span class="tok-kw">def</span> <span class="tok-fn">minmax</span>(arr):
+    <span class="tok-kw">return</span> <span class="tok-fn">min</span>(arr), <span class="tok-fn">max</span>(arr)
+
+mn, mx = <span class="tok-fn">minmax</span>([<span class="tok-nm">3</span>, <span class="tok-nm">1</span>, <span class="tok-nm">4</span>, <span class="tok-nm">1</span>, <span class="tok-nm">5</span>, <span class="tok-nm">9</span>, <span class="tok-nm">2</span>, <span class="tok-nm">6</span>])</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>6.2 集合 set：去重 + 集合运算</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>set.py</span><button class="copybtn" data-target="p-set">复制</button></div><pre id="p-set"><code>s = {<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">2</span>, <span class="tok-nm">1</span>}
+<span class="tok-fn">print</span>(s)        <span class="tok-cm"># {1, 2, 3}   自动去重</span>
+
+s.<span class="tok-fn">add</span>(<span class="tok-nm">4</span>)
+s.<span class="tok-fn">remove</span>(<span class="tok-nm">1</span>)        <span class="tok-cm"># 不存在会抛异常</span>
+s.<span class="tok-fn">discard</span>(<span class="tok-nm">1</span>)      <span class="tok-cm"># 不存在静默</span>
+
+<span class="tok-cm"># 集合运算</span>
+a = {<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>}
+b = {<span class="tok-nm">3</span>, <span class="tok-nm">4</span>, <span class="tok-nm">5</span>}
+a | b          <span class="tok-cm"># {1,2,3,4,5}  并集</span>
+a &amp; b          <span class="tok-cm"># {3}         交集</span>
+a - b          <span class="tok-cm"># {1, 2}      差集</span>
+a ^ b          <span class="tok-cm"># {1,2,4,5}   对称差</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>6.3 字典 dict ⭐⭐⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>dict.py</span><button class="copybtn" data-target="p-dict">复制</button></div><pre id="p-dict"><code>student = {
+    <span class="tok-st">"name"</span>: <span class="tok-st">"Tom"</span>,
+    <span class="tok-st">"age"</span>: <span class="tok-nm">20</span>,
+    <span class="tok-st">"score"</span>: <span class="tok-nm">95</span>,
+}
+
+<span class="tok-cm"># 增删改查</span>
+student[<span class="tok-st">"gender"</span>] = <span class="tok-st">"M"</span>          <span class="tok-cm"># 添加</span>
+student[<span class="tok-st">"age"</span>] = <span class="tok-nm">21</span>              <span class="tok-cm"># 修改</span>
+v = student.<span class="tok-fn">get</span>(<span class="tok-st">"name"</span>, <span class="tok-st">"N/A"</span>)     <span class="tok-cm"># 安全访问</span>
+<span class="tok-kw">del</span> student[<span class="tok-st">"gender"</span>]
+
+<span class="tok-cm"># 遍历</span>
+<span class="tok-kw">for</span> k, v <span class="tok-kw">in</span> student.<span class="tok-fn">items</span>():
+    <span class="tok-fn">print</span>(k, v)
+
+<span class="tok-cm"># 字典推导式</span>
+squares = {x: x*x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">5</span>)}    <span class="tok-cm"># {0:0, 1:1, 2:4, 3:9, 4:16}</span></code></pre></div>
+      <div class="tipbox"><b>字典顺序：</b>Python 3.7+ 字典保持插入顺序。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 07 程序控制结构 ============= -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">07</div>
+      <div>
+        <h2>程序控制结构：if / while / for / match</h2>
+        <p>Python 用<strong>缩进</strong>组织代码块；新增的 <code>match-case</code> 让多分支更简洁。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>7.1 if / elif / else</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>if.py</span><button class="copybtn" data-target="p-if">复制</button></div><pre id="p-if"><code><span class="tok-kw">if</span> score &gt;= <span class="tok-nm">90</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"A"</span>)
+<span class="tok-kw">elif</span> score &gt;= <span class="tok-nm">80</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"B"</span>)
+<span class="tok-kw">elif</span> score &gt;= <span class="tok-nm">60</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"C"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"D"</span>)
+
+<span class="tok-cm"># 三元表达式</span>
+msg = <span class="tok-st">"及格"</span> <span class="tok-kw">if</span> score &gt;= <span class="tok-nm">60</span> <span class="tok-kw">else</span> <span class="tok-st">"不及格"</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>7.2 match-case <span class="tag-std tag-py310">Python 3.10+</span></h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>match.py</span><button class="copybtn" data-target="p-match">复制</button></div><pre id="p-match"><code>command = <span class="tok-st">"quit"</span>
+
+<span class="tok-kw">match</span> command:
+    <span class="tok-kw">case</span> <span class="tok-st">"quit"</span>:
+        <span class="tok-fn">print</span>(<span class="tok-st">"退出"</span>)
+    <span class="tok-kw">case</span> <span class="tok-st">"save"</span> | <span class="tok-st">"export"</span>:        <span class="tok-cm"># 多值</span>
+        <span class="tok-fn">print</span>(<span class="tok-st">"保存"</span>)
+    <span class="tok-kw">case</span> var <span class="tok-kw">if</span> var.<span class="tok-fn">startswith</span>(<span class="tok-st">"load"</span>):    <span class="tok-cm"># 守卫</span>
+        <span class="tok-fn">print</span>(<span class="tok-st">"加载"</span>, var)
+    <span class="tok-kw">case</span> _:                              <span class="tok-cm"># 默认</span>
+        <span class="tok-fn">print</span>(<span class="tok-st">"未知"</span>)</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>7.3 while / for / range</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>loop.py</span><button class="copybtn" data-target="p-loop">复制</button></div><pre id="p-loop"><code><span class="tok-cm"># while</span>
+n = <span class="tok-nm">0</span>
+<span class="tok-kw">while</span> n &lt; <span class="tok-nm">5</span>:
+    <span class="tok-fn">print</span>(n)
+    n += <span class="tok-nm">1</span>
+
+<span class="tok-cm"># for + range</span>
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">5</span>):          <span class="tok-cm"># 0..4</span>
+    <span class="tok-fn">print</span>(i)
+
+<span class="tok-fn">range</span>(<span class="tok-nm">2</span>, <span class="tok-nm">10</span>, <span class="tok-nm">3</span>)        <span class="tok-cm"># 2, 5, 8</span>
+<span class="tok-fn">range</span>(<span class="tok-nm">10</span>, <span class="tok-nm">0</span>, -<span class="tok-nm">1</span>)      <span class="tok-cm"># 10..1</span>
+
+<span class="tok-cm"># 遍历列表 / 字典</span>
+<span class="tok-kw">for</span> x <span class="tok-kw">in</span> [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>]:
+    <span class="tok-fn">print</span>(x)
+
+<span class="tok-kw">for</span> i, v <span class="tok-kw">in</span> <span class="tok-fn">enumerate</span>([<span class="tok-st">"a"</span>, <span class="tok-st">"b"</span>, <span class="tok-st">"c"</span>]):     <span class="tok-cm"># (0,a), (1,b), (2,c)</span>
+    <span class="tok-fn">print</span>(i, v)</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>7.4 综合案例：九九乘法表</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>9x9.py</span><button class="copybtn" data-target="p-99">复制</button></div><pre id="p-99"><code><span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">1</span>, <span class="tok-nm">10</span>):
+    <span class="tok-kw">for</span> j <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">1</span>, i + <span class="tok-nm">1</span>):
+        <span class="tok-fn">print</span>(<span class="tok-st">f"</span><span class="tok-cm">{</span>j<span class="tok-cm">}</span><span class="tok-st">×</span><span class="tok-cm">{</span>i<span class="tok-cm">}</span><span class="tok-st">=</span><span class="tok-cm">{</span>i*j<span class="tok-cm">:</span>&lt;<span class="tok-nm">2</span><span class="tok-cm">}</span><span class="tok-st">"</span>, end=<span class="tok-st">" "</span>)
+    <span class="tok-fn">print</span>()</code></pre></div>
+    </div>
+
+    <div class="quiz" data-acc="p3">
+      <h4 style="color:var(--p3)">课堂练习 · 第07章</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="range(5) 是 0..4，不含 5。">
+        <div class="q-head"><span class="qn">3</span><code>for i in range(5): print(i)</code> 的输出是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>1 2 3 4 5</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>0 1 2 3 4</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>0 1 2 3 4 5</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>编译错误</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="match-case 是 Python 3.10 引入的结构化模式匹配，之前的版本用 if/elif。">
+        <div class="q-head"><span class="qn">4</span>match-case 语句是 Python 哪个版本引入的？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>3.6</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>3.8</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>3.10</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>3.12</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 08 函数 ============= -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4)">08</div>
+      <div>
+        <h2>函数 ⭐⭐⭐</h2>
+        <p>Python 函数是<strong>一等公民</strong>：可以赋值给变量、作为参数传递、作为返回值。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>8.1 定义与参数</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>func.py</span><button class="copybtn" data-target="p-func">复制</button></div><pre id="p-func"><code><span class="tok-kw">def</span> <span class="tok-fn">greet</span>(name, greeting=<span class="tok-st">"Hello"</span>):     <span class="tok-cm"># 默认参数</span>
+    <span class="tok-kw">return</span> <span class="tok-st">f"</span><span class="tok-cm">{</span>greeting<span class="tok-cm">}</span><span class="tok-st">, </span><span class="tok-cm">{</span>name<span class="tok-cm">}</span><span class="tok-st">!"</span>
+
+<span class="tok-fn">greet</span>(<span class="tok-st">"Tom"</span>)                      <span class="tok-cm"># Hello, Tom!</span>
+<span class="tok-fn">greet</span>(<span class="tok-st">"Tom"</span>, greeting=<span class="tok-st">"Hi"</span>)        <span class="tok-cm"># Hi, Tom!</span>
+
+<span class="tok-cm"># 关键字参数</span>
+<span class="tok-fn">greet</span>(greeting=<span class="tok-st">"Hey"</span>, name=<span class="tok-st">"Alice"</span>)
+
+<span class="tok-cm"># *args / **kwargs：可变参数</span>
+<span class="tok-kw">def</span> <span class="tok-fn">add</span>(*args, **kwargs):
+    <span class="tok-fn">print</span>(args)      <span class="tok-cm"># tuple (1, 2, 3)</span>
+    <span class="tok-fn">print</span>(kwargs)    <span class="tok-cm"># dict {x: 1, y: 2}</span>
+
+<span class="tok-fn">add</span>(<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, x=<span class="tok-nm">1</span>, y=<span class="tok-nm">2</span>)</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>8.2 作用域与闭包</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>scope.py</span><button class="copybtn" data-target="p-scope">复制</button></div><pre id="p-scope"><code>x = <span class="tok-st">"global"</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">outer</span>():
+    x = <span class="tok-st">"enclosing"</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">inner</span>():
+        <span class="tok-kw">nonlocal</span> x        <span class="tok-cm"># 修改外层（非全局）变量</span>
+        x = <span class="tok-st">"local"</span>
+
+    <span class="tok-fn">inner</span>()
+    <span class="tok-fn">print</span>(x)        <span class="tok-cm"># local</span>
+
+<span class="tok-fn">outer</span>()
+
+<span class="tok-cm"># global 关键字：声明使用全局变量</span>
+counter = <span class="tok-nm">0</span>
+<span class="tok-kw">def</span> <span class="tok-fn">inc</span>():
+    <span class="tok-kw">global</span> counter
+    counter += <span class="tok-nm">1</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>8.3 函数作为对象 + 递归</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>first_class.py</span><button class="copybtn" data-target="p-fc">复制</button></div><pre id="p-fc"><code><span class="tok-cm"># 函数是一等公民</span>
+f = <span class="tok-fn">abs</span>
+<span class="tok-fn">print</span>(<span class="tok-fn">f</span>(-<span class="tok-nm">5</span>))      <span class="tok-cm"># 5</span>
+
+<span class="tok-cm"># 高阶函数：接受函数作为参数</span>
+<span class="tok-kw">def</span> <span class="tok-fn">apply</span>(func, x, y):
+    <span class="tok-kw">return</span> <span class="tok-fn">func</span>(x, y)
+
+<span class="tok-fn">print</span>(<span class="tok-fn">apply</span>(<span class="tok-kw">lambda</span> a, b: a * b, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>))   <span class="tok-cm"># 12</span>
+
+<span class="tok-cm"># 递归</span>
+<span class="tok-kw">def</span> <span class="tok-fn">factorial</span>(n):
+    <span class="tok-kw">if</span> n &lt;= <span class="tok-nm">1</span>: <span class="tok-kw">return</span> <span class="tok-nm">1</span>
+    <span class="tok-kw">return</span> n * <span class="tok-fn">factorial</span>(n - <span class="tok-nm">1</span>)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 09 推导式 ============= -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">09</div>
+      <div>
+        <h2>推导式与生成式</h2>
+        <p>Python 的<strong>招牌特性</strong>：用一行代码完成循环 + 过滤 + 映射。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>9.1 列表推导式</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>comp.py</span><button class="copybtn" data-target="p-lcomp">复制</button></div><pre id="p-lcomp"><code><span class="tok-cm"># 基本：[表达式 for 变量 in 可迭代对象]</span>
+squares = [x * x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span>)]
+
+<span class="tok-cm"># 条件：[表达式 for x in ... if 条件]</span>
+evens = [x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span>) <span class="tok-kw">if</span> x % <span class="tok-nm">2</span> == <span class="tok-nm">0</span>]
+
+<span class="tok-cm"># 多层 for</span>
+pairs = [(x, y) <span class="tok-kw">for</span> x <span class="tok-kw">in</span> [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>] <span class="tok-kw">for</span> y <span class="tok-kw">in</span> [<span class="tok-st">"a"</span>, <span class="tok-st">"b"</span>]]</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>9.2 字典 / 集合推导式 + 生成器表达式</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>dict_comp.py</span><button class="copybtn" data-target="p-dcomp">复制</button></div><pre id="p-dcomp"><code><span class="tok-cm"># 字典</span>
+counts = {ch: s.<span class="tok-fn">count</span>(ch) <span class="tok-kw">for</span> ch <span class="tok-kw">in</span> <span class="tok-fn">set</span>(s)}
+
+<span class="tok-cm"># 集合</span>
+unique = {x % <span class="tok-nm">3</span> <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span>)}
+
+<span class="tok-cm"># 生成器表达式（惰性、按需产出，节省内存）</span>
+gen = (x * x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">1000000</span>))
+<span class="tok-fn">print</span>(<span class="tok-fn">sum</span>(gen))   <span class="tok-cm"># 不需要先存列表</span></code></pre></div>
+      <p class="sum1" style="--acc:var(--p2)"><b>何时用哪种？</b>需要多次使用/知道长度 → 列表；数据量大、只用一次 → 生成器表达式。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 10 模块与包 ============= -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4)">10</div>
+      <div>
+        <h2>模块与包</h2>
+        <p>Python 的<strong>代码组织单元</strong>：模块 (.py 文件) → 包（带 __init__.py 的目录）。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>10.1 import 方式</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>import_demo.py</span><button class="copybtn" data-target="p-imp">复制</button></div><pre id="p-imp"><code><span class="tok-kw">import</span> math
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+<span class="tok-kw">from</span> math <span class="tok-kw">import</span> sqrt, pi
+<span class="tok-kw">from</span> os.path <span class="tok-kw">import</span> join
+
+<span class="tok-fn">print</span>(math.sqrt(<span class="tok-nm">16</span>))
+<span class="tok-fn">print</span>(np.<span class="tok-fn">array</span>([<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>]))</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>10.2 if __name__ == "__main__" 模式</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>main.py</span><button class="copybtn" data-target="p-main">复制</button></div><pre id="p-main"><code><span class="tok-cm"># utils.py</span>
+<span class="tok-kw">def</span> <span class="tok-fn">add</span>(a, b):
+    <span class="tok-kw">return</span> a + b
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-st">"__main__"</span>:
+    <span class="tok-cm"># 仅当直接运行此文件时执行，被 import 时不会</span>
+    <span class="tok-fn">print</span>(<span class="tok-fn">add</span>(<span class="tok-nm">3</span>, <span class="tok-nm">5</span>))</code></pre></div>
+      <div class="tipbox"><b>意义：</b>让一个 .py 文件既能作为脚本直接运行，又能作为模块被其他文件 import —— 不会重复执行测试代码。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 11 文件 ============= -->
+<section id="s11">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">11</div>
+      <div>
+        <h2>文件与数据读写</h2>
+        <p>Python 用内置 <code>open()</code> + <code>with</code> 处理文件；JSON/CSV 用标准库。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>11.1 文本文件读写</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>file.py</span><button class="copybtn" data-target="p-file">复制</button></div><pre id="p-file"><code><span class="tok-cm"># 读取整个文件</span>
+<span class="tok-kw">with</span> <span class="tok-fn">open</span>(<span class="tok-st">"data.txt"</span>, <span class="tok-st">"r"</span>, encoding=<span class="tok-st">"utf-8"</span>) <span class="tok-kw">as</span> f:
+    content = f.<span class="tok-fn">read</span>()
+
+<span class="tok-cm"># 逐行读取（生成器）</span>
+<span class="tok-kw">with</span> <span class="tok-fn">open</span>(<span class="tok-st">"data.txt"</span>) <span class="tok-kw">as</span> f:
+    <span class="tok-kw">for</span> line <span class="tok-kw">in</span> f:        <span class="tok-cm"># 每行保留 \n</span>
+        <span class="tok-fn">print</span>(line.<span class="tok-fn">rstrip</span>())
+
+<span class="tok-cm"># 写入</span>
+<span class="tok-kw">with</span> <span class="tok-fn">open</span>(<span class="tok-st">"out.txt"</span>, <span class="tok-st">"w"</span>, encoding=<span class="tok-st">"utf-8"</span>) <span class="tok-kw">as</span> f:
+    f.<span class="tok-fn">write</span>(<span class="tok-st">"Hello\n"</span>)
+
+<span class="tok-cm"># 推荐：pathlib</span>
+<span class="tok-kw">from</span> pathlib <span class="tok-kw">import</span> Path
+text = <span class="tok-ty">Path</span>(<span class="tok-st">"data.txt"</span>).<span class="tok-fn">read_text</span>(encoding=<span class="tok-st">"utf-8"</span>)
+<span class="tok-ty">Path</span>(<span class="tok-st">"out.txt"</span>).<span class="tok-fn">write_text</span>(<span class="tok-st">"hello"</span>, encoding=<span class="tok-st">"utf-8"</span>)</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>11.2 JSON 与 CSV</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>data_io.py</span><button class="copybtn" data-target="p-dataio">复制</button></div><pre id="p-dataio"><code><span class="tok-kw">import</span> json
+
+<span class="tok-cm"># 对象 ↔ JSON</span>
+data = {<span class="tok-st">"name"</span>: <span class="tok-st">"Tom"</span>, <span class="tok-st">"age"</span>: <span class="tok-nm">20</span>}
+s = json.<span class="tok-fn">dumps</span>(data, ensure_ascii=<span class="tok-kw">False</span>)    <span class="tok-cm"># → JSON 字符串</span>
+obj = json.<span class="tok-fn">loads</span>(s)                         <span class="tok-cm"># ← JSON 字符串</span>
+
+<span class="tok-kw">import</span> csv
+<span class="tok-kw">with</span> <span class="tok-fn">open</span>(<span class="tok-st">"data.csv"</span>, newline=<span class="tok-st">""</span>, encoding=<span class="tok-st">"utf-8"</span>) <span class="tok-kw">as</span> f:
+    reader = csv.<span class="tok-fn">DictReader</span>(f)
+    <span class="tok-kw">for</span> row <span class="tok-kw">in</span> reader:
+        <span class="tok-fn">print</span>(row[<span class="tok-st">"name"</span>], row[<span class="tok-st">"age"</span>])</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 12 异常 ============= -->
+<section id="s12">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4)">12</div>
+      <div>
+        <h2>异常处理 ⭐⭐</h2>
+        <p>Python 的<strong>EAFP</strong> 风格："先做了再说，报错了再处理" —— 与 Java 的 LBYL 形成对比。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>12.1 try / except / else / finally</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>try.py</span><button class="copybtn" data-target="p-try">复制</button></div><pre id="p-try"><code><span class="tok-kw">try</span>:
+    n = <span class="tok-fn">int</span>(<span class="tok-fn">input</span>(<span class="tok-st">"数字："</span>))
+    result = <span class="tok-nm">10</span> / n
+<span class="tok-kw">except</span> <span class="tok-ty">ValueError</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"请输入数字"</span>)
+<span class="tok-kw">except</span> <span class="tok-ty">ZeroDivisionError</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"不能为零"</span>)
+<span class="tok-kw">except</span> (<span class="tok-ty">TypeError</span>, <span class="tok-ty">KeyError</span>) <span class="tok-kw">as</span> e:
+    <span class="tok-fn">print</span>(<span class="tok-st">f"其他错误：</span><span class="tok-cm">{</span>e<span class="tok-cm">}</span><span class="tok-st">"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"无异常，结果："</span>, result)
+<span class="tok-kw">finally</span>:
+    <span class="tok-fn">print</span>(<span class="tok-st">"结束"</span>)</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>12.2 raise / 自定义异常</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>raise.py</span><button class="copybtn" data-target="p-raise">复制</button></div><pre id="p-raise"><code><span class="tok-kw">class</span> <span class="tok-ty">InsufficientFundsError</span>(<span class="tok-ty">Exception</span>):
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, balance, amount):
+        <span class="tok-ty">super</span>().<span class="tok-fn">__init__</span>(<span class="tok-st">f"余额 </span><span class="tok-cm">{</span>balance<span class="tok-cm">}</span><span class="tok-st">, 需 </span><span class="tok-cm">{</span>amount<span class="tok-cm">}</span><span class="tok-st">"</span>)
+        <span class="tok-ty">self</span>.balance = balance
+
+<span class="tok-kw">def</span> <span class="tok-fn">withdraw</span>(balance, amount):
+    <span class="tok-kw">if</span> amount &gt; balance:
+        <span class="tok-kw">raise</span> <span class="tok-ty">InsufficientFundsError</span>(balance, amount)
+    <span class="tok-kw">return</span> balance - amount</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 13 面向对象 ⭐⭐⭐ ============= -->
+<section id="s13">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4);background:var(--p1-soft);box-shadow:0 0 0 4px var(--p1-soft)">13</div>
+      <div>
+        <h2>面向对象编程 ⭐⭐⭐</h2>
+        <p>Python 的 OOP 简洁优雅 —— 没有 public/private 关键字，用<strong>下划线约定</strong>表达意图。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>13.1 类与对象</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>student.py</span><button class="copybtn" data-target="p-stu">复制</button></div><pre id="p-stu"><code><span class="tok-kw">class</span> <span class="tok-ty">Student</span>:
+    <span class="tok-st">"""学生类"""</span>
+
+    <span class="tok-cm"># 构造方法</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, name: <span class="tok-ty">str</span>, age: <span class="tok-ty">int</span>, score: <span class="tok-ty">float</span> = <span class="tok-nm">0.0</span>):
+        <span class="tok-ty">self</span>.name = name      <span class="tok-cm"># 实例属性</span>
+        <span class="tok-ty">self</span>._age = age        <span class="tok-cm"># 单下划线：约定"内部使用"</span>
+        <span class="tok-ty">self</span>.score = score
+
+    <span class="tok-kw">def</span> <span class="tok-fn">study</span>(<span class="tok-ty">self</span>, subject: <span class="tok-ty">str</span>) -&gt; <span class="tok-ty">None</span>:
+        <span class="tok-fn">print</span>(<span class="tok-st">f"</span><span class="tok-cm">{</span><span class="tok-ty">self</span>.name<span class="tok-cm">}</span><span class="tok-st"> 正在学 </span><span class="tok-cm">{</span>subject<span class="tok-cm">}</span><span class="tok-st">"</span>)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__repr__</span>(<span class="tok-ty">self</span>) -&gt; <span class="tok-ty">str</span>:
+        <span class="tok-kw">return</span> <span class="tok-st">f"Student(name=</span><span class="tok-cm">{</span><span class="tok-ty">self</span>.name<span class="tok-cm">}</span><span class="tok-st">, age=</span><span class="tok-cm">{</span><span class="tok-ty">self</span>._age<span class="tok-cm">}</span><span class="tok-st">)"</span>
+
+<span class="tok-cm"># 使用</span>
+s = <span class="tok-ty">Student</span>(<span class="tok-st">"Alice"</span>, <span class="tok-nm">20</span>, <span class="tok-nm">95.5</span>)
+s.<span class="tok-fn">study</span>(<span class="tok-st">"Python"</span>)
+<span class="tok-fn">print</span>(s)              <span class="tok-cm"># Student(name=Alice, age=20)</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>13.2 封装与属性 <span class="tag-std tag-py310">@property</span></h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>property.py</span><button class="copybtn" data-target="p-prop">复制</button></div><pre id="p-prop"><code><span class="tok-kw">class</span> <span class="tok-ty">Account</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, balance):
+        <span class="tok-ty">self</span>._balance = balance
+
+    <span class="tok-cm"># @property：把方法变成属性（getter）</span>
+    <span class="tok-kw">@property</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">balance</span>(<span class="tok-ty">self</span>):
+        <span class="tok-kw">return</span> <span class="tok-ty">self</span>._balance
+
+    <span class="tok-cm"># setter</span>
+    <span class="tok-kw">@balance.setter</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">balance</span>(<span class="tok-ty">self</span>, value):
+        <span class="tok-kw">if</span> value &lt; <span class="tok-nm">0</span>:
+            <span class="tok-kw">raise</span> <span class="tok-ty">ValueError</span>(<span class="tok-st">"不能为负"</span>)
+        <span class="tok-ty">self</span>._balance = value
+
+a = <span class="tok-ty">Account</span>(<span class="tok-nm">100</span>)
+<span class="tok-fn">print</span>(a.balance)      <span class="tok-cm"># 100（像属性一样访问）</span>
+a.balance = <span class="tok-nm">200</span>      <span class="tok-cm"># 自动走 setter</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>13.3 继承、方法重写、super()</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>inherit.py</span><button class="copybtn" data-target="p-inh">复制</button></div><pre id="p-inh"><code><span class="tok-kw">class</span> <span class="tok-ty">Person</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, name, age):
+        <span class="tok-ty">self</span>.name = name
+        <span class="tok-ty">self</span>.age = age
+
+    <span class="tok-kw">def</span> <span class="tok-fn">say_hi</span>(<span class="tok-ty">self</span>):
+        <span class="tok-fn">print</span>(<span class="tok-st">f"Hi, I'm </span><span class="tok-cm">{</span><span class="tok-ty">self</span>.name<span class="tok-cm">}</span><span class="tok-st">"</span>)
+
+<span class="tok-kw">class</span> <span class="tok-ty">Student</span>(<span class="tok-ty">Person</span>):
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, name, age, school):
+        <span class="tok-ty">super</span>().<span class="tok-fn">__init__</span>(name, age)    <span class="tok-cm"># 调用父类</span>
+        <span class="tok-ty">self</span>.school = school
+
+    <span class="tok-kw">def</span> <span class="tok-fn">say_hi</span>(<span class="tok-ty">self</span>):                  <span class="tok-cm"># 方法重写</span>
+        <span class="tok-ty">super</span>().<span class="tok-fn">say_hi</span>()
+        <span class="tok-fn">print</span>(<span class="tok-st">f"I study at </span><span class="tok-cm">{</span><span class="tok-ty">self</span>.school<span class="tok-cm">}</span><span class="tok-st">"</span>)
+
+s = <span class="tok-ty">Student</span>(<span class="tok-st">"Alice"</span>, <span class="tok-nm">20</span>, <span class="tok-st">"MIT"</span>)
+s.<span class="tok-fn">say_hi</span>()</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>13.4 多态、类方法、静态方法</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>poly.py</span><button class="copybtn" data-target="p-poly">复制</button></div><pre id="p-poly"><code><span class="tok-cm"># Python 的多态：鸭子类型 —— 只要有方法就能用</span>
+<span class="tok-kw">class</span> <span class="tok-ty">Dog</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">speak</span>(<span class="tok-ty">self</span>): <span class="tok-fn">print</span>(<span class="tok-st">"汪"</span>)
+
+<span class="tok-kw">class</span> <span class="tok-ty">Cat</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">speak</span>(<span class="tok-ty">self</span>): <span class="tok-fn">print</span>(<span class="tok-st">"喵"</span>)
+
+<span class="tok-kw">def</span> <span class="tok-fn">make_speak</span>(animal):
+    animal.<span class="tok-fn">speak</span>()
+
+<span class="tok-fn">make_speak</span>(<span class="tok-ty">Dog</span>())   <span class="tok-cm"># 汪</span>
+<span class="tok-fn">make_speak</span>(<span class="tok-ty">Cat</span>())   <span class="tok-cm"># 喵</span>
+
+<span class="tok-cm"># 类方法、静态方法</span>
+<span class="tok-kw">class</span> <span class="tok-ty">Circle</span>:
+    pi = <span class="tok-nm">3.14159</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, r): <span class="tok-ty">self</span>.r = r
+
+    <span class="tok-df">@classmethod</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">from_diameter</span>(cls, d):
+        <span class="tok-kw">return</span> cls(d / <span class="tok-nm">2</span>)
+
+    <span class="tok-df">@staticmethod</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">is_valid_radius</span>(r):
+        <span class="tok-kw">return</span> r &gt; <span class="tok-nm">0</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3><span class="dot" style="background:var(--p1)"></span>13.5 魔术方法（Magic Methods） ⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>magic.py</span><button class="copybtn" data-target="p-magic">复制</button></div><pre id="p-magic"><code><span class="tok-kw">class</span> <span class="tok-ty">Vec2</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, x, y):
+        <span class="tok-ty">self</span>.x, <span class="tok-ty">self</span>.y = x, y
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__repr__</span>(<span class="tok-ty">self</span>):       <span class="tok-cm"># 调试字符串</span>
+        <span class="tok-kw">return</span> <span class="tok-st">f"Vec2(</span><span class="tok-cm">{</span><span class="tok-ty">self</span>.x<span class="tok-cm">}</span><span class="tok-st">, </span><span class="tok-cm">{</span><span class="tok-ty">self</span>.y<span class="tok-cm">}</span><span class="tok-st">)"</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__str__</span>(<span class="tok-ty">self</span>):        <span class="tok-cm"># 用户友好字符串</span>
+        <span class="tok-kw">return</span> <span class="tok-st">f"(&lt;</span><span class="tok-cm">{</span><span class="tok-ty">self</span>.x<span class="tok-cm">}</span><span class="tok-st">, </span><span class="tok-cm">{</span><span class="tok-ty">self</span>.y<span class="tok-cm">}</span><span class="tok-st">&gt;)"</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__add__</span>(<span class="tok-ty">self</span>, other):  <span class="tok-cm"># +</span>
+        <span class="tok-kw">return</span> <span class="tok-ty">Vec2</span>(<span class="tok-ty">self</span>.x + other.x, <span class="tok-ty">self</span>.y + other.y)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__eq__</span>(<span class="tok-ty">self</span>, other):  <span class="tok-cm"># ==</span>
+        <span class="tok-kw">return</span> <span class="tok-ty">self</span>.x == other.x <span class="tok-kw">and</span> <span class="tok-ty">self</span>.y == other.y
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__len__</span>(<span class="tok-ty">self</span>):       <span class="tok-cm"># len()</span>
+        <span class="tok-kw">return</span> <span class="tok-nm">2</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__getitem__</span>(<span class="tok-ty">self</span>, i): <span class="tok-cm"># 下标访问</span>
+        <span class="tok-kw">return</span> [<span class="tok-ty">self</span>.x, <span class="tok-ty">self</span>.y][i]
+
+v = <span class="tok-ty">Vec2</span>(<span class="tok-nm">3</span>, <span class="tok-nm">4</span>)
+<span class="tok-fn">print</span>(v + <span class="tok-ty">Vec2</span>(<span class="tok-nm">1</span>, <span class="tok-nm">2</span>))    <span class="tok-cm"># Vec2(4, 6)</span>
+<span class="tok-fn">print</span>(v[<span class="tok-nm">0</span>])              <span class="tok-cm"># 3</span>
+<span class="tok-fn">print</span>(<span class="tok-fn">len</span>(v))             <span class="tok-cm"># 2</span></code></pre></div>
+      <p class="sum1" style="--acc:var(--p1)"><b>常用魔术方法：</b><code>__init__</code> / <code>__str__</code> / <code>__repr__</code> / <code>__len__</code> / <code>__getitem__</code> / <code>__iter__</code> / <code>__eq__</code> / <code>__lt__</code> / <code>__add__</code> / <code>__enter__</code> / <code>__exit__</code></p>
+    </div>
+
+    <div class="quiz" data-acc="p1">
+      <h4 style="color:var(--p1)">课堂练习 · 第13章 OOP</h4>
+      <div class="q-card" data-q data-answer="C" data-exp="@property 把方法变成只读属性，访问时不加 ()。">
+        <div class="q-head"><span class="qn">5</span>关于 <code>@property</code>，正确的是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>让方法变成私有</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>让方法变成类方法</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>把方法变成只读属性</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>让方法可以继承</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="B" data-exp="Python 没有真正的 private：_ 单下划线是约定，__ 双下划线触发名字改写（name mangling）。">
+        <div class="q-head"><span class="qn">6</span>Python 中"私有属性"的实现方式是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>使用 private 关键字</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>使用 _ 或 __ 前缀的命名约定</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>无法实现私有属性</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>必须用 @private 装饰器</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 14 迭代器与生成器 ============= -->
+<section id="s14">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">14</div>
+      <div>
+        <h2>迭代器与生成器 ⭐⭐</h2>
+        <p>Python 的<strong>惰性求值</strong>机制 —— 节省内存、处理无限序列。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>14.1 生成器函数 yield</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>gen.py</span><button class="copybtn" data-target="p-gen">复制</button></div><pre id="p-gen"><code><span class="tok-kw">def</span> <span class="tok-fn">counter</span>(n):
+    <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(n):
+        <span class="tok-kw">yield</span> i           <span class="tok-cm"># 暂停，返回值；下次 next() 时继续</span>
+
+g = <span class="tok-fn">counter</span>(<span class="tok-nm">5</span>)
+<span class="tok-fn">print</span>(<span class="tok-fn">next</span>(g))      <span class="tok-cm"># 0</span>
+<span class="tok-fn">print</span>(<span class="tok-fn">next</span>(g))      <span class="tok-cm"># 1</span>
+<span class="tok-kw">for</span> x <span class="tok-kw">in</span> g:           <span class="tok-cm"># 继续迭代剩下的</span>
+    <span class="tok-fn">print</span>(x)
+
+<span class="tok-cm"># 生成器表达式（与列表推导式类似）</span>
+gen = (x * x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span> <span class="tok-kw">if</span> x % <span class="tok-nm">2</span> == <span class="tok-nm">0</span>)
+<span class="tok-fn">print</span>(<span class="tok-fn">sum</span>(gen))    <span class="tok-cm"># 0+4+16+36+64 = 120</span></code></pre></div>
+      <div class="tipbox"><b>优势：</b>生成器只在需要时计算下一个值，适合处理大文件、无限序列、网络流。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>14.2 自定义迭代器</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>iter.py</span><button class="copybtn" data-target="p-iter">复制</button></div><pre id="p-iter"><code><span class="tok-kw">class</span> <span class="tok-ty">Countdown</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, start):
+        <span class="tok-ty">self</span>.current = start
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__iter__</span>(<span class="tok-ty">self</span>):       <span class="tok-cm"># 返回迭代器</span>
+        <span class="tok-kw">return</span> <span class="tok-ty">self</span>
+
+    <span class="tok-kw">def</span> <span class="tok-fn">__next__</span>(<span class="tok-ty">self</span>):       <span class="tok-cm"># 下一个值</span>
+        <span class="tok-kw">if</span> <span class="tok-ty">self</span>.current &lt;= <span class="tok-nm">0</span>:
+            <span class="tok-kw">raise</span> <span class="tok-ty">StopIteration</span>
+        <span class="tok-ty">self</span>.current -= <span class="tok-nm">1</span>
+        <span class="tok-kw">return</span> <span class="tok-ty">self</span>.current + <span class="tok-nm">1</span>
+
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-ty">Countdown</span>(<span class="tok-nm">3</span>):    <span class="tok-cm"># 3, 2, 1</span>
+    <span class="tok-fn">print</span>(i)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 15 Lambda 与函数式 ============= -->
+<section id="s15">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">15</div>
+      <div>
+        <h2>Lambda 与函数式编程</h2>
+        <p>Python 也支持函数式风格：<code>map</code> / <code>filter</code> / <code>reduce</code> + Lambda。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>15.1 Lambda + map / filter / sorted</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>lambda.py</span><button class="copybtn" data-target="p-lam">复制</button></div><pre id="p-lam"><code>square = <span class="tok-kw">lambda</span> x: x * x
+<span class="tok-fn">print</span>(<span class="tok-fn">square</span>(<span class="tok-nm">5</span>))        <span class="tok-cm"># 25</span>
+
+<span class="tok-cm"># map: 对每个元素应用函数</span>
+nums = [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>]
+sq = <span class="tok-fn">list</span>(<span class="tok-fn">map</span>(<span class="tok-kw">lambda</span> x: x * x, nums))   <span class="tok-cm"># [1, 4, 9, 16]</span>
+
+<span class="tok-cm"># filter: 过滤</span>
+evens = <span class="tok-fn">list</span>(<span class="tok-fn">filter</span>(<span class="tok-kw">lambda</span> x: x % <span class="tok-nm">2</span> == <span class="tok-nm">0</span>, nums))
+
+<span class="tok-cm"># sorted + key</span>
+students = [{<span class="tok-st">"name"</span>: <span class="tok-st">"Tom"</span>, <span class="tok-st">"score"</span>: <span class="tok-nm">85</span>}, {<span class="tok-st">"name"</span>: <span class="tok-st">"Alice"</span>, <span class="tok-st">"score"</span>: <span class="tok-nm">95</span>}]
+<span class="tok-fn">sorted</span>(students, key=<span class="tok-kw">lambda</span> s: s[<span class="tok-st">"score"</span>], reverse=<span class="tok-kw">True</span>)
+
+<span class="tok-cm"># reduce（functools）</span>
+<span class="tok-kw">from</span> functools <span class="tok-kw">import</span> reduce
+<span class="tok-fn">print</span>(<span class="tok-fn">reduce</span>(<span class="tok-kw">lambda</span> a, b: a + b, [<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>]))   <span class="tok-cm"># 10</span></code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 16 装饰器 ============= -->
+<section id="s16">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4);background:var(--violet-soft);box-shadow:0 0 0 4px var(--violet-soft)">16</div>
+      <div>
+        <h2>装饰器 ⭐⭐</h2>
+        <p>Python 的<strong>"黑魔法"</strong>之一：在不修改原函数代码的前提下，给函数"加上新能力"。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>16.1 基础装饰器</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>decorator.py</span><button class="copybtn" data-target="p-deco">复制</button></div><pre id="p-deco"><code><span class="tok-kw">def</span> <span class="tok-fn">timer</span>(func):
+    <span class="tok-st">"""计时装饰器"""</span>
+    <span class="tok-kw">def</span> <span class="tok-fn">wrapper</span>(*args, **kwargs):
+        <span class="tok-kw">import</span> time
+        t0 = time.<span class="tok-fn">time</span>()
+        result = <span class="tok-fn">func</span>(*args, **kwargs)
+        <span class="tok-fn">print</span>(<span class="tok-st">f"</span><span class="tok-cm">{</span>func.__name__<span class="tok-cm">}</span><span class="tok-st"> 用时 </span><span class="tok-cm">{</span>time.<span class="tok-fn">time</span>() - t0<span class="tok-cm">}</span><span class="tok-st">s"</span>)
+        <span class="tok-kw">return</span> result
+    <span class="tok-kw">return</span> wrapper
+
+<span class="tok-df">@timer</span>
+<span class="tok-kw">def</span> <span class="tok-fn">slow</span>():
+    <span class="tok-fn">sum</span>(<span class="tok-fn">range</span>(<span class="tok-nm">1000000</span>))
+
+<span class="tok-fn">slow</span>()    <span class="tok-cm"># slow 用时 0.03s</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>16.2 带参数的装饰器 + functools.wraps</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>param_deco.py</span><button class="copybtn" data-target="p-pdeco">复制</button></div><pre id="p-pdeco"><code><span class="tok-kw">def</span> <span class="tok-fn">retry</span>(times=<span class="tok-nm">3</span>):
+    <span class="tok-kw">def</span> <span class="tok-fn">decorator</span>(func):
+        <span class="tok-kw">from</span> functools <span class="tok-kw">import</span> wraps
+        <span class="tok-df">@wraps</span>(func)
+        <span class="tok-kw">def</span> <span class="tok-fn">wrapper</span>(*args, **kwargs):
+            <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(times):
+                <span class="tok-kw">try</span>:
+                    <span class="tok-kw">return</span> <span class="tok-fn">func</span>(*args, **kwargs)
+                <span class="tok-kw">except</span> <span class="tok-ty">Exception</span> <span class="tok-kw">as</span> e:
+                    <span class="tok-kw">if</span> i == times - <span class="tok-nm">1</span>: <span class="tok-kw">raise</span>
+        <span class="tok-kw">return</span> wrapper
+    <span class="tok-kw">return</span> decorator
+
+<span class="tok-df">@retry</span>(times=<span class="tok-nm">3</span>)
+<span class="tok-kw">def</span> <span class="tok-fn">flaky_network_call</span>():
+    <span class="tok-cm"># ...</span>
+    <span class="tok-kw">pass</span></code></pre></div>
+      <div class="warn"><b>不要忘记 <code>@functools.wraps(func)</code></b> —— 否则原函数的 __name__、__doc__ 会被 wrapper 覆盖。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 17 正则 ============= -->
+<section id="s17">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">17</div>
+      <div>
+        <h2>正则表达式 re</h2>
+        <p>Python 内置的 <code>re</code> 模块让你用一行代码完成复杂的字符串匹配。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>17.1 常用函数与示例</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>regex.py</span><button class="copybtn" data-target="p-re">复制</button></div><pre id="p-re"><code><span class="tok-kw">import</span> re
+
+text = <span class="tok-st">"联系我：alice@mit.edu 或 138-1234-5678"</span>
+
+<span class="tok-cm"># 提取邮箱</span>
+emails = re.<span class="tok-fn">findall</span>(<span class="tok-st">r"[\w.]+@[\w.]+"</span>, text)
+
+<span class="tok-cm"># 提取手机号</span>
+phones = re.<span class="tok-fn">findall</span>(<span class="tok-st">r"\d{3}-\d{4}-\d{4}"</span>, text)
+
+<span class="tok-cm"># 替换</span>
+masked = re.<span class="tok-fn">sub</span>(<span class="tok-st">r"\d"</span>, <span class="tok-st">"*"</span>, <span class="tok-st">"我的卡号是 1234-5678"</span>)
+
+<span class="tok-cm"># 校验格式</span>
+<span class="tok-kw">def</span> <span class="tok-fn">is_email</span>(s):
+    <span class="tok-kw">return</span> re.<span class="tok-fn">match</span>(<span class="tok-st">r"^[\w.]+@[\w.]+\.\w+$"</span>, s) <span class="tok-kw">is not</span> <span class="tok-kw">None</span></code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 18 日期时间 ============= -->
+<section id="s18">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">18</div>
+      <div>
+        <h2>日期时间 datetime</h2>
+        <p>用 <code>datetime</code> 与 <code>timedelta</code> 处理日期、时间差、格式化。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>18.1 datetime 基础</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>datetime.py</span><button class="copybtn" data-target="p-dt">复制</button></div><pre id="p-dt"><code><span class="tok-kw">from</span> datetime <span class="tok-kw">import</span> datetime, date, timedelta
+
+now = datetime.<span class="tok-fn">now</span>()
+today = date.<span class="tok-fn">today</span>()
+
+<span class="tok-cm"># 构造与格式化</span>
+dt = datetime(<span class="tok-nm">2024</span>, <span class="tok-nm">3</span>, <span class="tok-nm">15</span>, <span class="tok-nm">10</span>, <span class="tok-nm">30</span>)
+s = dt.<span class="tok-fn">strftime</span>(<span class="tok-st">"%Y-%m-%d %H:%M:%S"</span>)
+
+<span class="tok-cm"># 解析</span>
+parsed = datetime.<span class="tok-fn">strptime</span>(<span class="tok-st">"2024-03-15"</span>, <span class="tok-st">"%Y-%m-%d"</span>)
+
+<span class="tok-cm"># 时间差</span>
+delta = timedelta(days=<span class="tok-nm">7</span>, hours=<span class="tok-nm">2</span>)
+next_week = now + delta
+
+<span class="tok-cm"># 时间戳</span>
+ts = now.<span class="tok-fn">timestamp</span>()           <span class="tok-cm"># 1742025667.123</span>
+dt2 = datetime.<span class="tok-fn">fromtimestamp</span>(ts)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 19 标准库 ============= -->
+<section id="s19">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">19</div>
+      <div>
+        <h2>Python 标准库速查中心 ⭐⭐</h2>
+        <p>Python "自带电池"（batteries included）—— 下列标准库几乎覆盖日常所有需求。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>常用标准库速查表</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>模块</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">math</td><td>数学函数（sin / cos / sqrt / log）</td></tr>
+          <tr><td class="hl">random</td><td>随机数（random / randint / choice / shuffle）</td></tr>
+          <tr><td class="hl">statistics</td><td>统计（mean / median / stdev）</td></tr>
+          <tr><td class="hl">datetime</td><td>日期时间</td></tr>
+          <tr><td class="hl">os</td><td>操作系统接口（path / environ / listdir）</td></tr>
+          <tr><td class="hl">sys</td><td>解释器交互（argv / exit / path）</td></tr>
+          <tr><td class="hl">pathlib</td><td>面向对象的文件路径</td></tr>
+          <tr><td class="hl">shutil</td><td>高级文件操作（copy / move / rmtree）</td></tr>
+          <tr><td class="hl">json</td><td>JSON 编解码</td></tr>
+          <tr><td class="hl">csv</td><td>CSV 读写</td></tr>
+          <tr><td class="hl">re</td><td>正则表达式</td></tr>
+          <tr><td class="hl">collections</td><td>特殊容器（Counter / deque / OrderedDict / defaultdict）</td></tr>
+          <tr><td class="hl">itertools</td><td>迭代器工具（chain / cycle / combinations）</td></tr>
+          <tr><td class="hl">functools</td><td>高阶函数（reduce / lru_cache / partial）</td></tr>
+          <tr><td class="hl">logging</td><td>日志记录</td></tr>
+          <tr><td class="hl">subprocess</td><td>运行外部命令</td></tr>
+          <tr><td class="hl">argparse</td><td>命令行参数解析</td></tr>
+          <tr><td class="hl">sqlite3</td><td>内置 SQLite 数据库</td></tr>
+          <tr><td class="hl">threading</td><td>线程</td></tr>
+          <tr><td class="hl">asyncio</td><td>异步 IO</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 20 pip 与虚拟环境 ============= -->
+<section id="s20">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4);background:var(--p3-soft);box-shadow:0 0 0 4px var(--p3-soft)">20</div>
+      <div>
+        <h2>pip 与虚拟环境 ⭐⭐⭐</h2>
+        <p>管理第三方包、隔离项目依赖 —— Python 工程化的"基础设施"。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>20.1 pip 基础</h3>
+      <div class="codebox"><div class="ch"><span class="lang">shell</span><span>pip</span><button class="copybtn" data-target="p-pip">复制</button></div><pre id="p-pip"><code><span class="tok-cm"># 安装 / 卸载 / 升级</span>
+$ pip install requests
+$ pip install requests==2.31.0     <span class="tok-cm"># 指定版本</span>
+$ pip install -r requirements.txt  <span class="tok-cm"># 从文件安装</span>
+$ pip install --upgrade numpy
+$ pip uninstall pandas
+
+<span class="tok-cm"># 查看 / 导出</span>
+$ pip list
+$ pip show numpy
+$ pip freeze &gt; requirements.txt    <span class="tok-cm"># 导出依赖</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>20.2 虚拟环境 venv</h3>
+      <div class="codebox"><div class="ch"><span class="lang">shell</span><span>venv</span><button class="copybtn" data-target="p-venv">复制</button></div><pre id="p-venv"><code><span class="tok-cm"># 创建虚拟环境</span>
+$ python3 -m venv .venv
+
+<span class="tok-cm"># 激活</span>
+$ source .venv/bin/activate          <span class="tok-cm"># macOS / Linux</span>
+$ .venv\Scripts\activate            <span class="tok-cm"># Windows</span>
+
+<span class="tok-cm"># 在虚拟环境中安装包</span>
+(venv) $ pip install requests
+
+<span class="tok-cm"># 退出</span>
+(venv) $ deactivate</code></pre></div>
+      <div class="tipbox"><b>现代推荐：</b>用 <code>uv</code> 或 <code>poetry</code> 替代 venv + pip —— 速度更快、依赖锁定更智能。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 21 类型注解 ============= -->
+<section id="s21">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">21</div>
+      <div>
+        <h2>类型注解 Type Hints</h2>
+        <p>Python 是动态类型，但<strong>类型注解</strong>让 IDE、mypy、运行期都能给你更好的提示。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>21.1 变量与函数注解</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>typing.py</span><button class="copybtn" data-target="p-typing">复制</button></div><pre id="p-typing"><code>name: <span class="tok-ty">str</span> = <span class="tok-st">"Tom"</span>
+age: <span class="tok-ty">int</span> = <span class="tok-nm">20</span>
+scores: <span class="tok-ty">list</span>[<span class="tok-ty">int</span>] = [<span class="tok-nm">90</span>, <span class="tok-nm">85</span>, <span class="tok-nm">95</span>]
+
+<span class="tok-kw">def</span> <span class="tok-fn">add</span>(a: <span class="tok-ty">int</span>, b: <span class="tok-ty">int</span>) -&gt; <span class="tok-ty">int</span>:
+    <span class="tok-kw">return</span> a + b
+
+<span class="tok-cm"># 复杂类型</span>
+<span class="tok-kw">from</span> typing <span class="tok-kw">import</span> Optional, Union
+
+<span class="tok-kw">def</span> <span class="tok-fn">find_user</span>(uid: <span class="tok-ty">int</span>) -&gt; <span class="tok-ty">Optional</span>[<span class="tok-ty">str</span>]:
+    <span class="tok-kw">return</span> <span class="tok-kw">None</span>     <span class="tok-cm"># 或 str</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">parse</span>(x: <span class="tok-ty">Union</span>[<span class="tok-ty">int</span>, <span class="tok-ty">str</span>]) -&gt; <span class="tok-ty">int</span>:
+    <span class="tok-kw">return</span> <span class="tok-fn">int</span>(x)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 22 多线程 ============= -->
+<section id="s22">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">22</div>
+      <div>
+        <h2>多线程与并发</h2>
+        <p>Python 因<strong>GIL</strong>的存在，CPU 密集任务用多进程，IO 密集任务用多线程 / asyncio。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>22.1 threading + Lock</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>thread.py</span><button class="copybtn" data-target="p-thr">复制</button></div><pre id="p-thr"><code><span class="tok-kw">import</span> threading
+
+counter = <span class="tok-nm">0</span>
+lock = threading.<span class="tok-ty">Lock</span>()
+
+<span class="tok-kw">def</span> <span class="tok-fn">worker</span>():
+    <span class="tok-kw">global</span> counter
+    <span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10000</span>):
+        <span class="tok-kw">with</span> lock:           <span class="tok-cm"># 互斥访问</span>
+            counter += <span class="tok-nm">1</span>
+
+threads = [threading.<span class="tok-ty">Thread</span>(target=worker) <span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">4</span>)]
+<span class="tok-kw">for</span> t <span class="tok-kw">in</span> threads: t.<span class="tok-fn">start</span>()
+<span class="tok-kw">for</span> t <span class="tok-kw">in</span> threads: t.<span class="tok-fn">join</span>()
+
+<span class="tok-fn">print</span>(counter)   <span class="tok-cm"># 40000</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>22.2 concurrent.futures：线程池 ⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>pool.py</span><button class="copybtn" data-target="p-pool">复制</button></div><pre id="p-pool"><code><span class="tok-kw">from</span> concurrent.futures <span class="tok-kw">import</span> ThreadPoolExecutor
+
+<span class="tok-kw">def</span> <span class="tok-fn">fetch</span>(url):
+    <span class="tok-cm"># 模拟网络请求</span>
+    <span class="tok-kw">return</span> <span class="tok-st">f"data from </span><span class="tok-cm">{</span>url<span class="tok-cm">}</span><span class="tok-st">"</span>
+
+urls = [<span class="tok-st">f"https://api.example.com/</span><span class="tok-cm">{</span>i<span class="tok-cm">}</span><span class="tok-st">"</span> <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-fn">range</span>(<span class="tok-nm">10</span>)]
+
+<span class="tok-kw">with</span> <span class="tok-ty">ThreadPoolExecutor</span>(max_workers=<span class="tok-nm">5</span>) <span class="tok-kw">as</span> pool:
+    results = <span class="tok-fn">list</span>(pool.<span class="tok-fn">map</span>(fetch, urls))</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 23 异步编程 ============= -->
+<section id="s23">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4);background:var(--violet-soft);box-shadow:0 0 0 4px var(--violet-soft)">23</div>
+      <div>
+        <h2>异步编程 asyncio ⭐⭐</h2>
+        <p>现代 Python 必备 ——<strong>协程</strong>让 IO 密集型程序效率倍增。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>23.1 async / await 基础</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>async.py</span><button class="copybtn" data-target="p-async">复制</button></div><pre id="p-async"><code><span class="tok-kw">import</span> asyncio
+
+<span class="tok-kw">async def</span> <span class="tok-fn">fetch</span>(url):
+    <span class="tok-fn">print</span>(<span class="tok-st">f"Fetching </span><span class="tok-cm">{</span>url<span class="tok-cm">}</span><span class="tok-st">..."</span>)
+    <span class="tok-kw">await</span> asyncio.<span class="tok-fn">sleep</span>(<span class="tok-nm">1</span>)        <span class="tok-cm"># 模拟 IO</span>
+    <span class="tok-fn">print</span>(<span class="tok-st">f"Done </span><span class="tok-cm">{</span>url<span class="tok-cm">}</span><span class="tok-st">"</span>)
+    <span class="tok-kw">return</span> <span class="tok-st">f"data from </span><span class="tok-cm">{</span>url<span class="tok-cm">}</span><span class="tok-st">"</span>
+
+<span class="tok-kw">async def</span> <span class="tok-fn">main</span>():
+    <span class="tok-cm"># 并发执行 3 个任务</span>
+    results = <span class="tok-kw">await</span> asyncio.<span class="tok-fn">gather</span>(
+        <span class="tok-fn">fetch</span>(<span class="tok-st">"a.com"</span>),
+        <span class="tok-fn">fetch</span>(<span class="tok-st">"b.com"</span>),
+        <span class="tok-fn">fetch</span>(<span class="tok-st">"c.com"</span>),
+    )
+
+asyncio.<span class="tok-fn">run</span>(<span class="tok-fn">main</span>())</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>23.2 aiohttp 异步 HTTP 请求</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>aiohttp.py</span><button class="copybtn" data-target="p-aio">复制</button></div><pre id="p-aio"><code><span class="tok-kw">import</span> aiohttp
+<span class="tok-kw">import</span> asyncio
+
+<span class="tok-kw">async def</span> <span class="tok-fn">fetch_all</span>(urls):
+    <span class="tok-kw">async with</span> aiohttp.<span class="tok-ty">ClientSession</span>() <span class="tok-kw">as</span> session:
+        tasks = [session.<span class="tok-fn">get</span>(u) <span class="tok-kw">for</span> u <span class="tok-kw">in</span> urls]
+        responses = <span class="tok-kw">await</span> asyncio.<span class="tok-fn">gather</span>(*tasks)
+        <span class="tok-kw">return</span> [r.<span class="tok-fn">text</span>() <span class="tok-kw">async for</span> r <span class="tok-kw">in</span> responses]</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 24 网络 ============= -->
+<section id="s24">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">24</div>
+      <div>
+        <h2>网络编程</h2>
+        <p>用 <code>requests</code> 调用 HTTP API、用 <code>socket</code> 实现自定义协议。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>requests 库 ⭐⭐⭐</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>requests_demo.py</span><button class="copybtn" data-target="p-req">复制</button></div><pre id="p-req"><code><span class="tok-kw">import</span> requests
+
+<span class="tok-cm"># GET 请求</span>
+r = requests.<span class="tok-fn">get</span>(<span class="tok-st">"https://api.github.com/users/python"</span>)
+<span class="tok-fn">print</span>(r.<span class="tok-fn">json</span>()[<span class="tok-st">"name"</span>])
+
+<span class="tok-cm"># 带参数 + POST</span>
+data = {<span class="tok-st">"name"</span>: <span class="tok-st">"Tom"</span>, <span class="tok-st">"age"</span>: <span class="tok-nm">20</span>}
+r = requests.<span class="tok-fn">post</span>(<span class="tok-st">"https://httpbin.org/post"</span>, json=data, timeout=<span class="tok-nm">5</span>)
+
+<span class="tok-cm"># 错误处理</span>
+<span class="tok-kw">try</span>:
+    r.<span class="tok-fn">raise_for_status</span>()      <span class="tok-cm"># 4xx / 5xx 自动抛异常</span>
+<span class="tok-kw">except</span> requests.HTTPError <span class="tok-kw">as</span> e:
+    <span class="tok-fn">print</span>(e)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 25 JSON / CSV ============= -->
+<section id="s25">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4)">25</div>
+      <div>
+        <h2>JSON、CSV 与数据交换</h2>
+        <p>数据交换的两大格式 —— 数据科学 / API 通信必备。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>JSON 与 CSV 实战</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>json_csv.py</span><button class="copybtn" data-target="p-jcsv">复制</button></div><pre id="p-jcsv"><code><span class="tok-kw">import</span> json, csv
+
+<span class="tok-cm"># JSON</span>
+data = {<span class="tok-st">"users"</span>: [{<span class="tok-st">"name"</span>: <span class="tok-st">"Tom"</span>, <span class="tok-st">"age"</span>: <span class="tok-nm">20</span>}]}
+<span class="tok-fn">print</span>(json.<span class="tok-fn">dumps</span>(data, indent=<span class="tok-nm">2</span>, ensure_ascii=<span class="tok-kw">False</span>))
+
+<span class="tok-cm"># CSV：DictReader</span>
+<span class="tok-kw">with</span> <span class="tok-fn">open</span>(<span class="tok-st">"data.csv"</span>, newline=<span class="tok-st">""</span>, encoding=<span class="tok-st">"utf-8"</span>) <span class="tok-kw">as</span> f:
+    <span class="tok-kw">for</span> row <span class="tok-kw">in</span> csv.<span class="tok-fn">DictReader</span>(f):
+        <span class="tok-fn">print</span>(row[<span class="tok-st">"name"</span>])</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 26 数据库 ============= -->
+<section id="s26">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">26</div>
+      <div>
+        <h2>数据库：SQLite 与 SQL 基础</h2>
+        <p>Python 内置 <code>sqlite3</code> —— 无需额外安装就能用 SQL。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>sqlite3 CRUD</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>db.py</span><button class="copybtn" data-target="p-db">复制</button></div><pre id="p-db"><code><span class="tok-kw">import</span> sqlite3
+
+conn = sqlite3.<span class="tok-fn">connect</span>(<span class="tok-st">"school.db"</span>)
+c = conn.<span class="tok-fn">cursor</span>()
+
+<span class="tok-cm"># 创建表</span>
+c.<span class="tok-fn">execute</span>(<span class="tok-st">"""CREATE TABLE IF NOT EXISTS student(
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    age INTEGER)"""</span>)
+
+<span class="tok-cm"># 插入（参数化防 SQL 注入）</span>
+c.<span class="tok-fn">execute</span>(<span class="tok-st">"INSERT INTO student(name, age) VALUES(?, ?)"</span>, (<span class="tok-st">"Tom"</span>, <span class="tok-nm">20</span>))
+conn.<span class="tok-fn">commit</span>()
+
+<span class="tok-cm"># 查询</span>
+<span class="tok-kw">for</span> row <span class="tok-kw">in</span> c.<span class="tok-fn">execute</span>(<span class="tok-st">"SELECT * FROM student WHERE age &gt; ?"</span>, (<span class="tok-nm">18</span>,)):
+    <span class="tok-fn">print</span>(row)
+
+conn.<span class="tok-fn">close</span>()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 27 工程化 ============= -->
+<section id="s27">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">27</div>
+      <div>
+        <h2>Python 工程化：项目结构、测试与日志</h2>
+        <p>从"会写脚本"升级到"能交付项目"：规范、测试、日志、配置。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>项目结构</h3>
+      <div class="codebox"><div class="ch"><span class="lang">tree</span><span>project/</span><button class="copybtn" data-target="p-tree">复制</button></div><pre id="p-tree"><code>my_project/
+├── pyproject.toml     <span class="tok-cm"># 现代项目配置（替代 setup.py）</span>
+├── README.md
+├── .gitignore
+├── requirements.txt
+├── src/
+│   └── myapp/
+│       ├── __init__.py
+│       ├── main.py
+│       └── utils.py
+├── tests/
+│   ├── __init__.py
+│   └── test_main.py
+└── data/
+    └── input.csv</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>pytest 单元测试</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>test_main.py</span><button class="copybtn" data-target="p-test">复制</button></div><pre id="p-test"><code><span class="tok-kw">from</span> myapp.utils <span class="tok-kw">import</span> add
+
+<span class="tok-kw">def</span> <span class="tok-fn">test_add</span>():
+    <span class="tok-kw">assert</span> <span class="tok-fn">add</span>(<span class="tok-nm">2</span>, <span class="tok-nm">3</span>) == <span class="tok-nm">5</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">test_add_negative</span>():
+    <span class="tok-kw">assert</span> <span class="tok-fn">add</span>(-<span class="tok-nm">1</span>, <span class="tok-nm">1</span>) == <span class="tok-nm">0</span></code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 28 数据分析 ============= -->
+<section id="s28">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p2);border-color:rgba(31,95,160,.4);background:var(--p2-soft);box-shadow:0 0 0 4px var(--p2-soft)">28</div>
+      <div>
+        <h2>数据分析基础 ⭐⭐⭐ —— NumPy / Pandas / Matplotlib</h2>
+        <p>Python 在<strong>数据科学</strong>领域的事实标准三件套。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>28.1 NumPy：高性能数组计算</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>numpy.py</span><button class="copybtn" data-target="p-np">复制</button></div><pre id="p-np"><code><span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+
+a = np.<span class="tok-fn">array</span>([<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>, <span class="tok-nm">5</span>])
+<span class="tok-fn">print</span>(a + <span class="tok-nm">10</span>)                <span class="tok-cm"># [11 12 13 14 15]（向量化）</span>
+<span class="tok-fn">print</span>(a.<span class="tok-fn">mean</span>(), a.<span class="tok-fn">std</span>())
+
+<span class="tok-cm"># 二维数组（矩阵）</span>
+m = np.<span class="tok-fn">array</span>([[<span class="tok-nm">1</span>, <span class="tok-nm">2</span>], [<span class="tok-nm">3</span>, <span class="tok-nm">4</span>]])
+<span class="tok-fn">print</span>(m.T)         <span class="tok-cm"># 转置</span>
+<span class="tok-fn">print</span>(m @ m)       <span class="tok-cm"># 矩阵乘法</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>28.2 Pandas：数据分析的核心</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>pandas.py</span><button class="copybtn" data-target="p-pd">复制</button></div><pre id="p-pd"><code><span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+
+<span class="tok-cm"># 读 CSV</span>
+df = pd.<span class="tok-fn">read_csv</span>(<span class="tok-st">"students.csv"</span>)
+
+<span class="tok-fn">print</span>(df.<span class="tok-fn">head</span>())            <span class="tok-cm"># 前 5 行</span>
+<span class="tok-fn">print</span>(df.<span class="tok-fn">describe</span>())        <span class="tok-cm"># 数值列统计</span>
+<span class="tok-fn">print</span>(df.<span class="tok-fn">info</span>())            <span class="tok-cm"># 数据类型概览</span>
+
+<span class="tok-cm"># 筛选、排序</span>
+adults = df[df[<span class="tok-st">"age"</span>] &gt;= <span class="tok-nm">18</span>]
+top = df.<span class="tok-fn">sort_values</span>(<span class="tok-st">"score"</span>, ascending=<span class="tok-kw">False</span>)
+
+<span class="tok-cm"># 分组统计</span>
+avg_by_class = df.<span class="tok-fn">groupby</span>(<span class="tok-st">"class"</span>)[<span class="tok-st">"score"</span>].<span class="tok-fn">mean</span>()</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3><span class="dot" style="background:var(--p2)"></span>28.3 Matplotlib：可视化</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>plot.py</span><button class="copybtn" data-target="p-plot">复制</button></div><pre id="p-plot"><code><span class="tok-kw">import</span> matplotlib.pyplot <span class="tok-kw">as</span> plt
+<span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
+
+x = np.<span class="tok-fn">linspace</span>(<span class="tok-nm">0</span>, <span class="tok-nm">2</span> * np.pi, <span class="tok-nm">100</span>)
+
+plt.<span class="tok-fn">figure</span>(figsize=(<span class="tok-nm">8</span>, <span class="tok-nm">4</span>))
+plt.<span class="tok-fn">plot</span>(x, np.<span class="tok-fn">sin</span>(x), label=<span class="tok-st">"sin"</span>)
+plt.<span class="tok-fn">plot</span>(x, np.<span class="tok-fn">cos</span>(x), label=<span class="tok-st">"cos"</span>)
+plt.<span class="tok-fn">legend</span>()
+plt.<span class="tok-fn">title</span>(<span class="tok-st">"三角函数"</span>)
+plt.<span class="tok-fn">savefig</span>(<span class="tok-st">"trig.png"</span>, dpi=<span class="tok-nm">100</span>)
+plt.<span class="tok-fn">show</span>()</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 29 Python 与 AI ============= -->
+<section id="s29">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet,#5b21b6);border-color:rgba(91,33,182,.4);background:var(--violet-soft);box-shadow:0 0 0 4px var(--violet-soft)">29</div>
+      <div>
+        <h2>Python 与人工智能 ⭐⭐</h2>
+        <p>Python 是 AI 时代的事实标准语言。本章带你入门 ML / DL / LLM。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>29.1 Scikit-learn：传统机器学习</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>sklearn.py</span><button class="copybtn" data-target="p-skl">复制</button></div><pre id="p-skl"><code><span class="tok-kw">from</span> sklearn.datasets <span class="tok-kw">import</span> load_iris
+<span class="tok-kw">from</span> sklearn.model_selection <span class="tok-kw">import</span> train_test_split
+<span class="tok-kw">from</span> sklearn.ensemble <span class="tok-kw">import</span> RandomForestClassifier
+<span class="tok-kw">from</span> sklearn.metrics <span class="tok-kw">import</span> accuracy_score
+
+X, y = <span class="tok-fn">load_iris</span>(return_X_y=<span class="tok-kw">True</span>)
+X_train, X_test, y_train, y_test = <span class="tok-fn">train_test_split</span>(X, y, test_size=<span class="tok-nm">0.2</span>)
+
+model = <span class="tok-ty">RandomForestClassifier</span>()
+model.<span class="tok-fn">fit</span>(X_train, y_train)
+pred = model.<span class="tok-fn">predict</span>(X_test)
+
+<span class="tok-fn">print</span>(<span class="tok-st">"准确率："</span>, <span class="tok-fn">accuracy_score</span>(y_test, pred))</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:#5b21b6">
+      <h3><span class="dot" style="background:#5b21b6"></span>29.2 调用 AI API（OpenAI / Anthropic / 国内大模型）</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>ai_api.py</span><button class="copybtn" data-target="p-api">复制</button></div><pre id="p-api"><code><span class="tok-kw">import</span> openai
+
+client = openai.<span class="tok-ty">OpenAI</span>(api_key=<span class="tok-st">"sk-xxx"</span>)
+
+response = client.chat.completions.<span class="tok-fn">create</span>(
+    model=<span class="tok-st">"gpt-4o-mini"</span>,
+    messages=[
+        {<span class="tok-st">"role"</span>: <span class="tok-st">"system"</span>, <span class="tok-st">"content"</span>: <span class="tok-st">"你是一个 Python 助手"</span>},
+        {<span class="tok-st">"role"</span>: <span class="tok-st">"user"</span>, <span class="tok-st">"content"</span>: <span class="tok-st">"什么是列表推导式？"</span>},
+    ],
+)
+<span class="tok-fn">print</span>(response.choices[<span class="tok-nm">0</span>].message.content)</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 30 数据结构与算法 ============= -->
+<section id="s30">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p3);border-color:rgba(192,132,0,.4)">30</div>
+      <div>
+        <h2>数据结构与算法</h2>
+        <p>Python 的简洁语法让"算法实现"特别清爽 —— 但仍要重视效率。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>30.1 常见复杂度 + 二分查找</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>binary_search.py</span><button class="copybtn" data-target="p-bs">复制</button></div><pre id="p-bs"><code><span class="tok-kw">import</span> bisect
+
+a = [<span class="tok-nm">1</span>, <span class="tok-nm">3</span>, <span class="tok-nm">5</span>, <span class="tok-nm">7</span>, <span class="tok-nm">9</span>, <span class="tok-nm">11</span>]
+
+<span class="tok-cm"># 二分查找（标准库）</span>
+bisect.<span class="tok-fn">bisect_left</span>(a, <span class="tok-nm">7</span>)      <span class="tok-cm"># 3（第一个 ≥ 7 的位置）</span>
+bisect.<span class="tok-fn">bisect_right</span>(a, <span class="tok-nm">7</span>)     <span class="tok-cm"># 4（第一个 &gt; 7 的位置）</span>
+
+<span class="tok-cm"># 手写二分</span>
+<span class="tok-kw">def</span> <span class="tok-fn">bsearch</span>(a, target):
+    lo, hi = <span class="tok-nm">0</span>, <span class="tok-fn">len</span>(a) - <span class="tok-nm">1</span>
+    <span class="tok-kw">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="tok-nm">2</span>
+        <span class="tok-kw">if</span> a[mid] == target:   <span class="tok-kw">return</span> mid
+        <span class="tok-kw">elif</span> a[mid] &lt; target: lo = mid + <span class="tok-nm">1</span>
+        <span class="tok-kw">else</span>:                hi = mid - <span class="tok-nm">1</span>
+    <span class="tok-kw">return</span> -<span class="tok-nm">1</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--p3)">
+      <h3><span class="dot" style="background:var(--p3)"></span>30.2 单链表 + 排序 + 递归</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>algo.py</span><button class="copybtn" data-target="p-algo">复制</button></div><pre id="p-algo"><code><span class="tok-cm"># 链表节点</span>
+<span class="tok-kw">class</span> <span class="tok-ty">Node</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(<span class="tok-ty">self</span>, v, n=<span class="tok-kw">None</span>):
+        <span class="tok-ty">self</span>.v, <span class="tok-ty">self</span>.n = v, n
+
+<span class="tok-cm"># 快速排序</span>
+<span class="tok-kw">def</span> <span class="tok-fn">qsort</span>(a):
+    <span class="tok-kw">if</span> <span class="tok-fn">len</span>(a) &lt;= <span class="tok-nm">1</span>: <span class="tok-kw">return</span> a
+    p = a[<span class="tok-nm">0</span>]
+    <span class="tok-kw">return</span> <span class="tok-fn">qsort</span>([x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> a[<span class="tok-nm">1</span>:] <span class="tok-kw">if</span> x &lt; p]) + [p] + \
+           <span class="tok-fn">qsort</span>([x <span class="tok-kw">for</span> x <span class="tok-kw">in</span> a[<span class="tok-nm">1</span>:] <span class="tok-kw">if</span> x &gt;= p])
+
+<span class="tok-fn">print</span>(<span class="tok-fn">qsort</span>([<span class="tok-nm">5</span>, <span class="tok-nm">2</span>, <span class="tok-nm">8</span>, <span class="tok-nm">1</span>, <span class="tok-nm">9</span>, <span class="tok-nm">3</span>]))   <span class="tok-cm"># [1, 2, 3, 5, 8, 9]</span>
+
+<span class="tok-cm"># 实战建议：直接用 sorted()</span>
+<span class="tok-fn">print</span>(<span class="tok-fn">sorted</span>([<span class="tok-nm">5</span>, <span class="tok-nm">2</span>, <span class="tok-nm">8</span>, <span class="tok-nm">1</span>, <span class="tok-nm">9</span>, <span class="tok-nm">3</span>]))   <span class="tok-cm"># [1, 2, 3, 5, 8, 9]</span></code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 31 综合项目 ============= -->
+<section id="s31">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--p1);border-color:rgba(44,122,77,.4)">31</div>
+      <div>
+        <h2>综合项目：从练习到作品</h2>
+        <p>8 个递进项目，覆盖 Python 的常见应用场景。</p>
+      </div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--green)">
+      <h4>项目一：猜数字游戏 🎲</h4>
+      <div class="meta">难度 ★☆☆ · 变量 / if / while / random</div>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>guess.py</span><button class="copybtn" data-target="p-pj1">复制</button></div><pre id="p-pj1"><code><span class="tok-kw">import</span> random
+
+target = random.<span class="tok-fn">randint</span>(<span class="tok-nm">1</span>, <span class="tok-nm">100</span>)
+tries = <span class="tok-nm">0</span>
+
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    n = <span class="tok-fn">int</span>(<span class="tok-fn">input</span>(<span class="tok-st">"猜一个 1-100 的数："</span>))
+    tries += <span class="tok-nm">1</span>
+    <span class="tok-kw">if</span> n &gt; target:      <span class="tok-fn">print</span>(<span class="tok-st">"大了"</span>)
+    <span class="tok-kw">elif</span> n &lt; target:    <span class="tok-fn">print</span>(<span class="tok-st">"小了"</span>)
+    <span class="tok-kw">else</span>:
+        <span class="tok-fn">print</span>(<span class="tok-st">f"用了 </span><span class="tok-cm">{</span>tries<span class="tok-cm">}</span><span class="tok-st"> 次猜中！"</span>)
+        <span class="tok-kw">break</span></code></pre></div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--p2)">
+      <h4>项目二：学生成绩管理系统 📊</h4>
+      <div class="meta">难度 ★★★ · list / dict / 函数 / 文件</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--p3)">
+      <h4>项目三：通讯录系统 📞</h4>
+      <div class="meta">难度 ★★★★ · 函数 / 字典 / 文件 / 异常</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--violet,#5b21b6)">
+      <h4>项目四：文本统计工具 📝</h4>
+      <div class="meta">难度 ★★★ · 字符串 / 字典 / Counter</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--coral)">
+      <h4>项目五：天气数据查询 🌤️</h4>
+      <div class="meta">难度 ★★★★ · requests / JSON / API</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--p2)">
+      <h4>项目六：数据分析项目 📈</h4>
+      <div class="meta">难度 ★★★★ · Pandas / Matplotlib / 数据清洗</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--p3)">
+      <h4>项目七：网络爬虫 🕷️</h4>
+      <div class="meta">难度 ★★★★★ · requests / BeautifulSoup / re / CSV</div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--violet,#5b21b6)">
+      <h4>项目八：AI 应用 🤖</h4>
+      <div class="meta">难度 ★★★★ · API / AI 模型 / 文本处理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 速查 ============= -->
+<section id="ref">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--dim);border-color:var(--line2)">↗</div>
+      <div>
+        <h2>Python 速查手册</h2>
+        <p>写代码时随手翻一翻 —— 比每次去搜更快。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--p1)">
+      <h3>35 个关键字</h3>
+      <p style="margin-bottom:6px">
+        <span class="tag">False</span><span class="tag">None</span><span class="tag">True</span><span class="tag">and</span><span class="tag">as</span><span class="tag">assert</span><span class="tag">async</span><span class="tag">await</span><span class="tag">break</span><span class="tag">class</span><span class="tag">continue</span><span class="tag">def</span><span class="tag">del</span><span class="tag">elif</span><span class="tag">else</span><span class="tag">except</span><span class="tag">finally</span><span class="tag">for</span><span class="tag">from</span><span class="tag">global</span><span class="tag">if</span><span class="tag">import</span><span class="tag">in</span><span class="tag">is</span><span class="tag">lambda</span><span class="tag">nonlocal</span><span class="tag">not</span><span class="tag">or</span><span class="tag">pass</span><span class="tag">raise</span><span class="tag">return</span><span class="tag">try</span><span class="tag">while</span><span class="tag">with</span><span class="tag">yield</span><span class="tag">match</span><span class="tag">case</span>
+      </p>
+    </div>
+
+    <div class="card" style="--acc:var(--p2)">
+      <h3>数据结构选择速查</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>需求</th><th>推荐</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">可变序列</td><td><code>list</code>（最常用）</td></tr>
+          <tr><td class="hl">不可变序列</td><td><code>tuple</code></td></tr>
+          <tr><td class="hl">去重</td><td><code>set</code></td></tr>
+          <tr><td class="hl">键值映射</td><td><code>dict</code></td></tr>
+          <tr><td class="hl">先进先出队列</td><td><code>collections.deque</code></td></tr>
+          <tr><td class="hl">带默认值的字典</td><td><code>collections.defaultdict</code></td></tr>
+          <tr><td class="hl">计数器</td><td><code>collections.Counter</code></td></tr>
+          <tr><td class="hl">数值数组</td><td><code>numpy.array</code>（数据科学）</td></tr>
+          <tr><td class="hl">表格数据</td><td><code>pandas.DataFrame</code>（数据分析）</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3>常用代码模板</h3>
+      <div class="codebox"><div class="ch"><span class="lang">Python</span><span>template.py</span><button class="copybtn" data-target="p-tmpl">复制</button></div><pre id="p-tmpl"><code><span class="tok-cm"># 1) 读文本</span>
+<span class="tok-kw">from</span> pathlib <span class="tok-kw">import</span> Path
+text = <span class="tok-ty">Path</span>(<span class="tok-st">"a.txt"</span>).<span class="tok-fn">read_text</span>(encoding=<span class="tok-st">"utf-8"</span>)
+
+<span class="tok-cm"># 2) 计时</span>
+<span class="tok-kw">import</span> time
+t0 = time.<span class="tok-fn">time</span>()
+<span class="tok-cm"># ...</span>
+<span class="tok-fn">print</span>(<span class="tok-st">f"</span><span class="tok-cm">{</span>time.<span class="tok-fn">time</span>() - t0<span class="tok-cm">:.2</span>f<span class="tok-cm">}</span><span class="tok-st">s"</span>)
+
+<span class="tok-cm"># 3) 安全除法</span>
+<span class="tok-kw">def</span> <span class="tok-fn">safe_div</span>(a, b):
+    <span class="tok-kw">return</span> a / b <span class="tok-kw">if</span> b != <span class="tok-nm">0</span> <span class="tok-kw">else</span> <span class="tok-kw">None</span>
+
+<span class="tok-cm"># 4) 链式比较 + 三元</span>
+status = <span class="tok-st">"teen"</span> <span class="tok-kw">if</span> <span class="tok-nm">13</span> &lt;= age &lt;= <span class="tok-nm">19</span> <span class="tok-kw">else</span> <span class="tok-st">"adult"</span>
+
+<span class="tok-cm"># 5) 列表按字段排序</span>
+<span class="tok-fn">sorted</span>(students, key=<span class="tok-kw">lambda</span> s: s[<span class="tok-st">"score"</span>], reverse=<span class="tok-kw">True</span>)
+
+<span class="tok-cm"># 6) 字典分组</span>
+<span class="tok-kw">from</span> itertools <span class="tok-kw">import</span> groupby
+<span class="tok-fn">sorted</span>(data, key=<span class="tok-kw">lambda</span> x: x[<span class="tok-st">"class"</span>])</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Python 程序设计 · 从入门到 AI 学习教程</b> · 大学计算机专业核心课程</p>
+    <p>本教程默认采用 <strong>Python 3.10+</strong>，覆盖从基础语法到数据分析、AI、异步编程的完整知识体系。学完基础后可根据兴趣选择数据科学 / Web / AI 分流方向。</p>
+    <p style="margin-top:8px">参考：菜鸟教程 · 廖雪峰 Python 教程 · 《Python 编程：从入门到实践》· 《流畅的 Python》· PEP 8</p>
+  </div>
+</footer>
+
+<div class="back-top" id="backTop" title="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</div>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var backTop = document.getElementById('backTop');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (progress) progress.style.width = p + '%';
+    if (backTop) backTop.classList.toggle('show', h.scrollTop > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  if (backTop) backTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+(function () {
+  var links = document.querySelectorAll('#navlinks a');
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if (sec) sections.push({ id: id, el: sec, link: a });
+  });
+  function update() {
+    var top = window.scrollY + 80;
+    var cur = sections[0];
+    sections.forEach(function (s) {
+      if (s.el.offsetTop <= top) cur = s;
+    });
+    links.forEach(function (a) { a.classList.remove('cur'); });
+    if (cur) cur.link.classList.add('cur');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+(function () {
+  var cards = document.querySelectorAll('.q-card');
+  cards.forEach(function (card) {
+    var answer = card.getAttribute('data-answer');
+    var expText = card.getAttribute('data-exp') || '';
+    var opts = card.querySelectorAll('.opt');
+    var exp = card.querySelector('.q-exp');
+    opts.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        if (card.classList.contains('answered')) return;
+        card.classList.add('answered');
+        var chosen = opt.getAttribute('data-v');
+        opts.forEach(function (o) { o.classList.add('disabled'); });
+        if (chosen === answer) {
+          opt.classList.add('correct');
+          exp.innerHTML = '<b>参考答案：' + answer + '</b> · ' + expText;
+        } else {
+          opt.classList.add('wrong');
+          opts.forEach(function (o) {
+            if (o.getAttribute('data-v') === answer) o.classList.add('correct');
+          });
+          exp.innerHTML = '<b>参考答案：' + answer + '</b>（你选了 ' + chosen + '）· ' + expText;
+        }
+        exp.classList.add('show');
+      });
+    });
+  });
+})();
+
+(function () {
+  document.querySelectorAll('.copybtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-target');
+      var el = document.getElementById(id);
+      if (!el) return;
+      var text = el.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        var old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        btn.style.color = '#74c5b3';
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.style.color = '';
+        }, 1500);
+      }, function () {
+        btn.textContent = '复制失败';
+      });
+    });
+  });
+})();
+</script>
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--mut);border-top:1px solid var(--line)">
+  Python 程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--p2)">返回导航首页</a>
+</footer>
+
+@media print{
+  #topnav,#progress,.back-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important;color:#000!important}
+  .hero h1{color:#000!important}
+  .hero .sub,.hero .hero-chips{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  pre{background:#f5f5f5!important;color:#000!important}
+}
+</body>
+</html>

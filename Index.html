@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSAI - AI 驱动的计算机科学学习导航。涵盖国产与国际 AI 工具、计算机科学导论、编程语言、Web 开发、计算机等级考试与竞赛。">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="robots" content="index, follow">
+
+    <!-- 安全说明：X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，发布时须在服务器 HTTP 响应头中配置 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>CSAI - AI 驱动的计算机科学学习导航</title>
+
+    <!-- 主题初始化：必须在样式表加载前执行，避免暗色用户闪白屏 (FOUC) -->
+    <script src="js/theme-init.js"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar" aria-label="主导航">
+        <a href="./" class="brand-logo" aria-label="CSAI 首页">
+            <div class="logo-icon-wrapper"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
+            <div class="brand-text">
+                <span class="brand-title">CSAI</span>
+                <span class="brand-subtitle">CS &amp; AI LEARNING</span>
+            </div>
+        </a>
+
+        <div class="nav-right-container">
+            <div class="nav-menu-wrapper">
+                <ul class="nav-menu">
+                    <li><a href="#cn-ai-tools">国产 AI 工具</a></li>
+                    <li><a href="#global-ai-tools">国际 AI 工具</a></li>
+                    <li><a href="#cs-intro">计算机导论</a></li>
+                    <li><a href="#cs-overview">计算机概论</a></li>
+                    <li><a href="#languages">编程语言</a></li>
+                    <li><a href="#web-dev">Web开发</a></li>
+                    <li><a href="#competitions">竞赛考试</a></li>
+                    <li><a href="#blog">动态资讯</a></li>
+                </ul>
+            </div>
+            <!-- 夜间模式切换按钮 -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="切换明暗主题" title="切换明暗主题">
+                <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header>
+        <h1>AI 驱动的计算机科学学习导航</h1>
+        <p>探索生成式 AI 潜力，深度协同计算机专业基础课程学习与实践</p>
+    </header>
+
+    <main class="container">
+
+        <!-- 国产 AI 工具箱 -->
+        <h2 id="cn-ai-tools" class="section-title"><i class="fa-solid fa-flag" aria-hidden="true"></i> 国产 AI 工具（国内直接访问）</h2>
+        <div class="grid-ai">
+            <a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-brain" aria-hidden="true"></i><span class="ai-name">DeepSeek</span><span class="ai-tag tag-chat">推理大模型</span>
+            </a>
+            <a href="https://www.doubao.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-comment-dots" aria-hidden="true"></i><span class="ai-name">豆包</span><span class="ai-tag tag-multi">通用对话</span>
+            </a>
+            <a href="https://kimi.moonshot.cn" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-moon" aria-hidden="true"></i><span class="ai-name">Kimi</span><span class="ai-tag tag-multi">长文本阅读</span>
+            </a>
+            <a href="https://chatglm.cn/main/alltoolsdetail?lang=zh" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-atom" aria-hidden="true"></i><span class="ai-name">智谱 GLM</span><span class="ai-tag tag-multi">多模态对话</span>
+            </a>
+            <a href="https://chat.qwen.ai/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-cloud" aria-hidden="true"></i><span class="ai-name">通义千问</span><span class="ai-tag tag-multi">全能大模型</span>
+            </a>
+            <a href="https://agent.minimaxi.com/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-box" aria-hidden="true"></i><span class="ai-name">海螺 AI</span><span class="ai-tag tag-multi">智能体创作</span>
+            </a>
+            <a href="https://www.coze.cn/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i><span class="ai-name">扣子 Coze</span><span class="ai-tag tag-multi">Bot搭建平台</span>
+            </a>
+            <a href="https://metaso.cn" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="ai-name">秘塔 AI</span><span class="ai-tag tag-chat">AI 搜索</span>
+            </a>
+            <a href="https://klingai.kuaishou.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-film" aria-hidden="true"></i><span class="ai-name">Kling 可灵</span><span class="ai-tag tag-media">视频生成</span>
+            </a>
+            <a href="https://jimeng.jianying.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-clapperboard" aria-hidden="true"></i><span class="ai-name">Jimeng 即梦</span><span class="ai-tag tag-media">图像视频</span>
+            </a>
+            <a href="https://www.liblib.art" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-palette" aria-hidden="true"></i><span class="ai-name">Liblib 哩布</span><span class="ai-tag tag-media">AI 绘画社区</span>
+            </a>
+            <a href="https://cosyvoice.org/zh/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-microphone-lines" aria-hidden="true"></i><span class="ai-name">cosyvoice</span><span class="ai-tag tag-media">文本转语音</span>
+            </a>
+            <a href="https://yiyan.baidu.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-comments" aria-hidden="true"></i><span class="ai-name">文心一言</span><span class="ai-tag tag-chat">通用对话</span>
+            </a>
+            <a href="https://hunyuan.tencent.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="ai-name">腾讯混元</span><span class="ai-tag tag-multi">多模态 AI</span>
+            </a>
+            <a href="https://www.baichuan-ai.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-compass" aria-hidden="true"></i><span class="ai-name">百川智能</span><span class="ai-tag tag-chat">对话检索</span>
+            </a>
+            <a href="https://www.sensecore.cn" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-eye" aria-hidden="true"></i><span class="ai-name">商汤日日新</span><span class="ai-tag tag-multi">视觉与大模型</span>
+            </a>
+        </div>
+
+        <!-- 国际 AI 工具箱 -->
+        <h2 id="global-ai-tools" class="section-title"><i class="fa-solid fa-globe" aria-hidden="true"></i> 国际 AI 工具（可能需要特定网络条件）</h2>
+        <div class="grid-ai">
+            <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-bolt" aria-hidden="true"></i><span class="ai-name">ChatGPT</span><span class="ai-tag tag-multi">综合大模型</span>
+            </a>
+            <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i><span class="ai-name">Claude</span><span class="ai-tag tag-multi">长文与编程</span>
+            </a>
+            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-brands fa-google" aria-hidden="true"></i><span class="ai-name">Gemini</span><span class="ai-tag tag-multi">原生多模态</span>
+            </a>
+            <a href="https://grok.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-robot" aria-hidden="true"></i><span class="ai-name">Grok</span><span class="ai-tag tag-multi">实时搜索问答</span>
+            </a>
+            <a href="https://manus.im" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-gears" aria-hidden="true"></i><span class="ai-name">Manus</span><span class="ai-tag tag-chat">通用 Agent</span>
+            </a>
+            <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-terminal" aria-hidden="true"></i><span class="ai-name">Cursor</span><span class="ai-tag tag-chat">AI 代码编辑器</span>
+            </a>
+            <a href="https://www.midjourney.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-image" aria-hidden="true"></i><span class="ai-name">Midjourney</span><span class="ai-tag tag-media">专业 AI 绘画</span>
+            </a>
+            <a href="https://sora.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-video" aria-hidden="true"></i><span class="ai-name">Sora</span><span class="ai-tag tag-media">视频生成</span>
+            </a>
+            <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span class="ai-name">Perplexity</span><span class="ai-tag tag-chat">学术 AI 搜索引擎</span>
+            </a>
+            <a href="https://v0.dev" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-code" aria-hidden="true"></i><span class="ai-name">v0.dev</span><span class="ai-tag tag-chat">UI 前端生成</span>
+            </a>
+            <a href="https://suno.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-music" aria-hidden="true"></i><span class="ai-name">Suno</span><span class="ai-tag tag-media">音乐生成</span>
+            </a>
+            <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-microphone" aria-hidden="true"></i><span class="ai-name">ElevenLabs</span><span class="ai-tag tag-media">高拟真配音</span>
+            </a>
+            <a href="https://platform.inworld.ai/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-gamepad" aria-hidden="true"></i><span class="ai-name">Inworld</span><span class="ai-tag tag-media">游戏 NPC 驱动</span>
+            </a>
+            <a href="https://www.dola.com/" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-photo-film" aria-hidden="true"></i><span class="ai-name">Dola</span><span class="ai-tag tag-media">多媒体工具</span>
+            </a>
+            <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-face-smile" aria-hidden="true"></i><span class="ai-name">Hugging Face</span><span class="ai-tag tag-multi">开源模型社区</span>
+            </a>
+            <a href="https://replicate.com" target="_blank" rel="noopener noreferrer" class="ai-card">
+                <i class="fa-solid fa-server" aria-hidden="true"></i><span class="ai-name">Replicate</span><span class="ai-tag tag-multi">云端 API 推理</span>
+            </a>
+        </div>
+
+        <!-- 计算机科学导论模块 -->
+        <h2 id="cs-intro" class="section-title"><i class="fa-solid fa-book" aria-hidden="true"></i> 计算机科学导论 (新编 2026.9)</h2>
+        <div class="grid-cards">
+            <a href="daolun/第01章_计算机领域应掌握的基本技能.html" class="card"><div class="card-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></div><div class="card-content"><h3>第1章</h3><p>计算机领域应掌握的基本技能</p></div></a>
+            <a href="daolun/第02章_计算机系统基石_课件.html" class="card"><div class="card-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div><div class="card-content"><h3>第2章</h3><p>计算机系统基石</p></div></a>
+            <a href="daolun/第03章_计算机体系基础_课件.html" class="card"><div class="card-icon"><i class="fa-solid fa-cubes" aria-hidden="true"></i></div><div class="card-content"><h3>第3章</h3><p>计算机体系基础</p></div></a>
+            <a href="daolun/第04章_操作系统_课件.html" class="card"><div class="card-icon"><i class="fa-solid fa-server" aria-hidden="true"></i></div><div class="card-content"><h3>第4章</h3><p>操作系统基础</p></div></a>
+            <a href="daolun/第05章_开发文档与版本控制_课件.html" class="card"><div class="card-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></div><div class="card-content"><h3>第5章</h3><p>开发文档编写与版本控制基础</p></div></a>
+            <a href="daolun/第06章_生成式AI_课件.html" class="card"><div class="card-icon"><i class="fa-solid fa-memory" aria-hidden="true"></i></div><div class="card-content"><h3>第6章</h3><p>生成式 AI</p></div></a>
+            <a href="daolun/实验01-Word.html" class="card"><div class="card-icon"><i class="fa-solid fa-code-merge" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验01</h3><p>Word基础</p></div></a>
+            <a href="daolun/实验02-Excel.html" class="card"><div class="card-icon"><i class="fa-solid fa-brain" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验02</h3><p>Excel基础</p></div></a>
+            <a href="daolun/实验03-PowerPoint.html" class="card"><div class="card-icon"><i class="fa-solid fa-sitemap" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验03</h3><p>PowerPoint基础</p></div></a>
+            <a href="daolun/实验04-WindowsCMD.html" class="card"><div class="card-icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验04</h3><p>WindowsCMD基础</p></div></a>
+            <a href="daolun/实验05-Markdown.html" class="card"><div class="card-icon"><i class="fa-solid fa-image" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验05</h3><p>Markdown入门</p></div></a>
+            <a href="daolun/实验06-Git.html" class="card"><div class="card-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div><div class="card-content"><h3>上机实验06</h3><p>Git入门</p></div></a>
+        </div>
+
+        <!-- 计算机科学概论模块 -->
+        <h2 id="cs-overview" class="section-title"><i class="fa-solid fa-book" aria-hidden="true"></i> 计算机科学概论 (CS: An Overview 13th Edition J. Glenn Brookshear 2020)</h2>
+        <div class="grid-cards">
+            <a href="text/第0章_计算机科学概论_绪论.html" class="card"><div class="card-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></div><div class="card-content"><h3>第0章 绪 论</h3><p>专项学习页面</p></div></a>
+            <a href="text/第1章-数据存储-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div><div class="card-content"><h3>第1章 数据存储</h3><p>专项学习页面</p></div></a>
+            <a href="text/第2章-数据操作-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-cubes" aria-hidden="true"></i></div><div class="card-content"><h3>第2章 数据操控</h3><p>专项学习页面</p></div></a>
+            <a href="text/第3章-操作系统-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-server" aria-hidden="true"></i></div><div class="card-content"><h3>第3章 操作系统</h3><p>专项学习页面</p></div></a>
+            <a href="text/第4章-组网及因特网-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></div><div class="card-content"><h3>第4章 组网及因特网</h3><p>专项学习页面</p></div></a>
+            <a href="text/第5章-算法-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-memory" aria-hidden="true"></i></div><div class="card-content"><h3>第5章 算法基础</h3><p>专项学习页面</p></div></a>
+            <a href="text/第6章-程序设计语言-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-code-merge" aria-hidden="true"></i></div><div class="card-content"><h3>第6章 程序设计语言</h3><p>专项学习页面</p></div></a>
+            <a href="text/第7章-软件工程-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-brain" aria-hidden="true"></i></div><div class="card-content"><h3>第7章 软件工程基础</h3><p>专项学习页面</p></div></a>
+            <a href="text/第8章-数据抽象-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-sitemap" aria-hidden="true"></i></div><div class="card-content"><h3>第8章 数据抽象</h3><p>专项学习页面</p></div></a>
+            <a href="text/第9章-数据库系统-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div><div class="card-content"><h3>第9章 数据库系统</h3><p>专项学习页面</p></div></a>
+            <a href="text/第10章-计算机图形学-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-image" aria-hidden="true"></i></div><div class="card-content"><h3>第10章 计算机图形学</h3><p>专项学习页面</p></div></a>
+            <a href="text/第11章-人工智能-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div><div class="card-content"><h3>第11章 人工智能概述</h3><p>专项学习页面</p></div></a>
+            <a href="text/第12章-计算理论-教学网页.html" class="card"><div class="card-icon"><i class="fa-solid fa-calculator" aria-hidden="true"></i></div><div class="card-content"><h3>第12章 计算理论</h3><p>专项学习页面</p></div></a>
+        </div>
+
+        <!-- 主流编程语言 -->
+        <h2 id="languages" class="section-title"><i class="fa-solid fa-code" aria-hidden="true"></i> 主流编程语言</h2>
+        <div class="grid-cards">
+            <a href="others/C语言程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-solid fa-c" aria-hidden="true"></i></div><div class="card-content"><h3>C</h3><p>底层系统开发与算法基石</p></div></a>
+            <a href="others/C++程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-solid fa-c" aria-hidden="true"></i></div><div class="card-content"><h3>C++</h3><p>系统级开发、高性能计算</p></div></a>
+            <a href="others/Java程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-java" aria-hidden="true"></i></div><div class="card-content"><h3>Java</h3><p>面向对象与企业级后端开发</p></div></a>
+            <a href="others/Python程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-python" aria-hidden="true"></i></div><div class="card-content"><h3>Python</h3><p>AI 开发、数据科学</p></div></a>
+            <a href="others/SQL数据库_学习教程.html" class="card"><div class="card-icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div><div class="card-content"><h3>SQL / 数据库</h3><p>关系型数据建模</p></div></a>
+        </div>
+
+        <!-- Web 开发 -->
+        <h2 id="web-dev" class="section-title"><i class="fa-solid fa-globe" aria-hidden="true"></i> Web 开发</h2>
+        <div class="grid-cards">
+            <a href="others/HTML程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-html5" aria-hidden="true"></i></div><div class="card-content"><h3>HTML 基础</h3><p>现代网页结构与响应式设计</p></div></a>
+            <a href="others/CSS程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i></div><div class="card-content"><h3>CSS 基础</h3><p>样式设计与响应式布局</p></div></a>
+            <a href="others/JavaScript程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-js" aria-hidden="true"></i></div><div class="card-content"><h3>JavaScript</h3><p>Web 全栈与客户端</p></div></a>
+            <a href="others/Nodejs学习.html" class="card"><div class="card-icon"><i class="fa-brands fa-js" aria-hidden="true"></i></div><div class="card-content"><h3>Node.js</h3><p>服务端 JS 运行</p></div></a>
+            <a href="others/Vue程序设计_学习教程.html" class="card"><div class="card-icon"><i class="fa-brands fa-vuejs" aria-hidden="true"></i></div><div class="card-content"><h3>Vue.js</h3><p>渐进式前端框架与生态</p></div></a>
+            <a href="Jinjie/net-games.html" class="card"><div class="card-icon"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></div><div class="card-content"><h3>AI 网页小游戏创作</h3><p>2D轻量开发</p></div></a>
+        </div>
+
+        <!-- 全国计算机等级考试（NCRE）与竞赛 -->
+        <h2 id="competitions" class="section-title"><i class="fa-solid fa-trophy" aria-hidden="true"></i> 全国计算机等级考试（NCRE）与ACM竞赛</h2>
+        <div class="grid-cards">
+            <a href="daolun/NCRE二级C.html" class="card"><div class="card-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div><div class="card-content"><h3>二级 C 语言</h3><p>程序设计</p></div></a>
+            <a href="daolun/NCRE二级C++_考点与真题_2021-2026.html" class="card"><div class="card-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div><div class="card-content"><h3>二级 C++</h3><p>程序设计</p></div></a>
+            <a href="daolun/二级Java_考点与真题_2021-2026.html" class="card"><div class="card-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div><div class="card-content"><h3>二级 Java</h3><p>程序设计</p></div></a>
+            <a href="daolun/NCRE二级MS_Office_真题与知识点.html" class="card"><div class="card-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div><div class="card-content"><h3>二级 办公应用</h3><p>MS Office</p></div></a>
+            <a href="daolun/NCRE二级 web-exam.html" class="card"><div class="card-icon"><i class="fa-solid fa-certificate" aria-hidden="true"></i></div><div class="card-content"><h3>二级 Web 程序设计</h3><p>HTML、CSS、JavaScript...</p></div></a>
+            <a href="daolun/ACM-ICPC 国际大学生程序设计竞赛.html" class="card"><div class="card-icon"><i class="fa-solid fa-code-compare" aria-hidden="true"></i></div><div class="card-content"><h3>ACM-ICPC竞赛入门</h3><p>程序设计竞赛与算法训练</p></div></a>
+        </div>
+
+        <!-- 动态资讯 -->
+        <h2 id="blog" class="section-title"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> 动态资讯</h2>
+        <div class="blog-container">
+            <div class="blog-archive">
+                <details open>
+                    <summary>
+                        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i> 2026 年文章</span>
+                        <span class="blog-date">2 篇</span>
+                    </summary>
+                    <ul class="blog-list">
+
+                        <li class="blog-item">
+                            <a href="blog.html?post=AI音频生成">
+                           <span class="blog-title">AI 音频生成：从语音合成到 AI 作曲</span>
+                              <span class="blog-date">2026-09-20</span>
+                          </a>
+                        </li>
+
+
+                    </ul>
+                </details>
+            </div>
+
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p><strong>CSAI Navigation</strong> <span class="version-badge">v1.3.0</span></p>
+                <p>&copy; 2026 CSAI Team. 保留所有权利。</p>
+            </div>
+            <div class="footer-contact">
+                <!-- TODO: 发布前替换为真实联系方式，并为隐私政策创建 privacy.html -->
+                <a href="mailto:contact@csai.example.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> 联系我们</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+                <a href="javascript:void(0);"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 隐私政策</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

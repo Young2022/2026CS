@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI 计算机科学导论 · 实验03 Microsoft PowerPoint 初学者学习计划：8个核心模块 + 综合实训，含二级MS Office考点。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Microsoft PowerPoint 初学者学习计划</title>
+<style>
+:root{
+  --p:#7c3aed; --p2:#6d28d9; --light:#f5f3ff; --dark:#0f172a;
+  --text:#334155; --muted:#64748b; --line:#e9d5ff; --bg:#faf7ff;
+  --orange:#d97706; --blue:#0284c7; --green:#059669; --red:#dc2626;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.75}
+.hero{
+  background:linear-gradient(135deg,#1e1b4b 0%,#7c3aed 55%,#c084fc 100%);
+  color:#fff;padding:58px 24px 52px;position:relative;overflow:hidden
+}
+.hero:after{content:"P";position:absolute;right:7%;top:-45px;font-size:260px;font-weight:900;opacity:.08}
+.wrap{max-width:1180px;margin:auto}
+.hero h1{margin:0 0 10px;font-size:42px;letter-spacing:.5px}
+.hero p{margin:0;max-width:820px;font-size:18px;opacity:.92}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.badge{padding:6px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
+nav{
+  position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+}
+.navin{display:flex;gap:4px;overflow:auto;padding:8px 10px;align-items:center}
+nav a{white-space:nowrap;text-decoration:none;color:#475569;padding:5px 9px;border-radius:7px;font-size:13px}
+nav a:hover{background:var(--light);color:var(--p)}
+nav a.ext{background:#fff7ed;border:1px solid #fed7aa;color:var(--orange);font-weight:600}
+nav a.ext:hover{background:#ffedd5;color:#9a3412}
+nav a.word{background:#f0f9ff;border:1px solid #bae6fd;color:#0284c7;font-weight:600}
+nav a.word:hover{background:#e0f2fe;color:#0c4a6e}
+nav a.excel{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-weight:600}
+nav a.excel:hover{background:#d1fae5;color:#065f46}
+main{padding:30px 18px 60px}
+section{margin:0 0 30px;scroll-margin-top:65px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;
+  box-shadow:0 5px 20px rgba(124,58,237,.06)
+}
+.card.purple-accent{border-left:6px solid var(--p)}
+h2{margin:0 0 18px;color:var(--dark);font-size:28px;display:flex;align-items:center;gap:10px}
+h2 .icn{width:38px;height:38px;border-radius:10px;background:var(--light);color:var(--p);display:inline-flex;align-items:center;justify-content:center;font-size:20px}
+h3{color:var(--p2);margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+h4{margin:15px 0 7px;color:var(--dark);display:flex;align-items:center;gap:6px}
+.lead{font-size:16px;color:#475569}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:18px;background:var(--light);border-radius:12px;border-left:4px solid var(--p)}
+.stat b{display:block;font-size:24px;color:var(--p2)}
+.stat span{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:#faf5ff;color:var(--dark)}
+tr:nth-child(even) td{background:#fefcff}
+.timeline{display:grid;gap:12px}
+.lesson{display:grid;grid-template-columns:95px 1fr;gap:16px;align-items:start}
+.num{background:var(--p);color:#fff;border-radius:10px;padding:10px;text-align:center;font-weight:700;font-size:18px}
+.lesson .box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+.lesson .box b{color:var(--dark)}
+.step{counter-reset:item;display:grid;gap:10px}
+.step div{counter-increment:item;padding:12px 14px 12px 48px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;position:relative}
+.step div:before{content:counter(item);position:absolute;left:13px;top:11px;width:25px;height:25px;border-radius:50%;background:var(--p);color:white;text-align:center;line-height:25px;font-size:13px;font-weight:bold}
+.example{background:#f8fafc;border-left:4px solid var(--p);padding:14px 17px;border-radius:0 10px 10px 0;margin:12px 0}
+.tip{background:#fff7ed;border-left:4px solid var(--orange);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.warn{background:#fef2f2;border-left:4px solid var(--red);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.shortcut{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.shortcut span{background:#faf5ff;border:1px solid var(--p);border-radius:6px;padding:4px 10px;font-size:13px}
+kbd{background:#eef2f7;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:5px;padding:2px 7px;font-family:Consolas,monospace;color:#1e293b}
+.check{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.check div{padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.check div:before{content:"✓";color:var(--p);font-weight:bold;margin-right:8px}
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:18px 0}
+.path span{padding:8px 12px;background:var(--light);color:var(--p2);border-radius:8px;font-weight:600;font-size:13px}
+.path .arrow{color:#94a3b8;font-size:18px}
+ul{margin-top:8px}
+li{margin:3px 0}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+.glossary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.glossary div{padding:10px 14px;background:#fefcff;border:1px solid var(--line);border-radius:8px}
+.glossary div b{color:var(--p2);display:block;margin-bottom:4px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:32px}.glossary{grid-template-columns:1fr}.brand-title{display:none}}
+@media(max-width:600px){.grid,.check{grid-template-columns:1fr}.lesson{grid-template-columns:1fr}.hero{padding-top:42px}.card{padding:19px}h2{font-size:24px}}
+
+/* IndexOx brand logo */
+.hero-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; text-decoration: none; }
+.hero-logo .logo-icon-wrapper { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hero-logo .brand-title { font-size: 15px; font-weight: 800; color: #fff; background: none; -webkit-text-fill-color: #fff; }
+
+@media print{
+ nav{display:none}.hero{background:#fff;color:#111;padding:20px}.hero:after{display:none}
+ .card{box-shadow:none;break-inside:avoid}section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="../daolun/index.html" class="hero-logo">
+      <span class="logo-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></span>
+      <span class="brand-title">CSAI · 计算机科学导论</span>
+    </a>
+    <div class="badges"><span class="badge">Microsoft PowerPoint</span><span class="badge">初学者</span><span class="badge">8个核心模块 + 综合实训</span><span class="badge">含"二级MS Office"考点</span></div>
+    <h1>PowerPoint 初学者系统学习计划</h1>
+    <p>从演示文稿创建开始，逐步掌握幻灯片编辑、对象插入、主题母版、动画切换、超链接与放映，最终能独立制作带动画和交互的产品发布、培训课件和工作演示。</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap navin">
+    <a href="#m1">文稿创建</a><a href="#m2">幻灯片与版式</a>
+    <a href="#m3">文本格式</a><a href="#m4">插入对象</a><a href="#m5">主题母版</a>
+    <a href="#m6">动画切换</a><a href="#m7">超链接动作</a><a href="#m8">放映导出</a>
+    <a href="#project">综合实训</a>
+    <a href="计算机二级MS_Office_PowerPoint真题与考点.html" target="_blank" class="ext">📙 PPT真题</a>
+    <a href="实验01-Word.html" target="_blank" class="word">📘 Word学习</a>
+    <a href="实验02-Excel.html" target="_blank" class="excel">📗 Excel学习</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="overview">
+<div class="card purple-accent">
+<h2><span class="icn">📋</span>一、整体学习路线</h2>
+<p class="lead">推荐按"基础编辑 → 对象与版式 → 美化与动画 → 交互与放映"逐步学习。重点不是"加了多少特效"，而是用对场合、用对方式。</p>
+<div class="grid">
+  <div class="stat"><b>8</b><span>核心学习模块</span></div>
+  <div class="stat"><b>1</b><span>综合实训项目</span></div>
+  <div class="stat"><b>4</b><span>必备动画类型</span></div>
+  <div class="stat"><b>从零开始</b><span>面向PPT初学者</span></div>
+</div>
+<div class="path">
+  <span>文稿创建</span><i class="arrow">→</i><span>幻灯片</span><i class="arrow">→</i>
+  <span>文本格式</span><i class="arrow">→</i><span>插入对象</span><i class="arrow">→</i>
+  <span>主题母版</span><i class="arrow">→</i><span>动画切换</span><i class="arrow">→</i>
+  <span>超链接</span><i class="arrow">→</i><span>放映导出</span>
+</div>
+<table>
+<thead><tr><th>模块</th><th>学习内容</th><th>建议时间</th><th>最终能力</th></tr></thead>
+<tbody>
+<tr><td>第1部分</td><td>演示文稿创建与保存</td><td>1课时</td><td>熟练创建、保存、备份、加密</td></tr>
+<tr><td>第2部分</td><td>幻灯片编辑与版式</td><td>2课时</td><td>高效组织幻灯片与节</td></tr>
+<tr><td>第3部分</td><td>文本与段落格式</td><td>1课时</td><td>规范设置字体、段落、项目符号</td></tr>
+<tr><td>第4部分</td><td>插入对象</td><td>2课时</td><td>插入图片、形状、SmartArt、图表、表格</td></tr>
+<tr><td>第5部分</td><td>主题与母版</td><td>2课时</td><td>统一外观、定制模板</td></tr>
+<tr><td>第6部分</td><td>动画与切换效果</td><td>2课时</td><td>合理编排动效</td></tr>
+<tr><td>第7部分</td><td>超链接与动作按钮</td><td>1课时</td><td>实现页面跳转与互动</td></tr>
+<tr><td>第8部分</td><td>放映与导出</td><td>1课时</td><td>演讲者模式、PDF/视频导出</td></tr>
+</tbody>
+</table>
+<h3>📖 关键术语速览</h3>
+<div class="glossary">
+  <div><b>演示文稿</b>一个 .pptx 文件即一个演示文稿，由多张幻灯片组成。</div>
+  <div><b>幻灯片 / 版式</b>单页内容；版式是占位符的预设布局（标题、内容、节标题…）。</div>
+  <div><b>母版</b>统一控制所有幻灯片字体、背景、占位符的"模板"。</div>
+  <div><b>动画 / 切换</b>动画控制同一张幻灯片内对象出现方式；切换控制幻灯片之间的过渡。</div>
+  <div><b>节(Section)</b>把演示文稿分成可命名、可整体移动的分组。</div>
+  <div><b>放映方式</b>演讲者放映（全屏）、观众自行浏览、展台浏览等模式。</div>
+</div>
+</div>
+</section>
+
+<section id="m1"><div class="card purple-accent">
+<h2><span class="icn">📁</span>① 演示文稿创建与保存</h2>
+<p><b>学习目标：</b>掌握新建、打开、保存、另存为，以及导出为 PDF 或视频。</p>
+<h3>📌 操作步骤</h3>
+<div class="step">
+<div>打开 PowerPoint，选择 <b>新建 → 空白演示文稿</b>。</div>
+<div>输入第一张幻灯片标题"产品介绍"，副标题"市场部"。</div>
+<div><b>文件 → 保存</b>，命名为"产品介绍.pptx"。</div>
+<div><b>文件 → 另存为 → PowerPoint 放映 (.ppx)</b>，双击即可直接进入放映。</div>
+<div><b>文件 → 导出 → 创建 PDF/XPS</b>，便于分发与打印。</div>
+<div><b>文件 → 导出 → 创建视频 (MP4)</b>，把整份演示文稿录制成视频。</div>
+<div><b>文件 → 信息 → 保护演示文稿</b>，选择"始终以只读方式打开"或"用密码加密"。</div>
+</div>
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div>新建 / 保存 / 另存为</div><div>PDF 导出</div>
+<div>MP4 视频导出</div><div>文件信息与作者</div>
+<div>只读 / 密码保护</div><div>最近使用的文件</div>
+</div>
+<div class="example"><b>练习：</b>新建"自我介绍.pptx"，写一张封面幻灯片，保存为 PPTX 和 PDF 各一份。</div>
+<div class="tip"><b>小贴士：</b>把做好的模板另存为 <b>PowerPoint 模板 (.potx)</b>，下次直接基于此模板新建，可保持公司统一风格。</div>
+</div></section>
+
+<section id="m2"><div class="card purple-accent">
+<h2><span class="icn">🗂️</span>② 幻灯片编辑与版式</h2>
+<p>这一部分训练"幻灯片管理能力"——新增、复制、移动、删除幻灯片与节。</p>
+<h3>📌 操作步骤</h3>
+<div class="step">
+<div>左侧缩略图区，<b>右键 → 新建幻灯片</b>，或快捷 <kbd>Ctrl</kbd>+<kbd>M</kbd>。</div>
+<div>选中幻灯片 → <b>右键 → 版式</b>，选择合适的占位符布局。</div>
+<div><b>Ctrl + 拖动</b>复制；<b>Alt + 上下箭头</b>快速调整顺序。</div>
+<div><b>Ctrl + 鼠标拖动</b>到其他节，可整片移动。</div>
+<div>缩略图区右键 → <b>新增节</b>，给节命名"产品介绍""价格""结束"。</div>
+</div>
+<h3>📌 视图选择</h3>
+<table>
+<tr><th>视图</th><th>适合场景</th></tr>
+<tr><td>普通视图</td><td>日常编辑（默认）</td></tr>
+<tr><td>大纲视图</td><td>只看标题文字，快速改结构</td></tr>
+<tr><td>幻灯片浏览</td><td>整体看效果、调整顺序</td></tr>
+<tr><td>备注页视图</td><td>给每页加演讲备注</td></tr>
+<tr><td>阅读模式</td><td>全屏翻页预览</td></tr>
+</table>
+<div class="tip"><b>小贴士：</b>建立"节"是管理长演示文稿的关键。汇报类演示可分为"开场 / 主体 / 结尾"三节，便于整体移动与放映分组。</div>
+<div class="example"><b>练习：</b>制作一份 10 页的"读书分享"演示文稿，按"封面 / 目录 / 三章正文 / 总结"建立节。</div>
+</div></section>
+
+<section id="m3"><div class="card purple-accent">
+<h2><span class="icn">🔤</span>③ 文本与段落格式</h2>
+<p>PPT 中的文字比 Word 更"视觉化"：字号要大、行距要宽、关键信息要突出。</p>
+<h3>📌 字体与字号</h3>
+<div class="step">
+<div>标题字号建议 ≥ <b>36 号</b>，正文字号 ≥ <b>24 号</b>，确保投影清楚。</div>
+<div>字体优先选择简洁的无衬线体，如<b>微软雅黑、思源黑体</b>。</div>
+<div>避免在同页使用超过 <b>3 种</b>字体。</div>
+</div>
+<h3>📌 段落格式</h3>
+<div class="step">
+<div>行距建议 <b>1.2–1.5 倍</b>，段前段后留 6–12 磅空白。</div>
+<div><b>项目符号</b>和<b>编号</b>：使用"开始 → 项目符号"自定义样式，避免默认大点。</div>
+<div><b>艺术字</b>：标题可用，慎用——只在重点处使用。</div>
+</div>
+<div class="warn"><b>常见错误：</b>把大段文字直接粘贴到 PPT。规则：<b>一页不超过 6 行字，每行不超过 12 字</b>。多字不如换图。</div>
+<div class="example"><b>实战对比：</b><br>
+❌ "今天我们讨论人工智能的发展历史、关键技术、主要应用、未来趋势、伦理问题、政策建议。"（一行字）<br>
+✅ 拆成 5 张幻灯片，每页一个要点 + 大图。</div>
+</div></section>
+
+<section id="m4"><div class="card purple-accent">
+<h2><span class="icn">🧩</span>④ 插入对象</h2>
+<h3>📌 图片与形状</h3>
+<div class="step">
+<div><b>插入 → 图片 → 此设备</b>，选择本地图片。</div>
+<div>右键图片 → <b>设置图片格式</b>：裁剪、颜色、效果、版式。</div>
+<div><b>插入 → 形状</b>，选择矩形/箭头/流程图/动作按钮。</div>
+<div>组合：选中多个对象 → <b>格式 → 组合</b>。</div>
+</div>
+<h3>📌 SmartArt</h3>
+<div class="example">
+<b>类型 → 用途对照：</b><br>
+<b>层次结构</b>：组织架构<br>
+<b>流程</b>：业务流程<br>
+<b>循环</b>：持续改进<br>
+<b>关系</b>：中心辐射<br>
+<b>列表</b>：并列要点<br>
+操作：<b>开始 → 转换为 SmartArt</b>，把项目列表直接变图形。
+</div>
+<h3>📌 图表与表格</h3>
+<div class="step">
+<div><b>插入 → 图表</b>：柱形图、折线图、饼图等。编辑数据用配套 Excel 窗口。</div>
+<div><b>插入 → 表格</b>：适合简单数据展示，复杂数据建议用图表。</div>
+</div>
+<h3>📌 音频与视频</h3>
+<div class="step">
+<div><b>插入 → 音频 → 此设备</b>，选 mp3/wav；插入后图标显示在幻灯片上。</div>
+<div><b>音频工具 → 播放</b>：跨幻灯片播放、循环播放、设为背景。</div>
+<div><b>插入 → 视频 → 此设备 / 联机视频</b>。</div>
+</div>
+<div class="tip"><b>小贴士：</b>演示文稿中的<b>大图</b>应当压缩到 200 KB 以内，否则文件会很大。可以用 <b>文件 → 压缩图片</b>。</div>
+</div></section>
+
+<section id="m5"><div class="card purple-accent">
+<h2><span class="icn">🎨</span>⑤ 主题与母版</h2>
+<p>用主题+母版统一整套演示文稿的外观——这是"专业感"的来源。</p>
+<h3>📌 主题</h3>
+<div class="step">
+<div><b>设计 → 主题</b>：选择内置主题（柏哥斯、离子、柏林等）。</div>
+<div><b>变体</b>：每种主题有 4 种颜色、3 种字体组合。</div>
+<div><b>设计 → 自定义 → 颜色 / 字体 / 效果</b>：创建自己的主题颜色。</div>
+</div>
+<h3>📌 幻灯片母版</h3>
+<div class="step">
+<div><b>视图 → 幻灯片母版</b>，进入母版视图。</div>
+<div>顶部是<b>主母版</b>，下方是若干<b>版式</b>。</div>
+<div>编辑母版：在背景层添加 LOGO、页脚占位符、统一背景。</div>
+<div><b>关闭母版视图</b>返回普通视图。</div>
+<div>对单张幻灯片：<b>设计 → 背景</b> 可单独覆盖。</div>
+</div>
+<div class="warn"><b>常见错误：</b>每张幻灯片单独设置背景/字体——这是大忌，会让整体风格零散。一定要用<b>母版</b>。</div>
+<div class="example"><b>练习：</b>自定义一个"绿色商务"主题色，然后在母版中加入公司 LOGO、一致的页脚文字。</div>
+</div></section>
+
+<section id="m6"><div class="card purple-accent">
+<h2><span class="icn">✨</span>⑥ 动画与切换效果</h2>
+<h3>📌 动画类型</h3>
+<table>
+<tr><th>类型</th><th>作用</th><th>典型用法</th></tr>
+<tr><td><b>进入</b></td><td>对象如何出现</td><td>浮入、淡出、擦除、缩放</td></tr>
+<tr><td><b>强调</b></td><td>对象出现后再变化</td><td>脉冲、陀螺旋、加粗闪烁</td></tr>
+<tr><td><b>退出</b></td><td>对象如何消失</td><td>淡出、飞出</td></tr>
+<tr><td><b>动作路径</b></td><td>沿自定义路径移动</td><td>直线、弧线、自定义</td></tr>
+</table>
+<h3>📌 使用步骤</h3>
+<div class="step">
+<div>选中对象 → <b>动画 → 添加动画</b>，挑选类型。</div>
+<div><b>动画窗格</b>查看顺序与计时。</div>
+<div><b>开始 → 单击时 / 与上一动画同时 / 上一动画之后</b>。</div>
+<div><b>持续时间 / 延迟 / 重复</b> 设置节奏。</div>
+</div>
+<h3>📌 切换效果</h3>
+<div class="step">
+<div>选中一张幻灯片 → <b>切换</b>选项卡。</div>
+<div>选择切换效果（推入、淡出、擦除、分割…）。</div>
+<div>设置<b>声音</b>（建议关闭自动声音）和<b>持续时间</b>（建议 0.8 秒以内）。</div>
+<div>勾选<b>全部应用</b>统一所有幻灯片切换。</div>
+</div>
+<div class="warn"><b>常见错误：</b>每张幻灯片用不同的花哨切换 — 视觉混乱。建议同主题演示用 <b>1 种</b>切换即可。</div>
+<div class="tip"><b>小贴士：</b>动画越多越慢 — NCRE 二级考试要求"<b>恰到好处</b>"。能用切换表达，就不要用动画。</div>
+<div class="example"><b>练习：</b>为 3 张幻灯片分别设置：浮入进入 + 推入切换；强调脉冲 + 淡出切换；自定义路径 + 分割切换，并调整计时。</div>
+</div></section>
+
+<section id="m7"><div class="card purple-accent">
+<h2><span class="icn">🔗</span>⑦ 超链接与动作按钮</h2>
+<h3>📌 超链接</h3>
+<div class="step">
+<div>选中对象（文字、图片、形状）→ <b>插入 → 链接 → 超链接</b>。</div>
+<div>类型：<b>本文档中的位置</b>（跳到指定幻灯片）/ <b>网页</b> / <b>文件</b> / <b>电子邮件</b>。</div>
+<div>勾选<b>屏幕提示</b>，鼠标悬停时显示提示文字。</div>
+</div>
+<h3>📌 动作按钮</h3>
+<div class="step">
+<div><b>插入 → 形状 → 动作按钮</b>，选"第一张""上一张""下一张""最后一张"等。</div>
+<div>在页面绘制按钮 → 自动弹出"动作设置"对话框。</div>
+<div>选<b>超链接到</b>：幻灯片 / URL。</div>
+</div>
+<h3>📌 自定义放映</h3>
+<div class="step">
+<div><b>幻灯片放映 → 自定义放映 → 新建</b>。</div>
+<div>输入名称（例如"汇报摘要"），挑选若干张幻灯片加入。</div>
+<div>放映时选择该自定义放映，只播放被选中的幻灯片。</div>
+</div>
+<div class="tip"><b>小贴士：</b>同一份演示文稿可以创建多个自定义放映（如"完整版""精简版"），按场合调用。</div>
+<div class="example"><b>练习：</b>制作一个"公司介绍"演示，目录页 3 个文字按钮分别跳到第 3、5、7 页，并在每页右下角放置"返回第一张"的动作按钮。</div>
+</div></section>
+
+<section id="m8"><div class="card purple-accent">
+<h2><span class="icn">▶️</span>⑧ 放映与导出</h2>
+<h3>📌 放映方式</h3>
+<table>
+<tr><th>方式</th><th>用途</th></tr>
+<tr><td>演讲者放映（全屏）</td><td>演讲者控制进度，看到备注</td></tr>
+<tr><td>观众自行浏览（窗口）</td><td>对方可自主翻阅</td></tr>
+<tr><td>展台浏览（全屏）</td><td>无人值守循环播放</td></tr>
+</table>
+<h3>📌 演讲者模式</h3>
+<div class="step">
+<div>放映时右键 → 勾选<b>演讲者视图</b>。</div>
+<div>主屏幕显示幻灯片，副屏显示备注、计时、下一张缩略图。</div>
+</div>
+<h3>📌 排练计时</h3>
+<div class="step">
+<div><b>幻灯片放映 → 排练计时</b>。</div>
+<div>边讲边记录，结束后提示是否保存新的幻灯片时间。</div>
+<div>启用"使用排练计时"后，放映时按预设时间自动翻页。</div>
+</div>
+<h3>📌 导出</h3>
+<div class="step">
+<div><b>文件 → 导出 → 创建 PDF/XPS</b>：保留排版，便于打印分发。</div>
+<div><b>文件 → 导出 → 创建视频 (MP4/WMV)</b>：把整套演示文稿录制成视频。</div>
+<div>导出选项可选择是否包含旁白、计时、幻灯片大小。</div>
+</div>
+<div class="tip"><b>小贴士：</b>导出的 PDF 可设置<b>页眉/页脚</b>包含幻灯片编号，方便讨论时定位。MP4 视频可加上<b>录制旁白</b>，作为远程汇报资料。</div>
+</div></section>
+
+<section id="project"><div class="card purple-accent">
+<h2><span class="icn">🎯</span>综合实训：制作《产品发布演示文稿》</h2>
+<p class="lead">完成 8 个模块后，用一个完整项目检验是否真正掌握 PowerPoint。</p>
+<h3>📌 项目要求</h3>
+<div class="example">
+<b>建议页数：</b>12–16 页<br>
+<b>结构：</b>封面 → 公司简介 → 产品概述 → 核心卖点（SmartArt）→ 数据图表 → 用户案例 → 价格方案 → 竞品对比 → 总结 → 谢谢观看<br>
+<b>目标读者：</b>潜在客户与合作伙伴</div>
+<h3>✅ 必须使用的 PPT 功能</h3>
+<div class="check">
+<div>主题与母版</div><div>节(Section)分组</div>
+<div>封面 + 目录页</div><div>字体段落格式</div>
+<div>形状与动作按钮</div><div>图片与文字环绕</div>
+<div>SmartArt</div><div>图表 / 表格</div>
+<div>超链接</div><div>动画与切换</div>
+<div>音视频</div><div>排练计时</div>
+<div>PDF 导出</div><div>MP4 视频导出</div>
+</div>
+<h3>🪜 推荐完成步骤</h3>
+<div class="step">
+<div>选 1 种主题，进入母版统一字体、背景、页脚。</div>
+<div>封面 + 目录页 + 节标题 + 内容页，建立 4 个节。</div>
+<div>在"核心卖点"页插入 SmartArt "层次结构"，放入 3 个子项。</div>
+<div>在"数据图表"页插入柱形图 + 折线图的组合图。</div>
+<div>在"价格方案"页插入表格 + 动作按钮"点击咨询"。</div>
+<div>为所有幻灯片添加 1 种切换效果；在"核心卖点"页为 SmartArt 添加"淡出"动画。</div>
+<div>为目录页的章节标题添加超链接到对应节首页。</div>
+<div><b>排练计时</b>记录每页时长，导出 PDF 与 MP4 各一份。</div>
+</div>
+<h3>📈 PowerPoint 核心知识体系</h3>
+<table>
+<tr><th>层次</th><th>核心内容</th><th>学习重点</th></tr>
+<tr><td>第一层：基础编辑</td><td>新建、保存、版式、节</td><td>快速搭建演示结构</td></tr>
+<tr><td>第二层：文本与对象</td><td>字体段落、图片、形状、SmartArt、图表</td><td>用图替代文字表达</td></tr>
+<tr><td>第三层：美化统一</td><td>主题、母版、背景、字体配色</td><td>建立整体视觉规范</td></tr>
+<tr><td>第四层：动效</td><td>动画、切换、计时</td><td>恰到好处的节奏控制</td></tr>
+<tr><td>第五层：交互与输出</td><td>超链接、动作按钮、放映、导出</td><td>提升演示影响力</td></tr>
+</table>
+</div></section>
+
+<div class="footer">PPT 初级教程 · <a href="../daolun/index.html">返回导航首页</a></div>
+</main>
+</body>
+</html>

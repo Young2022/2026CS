@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI HTML 程序设计学习教程：从文档结构到表单、SVG、Canvas，覆盖无障碍与最佳实践。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>HTML 程序设计 · 学习教程</title>
+<style>
+/* ========== HTML 主题：暖橙/米白（纸张） ========== */
+:root{
+  --bg:#fdf7f0;             /* 暖米色 */
+  --bg2:#fff5e6;
+  --surface:#fff;
+  --card:#fff8ef;
+  --card-hov:#fff0db;
+  --primary:#E44D26;        /* HTML5 橙 */
+  --primary-dim:#b03a1c;
+  --accent:#F16529;          /* 深橙 */
+  --accent2:#ff9966;
+  --success:#2e9e5b;
+  --danger:#d83a3a;
+  --text:#3a2e26;
+  --text-soft:#6a5b50;
+  --text-mute:#a09387;
+  --border:#f0d9bf;
+  --border-strong:#d4b896;
+  --code-bg:#2a2520;
+  --code-head:#1f1a16;
+  --tok-tag:#ffb88c;
+  --tok-attr:#ffd166;
+  --tok-str:#a8d99a;
+  --tok-com:#9c8c80;
+  --tok-key:#f9b27f;
+  --tok-val:#f5a4c8;
+  --tok-hl:#ffb88c;
+  --shadow:0 2px 12px rgba(228,77,38,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--accent2);text-decoration:underline}
+code{font-family:"Fira Code","JetBrains Mono","Consolas",monospace;font-size:13.5px}
+
+/* ========== 顶栏 ========== */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg,#fff 0%,#fff8ef 100%);
+  border-bottom:3px solid var(--primary);
+  box-shadow:var(--shadow);
+  padding:10px 20px;
+  display:flex;align-items:center;gap:18px;
+}
+.topnav .logo{
+  font-size:18px;font-weight:800;color:var(--primary);
+  display:flex;align-items:center;gap:8px;
+}
+.topnav .logo::before{
+  content:"◆";color:var(--accent);font-size:22px;
+}
+.topnav a.nav-link{
+  color:var(--text-soft);font-size:13.5px;padding:4px 8px;
+  border-radius:4px;transition:.15s;
+}
+.topnav a.nav-link:hover{background:rgba(228,77,38,.08);color:var(--primary)}
+.topnav a.nav-link.active{background:var(--primary);color:#fff;font-weight:600}
+
+/* ========== Hero ========== */
+.hero{
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(180,50,20,.40) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(200,80,30,.35) 0%,transparent 55%),
+    linear-gradient(135deg,#8b2500 0%,#6b3010 100%);
+  padding:40px 24px 28px;border-bottom:3px solid var(--primary);
+}
+.hero .inner{max-width:1080px;margin:0 auto}
+.hero .kicker{
+  display:inline-block;background:var(--primary);color:#fff;
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  letter-spacing:.5px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(28px,4.2vw,40px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2}
+.hero h1 em{color:#fdba74;font-style:normal}
+.hero p.lead{font-size:17px;color:rgba(255,255,255,.85);max-width:780px;margin-bottom:20px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:12px;color:rgba(255,255,255,.7);font-size:13px}
+.hero .meta span{
+  background:rgba(255,255,255,.15);padding:6px 12px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.25);color:#fff;
+}
+
+/* ========== 章节流图 ========== */
+.flow{
+  max-width:1080px;margin:30px auto;padding:0 24px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.flow .step{
+  background:var(--card);border:1px solid var(--border);
+  padding:8px 14px;border-radius:6px;font-size:13px;color:var(--text-soft);
+}
+.flow .step strong{color:var(--primary)}
+.flow .arr{color:var(--primary);font-weight:700;opacity:.7}
+
+/* ========== 内容主体 ========== */
+main{max-width:1080px;margin:0 auto;padding:30px 24px 80px}
+
+section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:22px 26px;margin-bottom:22px;
+  scroll-margin-top:80px;transition:.2s;border-left:4px solid var(--primary);
+}
+section:hover{border-color:rgba(228,77,38,.3);box-shadow:var(--shadow)}
+
+section h2{
+  font-size:24px;color:var(--primary);margin-bottom:18px;
+  padding-bottom:10px;border-bottom:2px dashed var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+section h2::before{
+  content:attr(data-num);background:var(--primary);color:#fff;
+  width:30px;height:30px;border-radius:6px;display:inline-flex;
+  align-items:center;justify-content:center;font-size:14px;font-weight:800;
+}
+section h3{
+  font-size:17px;color:var(--accent);margin:22px 0 10px;
+  padding-left:10px;border-left:3px solid var(--accent);
+}
+section h4{
+  font-size:15px;color:var(--text);margin:16px 0 8px;
+  font-weight:600;
+}
+section p{margin-bottom:10px;color:var(--text-soft)}
+section ul,section ol{margin-left:24px;margin-bottom:12px;color:var(--text-soft)}
+section li{margin-bottom:6px}
+section strong{color:var(--text)}
+section em.hint{color:var(--accent);font-style:normal;font-weight:600}
+
+/* 卡片 */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:14px 18px;margin:14px 0;
+}
+.card.success{border-left:4px solid var(--success)}
+.card.warn{border-left:4px solid var(--accent)}
+.card.danger{border-left:4px solid var(--danger)}
+.card.info{border-left:4px solid var(--primary)}
+.card-title{font-weight:700;color:var(--primary);margin-bottom:6px;font-size:14px}
+.card p:last-child{margin-bottom:0}
+
+/* 代码框 */
+.codebox{
+  background:var(--code-bg);border:1px solid #3a3328;
+  border-radius:8px;margin:14px 0;overflow:hidden;
+}
+.codebox-head{
+  background:var(--code-head);padding:8px 14px;font-size:12px;
+  color:var(--text-mute);display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid #3a3328;
+}
+.codebox-head .lang{color:var(--accent2);font-weight:600}
+.codebox-head .copy{
+  background:var(--primary);color:#fff;border:none;
+  padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;
+  font-weight:600;transition:.15s;
+}
+.codebox-head .copy:hover{background:var(--accent)}
+.codebox pre{
+  padding:16px;overflow-x:auto;color:var(--text);
+  font-family:"Fira Code","JetBrains Mono","Consolas",monospace;
+  font-size:13.5px;line-height:1.6;
+}
+.codebox code{display:block;white-space:pre}
+
+/* HTML 语法高亮 */
+.tok-tag{color:var(--tok-tag)}
+.tok-attr{color:var(--tok-attr)}
+.tok-str{color:var(--tok-str)}
+.tok-com{color:var(--tok-com);font-style:italic}
+.tok-key{color:var(--tok-key)}
+.tok-val{color:var(--tok-val)}
+
+/* 表格 */
+table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  background:var(--bg2);border-radius:6px;overflow:hidden;
+}
+table th{
+  background:var(--primary);color:#fff;
+  padding:10px 12px;text-align:left;font-weight:700;border:1px solid var(--border);
+  font-size:13px;
+}
+table td{
+  padding:9px 12px;border:1px solid var(--border);
+  color:var(--text-soft);font-size:13.5px;
+}
+table tr:nth-child(even) td{background:rgba(228,77,38,.03)}
+
+/* 训练题 */
+.q-card{
+  background:var(--card);border:1px solid var(--border);
+  border-left:4px solid var(--accent);border-radius:8px;
+  padding:18px;margin:16px 0;
+}
+.q-card .q-title{color:var(--accent);font-weight:700;margin-bottom:10px;font-size:15px}
+.q-card ol{padding-left:20px}
+.q-card ol li{
+  background:var(--surface);border:1px solid var(--border);
+  padding:8px 14px;border-radius:6px;margin-bottom:8px;
+  cursor:pointer;transition:.15s;color:var(--text-soft);
+}
+.q-card ol li:hover{border-color:var(--primary);transform:translateX(3px)}
+.q-card ol li.correct{background:rgba(46,158,91,.18);border-color:var(--success);color:var(--text)}
+.q-card ol li.wrong{background:rgba(216,58,58,.18);border-color:var(--danger);color:var(--text)}
+.q-card .q-explain{
+  background:rgba(228,77,38,.06);border:1px dashed var(--primary);
+  border-radius:6px;padding:10px 14px;margin-top:10px;
+  display:none;font-size:13px;color:var(--text-soft);
+}
+.q-card .q-explain.show{display:block}
+.q-card .q-explain strong{color:var(--primary)}
+
+/* 项目卡片 */
+.proj{
+  background:linear-gradient(135deg,#fff8ef 0%,#ffeede 100%);
+  border:1px solid var(--border);border-left:5px solid var(--accent);
+  border-radius:8px;padding:20px;margin:18px 0;
+}
+.proj-title{
+  color:var(--accent);font-size:18px;font-weight:700;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.proj-title::before{content:"📄";font-size:20px}
+.proj-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:12px}
+.proj-meta span{background:var(--surface);padding:3px 9px;border-radius:4px;border:1px solid var(--border);color:var(--text-soft)}
+.proj p,.proj li{color:var(--text-soft)}
+
+/* SVG */
+.diagram{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:20px;margin:14px 0;
+  display:flex;justify-content:center;
+}
+
+/* 速查表 */
+.cheat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:14px;margin:14px 0;
+}
+.cheat-cell{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:14px;
+}
+.cheat-cell h4{
+  color:var(--primary);font-size:14px;margin-bottom:8px;
+  border-bottom:1px solid var(--border);padding-bottom:6px;
+}
+.cheat-cell ul{margin-left:18px;font-size:13px}
+.cheat-cell li{color:var(--text-soft);margin-bottom:4px}
+.cheat-cell code{
+  background:var(--code-bg);padding:1px 6px;border-radius:3px;
+  color:var(--accent2);font-size:12.5px;
+}
+
+/* 进度条 */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--primary) 0%,var(--accent2) 100%);
+  z-index:200;width:0%;transition:width .1s;
+  box-shadow:0 0 8px var(--primary);
+}
+
+/* 回到顶部 */
+#to-top{
+  position:fixed;bottom:30px;right:30px;
+  background:var(--primary);color:#fff;
+  width:45px;height:45px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 12px rgba(228,77,38,.4);
+  border:none;transition:.2s;
+}
+#to-top:hover{background:var(--accent);transform:translateY(-3px)}
+
+/* 提示条 */
+.tip{
+  background:rgba(228,77,38,.06);border-left:4px solid var(--primary);
+  padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px;
+}
+.tip strong{color:var(--primary)}
+
+/* 响应式 */
+@media (max-width:720px){
+  .hero h1{font-size:28px}
+  section{padding:20px 16px}
+  main{padding:20px 14px 60px}
+  .topnav{padding:8px 12px;gap:10px;flex-wrap:wrap}
+  .topnav .logo{font-size:14px}
+  .topnav a.nav-link{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav class="topnav">
+  <a href="../../daolun/index.html" class="logo" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>CSAI</a>
+  <a class="nav-link" href="#s00">指南</a>
+  <a class="nav-link" href="#s02">结构</a>
+  <a class="nav-link" href="#s09">表单</a>
+  <a class="nav-link" href="#s12">语义</a>
+  <a class="nav-link" href="#s14">SVG</a>
+  <a class="nav-link" href="#s17">无障碍</a>
+  <a class="nav-link" href="#s19">项目</a>
+  <a class="nav-link" href="#s21">速查</a>
+</nav>
+
+<header class="hero">
+  <div class="inner">
+    <span class="kicker">WEB 前端基础 · 大学一年级</span>
+    <h1>掌握 <em>HTML</em>：所有网页的<strong>骨架</strong></h1>
+    <p class="lead">
+      从最基础的文档结构开始，到表单、多媒体、SVG 矢量图、Canvas 画布，再到无障碍与最佳实践。
+      本教程与本系列前序课程（C → C++ → Java → Python → SQL → JavaScript）保持一致的节奏与难度梯度，是 Web 前端开发的起点。
+    </p>
+    <div class="meta">
+      <span>🟧 21 章正文</span>
+      <span>📦 2 个综合项目</span>
+      <span>❓ 10 道课堂训练</span>
+      <span>🎯 文档与语义</span>
+      <span>🌐 与 CSS/JS 衔接</span>
+    </div>
+  </div>
+</header>
+
+<div class="flow">
+  <span class="step"><strong>语法</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>文本与链接</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>媒体</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>表单</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>语义化</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>无障碍 + 最佳实践</strong></span>
+</div>
+
+<main>
+
+<!-- ========== 00 ========== -->
+<section id="s00">
+<h2 data-num="00">学习指南：HTML 是什么、怎么学、学到什么</h2>
+
+<p>HTML 全称 <strong>HyperText Markup Language</strong>（超文本标记语言），是所有网页的<strong>骨架</strong>。CSS 负责<strong>样式</strong>，JavaScript 负责<strong>交互</strong>，三者共同组成现代网页。</p>
+
+<h3>0.1 三大 Web 技术的关系</h3>
+<div class="card info">
+<div class="card-title">💡 三层结构</div>
+<pre style="font-size:13px;line-height:1.8;color:var(--text);background:transparent">
+HTML   →   网页<strong style="color:var(--primary)">结构</strong>（骨架、文档、标签）
+CSS    →   网页<strong style="color:var(--primary)">样式</strong>（外观、颜色、布局）
+JS     →   网页<strong style="color:var(--primary)">行为</strong>（交互、逻辑、数据）
+</pre>
+</div>
+
+<h3>0.2 HTML 的特点</h3>
+<ul>
+<li><strong>声明式</strong>：用标签描述内容结构，而不是流程式编程</li>
+<li><strong>树形结构</strong>：标签可以嵌套，形成 DOM 树</li>
+<li><strong>松散</strong>：浏览器会容忍错误（但仍要写规范）</li>
+<li><strong>演化</strong>：HTML5 起添加了语义、媒体、表单、CANVAS、本地存储等大量特性</li>
+</ul>
+
+<h3>0.3 学习路径</h3>
+<div class="card success">
+<ol style="padding-left:24px">
+<li><strong>基础语法</strong>：文档结构、文本标签、实体字符</li>
+<li><strong>内容组织</strong>：链接、图片、列表、表格</li>
+<li><strong>表单</strong>：输入控件、提交、验证</li>
+<li><strong>语义化</strong>：HTML5 区块标签，提升可访问性</li>
+<li><strong>媒体与图形</strong>：音视频、SVG、Canvas</li>
+<li><strong>最佳实践</strong>：SEO、无障碍、性能</li>
+</ol>
+</div>
+
+<div class="tip"><strong>衔接</strong>：学完 HTML + CSS + JavaScript 即可独立做小型 Web 项目，再过渡到 Vue / React 框架。</div>
+</section>
+
+<!-- ========== 01 ========== -->
+<section id="s01">
+<h2 data-num="01">HTML 是什么：一个最简单的页面 ⭐⭐⭐</h2>
+
+<h3>1.1 最小 HTML 文件</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 最小 HTML5 页面 --&gt;</span>
+<span class="tok-tag">&lt;!DOCTYPE</span> <span class="tok-attr">html</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-str">"zh-CN"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span>=<span class="tok-str">"UTF-8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span>我的第一页<span class="tok-tag">&lt;/title&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span>
+<span class="tok-tag">&lt;body&gt;</span>
+    <span class="tok-tag">&lt;h1&gt;</span>你好，HTML！<span class="tok-tag">&lt;/h1&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>这是我的第一个网页。<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/body&gt;</span>
+<span class="tok-tag">&lt;/html&gt;</span></code></pre>
+</div>
+
+<h3>1.2 关键点</h3>
+<ul>
+<li><code>&lt;!DOCTYPE html&gt;</code>：声明文档类型，告诉浏览器这是 HTML5</li>
+<li><code>&lt;html lang="zh-CN"&gt;</code>：根标签，指定语言（影响拼写检查、读屏）</li>
+<li><code>&lt;head&gt;</code>：放元数据，不会显示在页面上</li>
+<li><code>&lt;body&gt;</code>：放实际内容</li>
+<li><code>&lt;meta charset="UTF-8"&gt;</code>：声明字符集（必须放在 head 第一行）</li>
+<li><code>&lt;title&gt;</code>：浏览器标签页标题（必填，影响 SEO）</li>
+</ul>
+
+<div class="tip">
+<strong>建议：</strong> 把以上 11 行保存为 <code>index.html</code>，用浏览器打开，看到「你好，HTML！」就成功迈出第一步。
+</div>
+</section>
+
+<!-- ========== 02 ========== -->
+<section id="s02">
+<h2 data-num="02">基本文档结构 ⭐⭐⭐</h2>
+
+<h3>2.1 head 内的常用元数据</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;head&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span>=<span class="tok-str">"UTF-8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"viewport"</span> <span class="tok-attr">content</span>=<span class="tok-str">"width=device-width, initial-scale=1"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"description"</span> <span class="tok-attr">content</span>=<span class="tok-str">"页面描述"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"keywords"</span>    <span class="tok-attr">content</span>=<span class="tok-str">"html, css, js"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"author"</span>      <span class="tok-attr">content</span>=<span class="tok-str">"MiniMax509358"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span>页面标题<span class="tok-tag">&lt;/title&gt;</span>
+
+    <span class="tok-com">&lt;!-- 引入 CSS --&gt;</span>
+    <span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-str">"style.css"</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-com">&lt;!-- 引入 JS（推荐放 body 末尾，或加 defer） --&gt;</span>
+    <span class="tok-tag">&lt;script</span> <span class="tok-attr">defer</span> <span class="tok-attr">src</span>=<span class="tok-str">"app.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span></code></pre>
+</div>
+
+<h3>2.2 自闭合与成对标签</h3>
+<table>
+<tr><th>类型</th><th>例子</th><th>说明</th></tr>
+<tr><td>成对标签</td><td><code>&lt;p&gt;...&lt;/p&gt;</code></td><td>有内容、有结尾</td></tr>
+<tr><td>自闭合（空元素）</td><td><code>&lt;br&gt;</code> <code>&lt;img&gt;</code> <code>&lt;input&gt;</code> <code>&lt;hr&gt;</code></td><td>没有内容，HTML5 中可省略 <code>/</code></td></tr>
+</table>
+
+<h3>2.3 注释</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 单行注释 --&gt;</span>
+
+<span class="tok-com">&lt;!--
+ 多行注释
+ 多用于临时屏蔽一块代码
+--&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 03 ========== -->
+<section id="s03">
+<h2 data-num="03">文本与排版标签 ⭐⭐⭐</h2>
+
+<h3>3.1 标题与段落</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;h1&gt;</span>一级标题（每页只应该有一个）<span class="tok-tag">&lt;/h1&gt;</span>
+<span class="tok-tag">&lt;h2&gt;</span>二级标题<span class="tok-tag">&lt;/h2&gt;</span>
+<span class="tok-tag">&lt;h3&gt;</span>三级标题<span class="tok-tag">&lt;/h3&gt;</span>
+<span class="tok-tag">&lt;h4&gt;</span>四级<span class="tok-tag">&lt;/h4&gt;</span>
+<span class="tok-tag">&lt;h5&gt;</span>五级<span class="tok-tag">&lt;/h5&gt;</span>
+<span class="tok-tag">&lt;h6&gt;</span>六级<span class="tok-tag">&lt;/h6&gt;</span>
+
+<span class="tok-tag">&lt;p&gt;</span>这是一个段落。浏览器会在段落前后自动加空行。<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;br&gt;</span><span class="tok-com">&lt;!-- 强制换行 --&gt;</span>
+<span class="tok-tag">&lt;hr&gt;</span><span class="tok-com">&lt;!-- 水平分隔线 --&gt;</span></code></pre>
+</div>
+
+<h3>3.2 文本级标签</h3>
+<table>
+<tr><th>标签</th><th>作用</th><th>例子</th></tr>
+<tr><td><code>&lt;strong&gt;</code></td><td>加粗（语义：重要）</td><td><code>&lt;strong&gt;警告&lt;/strong&gt;</code></td></tr>
+<tr><td><code>&lt;em&gt;</code></td><td>斜体（语义：强调）</td><td><code>&lt;em&gt;必须&lt;/em&gt;</code></td></tr>
+<tr><td><code>&lt;b&gt;</code> / <code>&lt;i&gt;</code></td><td>加粗 / 斜体（无语义）</td><td>老旧兼容</td></tr>
+<tr><td><code>&lt;u&gt;</code></td><td>下划线</td><td>默认样式</td></tr>
+<tr><td><code>&lt;span&gt;</code></td><td>行内容器</td><td><code>&lt;span class="hl"&gt;高亮&lt;/span&gt;</code></td></tr>
+<tr><td><code>&lt;mark&gt;</code></td><td>高亮文本</td><td>像荧光笔</td></tr>
+<tr><td><code>&lt;small&gt;</code></td><td>小字</td><td>法律注释</td></tr>
+<tr><td><code>&lt;sub&gt;</code> / <code>&lt;sup&gt;</code></td><td>下标 / 上标</td><td>H&lt;sub&gt;2&lt;/sub&gt;O</td></tr>
+<tr><td><code>&lt;del&gt;</code> / <code>&lt;ins&gt;</code></td><td>删除 / 插入</td><td>显示为划线</td></tr>
+<tr><td><code>&lt;code&gt;</code></td><td>行内代码</td><td>用 <code>console.log</code></td></tr>
+</table>
+
+<h3>3.3 整块标签</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;div&gt;</span>块级容器，常用于布局<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;span&gt;</span>行内容器，常用于加样式<span class="tok-tag">&lt;/span&gt;</span>
+
+<span class="tok-tag">&lt;pre&gt;</span>保留空格与换行，常与 code 配合<span class="tok-tag">&lt;/pre&gt;</span>
+
+<span class="tok-tag">&lt;blockquote</span> <span class="tok-attr">cite</span>=<span class="tok-str">"https://example.com"</span><span class="tok-tag">&gt;</span>
+    引用一段话，整段缩进。
+<span class="tok-tag">&lt;/blockquote&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 04 ========== -->
+<section id="s04">
+<h2 data-num="04">实体字符 ⭐⭐</h2>
+
+<p>HTML 保留字符（如 <code>&lt;</code> <code>&gt;</code> <code>&amp;</code> <code>"</code>）不能直接写入文本，否则会破坏结构。需要<strong>实体引用</strong>。</p>
+
+<h3>4.1 常用实体</h3>
+<table>
+<tr><th>显示</th><th>实体名</th><th>实体码</th></tr>
+<tr><td>&lt;</td><td><code>&amp;lt;</code></td><td><code>&amp;#60;</code></td></tr>
+<tr><td>&gt;</td><td><code>&amp;gt;</code></td><td><code>&amp;#62;</code></td></tr>
+<tr><td>&amp;</td><td><code>&amp;amp;</code></td><td><code>&amp;#38;</code></td></tr>
+<tr><td>"</td><td><code>&amp;quot;</code></td><td><code>&amp;#34;</code></td></tr>
+<tr><td>'</td><td><code>&amp;apos;</code></td><td><code>&amp;#39;</code></td></tr>
+<tr><td>空格</td><td><code>&amp;nbsp;</code></td><td><code>&amp;#160;</code></td></tr>
+<tr><td>©</td><td><code>&amp;copy;</code></td><td><code>&amp;#169;</code></td></tr>
+<tr><td>®</td><td><code>&amp;reg;</code></td><td><code>&amp;#174;</code></td></tr>
+<tr><td>¥</td><td><code>&amp;yen;</code></td><td><code>&amp;#165;</code></td></tr>
+<tr><td>← → ↑ ↓</td><td><code>&amp;larr; &amp;rarr; &amp;uarr; &amp;darr;</code></td><td>—</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;p&gt;</span>5 &amp;lt; 10 &amp;amp;&amp;amp; 10 &amp;gt; 5<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>Copyright &amp;copy; 2026 MiniMax<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>价格：¥199&amp;nbsp;（限时）<span class="tok-tag">&lt;/p&gt;</span></code></pre>
+</div>
+<div class="tip"><strong>技巧：</strong>在 VS Code 里装 HTML 插件，输入 <code>&amp;</code> 后会自动弹出候选。</div>
+</section>
+
+<!-- ========== 05 ========== -->
+<section id="s05">
+<h2 data-num="05">链接 ⭐⭐⭐</h2>
+
+<h3>5.1 基本链接</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"https://www.runoob.com"</span> <span class="tok-attr">target</span>=<span class="tok-str">"_blank"</span><span class="tok-tag">&gt;</span>菜鸟教程（新窗口）<span class="tok-tag">&lt;/a&gt;</span>
+
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"about.html"</span><span class="tok-tag">&gt;</span>关于我们（站内）<span class="tok-tag">&lt;/a&gt;</span>
+
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"mailto:hi@example.com"</span><span class="tok-tag">&gt;</span>发邮件给我们<span class="tok-tag">&lt;/a&gt;</span>
+
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"tel:+8613800000000"</span><span class="tok-tag">&gt;</span>拨打 138-0000-0000<span class="tok-tag">&lt;/a&gt;</span></code></pre>
+</div>
+
+<h3>5.2 target 属性</h3>
+<table>
+<tr><th>值</th><th>行为</th></tr>
+<tr><td><code>_self</code>（默认）</td><td>当前窗口打开</td></tr>
+<tr><td><code>_blank</code></td><td>新窗口/新标签</td></tr>
+<tr><td><code>_parent</code></td><td>父框架打开</td></tr>
+<tr><td><code>_top</code></td><td>顶层框架打开</td></tr>
+</table>
+
+<h3>5.3 锚点跳转</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 同一页面 --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#chapter2"</span><span class="tok-tag">&gt;</span>跳到第 2 章<span class="tok-tag">&lt;/a&gt;</span>
+<span class="tok-tag">&lt;h2</span> <span class="tok-attr">id</span>=<span class="tok-str">"chapter2"</span><span class="tok-tag">&gt;</span>第二章<span class="tok-tag">&lt;/h2&gt;</span>
+
+<span class="tok-com">&lt;!-- 跨页 + 锚点 --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"help.html#faq"</span><span class="tok-tag">&gt;</span>跳到帮助的 FAQ 部分<span class="tok-tag">&lt;/a&gt;</span></code></pre>
+</div>
+
+<div class="card warn">
+<div class="card-title">⚠️ 安全提示</div>
+<p>当外链 <code>target="_blank"</code> 时，建议加 <code>rel="noopener noreferrer"</code>，防止新页通过 <code>window.opener</code> 修改来源页。</p>
+</div>
+</section>
+
+<!-- ========== 06 ========== -->
+<section id="s06">
+<h2 data-num="06">图片与多媒体 ⭐⭐⭐</h2>
+
+<h3>6.1 img 标签</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span>=<span class="tok-str">"cat.jpg"</span> <span class="tok-attr">alt</span>=<span class="tok-str">"一只橘猫"</span>
+     <span class="tok-attr">width</span>=<span class="tok-str">"300"</span> <span class="tok-attr">height</span>=<span class="tok-str">"200"</span>
+     <span class="tok-attr">loading</span>=<span class="tok-str">"lazy"</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-com">&lt;!-- 图 + 标题语义化 --&gt;</span>
+<span class="tok-tag">&lt;figure&gt;</span>
+    <span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span>=<span class="tok-str">"mount.jpg"</span> <span class="tok-attr">alt</span>=<span class="tok-str">"雪山"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;figcaption&gt;</span>玉龙雪山（2026 年 1 月摄）<span class="tok-tag">&lt;/figcaption&gt;</span>
+<span class="tok-tag">&lt;/figure&gt;</span></code></pre>
+</div>
+
+<h3>6.2 关键属性</h3>
+<table>
+<tr><th>属性</th><th>作用</th><th>必填</th></tr>
+<tr><td><code>src</code></td><td>图片地址</td><td>✅</td></tr>
+<tr><td><code>alt</code></td><td>替代文字（无障碍 / 图片加载失败）</td><td>✅</td></tr>
+<tr><td><code>width/height</code></td><td>宽高（避免回流）</td><td>推荐</td></tr>
+<tr><td><code>loading="lazy"</code></td><td>滚动到才加载</td><td>推荐</td></tr>
+<tr><td><code>decoding="async"</code></td><td>异步解码</td><td>可选</td></tr>
+<tr><td><code>title</code></td><td>鼠标悬停提示</td><td>可选</td></tr>
+</table>
+
+<h3>6.3 图片格式选择</h3>
+<table>
+<tr><th>格式</th><th>特点</th><th>场景</th></tr>
+<tr><td>JPG</td><td>有损、体积小</td><td>照片</td></tr>
+<tr><td>PNG</td><td>无损、支持透明</td><td>Logo、截图</td></tr>
+<tr><td>WebP</td><td>比 JPG/PNG 更小</td><td>现代浏览器首选</td></tr>
+<tr><td>SVG</td><td>矢量、任意放大</td><td>图标、Logo</td></tr>
+<tr><td>GIF</td><td>支持动画</td><td>动图（尽量用视频代替）</td></tr>
+</table>
+</section>
+
+<!-- ========== 07 ========== -->
+<section id="s07">
+<h2 data-num="07">列表 ⭐⭐</h2>
+
+<h3>7.1 三种列表</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 无序列表 --&gt;</span>
+<span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>苹果<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>香蕉<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>橘子<span class="tok-tag">&lt;/li&gt;</span>
+<span class="tok-tag">&lt;/ul&gt;</span>
+
+<span class="tok-com">&lt;!-- 有序列表 --&gt;</span>
+<span class="tok-tag">&lt;ol&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>第一步<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>第二步<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>第三步<span class="tok-tag">&lt;/li&gt;</span>
+<span class="tok-tag">&lt;/ol&gt;</span>
+
+<span class="tok-com">&lt;!-- 自定义列表：术语解释 --&gt;</span>
+<span class="tok-tag">&lt;dl&gt;</span>
+    <span class="tok-tag">&lt;dt&gt;</span>HTML<span class="tok-tag">&lt;/dt&gt;</span>
+    <span class="tok-tag">&lt;dd&gt;</span>超文本标记语言，网页骨架。<span class="tok-tag">&lt;/dd&gt;</span>
+    <span class="tok-tag">&lt;dt&gt;</span>CSS<span class="tok-tag">&lt;/dt&gt;</span>
+    <span class="tok-tag">&lt;dd&gt;</span>层叠样式表，控制网页外观。<span class="tok-tag">&lt;/dd&gt;</span>
+<span class="tok-tag">&lt;/dl&gt;</span></code></pre>
+</div>
+
+<h3>7.2 嵌套列表</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>前端
+        <span class="tok-tag">&lt;ul&gt;</span>
+            <span class="tok-tag">&lt;li&gt;</span>HTML<span class="tok-tag">&lt;/li&gt;</span>
+            <span class="tok-tag">&lt;li&gt;</span>CSS<span class="tok-tag">&lt;/li&gt;</span>
+            <span class="tok-tag">&lt;li&gt;</span>JavaScript<span class="tok-tag">&lt;/li&gt;</span>
+        <span class="tok-tag">&lt;/ul&gt;</span>
+    <span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>后端
+        <span class="tok-tag">&lt;ul&gt;</span>
+            <span class="tok-tag">&lt;li&gt;</span>Node.js<span class="tok-tag">&lt;/li&gt;</span>
+            <span class="tok-tag">&lt;li&gt;</span>Python<span class="tok-tag">&lt;/li&gt;</span>
+        <span class="tok-tag">&lt;/ul&gt;</span>
+    <span class="tok-tag">&lt;/li&gt;</span>
+<span class="tok-tag">&lt;/ul&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 08 ========== -->
+<section id="s08">
+<h2 data-num="08">表格 ⭐⭐⭐</h2>
+
+<h3>8.1 基本结构</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;table</span> <span class="tok-attr">border</span>=<span class="tok-str">"1"</span> <span class="tok-attr">cellpadding</span>=<span class="tok-str">"8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;caption&gt;</span>学生成绩表<span class="tok-tag">&lt;/caption&gt;</span>
+    <span class="tok-tag">&lt;thead&gt;</span>
+        <span class="tok-tag">&lt;tr&gt;</span>
+            <span class="tok-tag">&lt;th&gt;</span>学号<span class="tok-tag">&lt;/th&gt;</span>
+            <span class="tok-tag">&lt;th&gt;</span>姓名<span class="tok-tag">&lt;/th&gt;</span>
+            <span class="tok-tag">&lt;th&gt;</span>分数<span class="tok-tag">&lt;/th&gt;</span>
+        <span class="tok-tag">&lt;/tr&gt;</span>
+    <span class="tok-tag">&lt;/thead&gt;</span>
+    <span class="tok-tag">&lt;tbody&gt;</span>
+        <span class="tok-tag">&lt;tr&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>001<span class="tok-tag">&lt;/td&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>张三<span class="tok-tag">&lt;/td&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>95<span class="tok-tag">&lt;/td&gt;</span>
+        <span class="tok-tag">&lt;/tr&gt;</span>
+        <span class="tok-tag">&lt;tr&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>002<span class="tok-tag">&lt;/td&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>李四<span class="tok-tag">&lt;/td&gt;</span>
+            <span class="tok-tag">&lt;td&gt;</span>88<span class="tok-tag">&lt;/td&gt;</span>
+        <span class="tok-tag">&lt;/tr&gt;</span>
+    <span class="tok-tag">&lt;/tbody&gt;</span>
+<span class="tok-tag">&lt;/table&gt;</span></code></pre>
+</div>
+
+<h3>8.2 合并单元格</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;th</span> <span class="tok-attr">colspan</span>=<span class="tok-str">"2"</span><span class="tok-tag">&gt;</span>跨两列合并<span class="tok-tag">&lt;/th&gt;</span>
+<span class="tok-tag">&lt;td</span> <span class="tok-attr">rowspan</span>=<span class="tok-str">"3"</span><span class="tok-tag">&gt;</span>跨三行合并<span class="tok-tag">&lt;/td&gt;</span></code></pre>
+</div>
+
+<div class="card warn">
+<div class="card-title">⚠️ 注意</div>
+<p>HTML 表格<strong>只用于二维数据</strong>，别用它做页面布局（CSS Flex/Grid 才是布局方案）。</p>
+</div>
+</section>
+
+<!-- ========== 09 ========== -->
+<section id="s09">
+<h2 data-num="09">表单基础 ⭐⭐⭐</h2>
+
+<h3>9.1 最简表单</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;form</span> <span class="tok-attr">action</span>=<span class="tok-str">"/submit"</span> <span class="tok-attr">method</span>=<span class="tok-str">"POST"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;label</span> <span class="tok-attr">for</span>=<span class="tok-str">"email"</span><span class="tok-tag">&gt;</span>邮箱：<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;input</span> <span class="tok-attr">id</span>=<span class="tok-str">"email"</span> <span class="tok-attr">type</span>=<span class="tok-str">"email"</span> <span class="tok-attr">name</span>=<span class="tok-str">"email"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;label</span> <span class="tok-attr">for</span>=<span class="tok-str">"pwd"</span><span class="tok-tag">&gt;</span>密码：<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;input</span> <span class="tok-attr">id</span>=<span class="tok-str">"pwd"</span> <span class="tok-attr">type</span>=<span class="tok-str">"password"</span> <span class="tok-attr">name</span>=<span class="tok-str">"pwd"</span> <span class="tok-attr">minlength</span>=<span class="tok-str">"8"</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>登录<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/form&gt;</span></code></pre>
+</div>
+
+<h3>9.2 form 的关键属性</h3>
+<table>
+<tr><th>属性</th><th>作用</th></tr>
+<tr><td><code>action</code></td><td>提交的 URL 地址</td></tr>
+<tr><td><code>method</code></td><td><code>get</code>（默认）或 <code>post</code></td></tr>
+<tr><td><code>enctype</code></td><td>编码方式（文件上传要用 <code>multipart/form-data</code>）</td></tr>
+<tr><td><code>target</code></td><td>提交后的目标窗口</td></tr>
+<tr><td><code>autocomplete</code></td><td><code>on</code> / <code>off</code></td></tr>
+</table>
+
+<h3>9.3 input type 速查</h3>
+<table>
+<tr><th>类型</th><th>用途</th></tr>
+<tr><td><code>text</code></td><td>单行文本</td></tr>
+<tr><td><code>password</code></td><td>密码（掩码显示）</td></tr>
+<tr><td><code>email</code> / <code>tel</code> / <code>url</code></td><td>邮箱 / 电话 / 网址（移动端弹对应键盘）</td></tr>
+<tr><td><code>number</code></td><td>数字（带上下箭头）</td></tr>
+<tr><td><code>date</code> / <code>time</code> / <code>datetime-local</code></td><td>日期 / 时间</td></tr>
+<tr><td><code>checkbox</code></td><td>复选框</td></tr>
+<tr><td><code>radio</code></td><td>单选</td></tr>
+<tr><td><code>file</code></td><td>文件选择</td></tr>
+<tr><td><code>submit</code> / <code>reset</code> / <code>button</code></td><td>按钮三件套</td></tr>
+<tr><td><code>hidden</code></td><td>隐藏字段（携带 token 等）</td></tr>
+<tr><td><code>color</code> / <code>range</code></td><td>拾色器 / 滑块</td></tr>
+<tr><td><code>search</code></td><td>搜索框</td></tr>
+</table>
+</section>
+
+<!-- ========== 10 ========== -->
+<section id="s10">
+<h2 data-num="10">表单控件详解 ⭐⭐⭐</h2>
+
+<h3>10.1 select 下拉与 datalist</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 普通下拉 --&gt;</span>
+<span class="tok-tag">&lt;select</span> <span class="tok-attr">name</span>=<span class="tok-str">"city"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"beijing"</span><span class="tok-tag">&gt;</span>北京<span class="tok-tag">&lt;/option&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"shanghai"</span> <span class="tok-attr">selected</span><span class="tok-tag">&gt;</span>上海<span class="tok-tag">&lt;/option&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"shenzhen"</span><span class="tok-tag">&gt;</span>深圳<span class="tok-tag">&lt;/option&gt;</span>
+<span class="tok-tag">&lt;/select&gt;</span>
+
+<span class="tok-com">&lt;!-- 可输入的下拉（搜索框） --&gt;</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">list</span>=<span class="tok-str">"langs"</span> <span class="tok-attr">name</span>=<span class="tok-str">"lang"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;datalist</span> <span class="tok-attr">id</span>=<span class="tok-str">"langs"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"JavaScript"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"Python"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"Java"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/datalist&gt;</span></code></pre>
+</div>
+
+<h3>10.2 多行与按钮</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;textarea</span> <span class="tok-attr">name</span>=<span class="tok-str">"msg"</span> <span class="tok-attr">rows</span>=<span class="tok-str">"5"</span> <span class="tok-attr">cols</span>=<span class="tok-str">"40"</span> <span class="tok-attr">maxlength</span>=<span class="tok-str">"500"</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/textarea&gt;</span>
+
+<span class="tok-com">&lt;!-- 用 button 更灵活 --&gt;</span>
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>提交<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"reset"</span><span class="tok-tag">&gt;</span>重置<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"button"</span> <span class="tok-attr">onclick</span>=<span class="tok-str">"alert(1)"</span><span class="tok-tag">&gt;</span>点我<span class="tok-tag">&lt;/button&gt;</span></code></pre>
+</div>
+
+<h3>10.3 控件分组 fieldset</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;fieldset&gt;</span>
+    <span class="tok-tag">&lt;legend&gt;</span>联系偏好<span class="tok-tag">&lt;/legend&gt;</span>
+    <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"contact"</span> <span class="tok-attr">value</span>=<span class="tok-str">"email"</span><span class="tok-tag">&gt;</span> 邮件<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"contact"</span> <span class="tok-attr">value</span>=<span class="tok-str">"sms"</span><span class="tok-tag">&gt;</span> 短信<span class="tok-tag">&lt;/label&gt;</span>
+<span class="tok-tag">&lt;/fieldset&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 11 ========== -->
+<section id="s11">
+<h2 data-num="11">表单验证 ⭐⭐</h2>
+
+<p>HTML5 内置验证属性，不必写 JS。</p>
+
+<h3>11.1 内置验证属性速查</h3>
+<table>
+<tr><th>属性</th><th>作用</th><th>适用类型</th></tr>
+<tr><td><code>required</code></td><td>必填</td><td>除 hidden 外</td></tr>
+<tr><td><code>min</code> / <code>max</code></td><td>数值/日期范围</td><td>number / date</td></tr>
+<tr><td><code>minlength</code> / <code>maxlength</code></td><td>字符长度</td><td>text / textarea</td></tr>
+<tr><td><code>pattern</code></td><td>正则验证</td><td>text / email 等</td></tr>
+<tr><td><code>step</code></td><td>步进</td><td>number</td></tr>
+<tr><td><code>type="email"</code></td><td>邮箱格式</td><td>—</td></tr>
+<tr><td><code>type="url"</code></td><td>URL 格式</td><td>—</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;form</span> <span class="tok-attr">id</span>=<span class="tok-str">"f"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;label&gt;</span>用户名：
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span>=<span class="tok-str">"user"</span> <span class="tok-attr">required</span> <span class="tok-attr">pattern</span>=<span class="tok-str">"[a-zA-Z0-9]{4,12}"</span>
+               <span class="tok-attr">title</span>=<span class="tok-str">"4-12 位字母数字"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/label&gt;</span>
+
+    <span class="tok-tag">&lt;label&gt;</span>年龄：
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"number"</span> <span class="tok-attr">name</span>=<span class="tok-str">"age"</span> <span class="tok-attr">min</span>=<span class="tok-str">"1"</span> <span class="tok-attr">max</span>=<span class="tok-str">"150"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/label&gt;</span>
+
+    <span class="tok-tag">&lt;label&gt;</span>邮箱：
+        <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"email"</span> <span class="tok-attr">name</span>=<span class="tok-str">"mail"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/label&gt;</span>
+
+    <span class="tok-tag">&lt;button&gt;</span>提交<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/form&gt;</span>
+
+<span class="tok-com">&lt;!-- 监听提交，决定是否拦截 --&gt;</span>
+<span class="tok-tag">&lt;script&gt;</span>
+    <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"f"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"submit"</span>, e =&gt; {
+        <span class="tok-key">if</span> (!e.<span class="tok-fn">target</span>.<span class="tok-fn">checkValidity</span>()) {
+            e.<span class="tok-fn">preventDefault</span>();
+            <span class="tok-fn">alert</span>(<span class="tok-str">"请检查输入"</span>);
+        }
+    });
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 12 ========== -->
+<section id="s12">
+<h2 data-num="12">语义化标签（HTML5 Sectioning）⭐⭐⭐</h2>
+
+<div class="tip"><strong>为什么要语义化？</strong>① 浏览器/搜索引擎更好理解页面结构；② 屏幕阅读器（盲人辅助）能清晰朗读；③ 团队代码更易维护。</div>
+
+<h3>12.1 主要区块标签</h3>
+<div class="diagram">
+<svg width="700" height="320" viewBox="0 0 700 320">
+  <rect x="200" y="10" width="300" height="40" fill="#fff8ef" stroke="#E44D26" stroke-width="2" rx="4"/>
+  <text x="350" y="35" text-anchor="middle" fill="#E44D26" font-size="13" font-weight="700">&lt;html&gt;</text>
+
+  <rect x="40" y="80" width="620" height="30" fill="#fff5e6" stroke="#F16529" rx="4"/>
+  <text x="350" y="100" text-anchor="middle" fill="#F16529" font-size="13" font-weight="600">&lt;body&gt;</text>
+
+  <rect x="40" y="125" width="620" height="40" fill="#fff0db" stroke="#E44D26" rx="4"/>
+  <text x="350" y="150" text-anchor="middle" fill="#E44D26" font-size="13" font-weight="700">&lt;header&gt;</text>
+
+  <rect x="40" y="180" width="190" height="40" fill="#ffe8d1" stroke="#E44D26" rx="4"/>
+  <text x="135" y="205" text-anchor="middle" fill="#E44D26" font-size="12" font-weight="700">&lt;nav&gt;</text>
+
+  <rect x="255" y="180" width="190" height="40" fill="#fff0db" stroke="#E44D26" rx="4"/>
+  <text x="350" y="205" text-anchor="middle" fill="#E44D26" font-size="12" font-weight="700">&lt;main&gt;</text>
+
+  <rect x="470" y="180" width="190" height="40" fill="#ffe8d1" stroke="#E44D26" rx="4"/>
+  <text x="565" y="205" text-anchor="middle" fill="#E44D26" font-size="12" font-weight="700">&lt;aside&gt;</text>
+
+  <rect x="255" y="225" width="190" height="40" fill="#fff8ef" stroke="#F16529" rx="4"/>
+  <text x="350" y="250" text-anchor="middle" fill="#F16529" font-size="12" font-weight="600">&lt;article&gt;</text>
+
+  <rect x="255" y="270" width="190" height="40" fill="#fff8ef" stroke="#F16529" rx="4"/>
+  <text x="350" y="295" text-anchor="middle" fill="#F16529" font-size="12" font-weight="600">&lt;section&gt;</text>
+
+  <rect x="40" y="235" width="620" height="40" fill="#fff0db" stroke="#E44D26" rx="4"/>
+  <text x="350" y="260" text-anchor="middle" fill="#E44D26" font-size="13" font-weight="700">&lt;footer&gt;</text>
+
+  <line x1="350" y1="50" x2="350" y2="80" stroke="#F16529"/>
+  <line x1="350" y1="110" x2="350" y2="125" stroke="#F16529"/>
+  <line x1="350" y1="165" x2="135" y2="180" stroke="#F16529"/>
+  <line x1="350" y1="165" x2="350" y2="180" stroke="#F16529"/>
+  <line x1="350" y1="165" x2="565" y2="180" stroke="#F16529"/>
+  <line x1="350" y1="220" x2="350" y2="225" stroke="#F16529"/>
+  <line x1="350" y1="265" x2="350" y2="270" stroke="#F16529"/>
+  <line x1="350" y1="110" x2="350" y2="235" stroke="#F16529"/>
+</svg>
+</div>
+
+<h3>12.2 标签语义表</h3>
+<table>
+<tr><th>标签</th><th>语义</th><th>典型用途</th></tr>
+<tr><td><code>&lt;header&gt;</code></td><td>页头/区域头</td><td>Logo、导航条、搜索</td></tr>
+<tr><td><code>&lt;nav&gt;</code></td><td>导航链接</td><td>主导航、面包屑、分页</td></tr>
+<tr><td><code>&lt;main&gt;</code></td><td>主体（每页一个）</td><td>核心内容</td></tr>
+<tr><td><code>&lt;article&gt;</code></td><td>独立可分发的内容</td><td>博客文章、卡片、新闻</td></tr>
+<tr><td><code>&lt;section&gt;</code></td><td>主题分组</td><td>章节、tab 面板</td></tr>
+<tr><td><code>&lt;aside&gt;</code></td><td>侧边栏/相关</td><td>目录、广告、推荐</td></tr>
+<tr><td><code>&lt;footer&gt;</code></td><td>页脚</td><td>版权、备案、联系方式</td></tr>
+<tr><td><code>&lt;hgroup&gt;</code></td><td>一组标题</td><td>主标题 + 副标题</td></tr>
+<tr><td><code>&lt;figure&gt;</code></td><td>图（图+说明）</td><td>图表、配图</td></tr>
+<tr><td><code>&lt;details&gt;</code> + <code>&lt;summary&gt;</code></td><td>可折叠</td><td>FAQ、说明</td></tr>
+</table>
+
+<h3>12.3 对比 div</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- ❌ 全 div 写法（功能没错但不专业） --&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"header"</span><span class="tok-tag">&gt;</span>...<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"nav"</span><span class="tok-tag">&gt;</span>...<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-com">&lt;!-- ✅ 语义化写法 --&gt;</span>
+<span class="tok-tag">&lt;header&gt;</span>...<span class="tok-tag">&lt;/header&gt;</span>
+<span class="tok-tag">&lt;nav&gt;</span>...<span class="tok-tag">&lt;/nav&gt;</span>
+<span class="tok-tag">&lt;main&gt;</span>
+    <span class="tok-tag">&lt;article&gt;</span>
+        <span class="tok-tag">&lt;header&gt;</span><span class="tok-tag">&lt;h1&gt;</span>文章标题<span class="tok-tag">&lt;/h1&gt;</span><span class="tok-tag">&lt;/header&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span>文章正文...<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;/article&gt;</span>
+    <span class="tok-tag">&lt;aside&gt;</span>相关文章<span class="tok-tag">&lt;/aside&gt;</span>
+<span class="tok-tag">&lt;/main&gt;</span>
+<span class="tok-tag">&lt;footer&gt;</span>版权信息<span class="tok-tag">&lt;/footer&gt;</span></code></pre>
+</div>
+
+<h3>12.4 details / summary 折叠</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;details&gt;</span>
+    <span class="tok-tag">&lt;summary&gt;</span>点我展开 FAQ<span class="tok-tag">&lt;/summary&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>答案：要考试了，加油。<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/details&gt;</span>
+
+<span class="tok-tag">&lt;details</span> <span class="tok-attr">open</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;summary&gt;</span>默认展开<span class="tok-tag">&lt;/summary&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>默认就是打开状态。<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/details&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 13 ========== -->
+<section id="s13">
+<h2 data-num="13">音视频 ⭐⭐</h2>
+
+<h3>13.1 audio 音频</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;audio</span> <span class="tok-attr">controls</span> <span class="tok-attr">autoplay</span> <span class="tok-attr">loop</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">src</span>=<span class="tok-str">"song.mp3"</span> <span class="tok-attr">type</span>=<span class="tok-str">"audio/mpeg"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">src</span>=<span class="tok-str">"song.ogg"</span> <span class="tok-attr">type</span>=<span class="tok-str">"audio/ogg"</span><span class="tok-tag">&gt;</span>
+    您的浏览器不支持 audio 标签。
+<span class="tok-tag">&lt;/audio&gt;</span></code></pre>
+</div>
+
+<h3>13.2 video 视频</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;video</span> <span class="tok-attr">controls</span> <span class="tok-attr">width</span>=<span class="tok-str">"640"</span> <span class="tok-attr">poster</span>=<span class="tok-str">"cover.jpg"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">src</span>=<span class="tok-str">"movie.mp4"</span>  <span class="tok-attr">type</span>=<span class="tok-str">"video/mp4"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">src</span>=<span class="tok-str">"movie.webm"</span> <span class="tok-attr">type</span>=<span class="tok-str">"video/webm"</span><span class="tok-tag">&gt;</span>
+    抱歉，您的浏览器不支持 video。
+<span class="tok-tag">&lt;/video&gt;</span></code></pre>
+</div>
+
+<h3>13.3 内嵌页面 iframe</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;iframe</span> <span class="tok-attr">src</span>=<span class="tok-str">"https://www.runoob.com"</span>
+        <span class="tok-attr">width</span>=<span class="tok-str">"800"</span> <span class="tok-attr">height</span>=<span class="tok-str">"500"</span>
+        <span class="tok-attr">loading</span>=<span class="tok-str">"lazy"</span>
+        <span class="tok-attr">sandbox</span>=<span class="tok-str">"allow-scripts allow-same-origin"</span>
+        <span class="tok-attr">title</span>=<span class="tok-str">"外部教程"</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/iframe&gt;</span></code></pre>
+</div>
+<div class="card warn">
+<div class="card-title">⚠️ 安全</div>
+<p>嵌入第三方页面务必使用 <code>sandbox</code> 属性限制权限。</p>
+</div>
+</section>
+
+<!-- ========== 14 ========== -->
+<section id="s14">
+<h2 data-num="14">SVG 内联矢量图 ⭐⭐</h2>
+
+<p>SVG 用 XML 描述二维图形，<strong>任意缩放不变形</strong>，适合 Logo、图标、数据可视化。</p>
+
+<h3>14.1 基础形状</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">SVG</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;svg</span> <span class="tok-attr">width</span>=<span class="tok-str">"200"</span> <span class="tok-attr">height</span>=<span class="tok-str">"120"</span> <span class="tok-attr">viewBox</span>=<span class="tok-str">"0 0 200 120"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;rect</span> <span class="tok-attr">x</span>=<span class="tok-str">"10"</span> <span class="tok-attr">y</span>=<span class="tok-str">"10"</span> <span class="tok-attr">width</span>=<span class="tok-str">"80"</span> <span class="tok-attr">height</span>=<span class="tok-str">"50"</span>
+          <span class="tok-attr">fill</span>=<span class="tok-str">"#E44D26"</span> <span class="tok-attr">stroke</span>=<span class="tok-str">"#333"</span> <span class="tok-attr">stroke-width</span>=<span class="tok-str">"2"</span><span class="tok-tag">/&gt;</span>
+
+    <span class="tok-tag">&lt;circle</span> <span class="tok-attr">cx</span>=<span class="tok-str">"150"</span> <span class="tok-attr">cy</span>=<span class="tok-str">"40"</span> <span class="tok-attr">r</span>=<span class="tok-str">"30"</span>
+            <span class="tok-attr">fill</span>=<span class="tok-str">"gold"</span> <span class="tok-attr">opacity</span>=<span class="tok-str">"0.8"</span><span class="tok-tag">/&gt;</span>
+
+    <span class="tok-tag">&lt;line</span> <span class="tok-attr">x1</span>=<span class="tok-str">"10"</span> <span class="tok-attr">y1</span>=<span class="tok-str">"100"</span> <span class="tok-attr">x2</span>=<span class="tok-str">"190"</span> <span class="tok-attr">y2</span>=<span class="tok-str">"100"</span>
+          <span class="tok-attr">stroke</span>=<span class="tok-str">"#444"</span> <span class="tok-attr">stroke-dasharray</span>=<span class="tok-str">"4 2"</span><span class="tok-tag">/&gt;</span>
+
+    <span class="tok-tag">&lt;text</span> <span class="tok-attr">x</span>=<span class="tok-str">"100"</span> <span class="tok-attr">y</span>=<span class="tok-str">"70"</span>
+          <span class="tok-attr">text-anchor</span>=<span class="tok-str">"middle"</span> <span class="tok-attr">fill</span>=<span class="tok-str">"white"</span>
+          <span class="tok-attr">font-size</span>=<span class="tok-str">"18"</span><span class="tok-tag">&gt;</span>SVG<span class="tok-tag">&lt;/text&gt;</span>
+<span class="tok-tag">&lt;/svg&gt;</span></code></pre>
+</div>
+
+<h3>14.2 path 路径</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">SVG</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;path</span> <span class="tok-attr">d</span>=<span class="tok-str">"M 10 80 L 50 20 L 90 80 Z"</span>
+      <span class="tok-attr">fill</span>=<span class="tok-str">"#F16529"</span> <span class="tok-attr">stroke</span>=<span class="tok-str">"#333"</span><span class="tok-tag">/&gt;</span>
+<span class="tok-com">&lt;!--
+   M = move to    L = line to    Z = close
+   C = bezier     Q = quadratic  A = arc
+--&gt;</span></code></pre>
+</div>
+
+<div class="tip"><strong>建议：</strong>复杂 SVG 用 Figma/Adobe Illustrator 导出的代码即可，不必死记路径。</div>
+</section>
+
+<!-- ========== 15 ========== -->
+<section id="s15">
+<h2 data-num="15">Canvas 2D 基础 ⭐⭐</h2>
+
+<p>Canvas 是位图画布，<strong>需要 JS 绘制</strong>，适合图表、游戏、图像处理。</p>
+
+<h3>15.1 基本流程</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML + JavaScript</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;canvas</span> <span class="tok-attr">id</span>=<span class="tok-str">"c"</span> <span class="tok-attr">width</span>=<span class="tok-str">"400"</span> <span class="tok-attr">height</span>=<span class="tok-str">"200"</span><span class="tok-tag">&gt;</span>请使用支持 Canvas 的浏览器。<span class="tok-tag">&lt;/canvas&gt;</span>
+
+<span class="tok-tag">&lt;script&gt;</span>
+    <span class="tok-key">const</span> c   = <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"c"</span>);
+    <span class="tok-key">const</span> ctx = c.<span class="tok-fn">getContext</span>(<span class="tok-str">"2d"</span>);
+
+    <span class="tok-com">// 矩形</span>
+    ctx.<span class="tok-fn">fillStyle</span> = <span class="tok-str">"#E44D26"</span>;
+    ctx.<span class="tok-fn">fillRect</span>(<span class="tok-num">10</span>, <span class="tok-num">10</span>, <span class="tok-num">120</span>, <span class="tok-num">80</span>);
+
+    <span class="tok-com">// 描边矩形</span>
+    ctx.<span class="tok-fn">strokeStyle</span> = <span class="tok-str">"#3a2e26"</span>;
+    ctx.<span class="tok-fn">lineWidth</span> = <span class="tok-num">2</span>;
+    ctx.<span class="tok-fn">strokeRect</span>(<span class="tok-num">150</span>, <span class="tok-num">10</span>, <span class="tok-num">120</span>, <span class="tok-num">80</span>);
+
+    <span class="tok-com">// 文字</span>
+    ctx.<span class="tok-fn">font</span> = <span class="tok-str">"20px sans-serif"</span>;
+    ctx.<span class="tok-fn">fillText</span>(<span class="tok-str">"Canvas"</span>, <span class="tok-num">10</span>, <span class="tok-num">130</span>);
+
+    <span class="tok-com">// 路径（三角形）</span>
+    ctx.<span class="tok-fn">beginPath</span>();
+    ctx.<span class="tok-fn">moveTo</span>(<span class="tok-num">150</span>, <span class="tok-num">130</span>);
+    ctx.<span class="tok-fn">lineTo</span>(<span class="tok-num">210</span>, <span class="tok-num">180</span>);
+    ctx.<span class="tok-fn">lineTo</span>(<span class="tok-num">270</span>, <span class="tok-num">130</span>);
+    ctx.<span class="tok-fn">closePath</span>();
+    ctx.<span class="tok-fn">fill</span>();
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+
+<h3>15.2 Canvas 与 SVG 之选</h3>
+<table>
+<tr><th>特性</th><th>Canvas</th><th>SVG</th></tr>
+<tr><td>本质</td><td>位图（逐像素）</td><td>矢量（DOM 节点）</td></tr>
+<tr><td>渲染</td><td>JS 命令式</td><td>声明式 XML</td></tr>
+<tr><td>性能</td><td>适合大量绘制（>1000 元素）</td><td>适合少量元素 + 交互</td></tr>
+<tr><td>无障碍</td><td>❌ 不友好</td><td>✅ 可被读屏器读取</td></tr>
+<tr><td>典型场景</td><td>游戏、图表（Chart.js）</td><td>图标、Logo、地图</td></tr>
+</table>
+</section>
+
+<!-- ========== 16 ========== -->
+<section id="s16">
+<h2 data-num="16">元数据与 SEO ⭐⭐</h2>
+
+<p>元数据<strong>不在页面显示</strong>，但被浏览器、搜索引擎、社交平台使用。</p>
+
+<h3>16.1 必加项</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;head&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span>=<span class="tok-str">"UTF-8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"viewport"</span> <span class="tok-attr">content</span>=<span class="tok-str">"width=device-width, initial-scale=1.0"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span>完整的标题（影响 SEO）<span class="tok-tag">&lt;/title&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"description"</span> <span class="tok-attr">content</span>=<span class="tok-str">"不超过 160 字符的页面摘要"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"keywords"</span> <span class="tok-attr">content</span>=<span class="tok-str">"html, 教程"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"robots"</span>    <span class="tok-attr">content</span>=<span class="tok-str">"index,follow"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span></code></pre>
+</div>
+
+<h3>16.2 社交分享（Open Graph）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span>=<span class="tok-str">"og:title"</span>       <span class="tok-attr">content</span>=<span class="tok-str">"HTML 学习教程"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span>=<span class="tok-str">"og:description"</span> <span class="tok-attr">content</span>=<span class="tok-str">"从入门到精通"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span>=<span class="tok-str">"og:image"</span>       <span class="tok-attr">content</span>=<span class="tok-str">"https://example.com/cover.jpg"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span>=<span class="tok-str">"og:url"</span>         <span class="tok-attr">content</span>=<span class="tok-str">"https://example.com"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span>=<span class="tok-str">"og:type"</span>        <span class="tok-attr">content</span>=<span class="tok-str">"website"</span><span class="tok-tag">&gt;</span></code></pre>
+</div>
+
+<h3>16.3 favicon</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"icon"</span> <span class="tok-attr">type</span>=<span class="tok-str">"image/svg+xml"</span> <span class="tok-attr">href</span>=<span class="tok-str">"/favicon.svg"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"alternate icon"</span> <span class="tok-attr">href</span>=<span class="tok-str">"/favicon.ico"</span><span class="tok-tag">&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 17 ========== -->
+<section id="s17">
+<h2 data-num="17">可访问性（A11y）⭐⭐⭐</h2>
+
+<div class="tip"><strong>A11y = Accessibility</strong>（11 字母夹在 a 与 y 之间），让所有用户（包括盲人、色盲、键盘操作者）能正常使用你的页面。</div>
+
+<h3>17.1 三大原则</h3>
+<ol style="padding-left:24px">
+<li><strong>感知</strong>：以多种方式呈现（文本 + 颜色 + 图标）</li>
+<li><strong>可操作</strong>：所有功能可由键盘完成</li>
+<li><strong>可理解</strong>：内容清晰、行为可预测</li>
+</ol>
+
+<h3>17.2 关键实践</h3>
+<table>
+<tr><th>问题</th><th>解决方案</th></tr>
+<tr><td>图片信息丢失</td><td>所有 <code>&lt;img&gt;</code> 必须有 <code>alt</code></td></tr>
+<tr><td>表单无法定位</td><td>每个 input 配 <code>&lt;label&gt;</code> 或 <code>aria-label</code></td></tr>
+<tr><td>仅靠颜色传达信息</td><td>同时加文字或图标</td></tr>
+<tr><td>无法用键盘操作</td><td>避免 <code>div</code> 模拟按钮，改用 <code>&lt;button&gt;</code></td></tr>
+<tr><td>屏幕阅读器找不到角色</td><td>用 <code>role</code> 属性（如 <code>role="navigation"</code>）</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- ✅ 用真实按钮，键盘 Enter/Space 自动触发 --&gt;</span>
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">aria-label</span>=<span class="tok-str">"关闭弹窗"</span><span class="tok-tag">&gt;</span>×<span class="tok-tag">&lt;/button&gt;</span>
+
+<span class="tok-com">&lt;!-- ❌ div 不行 --&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">onclick</span>=<span class="tok-str">"close()"</span><span class="tok-tag">&gt;</span>×<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-com">&lt;!-- 跳转链接加上跳过导航 --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#main"</span> <span class="tok-attr">class</span>=<span class="tok-str">"skip-link"</span><span class="tok-tag">&gt;</span>跳到主内容<span class="tok-tag">&lt;/a&gt;</span>
+
+<span class="tok-com">&lt;!-- 表单分组 + legend --&gt;</span>
+<span class="tok-tag">&lt;fieldset&gt;</span>
+    <span class="tok-tag">&lt;legend&gt;</span>登录方式<span class="tok-tag">&lt;/legend&gt;</span>
+    <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"login"</span> <span class="tok-attr">value</span>=<span class="tok-str">"user"</span><span class="tok-tag">&gt;</span> 用户名<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"login"</span> <span class="tok-attr">value</span>=<span class="tok-str">"phone"</span><span class="tok-tag">&gt;</span> 手机<span class="tok-tag">&lt;/label&gt;</span>
+<span class="tok-tag">&lt;/fieldset&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 18 ========== -->
+<section id="s18">
+<h2 data-num="18">性能与最佳实践 ⭐⭐</h2>
+
+<h3>18.1 资源加载</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!-- 解析到即下载但不阻塞（推荐） --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">defer</span> <span class="tok-attr">src</span>=<span class="tok-str">"app.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-com">&lt;!-- 异步（下载完立即执行，不保证顺序） --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">async</span> <span class="tok-attr">src</span>=<span class="tok-str">"analytics.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-com">&lt;!-- 关键资源提示 --&gt;</span>
+<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"preload"</span>  <span class="tok-attr">href</span>=<span class="tok-str">"/font.woff2"</span> <span class="tok-attr">as</span>=<span class="tok-str">"font"</span> <span class="tok-attr">crossorigin</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"prefetch"</span>  <span class="tok-attr">href</span>=<span class="tok-str">"/next-page.html"</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-com">&lt;!-- 图片懒加载 --&gt;</span>
+<span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span>=<span class="tok-str">"big.jpg"</span> <span class="tok-attr">loading</span>=<span class="tok-str">"lazy"</span> <span class="tok-attr">decoding</span>=<span class="tok-str">"async"</span> <span class="tok-attr">alt</span>=<span class="tok-str">""</span><span class="tok-tag">&gt;</span></code></pre>
+</div>
+
+<h3>18.2 现代图像格式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;picture&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">srcset</span>=<span class="tok-str">"img.avif"</span> <span class="tok-attr">type</span>=<span class="tok-str">"image/avif"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;source</span> <span class="tok-attr">srcset</span>=<span class="tok-str">"img.webp"</span> <span class="tok-attr">type</span>=<span class="tok-str">"image/webp"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;img</span>     <span class="tok-attr">src</span>=<span class="tok-str">"img.jpg"</span> <span class="tok-attr">alt</span>=<span class="tok-str">"图"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/picture&gt;</span></code></pre>
+</div>
+
+<h3>18.3 最佳实践清单</h3>
+<div class="card success">
+<div class="card-title">✅ HTML 最佳实践</div>
+<ul>
+<li>始终加 <code>&lt;!DOCTYPE html&gt;</code>、<code>&lt;html lang&gt;</code>、<code>&lt;meta charset&gt;</code></li>
+<li>使用语义化标签，告别"全 div 大法"</li>
+<li>每个 <code>&lt;img&gt;</code> 必填 <code>alt</code></li>
+<li>表单必配 <code>&lt;label&gt;</code></li>
+<li>样式/行为分离：CSS 放 head，JS 加 defer</li>
+<li>外部资源用相对路径或 CDN，避免硬编码域名</li>
+<li>代码缩进统一，标签小写，属性加引号</li>
+</ul>
+</div>
+</section>
+
+<!-- ========== 19 ========== -->
+<section id="s19">
+<h2 data-num="19">项目一：个人主页（纯 HTML）⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 1：个人 / 作品主页</div>
+<div class="proj-meta">
+<span>难度：⭐⭐</span><span>纯 HTML（可加 CSS 美化）</span><span>核心：语义化 + 表单 + 多媒体</span>
+</div>
+
+<h3>完整骨架</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;!DOCTYPE</span> <span class="tok-attr">html</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-str">"zh-CN"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span>=<span class="tok-str">"UTF-8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"viewport"</span> <span class="tok-attr">content</span>=<span class="tok-str">"width=device-width, initial-scale=1"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span>张三的主页<span class="tok-tag">&lt;/title&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span>=<span class="tok-str">"description"</span> <span class="tok-attr">content</span>=<span class="tok-str">"张三 / 学生 / Web 入门"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span>
+<span class="tok-tag">&lt;body&gt;</span>
+    <span class="tok-tag">&lt;header&gt;</span>
+        <span class="tok-tag">&lt;h1&gt;</span>张三<span class="tok-tag">&lt;/h1&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span>大一新生 · 计算机科学<span class="tok-tag">&lt;/p&gt;</span>
+        <span class="tok-tag">&lt;nav</span> <span class="tok-attr">aria-label</span>=<span class="tok-str">"主导航"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;ul&gt;</span>
+                <span class="tok-tag">&lt;li&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#about"</span><span class="tok-tag">&gt;</span>关于<span class="tok-tag">&lt;/a&gt;</span><span class="tok-tag">&lt;/li&gt;</span>
+                <span class="tok-tag">&lt;li&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#projects"</span><span class="tok-tag">&gt;</span>项目<span class="tok-tag">&lt;/a&gt;</span><span class="tok-tag">&lt;/li&gt;</span>
+                <span class="tok-tag">&lt;li&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#contact"</span><span class="tok-tag">&gt;</span>联系<span class="tok-tag">&lt;/a&gt;</span><span class="tok-tag">&lt;/li&gt;</span>
+            <span class="tok-tag">&lt;/ul&gt;</span>
+        <span class="tok-tag">&lt;/nav&gt;</span>
+    <span class="tok-tag">&lt;/header&gt;</span>
+
+    <span class="tok-tag">&lt;main&gt;</span>
+        <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-str">"about"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;h2&gt;</span>关于我<span class="tok-tag">&lt;/h2&gt;</span>
+            <span class="tok-tag">&lt;p&gt;</span>正在学 HTML / CSS / JavaScript。<span class="tok-tag">&lt;/p&gt;</span>
+            <span class="tok-tag">&lt;figure&gt;</span>
+                <span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span>=<span class="tok-str">"avatar.jpg"</span> <span class="tok-attr">alt</span>=<span class="tok-str">"头像"</span> <span class="tok-attr">width</span>=<span class="tok-str">"150"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;/figure&gt;</span>
+        <span class="tok-tag">&lt;/section&gt;</span>
+
+        <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-str">"projects"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;h2&gt;</span>项目<span class="tok-tag">&lt;/h2&gt;</span>
+            <span class="tok-tag">&lt;article&gt;</span>
+                <span class="tok-tag">&lt;h3&gt;</span>个人博客<span class="tok-tag">&lt;/h3&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span>用 HTML + CSS 写一个静态博客。<span class="tok-tag">&lt;/p&gt;</span>
+                <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"blog/index.html"</span><span class="tok-tag">&gt;</span>查看<span class="tok-tag">&lt;/a&gt;</span>
+            <span class="tok-tag">&lt;/article&gt;</span>
+            <span class="tok-tag">&lt;article&gt;</span>
+                <span class="tok-tag">&lt;h3&gt;</span>计算器<span class="tok-tag">&lt;/h3&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span>用 HTML + CSS + JavaScript 写一个网页计算器。<span class="tok-tag">&lt;/p&gt;</span>
+            <span class="tok-tag">&lt;/article&gt;</span>
+        <span class="tok-tag">&lt;/section&gt;</span>
+
+        <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-str">"contact"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;h2&gt;</span>联系我<span class="tok-tag">&lt;/h2&gt;</span>
+            <span class="tok-tag">&lt;form</span> <span class="tok-attr">action</span>=<span class="tok-str">"mailto:zhang@example.com"</span>
+                  <span class="tok-attr">method</span>=<span class="tok-str">"post"</span> <span class="tok-attr">enctype</span>=<span class="tok-str">"text/plain"</span><span class="tok-tag">&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>姓名 <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span>=<span class="tok-str">"name"</span>  <span class="tok-attr">required</span><span class="tok-tag">&gt;&lt;/label&gt;&lt;/p&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>邮箱 <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"email"</span> <span class="tok-attr">name</span>=<span class="tok-str">"mail"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;&lt;/label&gt;&lt;/p&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>信息 <span class="tok-tag">&lt;textarea</span> <span class="tok-attr">name</span>=<span class="tok-str">"msg"</span><span class="tok-tag">&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>发送<span class="tok-tag">&lt;/button&gt;&lt;/p&gt;</span>
+            <span class="tok-tag">&lt;/form&gt;</span>
+        <span class="tok-tag">&lt;/section&gt;</span>
+    <span class="tok-tag">&lt;/main&gt;</span>
+
+    <span class="tok-tag">&lt;footer&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span>&amp;copy; 2026 Zhang San · <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#"</span><span class="tok-tag">&gt;</span>备案号<span class="tok-tag">&lt;/a&gt;</span><span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;/footer&gt;</span>
+<span class="tok-tag">&lt;/body&gt;</span>
+<span class="tok-tag">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 20 ========== -->
+<section id="s20">
+<h2 data-num="20">项目二：在线调查问卷 ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 2：在线调查问卷</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>核心：表单全集 + 内置验证 + label</span>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;form</span> <span class="tok-attr">id</span>=<span class="tok-str">"survey"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;fieldset&gt;</span>
+        <span class="tok-tag">&lt;legend&gt;</span>基本信息<span class="tok-tag">&lt;/legend&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>姓名 <span class="tok-tag">&lt;input</span> <span class="tok-attr">name</span>=<span class="tok-str">"name"</span>  <span class="tok-attr">required</span> <span class="tok-attr">minlength</span>=<span class="tok-str">"2"</span><span class="tok-tag">&gt;&lt;/label&gt;&lt;/p&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>邮箱 <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"email"</span> <span class="tok-attr">name</span>=<span class="tok-str">"mail"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;&lt;/label&gt;&lt;/p&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>年龄 <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"number"</span> <span class="tok-attr">name</span>=<span class="tok-str">"age"</span>
+                          <span class="tok-attr">min</span>=<span class="tok-str">"16"</span> <span class="tok-attr">max</span>=<span class="tok-str">"99"</span><span class="tok-tag">&gt;&lt;/label&gt;&lt;/p&gt;</span>
+        <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>专业
+            <span class="tok-tag">&lt;select</span> <span class="tok-attr">name</span>=<span class="tok-str">"major"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;</span>
+                <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">""</span><span class="tok-tag">&gt;</span>请选择<span class="tok-tag">&lt;/option&gt;</span>
+                <span class="tok-tag">&lt;option&gt;</span>计算机<span class="tok-tag">&lt;/option&gt;</span>
+                <span class="tok-tag">&lt;option&gt;</span>软件工程<span class="tok-tag">&lt;/option&gt;</span>
+                <span class="tok-tag">&lt;option&gt;</span>信息安全<span class="tok-tag">&lt;/option&gt;</span>
+            <span class="tok-tag">&lt;/select&gt;</span>
+        <span class="tok-tag">&lt;/label&gt;&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;/fieldset&gt;</span>
+
+    <span class="tok-tag">&lt;fieldset&gt;</span>
+        <span class="tok-tag">&lt;legend&gt;</span>编程经历（多选）<span class="tok-tag">&lt;/legend&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">name</span>=<span class="tok-str">"langs"</span> <span class="tok-attr">value</span>=<span class="tok-str">"html"</span><span class="tok-tag">&gt;</span> HTML<span class="tok-tag">&lt;/label&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">name</span>=<span class="tok-str">"langs"</span> <span class="tok-attr">value</span>=<span class="tok-str">"css"</span><span class="tok-tag">&gt;</span> CSS<span class="tok-tag">&lt;/label&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">name</span>=<span class="tok-str">"langs"</span> <span class="tok-attr">value</span>=<span class="tok-str">"js"</span><span class="tok-tag">&gt;</span> JavaScript<span class="tok-tag">&lt;/label&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">name</span>=<span class="tok-str">"langs"</span> <span class="tok-attr">value</span>=<span class="tok-str">"py"</span><span class="tok-tag">&gt;</span> Python<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;/fieldset&gt;</span>
+
+    <span class="tok-tag">&lt;fieldset&gt;</span>
+        <span class="tok-tag">&lt;legend&gt;</span>你对本课程的评价<span class="tok-tag">&lt;/legend&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"rate"</span> <span class="tok-attr">value</span>=<span class="tok-str">"5"</span><span class="tok-tag">&gt;</span> 非常好<span class="tok-tag">&lt;/label&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"rate"</span> <span class="tok-attr">value</span>=<span class="tok-str">"4"</span><span class="tok-tag">&gt;</span> 好<span class="tok-tag">&lt;/label&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">name</span>=<span class="tok-str">"rate"</span> <span class="tok-attr">value</span>=<span class="tok-str">"3"</span><span class="tok-tag">&gt;</span> 一般<span class="tok-tag">&lt;/label&gt;</span>
+    <span class="tok-tag">&lt;/fieldset&gt;</span>
+
+    <span class="tok-tag">&lt;p&gt;</span><span class="tok-tag">&lt;label&gt;</span>意见
+        <span class="tok-tag">&lt;textarea</span> <span class="tok-attr">name</span>=<span class="tok-str">"feedback"</span> <span class="tok-attr">rows</span>=<span class="tok-num">"5"</span> <span class="tok-attr">cols</span>=<span class="tok-num">"40"</span> <span class="tok-attr">maxlength</span>=<span class="tok-str">"500"</span><span class="tok-tag">&gt;&lt;/textarea&gt;</span>
+    <span class="tok-tag">&lt;/label&gt;&lt;/p&gt;</span>
+
+    <span class="tok-tag">&lt;p&gt;</span>
+        <span class="tok-tag">&lt;label&gt;</span><span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">required</span><span class="tok-tag">&gt;</span> 我已阅读并同意条款<span class="tok-tag">&lt;/label&gt;</span><span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>提交问卷<span class="tok-tag">&lt;/button&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-str">"reset"</span><span class="tok-tag">&gt;</span>清空<span class="tok-tag">&lt;/button&gt;</span>
+    <span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/form&gt;</span>
+
+<span class="tok-tag">&lt;output</span> <span class="tok-attr">id</span>=<span class="tok-str">"msg"</span><span class="tok-tag">&gt;&lt;/output&gt;</span>
+
+<span class="tok-tag">&lt;script&gt;</span>
+    <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"survey"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"submit"</span>, e =&gt; {
+        e.<span class="tok-fn">preventDefault</span>();
+        <span class="tok-key">const</span> data = <span class="tok-fn">Object</span>.<span class="tok-fn">fromEntries</span>(
+            <span class="tok-key">new</span> <span class="tok-fn">FormData</span>(e.<span class="tok-fn">target</span>).<span class="tok-fn">entries</span>()
+        );
+        <span class="tok-fn">document</span>.<span class="tok-fn">getElementById</span>(<span class="tok-str">"msg"</span>).<span class="tok-fn">textContent</span> =
+            <span class="tok-str">"提交成功！"</span> + <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(data);
+    });
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 21 ========== -->
+<section id="s21">
+<h2 data-num="21">HTML 速查手册 + 课堂训练</h2>
+
+<h3>21.1 HTML5 标签分类速查</h3>
+<div class="cheat-grid">
+
+<div class="cheat-cell">
+<h4>文档结构</h4>
+<ul>
+<li><code>&lt;!DOCTYPE&gt;</code></li>
+<li><code>&lt;html&gt;</code></li>
+<li><code>&lt;head&gt;</code></li>
+<li><code>&lt;body&gt;</code></li>
+<li><code>&lt;title&gt;</code></li>
+<li><code>&lt;meta&gt;</code></li>
+<li><code>&lt;link&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>文本语义</h4>
+<ul>
+<li><code>&lt;h1&gt;~&lt;h6&gt;</code></li>
+<li><code>&lt;p&gt;</code> <code>&lt;span&gt;</code></li>
+<li><code>&lt;strong&gt;</code> <code>&lt;em&gt;</code></li>
+<li><code>&lt;code&gt;</code> <code>&lt;pre&gt;</code></li>
+<li><code>&lt;br&gt;</code> <code>&lt;hr&gt;</code></li>
+<li><code>&lt;mark&gt;</code> <code>&lt;sub&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>区块语义</h4>
+<ul>
+<li><code>&lt;div&gt;</code> <code>&lt;section&gt;</code></li>
+<li><code>&lt;article&gt;</code></li>
+<li><code>&lt;header&gt;</code> <code>&lt;footer&gt;</code></li>
+<li><code>&lt;nav&gt;</code> <code>&lt;aside&gt;</code></li>
+<li><code>&lt;main&gt;</code> <code>&lt;address&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>链接与媒体</h4>
+<ul>
+<li><code>&lt;a&gt;</code> <code>&lt;img&gt;</code></li>
+<li><code>&lt;figure&gt;</code> <code>&lt;figcaption&gt;</code></li>
+<li><code>&lt;audio&gt;</code> <code>&lt;video&gt;</code></li>
+<li><code>&lt;source&gt;</code> <code>&lt;track&gt;</code></li>
+<li><code>&lt;iframe&gt;</code> <code>&lt;picture&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>列表与表格</h4>
+<ul>
+<li><code>&lt;ul&gt;</code> <code>&lt;ol&gt;</code> <code>&lt;li&gt;</code></li>
+<li><code>&lt;dl&gt;</code> <code>&lt;dt&gt;</code> <code>&lt;dd&gt;</code></li>
+<li><code>&lt;table&gt;</code> <code>&lt;tr&gt;</code> <code>&lt;td&gt;</code></li>
+<li><code>&lt;thead&gt;</code> <code>&lt;tbody&gt;</code> <code>&lt;tfoot&gt;</code></li>
+<li><code>&lt;th&gt;</code> <code>&lt;caption&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>表单</h4>
+<ul>
+<li><code>&lt;form&gt;</code> <code>&lt;fieldset&gt;</code></li>
+<li><code>&lt;input&gt;</code> <code>&lt;label&gt;</code></li>
+<li><code>&lt;button&gt;</code> <code>&lt;select&gt;</code></li>
+<li><code>&lt;option&gt;</code> <code>&lt;textarea&gt;</code></li>
+<li><code>&lt;datalist&gt;</code> <code>&lt;output&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>图形与脚本</h4>
+<ul>
+<li><code>&lt;svg&gt;</code> <code>&lt;canvas&gt;</code></li>
+<li><code>&lt;script&gt;</code> <code>&lt;noscript&gt;</code></li>
+<li><code>&lt;template&gt;</code> <code>&lt;slot&gt;</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>交互</h4>
+<ul>
+<li><code>&lt;details&gt;</code> <code>&lt;summary&gt;</code></li>
+<li><code>&lt;dialog&gt;</code></li>
+<li><code>&lt;menu&gt;</code></li>
+</ul>
+</div>
+
+</div>
+
+<h3>21.2 常用属性速查</h3>
+<table>
+<tr><th>类别</th><th>属性</th></tr>
+<tr><td>通用</td><td><code>id</code> <code>class</code> <code>style</code> <code>title</code> <code>lang</code> <code>tabindex</code></td></tr>
+<tr><td>资源</td><td><code>src</code> <code>href</code> <code>alt</code> <code>type</code> <code>loading</code></td></tr>
+<tr><td>表单</td><td><code>name</code> <code>value</code> <code>required</code> <code>disabled</code> <code>readonly</code> <code>placeholder</code> <code>pattern</code></td></tr>
+<tr><td>数据</td><td><code>data-*</code> 自定义属性，JS 通过 <code>dataset</code> 读取</td></tr>
+<tr><td>国际化</td><td><code>dir</code>(方向 ltr/rtl)</td></tr>
+</table>
+
+<h3>21.3 课堂训练题（点击作答）</h3>
+
+<div class="q-card" data-answer="B" id="q1">
+<div class="q-title">Q1. 下列哪个不是 HTML5 新增的语义化标签？</div>
+<ol>
+<li data-idx="A">A. &lt;section&gt;</li>
+<li data-idx="B">B. &lt;frame&gt;</li>
+<li data-idx="C">C. &lt;article&gt;</li>
+<li data-idx="D">D. &lt;aside&gt;</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>&lt;frame&gt; 是 HTML4 的过时标签，已被 iframe 取代且不建议使用。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q2">
+<div class="q-title">Q2. 关于 &lt;img&gt; 的 alt 属性，正确的是？</div>
+<ol>
+<li data-idx="A">A. 可加可不加</li>
+<li data-idx="B">B. 只在图片加载失败时显示</li>
+<li data-idx="C">C. 无障碍必需，搜索引擎与读屏器都要读它</li>
+<li data-idx="D">D. 用来显示图片说明，鼠标悬停时弹出</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>alt 是必须的语义信息；悬停提示用 title 属性。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q3">
+<div class="q-title">Q3. 表单提交时，哪种 enctype 适用于文件上传？</div>
+<ol>
+<li data-idx="A">A. multipart/form-data</li>
+<li data-idx="B">B. application/x-www-form-urlencoded</li>
+<li data-idx="C">C. text/plain</li>
+<li data-idx="D">D. multipart/text</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>multipart/form-data 是文件上传的标准编码。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q4">
+<div class="q-title">Q4. 想做响应式布局，让 viewport 跟随设备宽度。meta 标签应该是？</div>
+<ol>
+<li data-idx="A">A. &lt;meta name="viewport" content="width=1200"&gt;</li>
+<li data-idx="B">B. &lt;meta charset="UTF-8"&gt;</li>
+<li data-idx="C">C. &lt;meta name="description"&gt;</li>
+<li data-idx="D">D. &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>这是响应式设计的核心 meta 标签。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q5">
+<div class="q-title">Q5. 关于 SVG 与 Canvas，正确的是？</div>
+<ol>
+<li data-idx="A">A. SVG 用 JS 绘制，Canvas 用 XML 描述</li>
+<li data-idx="B">B. SVG 是矢量，可被读屏器读取；Canvas 是位图</li>
+<li data-idx="C">C. 两者完全相同</li>
+<li data-idx="D">D. Canvas 不需要 JS</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>SVG 适合图标/Logo/小量交互，Canvas 适合大量像素绘制。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q6">
+<div class="q-title">Q6. 想要一个"名字+电话"的表单，最好实践是？</div>
+<ol>
+<li data-idx="A">A. 用 div 模拟输入框</li>
+<li data-idx="B">B. 不用 label，让用户看 placeholder</li>
+<li data-idx="C">C. 每个 input 配 &lt;label&gt; 或 aria-label</li>
+<li data-idx="D">D. 全部套在 &lt;span&gt; 里</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>label 是无障碍与可用性的最佳实践。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q7">
+<div class="q-title">Q7. &lt;script&gt; 标签加 defer 属性的作用？</div>
+<ol>
+<li data-idx="A">A. 异步下载但按顺序执行（在 DOM 解析完成后）</li>
+<li data-idx="B">B. 完全同步执行</li>
+<li data-idx="C">C. 让脚本立即阻塞页面渲染</li>
+<li data-idx="D">D. 完全禁用脚本</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>defer 是性能优化推荐写法。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q8">
+<div class="q-title">Q8. 哪个不是 HTML5 表单新增类型？</div>
+<ol>
+<li data-idx="A">A. email</li>
+<li data-idx="B">B. date</li>
+<li data-idx="C">C. color</li>
+<li data-idx="D">D. selectbox</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>selectbox 不是 input 类型；正确的是 select + option。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q9">
+<div class="q-title">Q9. 想做页面内的"可折叠 FAQ"，最简洁的写法是？</div>
+<ol>
+<li data-idx="A">A. 自己写 JS + display:none</li>
+<li data-idx="B">B. &lt;details&gt; + &lt;summary&gt;</li>
+<li data-idx="C">C. &lt;iframe&gt;</li>
+<li data-idx="D">D. &lt;table hidden&gt;</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>details/summary 是原生折叠组件，零 JS。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q10">
+<div class="q-title">Q10. 把 HTML、CSS、JS 拆成独立文件，最大的好处是？</div>
+<ol>
+<li data-idx="A">A. 文件变小</li>
+<li data-idx="B">B. SEO 更好</li>
+<li data-idx="C">C. 关注点分离（维护、缓存、协作）</li>
+<li data-idx="D">D. 浏览器更兼容</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>关注点分离是工程实践的核心；浏览器都能正确处理内联代码。</div>
+</div>
+
+</section>
+
+<!-- ========== 结束语 ========== -->
+<section id="end">
+<h2 data-num="完">写在最后：HTML 是 Web 的基石</h2>
+
+<div class="card success">
+<div class="card-title">🎓 与本系列衔接</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--accent);font-weight:700">HTML</span>     → 网页骨架（语义、文档、表单）
+<span style="color:var(--accent);font-weight:700">CSS</span>      → 网页外观（颜色、布局、响应式）
+<span style="color:var(--accent);font-weight:700">JavaScript</span>→ 网页交互（DOM、事件、异步）
+<span style="color:var(--accent);font-weight:700">Vue</span>      → 前端框架（组件化、响应式）
+</pre>
+</div>
+
+<p>学完 HTML 后，下面应当学 CSS（视觉）与 JavaScript（行为）。三者配合才能做出<strong>真正有用</strong>的网页。</p>
+<p>本教程打通了<strong>语义结构</strong>与<strong>无障碍设计</strong>，建议结合本系列前面的 <em>JavaScript</em> 教程把所有示例活学活用。</p>
+<div class="tip">
+<strong>提示：</strong>本教程涉及的所有 SVG 均为内联矢量，可直接复制；所有代码都可直接保存为 .html 离线运行。
+</div>
+</section>
+
+</main>
+
+<button id="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+const bar = document.getElementById('progress-bar');
+function updateProgress(){
+    const sc = window.scrollY;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh > 0 ? (sc / sh) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', updateProgress);
+
+const toTop = document.getElementById('to-top');
+window.addEventListener('scroll', () =&gt; {
+    toTop.style.display = window.scrollY &gt; 400 ? 'flex' : 'none';
+});
+
+const navLinks = document.querySelectorAll('.topnav a.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () =&gt; {
+    let cur = '';
+    sections.forEach(s =&gt; {
+        if (window.scrollY &gt;= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a =&gt; {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+});
+
+function cp(btn){
+    const code = btn.closest('.codebox').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() =&gt; {
+        const old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() =&gt; btn.textContent = old, 1200);
+    });
+}
+window.cp = cp;
+
+document.querySelectorAll('.q-card').forEach(card =&gt; {
+    const ans = card.dataset.answer;
+    card.querySelectorAll('ol li').forEach(li =&gt; {
+        li.addEventListener('click', () =&gt; {
+            if (card.dataset.done) return;
+            const pick = li.dataset.idx;
+            if (pick === ans) {
+                li.classList.add('correct');
+            } else {
+                li.classList.add('wrong');
+                card.querySelector(`[data-idx="${ans}"]`)?.classList.add('correct');
+            }
+            card.querySelector('.q-explain').classList.add('show');
+            card.dataset.done = '1';
+        });
+    });
+});
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--text-mute);border-top:1px solid var(--border)">
+  HTML 程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--primary)">返回导航首页</a>
+</footer>
+
+@media print{
+  .topnav,#progress-bar,#to-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important}
+  .hero h1{color:#000!important}
+  .hero p,.hero .meta{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  .codebox{background:#f5f5f5!important;color:#000!important}
+}
+</script>
+</body>
+</html>

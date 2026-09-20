@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<meta name="description" content="全国计算机等级考试二级MS Office高级应用与设计（科目65）2021—2026真题与知识点复习系统">
+<meta name="referrer" content="no-referrer">
+<title>NCRE二级MS Office高级应用与设计 · 2021—2026真题与知识点复习系统</title>
+<style>
+:root{
+  --blue:#0284c7; --blue-d:#0c4a6e; --bg:#f1f5f9; --card:#ffffff;
+  --text:#1e293b; --muted:#64748b; --line:#e2e8f0;
+  --green:#16a34a; --orange:#ea580c; --red:#dc2626; --purple:#7c3aed;
+  --w:#0ea5e9; --e:#22c55e; --p:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{color:var(--blue);text-decoration:none}
+header{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#0c4a6e,#0284c7);color:#fff;padding:14px 20px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.hd-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hd-in h1{font-size:19px;letter-spacing:1px}
+.hd-in .sub{font-size:12px;opacity:.85;margin-top:2px}
+.hd-search{flex:1;min-width:220px;max-width:420px;margin-left:auto;display:flex}
+.hd-search input{flex:1;padding:8px 12px;border:none;border-radius:6px 0 0 6px;font-size:13px;outline:none}
+.hd-search button{padding:8px 16px;border:none;background:#f59e0b;color:#fff;border-radius:0 6px 6px 0;cursor:pointer;font-weight:bold}
+.hd-search button:hover{background:#d97706}
+.layout{max-width:1400px;margin:0 auto;display:flex;gap:16px;padding:16px;align-items:flex-start}
+nav.side{width:216px;flex-shrink:0;background:var(--card);border-radius:10px;padding:10px;position:sticky;top:88px;max-height:calc(100vh - 104px);overflow-y:auto;border:1px solid var(--line)}
+nav.side .grp{font-size:11px;color:var(--muted);padding:10px 8px 4px;font-weight:bold}
+nav.side a{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:6px;color:var(--text);font-size:13px;cursor:pointer}
+nav.side a:hover{background:#eff6ff}
+nav.side a.act{background:var(--blue);color:#fff}
+nav.side a .cnt{margin-left:auto;font-size:11px;color:var(--muted)}
+nav.side a.act .cnt{color:#dbeafe}
+main{flex:1;min-width:0}
+.sec{display:none;animation:fade .25s}
+.sec.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.card h2{font-size:16px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--blue);display:inline-block}
+.card h3{font-size:14px;margin:14px 0 8px;color:var(--blue-d)}
+.hero{background:linear-gradient(135deg,#0c4a6e,#0284c7 60%,#0ea5e9);color:#fff;border:none}
+.hero h2{font-size:24px;border:none;color:#fff;display:block}
+.hero .tag{display:inline-block;background:rgba(255,255,255,.18);padding:3px 12px;border-radius:20px;font-size:12px;margin:6px 6px 0 0}
+.hero .btns{margin-top:16px}
+.hero .btns button{background:#fff;color:var(--blue-d);border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:bold;margin-right:10px;cursor:pointer}
+.hero .btns button:hover{background:#fef3c7}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.mod-card{border-radius:10px;padding:16px;color:#fff;cursor:pointer;transition:transform .15s}
+.mod-card:hover{transform:translateY(-3px)}
+.mod-card h3{color:#fff;margin:0 0 6px;font-size:16px}
+.mod-card .big{font-size:26px;font-weight:bold}
+.mod-word{background:linear-gradient(135deg,#0284c7,#38bdf8)}
+.mod-excel{background:linear-gradient(135deg,#15803d,#4ade80)}
+.mod-ppt{background:linear-gradient(135deg,#b45309,#fbbf24)}
+.mod-all{background:linear-gradient(135deg,#6d28d9,#a78bfa)}
+.timeline{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.timeline button{flex:1;min-width:88px;padding:14px 6px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;color:var(--blue-d)}
+.timeline button:hover{border-color:var(--blue);background:#eff6ff}
+.timeline button small{display:block;font-weight:normal;color:var(--muted);font-size:11px;margin-top:4px}
+.timeline button.latest{border-color:var(--orange);background:#fff7ed}
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+table.tb th,table.tb td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+table.tb th{background:#f8fafc}
+.bars{margin:8px 0}
+.bar-row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px}
+.bar-row .lbl{width:130px;flex-shrink:0;color:var(--muted);text-align:right}
+.bar-row .track{flex:1;background:#f1f5f9;border-radius:4px;height:14px;overflow:hidden}
+.bar-row .fill{height:100%;border-radius:4px}
+.bar-row .val{width:70px;color:var(--muted)}
+.kp-item{border:1px solid var(--line);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.kp-head{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#f8fafc;cursor:pointer;font-weight:bold;font-size:13px}
+.kp-head:hover{background:#eff6ff}
+.kp-head .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+.kp-item.open .chev{transform:rotate(90deg)}
+.kp-body{display:none;padding:12px 14px;border-top:1px solid var(--line)}
+.kp-item.open .kp-body{display:block}
+.kp-body h4{font-size:12px;color:#fff;background:var(--blue);display:inline-block;padding:2px 10px;border-radius:10px;margin:10px 0 6px}
+.kp-body h4.g{background:var(--green)} .kp-body h4.o{background:var(--orange)} .kp-body h4.r{background:var(--red)} .kp-body h4.p{background:var(--purple)}
+.kp-body ol,.kp-body ul{margin-left:20px;line-height:1.9;font-size:13px}
+.kp-body .ex{background:#f0f9ff;border-left:3px solid var(--blue);padding:8px 12px;margin:8px 0;font-size:13px;border-radius:0 6px 6px 0}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:bold}
+.pill.W{background:#e0f2fe;color:#0369a1}.pill.E{background:#dcfce7;color:#15803d}.pill.P{background:#fef3c7;color:#b45309}
+.fbtn{padding:6px 14px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:13px}
+.fbtn:hover{border-color:var(--blue);color:var(--blue)}
+.fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.qcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}
+.qcard .meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;font-size:11px}
+.qcard .qt{font-size:13.5px;line-height:1.8;margin-bottom:8px}
+.qcard .ops button{margin-right:8px}
+.qans{display:none;background:#f8fafc;border-left:3px solid var(--green);padding:10px 14px;margin-top:8px;border-radius:0 6px 6px 0;font-size:13px;line-height:1.9}
+.qans ol{margin-left:20px}
+.qcard .star{color:#f59e0b;cursor:pointer;font-size:16px;user-select:none}
+.check{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:13px}
+.check.done span.txt{text-decoration:line-through;color:var(--muted)}
+.progress-wrap{background:#f1f5f9;border-radius:6px;height:10px;overflow:hidden;margin:4px 0 10px}
+.progress-wrap .pf{height:100%;border-radius:6px;background:linear-gradient(90deg,#0284c7,#38bdf8);transition:width .3s}
+.stat{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+.stat .s{flex:1;min-width:120px;background:#f8fafc;border-radius:8px;padding:12px;text-align:center;border:1px solid var(--line)}
+.stat .s .n{font-size:24px;font-weight:bold;color:var(--blue)}
+.stat .s .t{font-size:12px;color:var(--muted)}
+.timer{font-size:30px;font-weight:bold;color:var(--red);font-variant-numeric:tabular-nums}
+.mock-q{border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px}
+.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:10px 14px;border-radius:8px;font-size:12.5px;margin-bottom:14px;line-height:1.8}
+.func-tb td code{background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:12px}
+footer{max-width:1400px;margin:0 auto;padding:0 16px 24px;color:var(--muted);font-size:12px;line-height:1.8}
+.srcs{font-size:11.5px;color:var(--muted);margin-top:8px}
+@media(max-width:900px){nav.side{display:none}.layout{padding:10px}}
+mark{background:#fef08a;padding:0 2px;border-radius:2px}
+
+@media print{
+  header,nav.side{display:none}
+  .layout{padding:0}
+  main{max-width:100%}
+  .card{break-inside:avoid;border:1px solid #ccc}
+  .qans{display:none!important}
+  footer{margin-top:20px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd-in">
+    <a href="../daolun/index.html" style="text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="26" height="26" rx="6" stroke="#bae6fd" stroke-width="2"/>
+        <circle cx="14" cy="14" r="5" fill="#e0f2fe"/>
+        <line x1="14" y1="3" x2="14" y2="25" stroke="#bae6fd" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <line x1="3" y1="14" x2="25" y2="14" stroke="#bae6fd" stroke-width="1.5" stroke-dasharray="2 2"/>
+      </svg>
+      <span style="font-size:12px;font-weight:700;color:#e0f2fe;letter-spacing:.08em">CSAI</span>
+    </a>
+    <div>
+      <h1>全国计算机等级考试 · 二级 MS Office 高级应用与设计</h1>
+      <div class="sub">2021—2026 真题 · 知识点 · 答案 · 操作解析 · 复习系统（信息更新至 2026年9月）</div>
+    </div>
+    <div class="hd-search">
+      <input id="gSearch" placeholder="搜索知识点 / 函数 / 真题考点，如：VLOOKUP、数据透视表">
+      <button onclick="globalSearch()">搜索</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="side" id="sideNav">
+  <div class="grp">总览</div>
+  <a data-sec="home" class="act">🏠 首页</a>
+  <a data-sec="guide">📋 考试指南</a>
+  <div class="grp">知识点</div>
+  <a data-sec="kp-W">📝 Word <span class="cnt">10专题</span></a>
+  <a data-sec="kp-E">📊 Excel <span class="cnt">12专题</span></a>
+  <a data-sec="kp-P">📽️ PowerPoint <span class="cnt">8专题</span></a>
+  <div class="grp">题库</div>
+  <a data-sec="papers">🗂️ 历年真题 <span class="cnt">2021—2026</span></a>
+  <a data-sec="hot">🔥 高频考点</a>
+  <a data-sec="practice">✏️ 专项练习</a>
+  <div class="grp">我的</div>
+  <a data-sec="wrong">📕 错题本 <span class="cnt" id="wrongCnt">0</span></a>
+  <a data-sec="fav">⭐ 收藏夹 <span class="cnt" id="favCnt">0</span></a>
+  <a data-sec="mock">⏱️ 模拟考试</a>
+  <a data-sec="plan">🗓️ 复习计划</a>
+</nav>
+
+<main>
+<!-- ============ 首页 ============ -->
+<section class="sec on" id="sec-home">
+  <div class="card hero">
+    <h2>二级 MS Office 高级应用与设计 · 备考复习系统</h2>
+    <div style="margin-top:8px;font-size:13px;opacity:.9">科目代码 65 ｜ 上机考试 120 分钟 ｜ 现行大纲：2025年版</div>
+    <div>
+      <span class="tag">Word 10 专题</span><span class="tag">Excel 12 专题</span><span class="tag">PPT 8 专题</span>
+      <span class="tag">2021—2026 真题库</span><span class="tag">错题本</span><span class="tag">全真模拟</span>
+    </div>
+    <div class="btns">
+      <button onclick="go('kp-W')">开始学习</button>
+      <button onclick="go('papers')">历年真题</button>
+      <button onclick="go('practice')">专项练习</button>
+      <button onclick="go('mock')">模拟考试</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>三大核心模块</h2>
+    <div class="grid4">
+      <div class="mod-card mod-word" onclick="go('kp-W')"><h3>Word</h3><div class="big">10</div><div>个专题：样式 / 页面布局 / 表格 / 邮件合并…</div></div>
+      <div class="mod-card mod-excel" onclick="go('kp-E')"><h3>Excel</h3><div class="big">12</div><div>个专题：函数 / 数据透视表 / 图表…</div></div>
+      <div class="mod-card mod-ppt" onclick="go('kp-P')"><h3>PowerPoint</h3><div class="big">8</div><div>个专题：母版 / 动画 / 放映…</div></div>
+      <div class="mod-card mod-all" onclick="go('papers')"><h3>历年真题</h3><div class="big">36</div><div>道 2021—2026 分类整理题目</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>近六年真题地图</h2>
+    <div class="timeline" id="yearTimeline"></div>
+    <div style="font-size:12px;color:var(--muted)">点击年份可直达该年度真题。2026年9月（第78次）考试：9月19日—21日举行。</div>
+  </div>
+
+  <div class="card">
+    <h2>今日复习</h2>
+    <div id="todayCheck"></div>
+  </div>
+
+  <div class="card">
+    <h2>学习进度</h2>
+    <div id="homeProgress"></div>
+  </div>
+</section>
+
+<!-- ============ 考试指南 ============ -->
+<section class="sec" id="sec-guide">
+  <div class="card">
+    <h2>考试简介</h2>
+    <table class="tb">
+      <tr><th style="width:130px">考试名称</th><td>全国计算机等级考试（NCRE）二级 —— MS Office 高级应用与设计</td></tr>
+      <tr><th>科目代码</th><td>65</td></tr>
+      <tr><th>考试形式</th><td>无纸化上机考试</td></tr>
+      <tr><th>考试时间</th><td>120 分钟（满分 100 分，60 分合格）</td></tr>
+      <tr><th>考试环境</th><td>Windows + Microsoft Office（以当次考试系统为准）</td></tr>
+      <tr><th>获证条件</th><td>通过本科目考试即可获证；自2023年9月起使用电子证书，不再发放纸质证书</td></tr>
+      <tr><th>大纲版本</th><td>《二级MS Office高级应用与设计考试大纲（2025年版）》</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>2026年考试动态（更新至2026年9月）</h2>
+    <table class="tb">
+      <tr><th>考试批次</th><th>考试时间</th><th>说明</th></tr>
+      <tr><td>2026年3月（第77次）</td><td>3月28日—30日</td><td>成绩查询已于2026年5月15日开通</td></tr>
+      <tr><td><b>2026年9月（第78次）</b></td><td><b>9月19日—21日</b></td><td>6月25日起各省陆续报名；9月14日起打印准考证</td></tr>
+    </table>
+    <div class="srcs">来源：教育部教育考试院 NCRE 官网及各省教育考试院公告。</div>
+  </div>
+  <div class="card">
+    <h2>考试内容与分值结构</h2>
+    <table class="tb">
+      <tr><th>部分</th><th>内容</th><th>参考分值</th></tr>
+      <tr><td>选择题（计算机基础+公共基础）</td><td>含二级公共基础知识（数据结构、程序设计基础、软件工程、数据库基础）</td><td>20 分</td></tr>
+      <tr><td>Word 操作题</td><td>长文档排版：样式、多级列表、目录、页面布局、表格、邮件合并等</td><td>30 分</td></tr>
+      <tr><td>Excel 操作题</td><td>数据处理：函数、排序筛选、条件格式、数据透视表、图表等</td><td>30 分</td></tr>
+      <tr><td>PowerPoint 操作题</td><td>演示文稿：母版、主题、动画、切换、放映等</td><td>20 分</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>大纲变化：2022版 → 2025版</h2>
+    <ul style="margin-left:20px;line-height:2;font-size:13px">
+      <li>2025年版大纲继续以 <b>Word、Excel、PowerPoint</b> 三大模块为核心，知识体系保持稳定。</li>
+      <li>Word 部分进一步明确“表格和图表”，图形对象明确包含“形状、SmartArt”等内容。</li>
+      <li>2025年版大纲体系新增科目（如二级CAD设计与综合应用、一级人工智能与大模型基础等），本科目代码65不受影响。</li>
+      <li>复习策略：以 <b>2025版大纲为知识体系</b>，2021—2024真题作为历史题库，2025—2026真题作为近年题库。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 知识点 ============ -->
+<section class="sec" id="sec-kp-W"><div class="card"><h2>Word 知识点（10 专题）</h2><div id="kpListW"></div></div></section>
+<section class="sec" id="sec-kp-E"><div class="card"><h2>Excel 知识点（12 专题）</h2><div id="kpListE"></div></div></section>
+<section class="sec" id="sec-kp-P"><div class="card"><h2>PowerPoint 知识点（8 专题）</h2><div id="kpListP"></div></div></section>
+
+<!-- ============ 历年真题 ============ -->
+<section class="sec" id="sec-papers">
+  <div class="card">
+    <h2>历年真题（2021—2026）</h2>
+    <div class="notice">📌 本页题目为依据历年考情整理的<b>代表性备考题</b>，覆盖各年度高频考点，用于考点演练。NCRE 官方真题版权归教育部教育考试院所有，正式备考请结合官方大纲与正版教材。</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px">
+      <b>年份：</b><span id="fYear"></span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px">
+      <b>模块：</b><span id="fMod"></span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px">
+      <b>难度：</b><span id="fDiff"></span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">共 <b id="qCount">0</b> 题</div>
+    <div id="qList"></div>
+  </div>
+</section>
+
+<!-- ============ 高频考点 ============ -->
+<section class="sec" id="sec-hot">
+  <div class="card">
+    <h2>近六年高频考点统计（2021—2026）</h2>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">依据本站题库中各考点 6 年出现频次统计，用于判断复习优先级。</div>
+    <h3 style="color:var(--w)">Word</h3><div class="bars" id="hotW"></div>
+    <h3 style="color:var(--e)">Excel</h3><div class="bars" id="hotE"></div>
+    <h3 style="color:var(--p)">PowerPoint</h3><div class="bars" id="hotP"></div>
+  </div>
+</section>
+
+<!-- ============ 专项练习 ============ -->
+<section class="sec" id="sec-practice">
+  <div class="card">
+    <h2>专项练习</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="pracBtns"></div>
+    <div id="pracInfo" style="font-size:12.5px;color:var(--muted);margin-bottom:10px"></div>
+    <div id="pracList"></div>
+  </div>
+</section>
+
+<!-- ============ 错题本 ============ -->
+<section class="sec" id="sec-wrong">
+  <div class="card">
+    <h2>我的错题本</h2>
+    <div class="stat" id="wrongStat"></div>
+    <div id="wrongList"></div>
+  </div>
+</section>
+
+<!-- ============ 收藏夹 ============ -->
+<section class="sec" id="sec-fav">
+  <div class="card"><h2>我的收藏</h2><div id="favList"></div></div>
+</section>
+
+<!-- ============ 模拟考试 ============ -->
+<section class="sec" id="sec-mock">
+  <div class="card" id="mockSetup">
+    <h2>全真模拟考试</h2>
+    <p style="font-size:13px;line-height:1.9;color:var(--muted)">模拟真实考试：从题库随机抽取 Word × 1、Excel × 2、PowerPoint × 1 共 4 道操作题，限时 120 分钟（可点击"演示模式"限时 5 分钟体验流程）。</p>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="fbtn" style="background:var(--blue);color:#fff;border-color:var(--blue);padding:10px 24px" onclick="startMock(120)">开始 120 分钟全真模拟</button>
+      <button class="fbtn" style="padding:10px 24px" onclick="startMock(5)">演示模式（5 分钟）</button>
+    </div>
+  </div>
+  <div class="card" id="mockRun" style="display:none">
+    <h2>模拟考试进行中</h2>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div>剩余时间</div><div class="timer" id="mockTimer">120:00</div>
+      <div style="margin-left:auto"><button class="fbtn" style="background:var(--red);color:#fff;border-color:var(--red)" onclick="endMock()">交卷</button></div>
+    </div>
+    <div style="margin-top:14px" id="mockQs"></div>
+  </div>
+  <div class="card" id="mockResult" style="display:none">
+    <h2>模拟考试结果</h2>
+    <div class="stat" id="mockStat"></div>
+    <div id="mockAdv" style="font-size:13px;line-height:2"></div>
+    <div style="margin-top:12px"><button class="fbtn" onclick="resetMock()">再考一次</button></div>
+  </div>
+</section>
+
+<!-- ============ 复习计划 ============ -->
+<section class="sec" id="sec-plan">
+  <div class="card">
+    <h2>30 天复习计划</h2>
+    <table class="tb">
+      <tr><th style="width:110px">阶段</th><th>天数</th><th>任务</th></tr>
+      <tr><td>基础阶段</td><td>第 1—10 天</td><td>通读 Word 10 专题 + Excel 12 专题 + PPT 8 专题，完成每个专题"典型例题"，标记掌握情况</td></tr>
+      <tr><td>强化阶段</td><td>第 11—20 天</td><td>按年份刷 2021—2026 真题；重点攻克函数、数据透视表、样式与多级列表；建立错题本</td></tr>
+      <tr><td>冲刺阶段</td><td>第 21—27 天</td><td>高频考点专项练习；重做错题本；回看所有"易错点"</td></tr>
+      <tr><td>模考阶段</td><td>第 28—30 天</td><td>每日 1 次 120 分钟全真模拟；查漏补缺；熟悉考试环境操作</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>今日复习打卡</h2>
+    <div id="planCheck"></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">打卡数据保存在本机浏览器中，每天坚持 ✊</div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <b>二级 MS Office 高级应用与设计（科目 65）· 真题与知识点复习系统 · <a href="../daolun/index.html">返回导航首页</a></b><br>
+  资料来源：教育部教育考试院 NCRE 官方考试介绍、2022/2025 年版考试大纲及各省 2026 年考试公告，信息更新至 2026年9月。<br>
+  官方网站：中国教育考试网 ncre.neea.edu.cn ｜ 报名网址：ncre-bm.neea.cn ｜ 真题版权归教育部教育考试院所有，本站题目为备考整理的代表性题目，仅供个人学习使用。
+</footer>
+
+<script>
+/* ==================== 数据 ==================== */
+var KP = {
+W:[
+{id:"W01",t:"基础操作",must:["新建/打开/保存文档，理解 .docx 格式","页面设置：纸张、页边距、方向","查找与替换（含高级替换：格式、特殊字符）"],steps:["文件→选项 可自定义保存格式与自动恢复","开始→替换→更多，可按格式/通配符替换","布局选项卡完成页面设置"],example:{q:"将全文的“计算机”替换为“电脑”，并将“电脑”设置为红色加粗。",a:"Ctrl+H 打开替换：查找“计算机”替换为“电脑”，光标定位在“替换为”框 → 格式→字体→红色加粗 → 全部替换。"},mistakes:["替换时忘记设置光标所在框的格式，导致查找框被设置格式","通配符勾选后普通替换失效"]},
+{id:"W02",t:"字体与段落",must:["字体、字号、加粗、倾斜、颜色、字符间距","对齐方式、首行缩进、行距、段前段后","制表位（前导符常用于目录与填空）"],steps:["开始→段落 右下角箭头打开段落对话框","制表位：双击标尺或 段落→制表位，设置位置与对齐/前导符"],example:{q:"设置正文段落：首行缩进2字符、1.5倍行距、段后6磅。",a:"选中正文 → 段落对话框 → 特殊格式选“首行缩进”2字符 → 行距1.5 → 段后6磅。"},mistakes:["用空格代替首行缩进（应使用段落设置）","行距“固定值”设置过小导致文字显示不全"]},
+{id:"W03",t:"样式与多级列表 ★高频",must:["标题1/2/3 与 正文样式","修改样式与创建新样式","多级列表绑定样式 → 自动生成目录"],steps:["开始→样式 右键“修改”可改字体段落","开始→多级列表→定义新的多级列表，将级别链接到标题样式","引用→目录→自动目录（依赖标题样式）"],example:{q:"为文档设置三级标题编号（第1章 / 1.1 / 1.1.1），并自动生成目录。",a:"定义新的多级列表：级别1链接标题1（编号格式“第1章”），级别2链接标题2，级别3链接标题3；各级别勾选“正规形式编号”；引用→目录插入自动目录。"},mistakes:["手动输入章节编号导致无法自动生成目录","多级列表未链接到样式，目录抓取不到标题"]},
+{id:"W04",t:"页面布局：分节/页眉页脚/页码 ★高频",must:["分页符与分节符的区别","不同节设置不同页眉、页脚、页码","分栏、纸张方向"],steps:["布局→分隔符→分节符（下一页）","双击页眉 → 取消“链接到前一条页眉”即可独立设置","页码→设置页码格式 可设起始页码与编号格式"],example:{q:"正文页码从第1页开始（阿拉伯数字），摘要目录部分用罗马数字页码。",a:"在正文前插入分节符；摘要节页码格式设为 i,ii,iii；正文节页码格式 1,2,3 起始页码设为1；两节取消“链接到前一条页眉”。"},mistakes:["用分页符代替分节符导致页眉页脚无法独立","页码起始值未设为1"]},
+{id:"W05",t:"表格 ★高频",must:["创建表格、合并/拆分单元格、行高列宽","表格样式与边框底纹","表格排序、表格内公式、表格与文本互转"],steps:["表格工具→布局：行高列宽、对齐方式","表格工具→设计：样式、边框、底纹","布局→排序；布局→公式（=SUM(ABOVE)）"],example:{q:"将文中“姓名 成绩”的文本转换为2列5行的表格，并按成绩降序排列。",a:"选中文本 → 插入→表格→文本转换成表格（制表符/空格分隔）→ 表格工具布局→排序→按“成绩”降序。"},mistakes:["公式方向参数写错（ABOVE/LEFT）","排序时选中部分单元格导致表格结构破坏"]},
+{id:"W06",t:"图片、形状与 SmartArt",must:["插入图片、调整大小与裁剪","文字环绕方式（嵌入型/四周型/浮于文字上方等）","形状、SmartArt 插入与编辑"],steps:["图片格式→环绕文字 选择环绕方式","插入→SmartArt 选择层次结构/流程等布局","SmartArt 工具→设计 可添加形状、更改布局"],example:{q:"将插入的图片设为“四周型环绕”，并裁剪为椭圆形状。",a:"选中图片 → 图片格式→环绕文字→四周型 → 图片格式→裁剪→裁剪为形状→椭圆。"},mistakes:["环绕方式选错导致图片位置混乱","SmartArt 中直接删文本框破坏结构（应使用添加/删除形状）"]},
+{id:"W07",t:"引用：目录/题注/交叉引用 ★高频",must:["自动目录（基于标题样式）","题注（图1-1、表2-1）与交叉引用","脚注、尾注"],steps:["引用→题注→插入题注（可新建标签）","引用→交叉引用 引用类型选择“图/表/标题”","引用→脚注 插入脚注/尾注"],example:{q:"为所有图片插入“图1-1”式题注，并在正文中添加交叉引用。",a:"引用→插入题注→新建标签“图”（编号勾选包含章节号）→ 选中图片逐个插入；正文需要处→交叉引用→引用类型“图”→插入。"},mistakes:["题注编号未包含章节号","交叉引用后图片增删未更新域（应 Ctrl+A 后 F9 更新）"]},
+{id:"W08",t:"审阅：批注与修订",must:["插入批注","修订模式、接受/拒绝修订","比较文档"],steps:["审阅→新建批注","审阅→修订（记录所有改动）","审阅→更改组：接受/拒绝；审阅→比较"],example:{q:"审阅模式下删除所有“的”字修订并保留其余修改。",a:"审阅→显示标记 确认仅显示删除；在更改组中逐个拒绝删除“的”的修订，其余接受（或先拒绝指定修订）。"},mistakes:["修订模式下直接改文档未开启修订","误点“接受所有修订”失去甄别机会"]},
+{id:"W09",t:"邮件合并 ★高频",must:["主文档 + 数据源 + 合并域","套用信函制作、批量生成","规则（如 If…Then…Else）"],steps:["邮件→开始邮件合并→信函/标签","选择收件人→使用现有列表（Excel 数据源）","插入合并域 → 预览结果 → 完成并合并（编辑单个文档）"],example:{q:"根据考生名单 Excel 批量生成 200 份《准考证》，成绩大于等于90的在备注中显示“优秀”。",a:"邮件合并选择数据源 → 插入姓名、考点、成绩等合并域 → 规则→If…Then…Else：成绩域≥90 输出“优秀”否则空 → 完成并合并。"},mistakes:["数据源首行不是标题行导致合并域无法识别","合并域格式与普通文本混淆（应使用 插入合并域 按钮）"]},
+{id:"W10",t:"综合应用",must:["长文档排版全流程：页面→样式→多级列表→题注→目录→页眉页码","各类知识点组合出题的拆解思路"],steps:["先设置页面与节 → 再做样式 → 多级列表 → 正文排版 → 题注/交叉引用 → 目录 → 页眉页脚页码","按题目要求逐条完成，及时保存"],example:{q:"综合题通常包含：样式修改、多级编号、自动目录、页眉页脚、表格各一问。",a:"按“先结构后内容”顺序操作；每一步做完即验证，目录页码类最后统一更新域。"},mistakes:["顺序颠倒：正文排完再改样式导致返工","忘记保存（Ctrl+S 随时按）"]}
+],
+E:[
+{id:"E01",t:"基础操作与工作表管理",must:["工作簿/工作表/单元格基本操作","插入、删除、重命名、移动复制工作表","冻结窗格、拆分窗口、页面设置"],steps:["视图→冻结窗格（首行/首列/冻结拆分）","右键工作表标签 管理","页面布局→打印区域/标题行"],example:{q:"冻结首行并设置打印时每页都显示第1行标题。",a:"视图→冻结窗格→冻结首行；页面布局→打印标题→顶端标题行 选择第1行。"},mistakes:["冻结窗格位置选错（应先选中目标单元格）","忘记设置打印标题导致分页无表头"]},
+{id:"E02",t:"数据输入与单元格格式",must:["数字、文本、日期型数据的输入规则","自定义数字格式（如 0001、0.0%、;;;）","条件格式的基本应用"],steps:["Ctrl+1 设置单元格格式","自定义格式代码：0 占位、# 可选位、? 对齐位","开始→条件格式→突出显示规则/数据条/色阶"],example:{q:"将A列工号显示为4位，不足补零（如 0032）。",a:"选中A列 → Ctrl+1 → 自定义 → 输入 0000。"},mistakes:["身份证号/手机号输入后变科学计数（应先设文本格式）","日期格式混淆（2026/9/19 与 2026-09-19）"]},
+{id:"E03",t:"单元格引用 ★高频",must:["相对引用 A1、绝对引用 $A$1、混合引用 A$1 / $A1","引用切换快捷键 F4","跨工作表引用 Sheet2!A1"],steps:["编辑公式时选中引用按 F4 循环切换","复制公式前确认需要锁定的行列","跨表引用直接点击目标工作表选择单元格"],example:{q:"C列算“金额=单价×$B$1的折扣”，向下填充时折扣单元格不变。",a:"公式写 =B2*$B$1（按F4锁定B1），向下填充即可。"},mistakes:["该锁定的没锁（填充后引用漂移）","不该锁的全锁（填充后结果不变）"]},
+{id:"E04",t:"函数库 ★最高频",must:["统计：SUM/AVERAGE/MAX/MIN/COUNT/COUNTA/COUNTIF(S)/SUMIF(S)/AVERAGEIF(S)","逻辑：IF/IFS/AND/OR/IFERROR","查找：VLOOKUP/HLOOKUP/INDEX/MATCH","文本：LEFT/RIGHT/MID/LEN/FIND/TEXT","日期：YEAR/MONTH/DAY/TODAY/DATEDIF"],steps:["fx 按钮或公式→插入函数","VLOOKUP：=VLOOKUP(查找值,区域,列号,FALSE精确匹配)","SUMIFS：=SUMIFS(求和区,条件区1,条件1,…)"],example:{q:"根据工号在“员工表”中查找姓名；统计销售部销售额合计。",a:"=VLOOKUP(A2,员工表!A:D,2,FALSE)；=SUMIFS(D:D,B:B,\"销售部\")。"},mistakes:["VLOOKUP 区域首列不是查找列","文本型数字与数值型不匹配导致查找失败","条件中的文本未加英文双引号"]},
+{id:"E05",t:"排序与筛选 ★高频",must:["单条件/多条件排序、按颜色排序","自动筛选（含数字/日期筛选）","高级筛选（条件区域、或/与关系）"],steps:["数据→排序（添加条件，注意“数据包含标题”）","数据→筛选","高级筛选：先写条件区域（同行=与，异行=或）→ 数据→高级"],example:{q:"筛选出“销售部”且“销售额>10000”的记录，复制到Sheet2。",a:"条件区域两行写条件（同行为AND）：销售部 / >10000 → 数据→高级筛选→将筛选结果复制到其他位置。"},mistakes:["高级筛选条件区域与数据区未空行/空列分隔","多条件排序主次关键字顺序颠倒"]},
+{id:"E06",t:"条件格式 ★高频",must:["突出显示规则（大于/小于/重复值）","数据条、色阶、图标集","使用公式确定要设置格式的单元格"],steps:["开始→条件格式","公式规则示例：=B2>10000 应用于整列区域","管理规则可编辑/删除已有规则"],example:{q:"将成绩小于60的单元格自动标红，并给总分加数据条。",a:"条件格式→突出显示规则→小于→60 设置红填充；选中总分列→条件格式→数据条。"},mistakes:["公式规则中引用未相对化（锁定后整列判断同一个单元格）","多个规则冲突时未调整优先级"]},
+{id:"E07",t:"分类汇总与合并计算",must:["分类汇总前必须先按分类列排序","多级分类汇总（替换当前分类汇总 勾选项）","合并计算（多表求和）"],steps:["先排序 → 数据→分类汇总","取消分类汇总：数据→分类汇总→全部删除","数据→合并计算 选择函数与引用位置"],example:{q:"按“部门”汇总工资总和与平均值，显示二级汇总。",a:"按部门排序 → 数据→分类汇总：分类字段“部门”，汇总项“工资”，汇总方式先求和、取消勾选“替换当前分类汇总”再求平均。"},mistakes:["未排序直接分类汇总导致结果错乱","二级汇总时勾选了“替换当前汇总”"]},
+{id:"E08",t:"数据有效性（数据验证）",must:["设置序列（下拉列表）、数值范围、日期范围","输入信息与出错警告"],steps:["数据→数据验证→设置","序列来源可直接输入：优秀,良好,及格,不及格","圈释无效数据"],example:{q:"设置“部门”列只能选 销售部/技术部/财务部，输入其他内容时提示错误。",a:"选中列 → 数据→数据验证→允许“序列”→来源输入三个部门（英文逗号分隔）→ 出错警告 设置提示。"},mistakes:["序列来源分隔符用了中文逗号","圈释无效数据后未清除圈释"]},
+{id:"E09",t:"数据透视表 ★最高频",must:["创建数据透视表（行/列/值/筛选区域）","值字段设置：求和/计数/平均","刷新数据、更改数据源、分组（日期按月/年）"],steps:["插入→数据透视表→新工作表","拖拽字段：行=分类，值=汇总，列=交叉，筛选=切片","值字段→值字段设置 更改汇总方式；右键日期→组合 按月分组"],example:{q:"统计各部门各月份的销售额合计，按月份筛选。",a:"数据透视表：行=部门、列=月份（对日期字段组合为月）、值=销售额求和、筛选=年份。"},mistakes:["数据区域含空行空列导致字段识别不全","源数据修改后未刷新透视表"]},
+{id:"E10",t:"图表 ★高频",must:["柱形/条形/折线/饼图/散点图的适用场景","图表标题、坐标轴、数据标签、图例","组合图（双坐标轴）、更改图表类型"],steps:["选中数据 → 插入→图表","图表元素（+号）添加标题/标签/图例","右键数据系列→设置数据系列格式→次坐标轴"],example:{q:"将销售额做柱形图、增长率做折线图并置于次坐标轴，构成组合图。",a:"选中数据插入柱形图 → 右键“增长率”系列→更改系列图表类型→折线图并勾选次坐标轴。"},mistakes:["饼图类别过多（饼图不宜超过5—6类）","数据区域含标题/合计行导致图表错误"]},
+{id:"E11",t:"模拟分析与工具",must:["单变量求解（目标值反推）","模拟运算表（单变量/双变量）","方案管理器"],steps:["数据→模拟分析→单变量求解","数据→模拟分析→模拟运算表（引用行/列单元格）"],example:{q:"已知利润公式，求销售额达到多少时利润为100万。",a:"数据→模拟分析→单变量求解：目标单元格=利润，目标值=1000000，可变单元格=销售额。"},mistakes:["可变单元格必须是公式中直接引用的单元格"]},
+{id:"E12",t:"Excel 综合应用",must:["函数+引用+条件格式+图表的综合题拆解","按小题逐个击破，注意题目指定的单元格位置"],steps:["先做数据整理（格式、排序）→ 再计算（函数）→ 再分析（筛选/透视表）→ 最后图表","看清题目要求写在哪个工作表、哪个区域"],example:{q:"综合题常见组合：SUMIFS 汇总 + IF 评级 + 条件格式标色 + 图表展示。",a:"先搭建汇总区公式，再设置格式与图表；每完成一步验证结果。"},mistakes:["函数区域选择过大或过小","题目要求的精确位置（如 H2 单元格）未遵守"]}
+],
+P:[
+{id:"P01",t:"基础操作与节",must:["新建、版式、节的管理","重用幻灯片、插入其他演示文稿","保存、导出（PDF/视频/图片）"],steps:["开始→新建幻灯片 选择版式","开始→节 新增/折叠节","文件→导出 另存为 PDF"],example:{q:"将“产品介绍.pptx”的第3—8张幻灯片插入到当前演示文稿之后。",a:"开始→新建幻灯片下拉→重用幻灯片→浏览文件→勾选“保留源格式”→插入需要的幻灯片。"},mistakes:["重用幻灯片未勾选保留源格式导致样式丢失"]},
+{id:"P02",t:"文本与段落",must:["字体、字号、颜色、加粗","段落对齐、行距、项目符号与编号","文本框、占位符的使用"],steps:["开始→字体/段落组","项目符号下拉→项目符号和编号 自定义图片符号","开始→转换为 SmartArt（文本转图示）"],example:{q:"将所有幻灯片正文的项目符号改为对勾图片符号。",a:"视图→幻灯片母版 → 选中正文占位符 → 项目符号→图片 选择对勾 → 关闭母版视图。"},mistakes:["逐页修改文本格式而非通过母版统一设置"]},
+{id:"P03",t:"图片、形状与 SmartArt",must:["图片裁剪/更正/样式","形状绘制、对齐、组合、层次","SmartArt 插入与转换"],steps:["图片格式→裁剪为形状/图片样式","Ctrl 多选形状 → 形状格式→对齐/组合","插入→SmartArt；右键文本→转换为 SmartArt"],example:{q:"将三层组织结构文字转换为“组织结构图”SmartArt，并为第2层添加两个分支。",a:"选中文本 → 开始→转换为 SmartArt→组织结构图；SmartArt工具→设计→添加形状。"},mistakes:["添加形状层级错误（升级/降级按钮的使用）"]},
+{id:"P04",t:"表格与图表",must:["插入表格、表格样式","插入图表（含编辑数据）、图表样式"],steps:["插入→表格","插入→图表→在弹出的Excel中编辑数据","图表工具→设计/格式 设置样式"],example:{q:"插入柱形图展示季度销量，并设置图表样式为“样式3”。",a:"插入→图表→柱形图→编辑数据输入季度销量 → 图表工具→设计→图表样式 选“样式3”。"},mistakes:["编辑图表数据时误关数据窗口（图表工具→设计→编辑数据 可重新打开）"]},
+{id:"P05",t:"主题与幻灯片母版 ★最高频",must:["主题：配色、字体、效果的统一","母版与版式：统一背景、Logo、占位符格式","插入版式并自定义占位符"],steps:["设计→主题 应用主题","视图→幻灯片母版：改字体/背景/占位符位置影响全部","母版中插入图片（Logo）置于底层"],example:{q:"将所有幻灯片标题改为微软雅黑28号加粗，右上角添加公司Logo。",a:"视图→幻灯片母版 → 选中标题占位符设置字体字号 → 在最顶层母版插入Logo置于右上角 → 关闭母版视图。"},mistakes:["直接在普通视图改单页而非母版（无法统一全部）","Logo未置于底层遮挡文字"]},
+{id:"P06",t:"动画 ★高频",must:["进入、强调、退出、动作路径四类动画","动画窗格：顺序、开始方式（单击/与上一动画同时/上一动画之后）、持续时间","动画刷"],steps:["动画→添加动画（注意先选对象）","动画→动画窗格 调整顺序与计时","动画刷快速复制动画"],example:{q:"设置流程图四个步骤依次自动出现，每个间隔0.5秒，并为最后一步添加“脉冲”强调。",a:"依次添加进入动画→开始方式选“上一动画之后”、延迟0.5秒；最后一步再添加强调→脉冲。"},mistakes:["开始方式混淆（“单击时”在自动放映中不会自动播放）","为占位符而非其中对象添加动画"]},
+{id:"P07",t:"切换效果",must:["切换效果、效果选项、持续时间","自动换片时间、全部应用","声音设置"],steps:["切换选项卡 选择效果与持续时间","设置自动换片时间 → 全部应用"],example:{q:"所有幻灯片使用“推进”切换，持续1秒，每张自动播放5秒后切换。",a:"切换→推进→持续时间1秒→自动换片时间5秒→全部应用。"},mistakes:["只设置了当前页自动换片忘记“全部应用”"]},
+{id:"P08",t:"放映与输出",must:["排练计时、自定义放映","演讲者视图、放映时标注","打印讲义（每页多张）、导出视频"],steps:["幻灯片放映→排练计时","幻灯片放映→自定义放映","文件→打印→整页幻灯片下拉 选“讲义（每页4张）”"],example:{q:"设置演讲时长8分钟的排练计时，并打印每页4张的讲义。",a:"幻灯片放映→排练计时 记录每页时间；Ctrl+P 打印→版式选“讲义（每页4张）”。"},mistakes:["排练计时未勾选“使用计时”导致放映时不生效"]}
+]};
+
+var QS = [
+{id:"q2609a",y:2026,m:"W",point:"样式与多级列表",diff:3,tag:"2026年9月",q:"某长文档已用“标题1/标题2”样式分层。要求：① 将“标题1”样式改为黑体三号、段前段后12磅；② 设置多级编号“第1章、1.1、1.1.1”并链接到样式；③ 在文首插入自动目录，显示3级。",ans:"样式+多级列表+自动目录的标准组合操作。",steps:["开始→样式 右键“标题1”→修改：黑体三号，段落中设段前段后12磅","开始→多级列表→定义新的多级列表：级别1链接标题1、编号格式“第1章”；级别2链接标题2；级别3链接标题3；勾选正规形式编号","引用→目录→自动目录1；后续改动后 Ctrl+A → F9 更新域"],kp:"W03"},
+{id:"q2609b",y:2026,m:"E",point:"SUMIFS函数",diff:2,tag:"2026年9月",q:"销售表：A列地区、B列产品、C列销售员、D列销售额。在G列按“地区+产品”统计销售额合计。",ans:"=SUMIFS($D:$D,$A:$A,G$1,$B:$B,$F2)",steps:["在G2输入 =SUMIFS($D:$D,$A:$A,G$1,$B:$B,$F2)","使用F4将求和区和条件区绝对引用，条件用混合引用便于向右向下填充","下拉填充完成二维汇总"],kp:"E04"},
+{id:"q2609c",y:2026,m:"P",point:"幻灯片母版",diff:3,tag:"2026年9月",q:"为演示文稿统一设置：① 所有页面右上角放置Logo图片；② 标题占位符微软雅黑28磅居中；③ 第2节使用不同配色。",ans:"母版统一设置 + 节内单独版式。",steps:["视图→幻灯片母版，在最上方根母版插入Logo置于右上角","选中标题占位符设置字体字号对齐","关闭母版；选中第2节→设计→变体下拉→应用于选定幻灯片 更改配色"],kp:"P05"},
+{id:"q2603a",y:2026,m:"W",point:"邮件合并",diff:3,tag:"2026年3月",q:"根据“考生.xlsx”（姓名、身份证号、考点、考场）批量生成带照片框的《准考证》，每页4张。",ans:"邮件合并标签功能。",steps:["邮件→开始邮件合并→标签，选择每页4张的标签规格","选择收件人→使用现有列表→考生.xlsx","插入合并域（姓名/身份证号/考点/考场）→ 更新标签 → 完成并合并→编辑单个文档"],kp:"W09"},
+{id:"q2603b",y:2026,m:"E",point:"VLOOKUP函数",diff:2,tag:"2026年3月",q:"员工表在Sheet2（A工号 B姓名 C部门 D入职日期），在Sheet1根据A列工号填充姓名和部门。",ans:"=VLOOKUP(A2,Sheet2!$A:$D,2,FALSE) 与 =VLOOKUP(A2,Sheet2!$A:$D,3,FALSE)",steps:["确认Sheet2 A列为工号且为查找区域首列","输入公式，列号分别为2（姓名）、3（部门），精确匹配FALSE","区域绝对引用后填充"],kp:"E04"},
+{id:"q2603c",y:2026,m:"E",point:"数据透视表",diff:3,tag:"2026年3月",q:"订单明细（日期、品类、金额、渠道）统计：各渠道每月销售额，并按季度筛选。",ans:"数据透视表 + 日期分组 + 筛选。",steps:["插入→数据透视表","行=品类，列=对“日期”右键→组合→按月分组，值=金额求和","筛选区域放“渠道”字段；对日期再组合出“季度”用于筛选"],kp:"E09"},
+{id:"q2509a",y:2025,m:"W",point:"页眉页脚与分节",diff:3,tag:"2025年9月",q:"论文排版：摘要页页脚罗马数字 i 起，正文页脚阿拉伯数字1起，首页不显示页码；奇偶页页眉不同（偶页为论文题目）。",ans:"分节 + 首页不同 + 奇偶页不同。",steps:["在正文前插入分节符（下一页）","页眉页脚工具：勾选“首页不同”“奇偶页不同”","摘要节插入页码 i,ii,iii 起始 i；正文节页码 1,2,3 起始1；取消“链接到前一条页眉”后分别设置奇偶页内容"],kp:"W04"},
+{id:"q2509b",y:2025,m:"E",point:"IF嵌套函数",diff:2,tag:"2025年9月",q:"成绩表F列为分数，G列评等级：≥90优秀，80—89良好，60—79及格，否则不及格。",ans:"=IF(F2>=90,\"优秀\",IF(F2>=80,\"良好\",IF(F2>=60,\"及格\",\"不及格\")))",steps:["G2输入嵌套IF公式，注意从大到小判断","文本结果加英文双引号","向下填充"],kp:"E04"},
+{id:"q2509c",y:2025,m:"P",point:"动画设置",diff:2,tag:"2025年9月",q:"SmartArt流程图四个步骤依次出现：前三个单击出现，最后一个在前一个出现后1秒自动出现，并附加“陀螺旋”强调动画。",ans:"动画窗格设置开始方式与计时。",steps:["选中各步骤逐个添加“进入→浮入”","前三个：开始=单击时；最后一个：开始=上一动画之后、延迟1秒","最后一个再添加“强调→陀螺旋”"],kp:"P06"},
+{id:"q2503a",y:2025,m:"W",point:"表格综合",diff:2,tag:"2025年3月",q:"将文本转换成5列员工表；设置表头深蓝底白字居中；按入职日期升序排列；计算各年份入职人数（表格公式）。",ans:"文本转表格 + 样式 + 排序。",steps:["选中文本→插入→表格→文本转换成表格（按制表符）","选中表行→表格工具设计：底纹深蓝、字体白色加粗居中","布局→排序 按入职日期升序","布局→公式 =COUNT(…) 配合辅助列统计"],kp:"W05"},
+{id:"q2503b",y:2025,m:"E",point:"条件格式",diff:2,tag:"2025年3月",q:"库存表：① 库存量小于安全库存的整行标黄；② 库存量列加“红色数据条”；③ 重复的产品编号标红字。",ans:"公式条件格式 + 数据条 + 重复值规则。",steps:["选中数据区→条件格式→新建规则→使用公式：=$D2<$E2 设置黄色填充","选中库存量列→条件格式→数据条","选中编号列→条件格式→突出显示规则→重复值"],kp:"E06"},
+{id:"q2503c",y:2025,m:"P",point:"切换与自动放映",diff:1,tag:"2025年3月",q:"全部幻灯片应用“淡出”切换0.8秒，每张6秒自动播放，循环放映直至按Esc。",ans:"切换 + 设置放映方式。",steps:["切换→淡出，持续时间0.8秒，自动换片6秒→全部应用","幻灯片放映→设置幻灯片放映→循环放映，按ESC键终止"],kp:"P07"},
+{id:"q2409a",y:2024,m:"W",point:"自动目录与题注",diff:3,tag:"2024年9月",q:"为图片插入“图1-1”式题注（含章节号），生成“图目录”（Table of Figures），正文引用处使用交叉引用。",ans:"题注 + 题注目录 + 交叉引用。",steps:["引用→插入题注→编号→勾选包含章节号，标签“图”","光标置于图目录位置→引用→插入表目录（题注标签选“图”）","正文引用处→交叉引用→引用类型“图”→引用内容“仅标签和编号”"],kp:"W07"},
+{id:"q2409b",y:2024,m:"E",point:"图表制作",diff:2,tag:"2024年9月",q:"用各部门“销售额+利润率”制作组合图：销售额柱形图，利润率折线图置于次坐标轴，添加图表标题与数据标签。",ans:"更改系列图表类型 + 次坐标轴。",steps:["选中数据插入簇状柱形图","右键“利润率”系列→更改系列图表类型→折线图→勾选次坐标轴","图表元素添加标题与数据标签"],kp:"E10"},
+{id:"q2409c",y:2024,m:"P",point:"SmartArt",diff:2,tag:"2024年9月",q:"将“筹备阶段”三段文字转换为“基本循环”SmartArt，更改颜色为彩色填充，并将第2个形状降级为子步骤。",ans:"转换SmartArt + 布局调整。",steps:["选中文本→开始→转换为SmartArt→基本循环","SmartArt工具→设计→更改颜色","选中第2个形状→设计→降级"],kp:"P03"},
+{id:"q2403a",y:2024,m:"W",point:"邮件合并",diff:3,tag:"2024年3月",q:"向客户发送缴费通知：金额大于500元的客户备注“请尽快办理”，其余备注“感谢配合”。",ans:"邮件合并 + If规则。",steps:["邮件合并主文档信函，连接客户数据源","插入姓名、金额合并域","规则→If…Then…Else：金额域>500 输出“请尽快办理”否则“感谢配合”→完成并合并"],kp:"W09"},
+{id:"q2403b",y:2024,m:"E",point:"排序与高级筛选",diff:2,tag:"2024年3月",q:"① 按部门升序、部门内按工资降序排列；② 筛选出“工资>8000”或“职级=高级”的记录复制到新表。",ans:"多条件排序 + 高级筛选（OR条件）。",steps:["数据→排序：主要关键字部门升序，次要关键字工资降序","条件区域两行分别写 >8000、高级 → 高级筛选→条件区域选好后“复制到其他位置”"],kp:"E05"},
+{id:"q2403c",y:2024,m:"P",point:"幻灯片母版",diff:3,tag:"2024年3月",q:"整套幻灯片左下角添加页码与“内部资料”文字；仅封面不显示。",ans:"母版版式级设置。",steps:["视图→幻灯片母版→编辑“标题幻灯片”以外版式：插入页码占位符与“内部资料”文本框","标题幻灯片版式保持空白","关闭母版视图"],kp:"P05"},
+{id:"q2309a",y:2023,m:"W",point:"制表位与段落",diff:2,tag:"2023年9月",q:"制作目录式排版：一级标题左对齐无点线，二级标题右对齐且带前导符“……”。",ans:"制表位设置。",steps:["选中一级标题→段落→制表位 设置左对齐制表位","选中二级标题段落→制表位：右对齐+前导符选“……”","在标题与页码间按Tab键"],kp:"W02"},
+{id:"q2309b",y:2023,m:"E",point:"文本函数",diff:2,tag:"2023年9月",q:"身份证列提取出生年月日（第7—14位）并计算年龄；姓名列去除前后空格。",ans:"MID + DATEDIF + TRIM。",steps:["=TEXT(MID(A2,7,8),\"0000-00-00\") 得到出生日期","=DATEDIF(DATE(MID(A2,7,4),MID(A2,11,2),MID(A2,13,2)),TODAY(),\"y\")","=TRIM(B2) 清理姓名"],kp:"E04"},
+{id:"q2309c",y:2023,m:"P",point:"排练计时与放映",diff:1,tag:"2023年9月",q:"使用排练计时将演示文稿控制在5分钟并保存计时；放映时不使用鼠标单击翻页。",ans:"排练计时 + 使用计时放映。",steps:["幻灯片放映→排练计时 逐页记录时长，Esc结束保存","幻灯片放映→设置放映式→推进幻灯片选“如果存在排练时间则使用它”"],kp:"P08"},
+{id:"q2303a",y:2023,m:"W",point:"审阅修订",diff:2,tag:"2023年3月",q:"打开修订模式修改文档，将所有删除“的”字的修订拒绝，其余修订全部接受，最后删除所有批注。",ans:"修订 + 逐项处理。",steps:["审阅→修订，进行修改","在修订窗格中定位删除“的”的修订→拒绝；其余接受（或先拒绝指定再接受所有）","审阅→删除→删除文档中的所有批注"],kp:"W08"},
+{id:"q2303b",y:2023,m:"E",point:"绝对引用综合",diff:2,tag:"2023年3月",q:"九九乘法表/提成表：用公式计算提成=销售额×提成率（B1单元格），要求横向纵向填充均正确。",ans:"混合引用 =B2*$C$1 或按方向锁定。",steps:["分析填充方向，销售额随行变→相对引用","提成率固定→绝对引用 $C$1","输入公式后向右向下填充验证"],kp:"E03"},
+{id:"q2303c",y:2023,m:"E",point:"数据透视表",diff:3,tag:"2023年3月",q:"统计各分店各品类销售件数、销售额合计与平均值，按销售额降序排列分店。",ans:"多值字段透视表。",steps:["插入数据透视表，行=分店、列=品类","值区域依次拖入件数（计数）、销售额（求和）、销售额（平均值，值字段设置改）","行标签下拉→其他排序选项→按销售额求和项降序"],kp:"E09"},
+{id:"q2209a",y:2022,m:"W",point:"分节与页面设置",diff:3,tag:"2022年9月",q:"文档第3章起改为横向A4纸且双栏排版，页边距上下2.54厘米左右3.17厘米。",ans:"分节 + 纸张/分栏。",steps:["在第3章前插入分节符（下一页）","选中第3章以后内容所在节→布局→纸张方向横向、栏数2","布局→页边距→自定义边距 设置数值"],kp:"W04"},
+{id:"q2209b",y:2022,m:"E",point:"COUNTIF统计",diff:1,tag:"2022年9月",q:"统计成绩表中各分数段人数（<60、60—79、80—89、≥90）与及格率。",ans:"COUNTIF区间统计。",steps:["=COUNTIF(F:F,\"<60\")、=COUNTIF(F:F,\">=60\")-COUNTIF(F:F,\">=80\") 等区间写法","及格率 =(COUNTIF(F:F,\">=60\")/COUNT(F:F)) 设百分比格式"],kp:"E04"},
+{id:"q2209c",y:2022,m:"P",point:"表格与图表",diff:2,tag:"2022年9月",q:"在指定幻灯片插入3行4列表格套用浅色样式；插入饼图展示占比并显示百分比数据标签。",ans:"表格样式 + 饼图标签。",steps:["插入→表格 3×4，表格工具设计→样式选浅色","插入→饼图，编辑数据","图表元素→数据标签→更多选项→勾选“百分比”"],kp:"P04"},
+{id:"q2203a",y:2022,m:"W",point:"题注交叉引用",diff:3,tag:"2022年3月",q:"为5张表格插入“表1-x”题注；正文中两处“见表X”改为交叉引用，并更新全部域。",ans:"题注 + 交叉引用 + 更新域。",steps:["引用→插入题注，标签“表”，编号含章节号","删除原“见表X”文字→引用→交叉引用→引用类型“表”","Ctrl+A 后 F9 更新所有域核对编号"],kp:"W07"},
+{id:"q2203b",y:2022,m:"E",point:"日期函数",diff:2,tag:"2022年3月",q:"根据入职日期计算工龄（满年数）与距今天数，并统计本月入职人数。",ans:"DATEDIF + TODAY。",steps:["工龄 =DATEDIF(E2,TODAY(),\"y\")","距今天数 =TODAY()-E2 设数值格式","本月入职 =SUMPRODUCT((MONTH(E2:E100)=MONTH(TODAY()))*(YEAR(E2:E100)=YEAR(TODAY())))"],kp:"E04"},
+{id:"q2203c",y:2022,m:"P",point:"动作路径动画",diff:2,tag:"2022年3月",q:"小车图片沿自定义曲线路径行驶，路径编辑为S形，持续时间4秒、重复2次。",ans:"动作路径 + 效果选项。",steps:["选中图片→动画→添加动画→动作路径→自定义路径 绘制S形","动画窗格→效果选项：计时 持续时间4秒、重复2次"],kp:"P06"},
+{id:"q2109a",y:2021,m:"W",point:"SmartArt图文混排",diff:2,tag:"2021年9月",q:"将公司架构文字转为层次结构SmartArt；插入组织结构图旁补充照片圆形裁剪并置于文字下方。",ans:"SmartArt + 图片处理。",steps:["文本→开始→转换为SmartArt→组织结构图","插入照片→裁剪为形状→椭圆","右键→置于底层"],kp:"W06"},
+{id:"q2109b",y:2021,m:"E",point:"分类汇总",diff:2,tag:"2021年9月",q:"按商品类别汇总库存数量与平均单价，分三级显示；取消分类汇总恢复原表。",ans:"排序 + 分类汇总。",steps:["按类别列排序","数据→分类汇总：分类字段类别、汇总项数量求和/单价平均","取消时 分类汇总→全部删除"],kp:"E07"},
+{id:"q2109c",y:2021,m:"P",point:"页眉页脚与编号",diff:1,tag:"2021年9月",q:"除标题幻灯片外，所有幻灯片右下角显示幻灯片编号与日期。",ans:"母版/页脚设置。",steps:["插入→页眉和页脚→勾选幻灯片编号、日期和时间→勾选“标题幻灯片中不显示”→全部应用"],kp:"P01"},
+{id:"q2103a",y:2021,m:"W",point:"查找替换高级",diff:2,tag:"2021年3月",q:"删除文中所有空段（两个连续的段落标记）；将手动换行符替换为段落标记。",ans:"特殊格式替换。",steps:["Ctrl+H→更多→特殊格式：查找 ^p^p 替换 ^p，多次全部替换","查找 ^l（手动换行符）替换为 ^p"],kp:"W01"},
+{id:"q2103b",y:2021,m:"E",point:"高级筛选",diff:3,tag:"2021年3月",q:"筛选“2021年入职且工资高于部门平均工资”的记录（部门平均工资用辅助列计算）。",ans:"辅助列 + 高级筛选。",steps:["先用AVERAGEIF计算各部门平均工资到辅助列","条件区域写：入职年份条件、工资>辅助列（用公式条件 =F2>G2 形式）","数据→高级筛选→复制到其他位置"],kp:"E05"},
+{id:"q2103c",y:2021,m:"P",point:"自定义放映",diff:1,tag:"2021年3月",q:"制作两套放映方案：“完整版”全部幻灯片；“精简版”仅第1、3、5、7张。",ans:"自定义放映。",steps:["幻灯片放映→自定义放映→新建","添加第1、3、5、7张命名“精简版”；再新建“完整版”全部","放映时选择方案"],kp:"P08"}
+];
+
+var HOT = {
+W:[["样式与多级列表",6],["页面布局/页眉页脚",5],["表格",4],["邮件合并",4],["引用/题注/目录",3],["审阅修订",2]],
+E:[["函数（SUMIFS/VLOOKUP/IF）",6],["数据透视表",4],["条件格式",3],["排序与筛选",3],["图表",3],["引用与格式",2]],
+P:[["幻灯片母版",5],["动画",4],["SmartArt/图形",3],["切换放映",3],["表格图表",2],["文本版式",1]]
+};
+
+/* ==================== 状态 ==================== */
+var store = {
+  get wrong(){try{return JSON.parse(localStorage.ncre_wrong||"[]")}catch(e){return[]}},
+  set wrong(v){localStorage.ncre_wrong=JSON.stringify(v)},
+  get fav(){try{return JSON.parse(localStorage.ncre_fav||"[]")}catch(e){return[]}},
+  set fav(v){localStorage.ncre_fav=JSON.stringify(v)},
+  get learned(){try{return JSON.parse(localStorage.ncre_learned||"[]")}catch(e){return[]}},
+  set learned(v){localStorage.ncre_learned=JSON.stringify(v)},
+  get today(){try{return JSON.parse(localStorage.ncre_today||"{}")}catch(e){return{}}},
+  set today(v){localStorage.ncre_today=JSON.stringify(v)}
+};
+
+/* ==================== 导航 ==================== */
+function go(id){
+  document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on")});
+  document.getElementById("sec-"+id).classList.add("on");
+  document.querySelectorAll("#sideNav a").forEach(function(a){
+    a.classList.toggle("act",a.getAttribute("data-sec")===id)});
+  if(id==="wrong")renderWrong();
+  if(id==="fav")renderFav();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("#sideNav a").forEach(function(a){
+  a.onclick=function(){go(a.getAttribute("data-sec"))};
+});
+
+/* ==================== 知识点渲染 ==================== */
+function kpHTML(k,mod){
+  var lm = {W:"W",E:"E",P:"P"};
+  return '<div class="kp-item" id="kp-'+k.id+'">'
+  +'<div class="kp-head" onclick="this.parentNode.classList.toggle(\'open\')">'
+  +'<span class="pill '+mod+'">'+mod+'</span> '+k.id+' · '+k.t
+  +'<span class="chev">▶</span></div>'
+  +'<div class="kp-body">'
+  +'<div style="margin-bottom:6px"><button class="fbtn" onclick="toggleLearn(event,\''+k.id+'\')">📘 标记已学</button> <span class="learned-tag" data-k="'+k.id+'" style="font-size:12px;color:var(--green)"></span></div>'
+  +'<h4 class="r">必须掌握</h4><ul>'+k.must.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul>'
+  +'<h4 class="g">操作方法</h4><ol>'+k.steps.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>'
+  +'<div class="ex"><h4 class="p">典型例题</h4><b>题：</b>'+k.example.q+'<br><b>答：</b>'+k.example.a+'</div>'
+  +'<h4 class="o">易错点</h4><ul>'+k.mistakes.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul>'
+  +'</div></div>';
+}
+document.getElementById("kpListW").innerHTML = KP.W.map(function(k){return kpHTML(k,"W")}).join("");
+document.getElementById("kpListE").innerHTML = KP.E.map(function(k){return kpHTML(k,"E")}).join("");
+document.getElementById("kpListP").innerHTML = KP.P.map(function(k){return kpHTML(k,"P")}).join("");
+
+function toggleLearn(e,id){
+  e.stopPropagation();
+  var l = store.learned;
+  var i = l.indexOf(id);
+  if(i>=0)l.splice(i,1);else l.push(id);
+  store.learned = l;
+  refreshLearned();
+}
+function refreshLearned(){
+  var l = store.learned;
+  document.querySelectorAll(".learned-tag").forEach(function(t){
+    t.textContent = l.indexOf(t.getAttribute("data-k"))>=0 ? "✓ 已学" : "";
+  });
+  var total = KP.W.length+KP.E.length+KP.P.length;
+  var pct = Math.round(l.length/total*100);
+  document.getElementById("homeProgress").innerHTML =
+    '<div style="font-size:13px;margin-bottom:4px">已学专题：<b>'+l.length+'</b> / '+total+'（'+pct+'%）</div>'
+    +'<div class="progress-wrap"><div class="pf" style="width:'+pct+'%"></div></div>'
+    +'<div style="font-size:12px;color:var(--muted)">建议按 复习计划 的30天进度推进，学完一个专题立即做对应真题检验。</div>';
+}
+refreshLearned();
+
+/* ==================== 首页时间线 / 打卡 ==================== */
+var years=[2026,2025,2024,2023,2022,2021];
+document.getElementById("yearTimeline").innerHTML = years.map(function(y){
+  var c = y===2026 ? "latest" : "";
+  var n = QS.filter(function(q){return q.y===y}).length;
+  return '<button class="'+c+'" onclick="filterYear('+y+')">'+y+'<small>'+n+' 道题'+(y===2026?"(含9月)":"")+'</small></button>';
+}).join("");
+
+var todayItems=["学习 2 个知识点专题","完成 5 道历年真题","完成 1 个专项练习","复习错题本 10 分钟","进行一次限时模拟练习"];
+var todayKey=new Date().toISOString().slice(0,10);
+function renderToday(){
+  var d=store.today; var arr=d[todayKey]||[];
+  document.getElementById("todayCheck").innerHTML = todayItems.map(function(t,i){
+    return '<div class="check '+(arr.indexOf(i)>=0?"done":"")+'" onclick="toggleToday('+i+')"><input type="checkbox" '+(arr.indexOf(i)>=0?"checked":"")+' disabled> <span class="txt">'+t+'</span></div>';
+  }).join("");
+  if(document.getElementById("planCheck")){
+    document.getElementById("planCheck").innerHTML=document.getElementById("todayCheck").innerHTML;
+  }
+}
+function toggleToday(i){
+  var d=store.today; var arr=d[todayKey]||[];
+  var x=arr.indexOf(i); if(x>=0)arr.splice(x,1);else arr.push(i);
+  d[todayKey]=arr; store.today=d; renderToday();
+}
+renderToday();
+
+/* ==================== 题目渲染 / 筛选 ==================== */
+var curF={year:0,mod:"",diff:0};
+function mkBtns(el,opts,fn){
+  el.innerHTML = '<button class="fbtn on" data-v="">全部</button>'+opts.map(function(o){
+    return '<button class="fbtn" data-v="'+o.v+'">'+o.t+'</button>';
+  }).join("");
+  el.querySelectorAll("button").forEach(function(b){
+    b.onclick=function(){
+      el.querySelectorAll("button").forEach(function(x){x.classList.remove("on")});
+      b.classList.add("on"); fn(b.getAttribute("data-v"));
+    };
+  });
+}
+mkBtns(document.getElementById("fYear"),years.map(function(y){return{v:y,t:y+"年"}}),function(v){curF.year=+v;renderQs()});
+mkBtns(document.getElementById("fMod"),[{v:"W",t:"Word"},{v:"E",t:"Excel"},{v:"P",t:"PowerPoint"}],function(v){curF.mod=v;renderQs()});
+mkBtns(document.getElementById("fDiff"),[{v:1,t:"★"},{v:2,t:"★★"},{v:3,t:"★★★"}],function(v){curF.diff=+v;renderQs()});
+
+function filterYear(y){
+  go("papers");
+  var btns=document.getElementById("fYear").querySelectorAll("button");
+  btns.forEach(function(b){
+    var on = (+b.getAttribute("data-v")===y);
+    b.classList.toggle("on",on);
+  });
+  curF.year=y; renderQs();
+}
+
+function qHTML(q,ctx){
+  var fav = store.fav.indexOf(q.id)>=0;
+  var wr = store.wrong.indexOf(q.id)>=0;
+  return '<div class="qcard">'
+  +'<div class="meta"><span class="pill '+q.m+'">'+({W:"Word",E:"Excel",P:"PPT"})[q.m]+'</span>'
+  +'<span class="pill" style="background:#f1f5f9;color:#475569">'+q.tag+'</span>'
+  +'<span class="pill" style="background:#fdf4ff;color:#a21caf">'+q.point+'</span>'
+  +'<span class="pill" style="background:#fff7ed;color:#c2410c">难度 '+("★").repeat(q.diff)+'</span>'
+  +(wr?'<span class="pill" style="background:#fee2e2;color:#b91c1c">已入错题本</span>':'')
+  +'<span style="margin-left:auto;cursor:pointer;font-size:16px" onclick="toggleFav(\''+q.id+'\')" title="收藏">'+(fav?"⭐":"☆")+'</span></div>'
+  +'<div class="qt"><b>题目：</b>'+q.q+'</div>'
+  +'<div class="ops"><button class="fbtn" onclick="toggleAns(\''+q.id+'\')">查看答案与解析</button>'
+  +'<button class="fbtn" onclick="toggleWrong(\''+q.id+'\')">'+(wr?"移出错题本":"加入错题本")+'</button></div>'
+  +'<div class="qans" id="ans-'+q.id+'"><b style="color:var(--green)">参考答案：</b>'+q.ans+'<br><b>操作步骤：</b><ol>'+q.steps.map(function(s){return "<li>"+s+"</li>"}).join("")+'</ol>'
+  +'<b>关联知识点：</b><a href="javascript:openKp(\''+q.kp+'\')">'+q.kp+' · 查看专题</a></div></div>';
+}
+function renderQs(){
+  var list = QS.filter(function(q){
+    return (!curF.year||q.y===curF.year)&&(!curF.mod||q.m===curF.mod)&&(!curF.diff||q.diff===curF.diff);
+  });
+  document.getElementById("qCount").textContent=list.length;
+  document.getElementById("qList").innerHTML = list.length?list.map(function(q){return qHTML(q)}).join("")
+    :'<div style="color:var(--muted);padding:20px;text-align:center">该筛选条件下暂无题目</div>';
+}
+renderQs();
+
+function toggleAns(id){
+  var el=document.getElementById("ans-"+id);
+  el.style.display = el.style.display==="block"?"none":"block";
+}
+function openKp(kid){
+  var sec = kid[0]==="W"?"kp-W":kid[0]==="E"?"kp-E":"kp-P";
+  go(sec);
+  var el=document.getElementById("kp-"+kid);
+  if(el){el.classList.add("open");setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"center"})},100);}
+}
+
+/* ==================== 收藏 / 错题 ==================== */
+function toggleFav(id){
+  var f=store.fav; var i=f.indexOf(id);
+  if(i>=0)f.splice(i,1);else f.push(id);
+  store.fav=f; refreshCnts(); renderQs();
+  if(document.getElementById("sec-fav").classList.contains("on"))renderFav();
+}
+function toggleWrong(id){
+  var w=store.wrong; var i=w.indexOf(id);
+  if(i>=0)w.splice(i,1);else w.push(id);
+  store.wrong=w; refreshCnts(); renderQs();
+  if(document.getElementById("sec-wrong").classList.contains("on"))renderWrong();
+}
+function refreshCnts(){
+  document.getElementById("wrongCnt").textContent=store.wrong.length;
+  document.getElementById("favCnt").textContent=store.fav.length;
+}
+refreshCnts();
+
+function renderWrong(){
+  var w=store.wrong.map(function(id){return QS.find(function(q){return q.id===id})}).filter(Boolean);
+  var cnt={W:0,E:0,P:0};
+  w.forEach(function(q){cnt[q.m]++});
+  document.getElementById("wrongStat").innerHTML =
+    '<div class="s"><div class="n">'+w.length+'</div><div class="t">错题总数</div></div>'
+   +'<div class="s"><div class="n">'+cnt.W+'</div><div class="t">Word</div></div>'
+   +'<div class="s"><div class="n">'+cnt.E+'</div><div class="t">Excel</div></div>'
+   +'<div class="s"><div class="n">'+cnt.P+'</div><div class="t">PowerPoint</div></div>';
+  document.getElementById("wrongList").innerHTML = w.length?w.map(function(q){return qHTML(q)}).join("")
+   :'<div style="color:var(--muted);padding:20px;text-align:center">错题本为空，做题时点击"加入错题本"即可收录 📕</div>';
+}
+function renderFav(){
+  var f=store.fav.map(function(id){return QS.find(function(q){return q.id===id})}).filter(Boolean);
+  document.getElementById("favList").innerHTML = f.length?f.map(function(q){return qHTML(q)}).join("")
+   :'<div style="color:var(--muted);padding:20px;text-align:center">暂无收藏，点击题目右上角 ☆ 收藏重点题</div>';
+}
+
+/* ==================== 高频考点 ==================== */
+var HOTC={W:"var(--w)",E:"var(--e)",P:"var(--p)"};
+function renderHot(){
+  ["W","E","P"].forEach(function(m){
+    var d=HOT[m], max=d[0][1];
+    document.getElementById("hot"+m).innerHTML = d.map(function(r){
+      return '<div class="bar-row"><div class="lbl">'+r[0]+'</div><div class="track"><div class="fill" style="width:'+(r[1]/max*100)+'%;background:'+HOTC[m]+'"></div></div><div class="val">'+r[1]+'次/6年</div></div>';
+    }).join("");
+  });
+}
+renderHot();
+
+/* ==================== 专项练习 ==================== */
+var pracDefs=[
+ {k:"W",t:"Word 专项",f:function(q){return q.m==="W"}},
+ {k:"E4",t:"Excel 函数专项",f:function(q){return q.m==="E"&&q.kp==="E04"}},
+ {k:"E9",t:"数据透视表专项",f:function(q){return q.kp==="E09"}},
+ {k:"E",t:"Excel 综合专项",f:function(q){return q.m==="E"}},
+ {k:"P",t:"PPT 专项",f:function(q){return q.m==="P"}}
+];
+var curPrac=null;
+document.getElementById("pracBtns").innerHTML = pracDefs.map(function(p,i){
+  return '<button class="fbtn" onclick="startPrac('+i+')">'+p.t+'</button>';
+}).join("");
+function startPrac(i){
+  curPrac=pracDefs[i];
+  var list=QS.filter(curPrac.f);
+  document.getElementById("pracInfo").innerHTML='当前：<b>'+curPrac.t+'</b> ｜ 共 '+list.length+' 题 ｜ 建议先自己做，再看答案';
+  document.getElementById("pracList").innerHTML=list.map(function(q){return qHTML(q)}).join("");
+}
+
+/* ==================== 模拟考试 ==================== */
+var mockTimerId=null,mockLeft=0,mockSet=[];
+function startMock(min){
+  mockSet=[];
+  ["W","E","E","P"].forEach(function(m){
+    var pool=QS.filter(function(q){return q.m===m});
+    var pick=pool[Math.floor(Math.random()*pool.length)];
+    if(pick)mockSet.push(pick);
+  });
+  mockLeft=min*60;
+  document.getElementById("mockSetup").style.display="none";
+  document.getElementById("mockResult").style.display="none";
+  document.getElementById("mockRun").style.display="block";
+  document.getElementById("mockQs").innerHTML=mockSet.map(function(q){return qHTML(q)}).join("");
+  tick(); mockTimerId=setInterval(tick,1000);
+  go("mock");
+}
+function tick(){
+  var mm=Math.floor(mockLeft/60),ss=mockLeft%60;
+  document.getElementById("mockTimer").textContent=(mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+  if(mockLeft<=0){endMock();return;}
+  mockLeft--;
+}
+function endMock(){
+  clearInterval(mockTimerId);
+  document.getElementById("mockRun").style.display="none";
+  document.getElementById("mockResult").style.display="block";
+  var revealed=mockSet.filter(function(q){
+    var el=document.getElementById("ans-"+q.id);
+    return el&&el.style.display==="block";
+  }).length;
+  var pct=Math.round(revealed/mockSet.length*100);
+  var cnt={W:0,E:0,P:0};
+  mockSet.forEach(function(q){cnt[q.m]++});
+  document.getElementById("mockStat").innerHTML=
+    '<div class="s"><div class="n">'+pct+'%</div><div class="t">完成度（已查看解析）</div></div>'
+   +'<div class="s"><div class="n">'+cnt.W+'</div><div class="t">Word 题</div></div>'
+   +'<div class="s"><div class="n">'+cnt.E+'</div><div class="t">Excel 题</div></div>'
+   +'<div class="s"><div class="n">'+cnt.P+'</div><div class="t">PPT 题</div></div>';
+  document.getElementById("mockAdv").innerHTML='<b>建议：</b>将未掌握的题加入错题本，回到对应知识点专题（'+mockSet.map(function(q){return '<a href="javascript:openKp(\''+q.kp+'\')">'+q.kp+'</a>'}).join("、")+'）针对性复习。';
+}
+function resetMock(){
+  document.getElementById("mockResult").style.display="none";
+  document.getElementById("mockSetup").style.display="block";
+}
+
+/* ==================== 全局搜索 ==================== */
+function globalSearch(){
+  var kw=document.getElementById("gSearch").value.trim();
+  if(!kw)return;
+  kw=kw.toLowerCase();
+  var hitKp=[];
+  ["W","E","P"].forEach(function(m){
+    KP[m].forEach(function(k){
+      var s=(k.id+k.t+k.must.join("")+k.steps.join("")+k.example.q+k.example.a+k.mistakes.join("")).toLowerCase();
+      if(s.indexOf(kw)>=0)hitKp.push({m:m,k:k});
+    });
+  });
+  var hitQ=QS.filter(function(q){
+    return (q.point+q.q+q.ans+q.tag).toLowerCase().indexOf(kw)>=0;
+  });
+  var html='<div class="card"><h2>搜索：'+kw+'</h2>';
+  html+='<h3>匹配知识点（'+hitKp.length+'）</h3>';
+  html+=hitKp.length?hitKp.map(function(h){return '<div class="kp-item open"><div class="kp-head"><span class="pill '+h.m+'">'+h.m+'</span> '+h.k.id+' · '+h.k.t+'</div><div class="kp-body">'+kpBodyInner(h.k)+'</div></div>'}).join(""):'<div style="color:var(--muted);font-size:13px">无匹配知识点</div>';
+  html+='<h3>匹配真题（'+hitQ.length+'）</h3>';
+  html+=hitQ.length?hitQ.map(function(q){return qHTML(q)}).join(""):'<div style="color:var(--muted);font-size:13px">无匹配题目</div>';
+  html+='</div>';
+  var sec=document.getElementById("sec-search");
+  if(!sec){
+    sec=document.createElement("section");
+    sec.className="sec";sec.id="sec-search";
+    document.querySelector("main").appendChild(sec);
+  }
+  sec.innerHTML=html;sec.classList.add("on");
+  document.querySelectorAll(".sec").forEach(function(s){if(s.id!=="sec-search")s.classList.remove("on")});
+  document.querySelectorAll("#sideNav a").forEach(function(a){a.classList.remove("act")});
+  window.scrollTo({top:0});
+}
+function kpBodyInner(k){
+  return '<h4 class="r">必须掌握</h4><ul>'+k.must.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul>'
+  +'<h4 class="g">操作方法</h4><ol>'+k.steps.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ol>'
+  +'<div class="ex"><b>题：</b>'+k.example.q+'<br><b>答：</b>'+k.example.a+'</div>'
+  +'<h4 class="o">易错点</h4><ul>'+k.mistakes.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul>';
+}
+document.getElementById("gSearch").addEventListener("keydown",function(e){if(e.key==="Enter")globalSearch()});
+</script>
+</body>
+</html>

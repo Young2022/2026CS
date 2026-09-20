@@ -1,0 +1,7 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "scripts": {              // ← 这个就是 scripts 配置项
+    "build-blog": "node scripts/build-blog.js"
+  }
+}

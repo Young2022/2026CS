@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSAI 博客</title>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self'; img-src 'self' data: https:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/markdown-style.css">
+    <script src="js/marked.min.js"></script>
+    <script src="js/blog.js" defer></script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            margin: 0;
+            padding-top: 70px;
+        }
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px;
+        }
+        .back-btn {
+            text-decoration: none; color: #64748b; font-size: 0.85rem;
+            padding: 6px 14px; border-radius: 16px; background: #fff;
+            border: 1px solid #e2e8f0; transition: all 0.2s;
+        }
+        .back-btn:hover { color: #0284c7; background: #e0f2fe; }
+        .article-card {
+            max-width: 820px;
+            margin: 20px auto 40px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <strong style="color:#0284c7;">CSAI BLOG</strong>
+        <a href="index.html#blog" class="back-btn"><i class="fa-solid fa-arrow-left"></i> 返回主页</a>
+    </nav>
+
+    <main class="article-card">
+        <article id="markdown-container" class="markdown-body">
+            <p style="color: #64748b;">文章加载中...</p>
+        </article>
+    </main>
+
+</body>
+</html>

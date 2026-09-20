@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI 计算机科学导论 · 实验06 Git 初学者学习计划：8个核心模块 + 综合实训，覆盖版本控制全流程。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Git 初学者学习计划</title>
+<style>
+:root{
+  --o:#ea580c; --o2:#c2410c; --light:#fff7ed; --dark:#1c1917;
+  --text:#334155; --muted:#64748b; --line:#fed7aa; --bg:#fafaf9;
+  --orange:#d97706; --green:#059669; --blue:#0284c7; --purple:#7c3aed;
+  --red:#dc2626; --teal:#0e7490; --gray:#475569;
+  --term-bg:#0c1424; --term-prompt:#9ca3af; --term-cmd:#fed7aa;
+  --term-out:#e5e7eb; --term-comment:#94a3b8; --term-branch:#fb923c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.75}
+.hero{
+  background:linear-gradient(135deg,#7c2d12 0%,#ea580c 55%,#fb923c 100%);
+  color:#fff;padding:58px 24px 52px;position:relative;overflow:hidden
+}
+.hero:after{content:"⎇";position:absolute;right:7%;top:-30px;font-size:200px;font-weight:900;opacity:.08;font-family:Consolas,monospace}
+.wrap{max-width:1180px;margin:auto}
+.hero h1{margin:0 0 10px;font-size:42px;letter-spacing:.5px}
+.hero p{margin:0;max-width:820px;font-size:18px;opacity:.92}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.badge{padding:6px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.12);font-size:14px}
+nav{
+  position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+}
+.navin{display:flex;gap:4px;overflow:auto;padding:8px 10px;align-items:center}
+nav a{white-space:nowrap;text-decoration:none;color:#475569;padding:5px 9px;border-radius:7px;font-size:13px}
+nav a:hover{background:var(--light);color:var(--o)}
+nav a.word{background:#f0f9ff;border:1px solid #bae6fd;color:#0c4a6e;font-weight:600}
+nav a.word:hover{background:#e0f2fe;color:#0c4a6e}
+nav a.excel{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-weight:600}
+nav a.excel:hover{background:#d1fae5;color:#065f46}
+nav a.pp{background:#f3e8ff;border:1px solid #d8b4fe;color:#6b21a8;font-weight:600}
+nav a.pp:hover{background:#e9d5ff;color:#581c87}
+nav a.cmd{background:#f1f5f9;border:1px solid #cbd5e1;color:var(--gray);font-weight:600}
+nav a.cmd:hover{background:#e2e8f0;color:#1e293b}
+nav a.md{background:#f0fdfa;border:1px solid #99f6e4;color:#0f766e;font-weight:600}
+nav a.md:hover{background:#ccfbf1;color:#115e59}
+main{padding:30px 18px 60px}
+section{margin:0 0 30px;scroll-margin-top:65px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;
+  box-shadow:0 5px 20px rgba(234,88,12,.05)
+}
+.card.orange-accent{border-left:6px solid var(--o)}
+h2{margin:0 0 18px;color:var(--dark);font-size:28px;display:flex;align-items:center;gap:10px}
+h2 .icn{width:38px;height:38px;border-radius:10px;background:var(--light);color:var(--o);display:inline-flex;align-items:center;justify-content:center;font-size:20px}
+h3{color:var(--o2);margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+h4{margin:15px 0 7px;color:var(--dark);display:flex;align-items:center;gap:6px}
+.lead{font-size:16px;color:#475569}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:18px;background:var(--light);border-radius:12px;border-left:4px solid var(--o)}
+.stat b{display:block;font-size:24px;color:var(--o2)}
+.stat span{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:#fff7ed;color:var(--dark)}
+tr:nth-child(even) td{background:#fffbf5}
+/* 终端风格的 Git 命令输出 */
+.cmd{background:var(--term-bg);color:var(--term-out);border-radius:10px;padding:14px 16px;margin:14px 0;font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:1.65;overflow-x:auto;white-space:pre}
+.cmd .p{color:var(--term-prompt)}
+.cmd .c{color:var(--term-cmd);font-weight:600}
+.cmd .o{color:var(--term-out)}
+.cmd .co{color:var(--term-comment);font-style:italic}
+.cmd .br{color:var(--term-branch);font-weight:600}
+.cmd .h{color:#94a3b8}
+.cmd .ok{color:#86efac;font-weight:600}
+.cmd .err{color:#fca5a5;font-weight:600}
+.step{counter-reset:item;display:grid;gap:10px}
+.step div{counter-increment:item;padding:12px 14px 12px 48px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;position:relative}
+.step div:before{content:counter(item);position:absolute;left:13px;top:11px;width:25px;height:25px;border-radius:50%;background:var(--o);color:white;text-align:center;line-height:25px;font-size:13px;font-weight:bold}
+.example{background:#f8fafc;border-left:4px solid var(--green);padding:14px 17px;border-radius:0 10px 10px 0;margin:12px 0}
+.tip{background:#fff7ed;border-left:4px solid var(--orange);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.warn{background:#fef2f2;border-left:4px solid var(--red);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+/* 命令卡片（每个 Git 命令独立卡片） */
+.cmd-card{border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden;background:#fff}
+.cmd-card-head{padding:10px 14px;background:#fff7ed;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.cmd-card-name{font-family:Consolas,monospace;font-size:15px;font-weight:600;color:var(--o2)}
+.cmd-card-tag{font-size:11px;background:#fed7aa;color:#9a3412;padding:2px 8px;border-radius:99px;font-weight:500}
+.cmd-card-body{padding:12px 14px;font-size:14px;color:#475569}
+.cmd-card-body b{color:var(--dark)}
+.shortcut{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.shortcut span{background:var(--light);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:13px}
+kbd{background:#eef2f7;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:5px;padding:2px 7px;font-family:Consolas,monospace;color:#1e293b}
+.check{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.check div{padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.check div:before{content:"✓";color:var(--o);font-weight:bold;margin-right:8px}
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:18px 0}
+.path span{padding:8px 12px;background:var(--light);color:var(--o2);border-radius:8px;font-weight:600;font-size:13px}
+.path .arrow{color:#94a3b8;font-size:18px}
+.flow-block{background:#fff7ed;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0;font-family:Consolas,monospace;font-size:13px;line-height:1.9;color:#7c2d12}
+.flow-block .arrow{color:var(--o);font-weight:bold;margin:0 8px}
+ul{margin-top:8px}
+li{margin:3px 0}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+.glossary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.glossary div{padding:10px 14px;background:#fffbf5;border:1px solid var(--line);border-radius:8px}
+.glossary div b{color:var(--o2);display:block;margin-bottom:4px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:32px}.glossary{grid-template-columns:1fr}.brand-title{display:none}}
+@media(max-width:600px){.grid,.check{grid-template-columns:1fr}.hero{padding-top:42px}.card{padding:19px}h2{font-size:24px}}
+
+/* IndexOx brand logo */
+.logo-icon-wrapper {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #fff; flex-shrink: 0;
+}
+.brand-title {
+  background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+nav .brand { padding-left: 14px; border-left: 1px solid var(--line); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-weight: 800; font-size: 14px; color: var(--dark); }
+nav .brand b { color: var(--blue); }
+nav .brand:hover { background: none; color: var(--dark); }
+.hero-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; text-decoration: none; }
+.hero-logo .logo-icon-wrapper { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); }
+.hero-logo .brand-title { font-size: 15px; font-weight: 800; color: #fff; background: none; -webkit-text-fill-color: #fff; }
+
+@media print{
+ nav{display:none}.hero{background:#fff;color:#111;padding:20px}.hero:after{display:none}
+ .card{box-shadow:none;break-inside:avoid}section{break-inside:avoid}
+ .cmd{background:#f8fafc;color:#1e293b}
+ .cmd .p,.cmd .c,.cmd .o,.cmd .co{color:#1e293b}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="../daolun/index.html" class="hero-logo">
+      <span class="logo-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></span>
+      <span class="brand-title">CSAI · 计算机科学导论</span>
+    </a>
+    <div class="badges"><span class="badge">Git</span><span class="badge">版本控制</span><span class="badge">初学者</span><span class="badge">8个核心模块 + 综合实训</span><span class="badge">10 天学完</span></div>
+    <h1>Git 初学者系统学习计划</h1>
+    <p>从认识 Git 开始，逐步掌握本地仓库、提交、历史、分支、合并、冲突处理、远程仓库协作，最终能够独立完成日常开发中的版本管理与团队协作流程。</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap navin">
+    <a href="#m1">Git 基础</a><a href="#m2">创建仓库</a>
+    <a href="#m3">基本操作</a><a href="#m4">撤销与恢复</a><a href="#m5">分支</a>
+    <a href="#m6">冲突处理</a><a href="#m7">远程仓库</a><a href="#m8">常用工具</a>
+    <a href="#project">综合实训</a>
+    <a href="实验01-Word.html" target="_blank" class="word">📘 Word</a>
+    <a href="实验02-Excel.html" target="_blank" class="excel">📗 Excel</a>
+    <a href="实验03-PowerPoint.html" target="_blank" class="pp">📙 PPT</a>
+    <a href="实验04-WindowsCMD.html" target="_blank" class="cmd">💻 CMD</a>
+    <a href="实验05-Markdown.html" target="_blank" class="md">📝 MD</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="overview">
+<div class="card orange-accent">
+<h2><span class="icn">📋</span>一、整体学习路线</h2>
+<p class="lead">Git 学习的核心不是背命令，而是掌握一条主线：<strong>修改 → status → diff → add → commit → branch → merge → pull → push</strong>。这条工作流跑顺后，再学 stash、rebase、tag 等进阶。</p>
+<div class="grid">
+  <div class="stat"><b>10 天</b><span>完整学习周期</span></div>
+  <div class="stat"><b>8</b><span>核心学习模块</span></div>
+  <div class="stat"><b>15</b><span>必背核心命令</span></div>
+  <div class="stat"><b>从零开始</b><span>面向 Git 初学者</span></div>
+</div>
+<div class="path">
+  <span>Git 基础</span><i class="arrow">→</i><span>创建仓库</span><i class="arrow">→</i>
+  <span>基本操作</span><i class="arrow">→</i><span>撤销</span><i class="arrow">→</i>
+  <span>分支</span><i class="arrow">→</i><span>冲突</span><i class="arrow">→</i>
+  <span>远程仓库</span><i class="arrow">→</i><span>进阶工具</span>
+</div>
+<table>
+<thead><tr><th>模块</th><th>学习内容</th><th>建议时间</th><th>最终能力</th></tr></thead>
+<tbody>
+<tr><td>第1部分</td><td>Git 基础</td><td>1 天</td><td>理解 Git 与 GitHub，能安装并配置</td></tr>
+<tr><td>第2部分</td><td>创建仓库</td><td>1 天</td><td>git init、git status、看懂 .git</td></tr>
+<tr><td>第3部分</td><td>基本操作</td><td>1 天</td><td>add/commit/diff/log 核心三连</td></tr>
+<tr><td>第4部分</td><td>撤销与恢复</td><td>1 天</td><td>restore、amend、reset 三种模式</td></tr>
+<tr><td>第5部分</td><td>分支</td><td>2 天</td><td>创建、切换、合并分支</td></tr>
+<tr><td>第6部分</td><td>冲突处理</td><td>1 天</td><td>识别和解决合并冲突</td></tr>
+<tr><td>第7部分</td><td>远程仓库</td><td>2 天</td><td>clone、fetch、pull、push</td></tr>
+<tr><td>第8部分</td><td>常用工具</td><td>1 天</td><td>show、stash、tag、.gitignore</td></tr>
+</tbody>
+</table>
+<h3>📖 关键术语速览</h3>
+<div class="glossary">
+  <div><b>Repository（仓库）</b>版本控制的目录，含 <code>.git</code> 子目录保存所有历史。</div>
+  <div><b>Commit（提交）</b>一次完整的版本快照，含作者、时间、说明和文件变更。</div>
+  <div><b>Branch（分支）</b>从主线分出的独立开发线，分支间互不影响。</div>
+  <div><b>Working Directory（工作区）</b>正在编辑的本地文件。</div>
+  <div><b>Staging Area（暂存区）</b>准备好、但还未提交到仓库的"中间层"。</div>
+  <div><b>Remote（远程仓库）</b>托管在网络上的仓库副本（如 GitHub）。</div>
+</div>
+</div>
+</section>
+
+<section id="m1"><div class="card orange-accent">
+<h2><span class="icn">📖</span>① Git 基础</h2>
+<p><b>学习目标：</b>理解 Git 是什么、为什么用 Git、怎么安装和配置。</p>
+
+<h3>📌 什么是 Git</h3>
+<div class="example">
+Git 是一种<strong>分布式版本控制系统（DVCS）</strong>，由 Linus Torvalds 在 2005 年为管理 Linux 内核开发。
+</div>
+<h3>📌 Git 解决什么问题</h3>
+<div class="check">
+<div>文件版本管理</div><div>代码修改记录</div>
+<div>多人协作</div><div>分支开发</div>
+<div>版本回退</div><div>代码备份</div>
+</div>
+
+<h3>📌 Git 与 GitHub 的区别</h3>
+<table>
+<tr><th></th><th>Git</th><th>GitHub</th></tr>
+<tr><td>本质</td><td>本地版本控制<strong>工具</strong></td><td>托管 Git 仓库的<strong>网站</strong></td></tr>
+<tr><td>运行位置</td><td>你的电脑</td><td>云端服务器</td></tr>
+<tr><td>是否需要联网</td><td>不需要（本地操作）</td><td>需要（推拉远程）</td></tr>
+<tr><td>类比</td><td>Office Word 软件</td><td>在线文档分享平台</td></tr>
+</table>
+
+<h3>📌 安装 Git</h3>
+<table>
+<tr><th>平台</th><th>安装方式</th></tr>
+<tr><td>Windows</td><td>下载 <code>Git for Windows</code> 安装包（含 Git Bash、Git CMD、Git GUI）</td></tr>
+<tr><td>macOS</td><td><code>brew install git</code> 或安装 Xcode Command Line Tools</td></tr>
+<tr><td>Linux</td><td><code>sudo apt install git</code>（Ubuntu/Debian）</td></tr>
+</table>
+
+<h3>📌 查看 Git 版本</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git --version</span>
+<span class="o">git version 2.42.0.windows.2</span></div>
+
+<h3>📌 配置用户信息（必做）</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git config --global user.name "Your Name"</span>
+<span class="p">$</span> <span class="c">git config --global user.email "you@example.com"</span>
+<span class="p">$</span> <span class="c">git config --list</span>
+<span class="o">user.name=Your Name
+user.email=you@example.com
+core.autocrlf=true
+...</span></div>
+<div class="tip"><b>为什么必做：</b>每次提交都会记录作者名和邮箱。没配置的话，<code>git commit</code> 会失败。</div>
+<div class="warn"><b>邮箱注意事项：</b>如果要往 GitHub/GitLab 推送，建议用<strong>对应平台的注册邮箱</strong>，这样贡献记录能正确显示。</div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git --version</code></div><div><code>git config --global user.name</code></div>
+<div><code>git config --global user.email</code></div><div><code>git config --list</code></div>
+</div>
+</div></section>
+
+<section id="m2"><div class="card orange-accent">
+<h2><span class="icn">📦</span>② 创建 Git 仓库</h2>
+<p>Git 的<strong>仓库</strong>就是一个普通目录，里面多了个 <code>.git</code> 子目录保存历史。</p>
+
+<h3>📌 git init：初始化</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">cd myproject</span>
+<span class="p">$</span> <span class="c">git init</span>
+<span class="o">Initialized empty Git repository in C:/myproject/.git/</span></div>
+<div class="example">
+<b>项目结构变化：</b>
+<pre>myproject
+├── .git          ← Git 自动生成的"版本数据库"
+├── index.html    ← 你的项目文件
+└── README.md</pre>
+</div>
+
+<h3>📌 git status：查看状态（最常用命令）</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git status</span>
+<span class="o">On branch </span><span class="br">main</span>
+<span class="o">No commits yet
+nothing to commit (create/copy files and use "git add" to track)</span></div>
+<div class="tip"><b>黄金习惯：</b>每次操作前都先 <code>git status</code> 看看状态。这是最安全、最高效的命令之一。</div>
+
+<h3>📌 4 个核心概念：工作区、暂存区、本地仓库、远程仓库</h3>
+<div class="flow-block">修改文件 <span class="arrow">↓</span> Working Directory（工作区）
+<span class="arrow">↓</span> git add <span class="arrow">↓</span>
+Staging Area（暂存区）
+<span class="arrow">↓</span> git commit <span class="arrow">↓</span>
+Local Repository（本地仓库）
+<span class="arrow">↓</span> git push <span class="arrow">↓</span>
+Remote Repository（远程仓库）</div>
+
+<h3>📌 git clone：克隆已有仓库</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git clone https://github.com/user/project.git</span>
+<span class="o">Cloning into 'project'...
+remote: Counting objects: 100, done.
+remote: Total 100 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (100/100), done.</span></div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git init</code> 创建仓库</div><div><code>git status</code> 查看状态</div>
+<div><code>git clone &lt;url&gt;</code> 克隆远程</div><div>理解工作区/暂存区/仓库三层</div>
+</div>
+</div></section>
+
+<section id="m3"><div class="card orange-accent">
+<h2><span class="icn">💾</span>③ 基本操作：add / commit / log / diff</h2>
+<p class="lead">这是初学者<strong>必须练到肌肉记忆</strong>的核心三连：</p>
+<div class="flow-block">git status <span class="arrow">→</span> git add <span class="arrow">→</span> git commit</div>
+
+<h3>📌 git add：把修改放入暂存区</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git add README.md</span>      <span class="co"># 添加单个文件</span>
+<span class="p">$</span> <span class="c">git add .</span>              <span class="co"># 添加当前目录所有修改（最实用）</span>
+<span class="p">$</span> <span class="c">git add index.html style.css</span> <span class="co"># 添加多个文件</span></div>
+
+<h3>📌 git commit：提交到本地仓库</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git commit -m "Initial commit"</span>
+<span class="o">[main (root-commit) a82f31a] Initial commit
+ 2 files changed, 10 insertions(+)
+ create mode 100644 README.md
+ create mode 100644 index.html</span></div>
+<div class="tip"><b>提交信息（-m）必须写</b>，不能空。建议用动词开头："Add login page"、"Update README"、"Fix bug in dashboard"。</div>
+
+<h3>📌 git log：查看提交历史</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git log</span>
+<span class="o">commit a82f31a4b3d20f5e8c7b9d1f0a3b2c1d4e5f6a7b (HEAD -> </span><span class="br">main</span><span class="o">)
+Author: Your Name &lt;you@example.com&gt;
+Date:   Mon Sep 18 14:23:01 2026 +0800
+
+    Initial commit
+
+commit 91b3d20e4a1f5b8c9d2e3f4a5b6c7d8e9f0a1b2c
+Author: Your Name &lt;you@example.com&gt;
+Date:   Mon Sep 18 13:45:22 2026 +0800
+
+    Add README</span></div>
+
+<h3>📌 git log 简洁模式</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git log --oneline</span>
+<span class="o">a82f31a Initial commit
+91b3d20 Add README</span>
+
+<span class="p">$</span> <span class="c">git log --oneline --graph --all</span>
+<span class="o">* a82f31a (</span><span class="br">main</span><span class="o">) Initial commit
+* 91b3d20 Add README</span></div>
+
+<h3>📌 git diff：查看修改</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git diff</span>              <span class="co"># 工作区 vs 暂存区</span>
+<span class="o">diff --git a/index.html b/index.html
+index 1234567..abcdef0 100644
+--- a/index.html
++++ b/index.html
+@@ -1,3 +1,3 @@
+ &lt;h1&gt;Old Title&lt;/h1&gt;
+-&lt;h1&gt;Old Title&lt;/h1&gt;
++&lt;h1&gt;New Title&lt;/h1&gt;</span>
+
+<span class="p">$</span> <span class="c">git diff --staged</span>     <span class="co"># 暂存区 vs 最近一次提交</span>
+<span class="p">$</span> <span class="c">git diff HEAD</span>         <span class="co"># 工作区 vs 最近一次提交</span></div>
+
+<h3>📌 三者关系</h3>
+<div class="flow-block">工作区 <span class="arrow">→</span> git diff <span class="arrow">→</span> 暂存区 <span class="arrow">→</span> git diff --staged <span class="arrow">→</span> 最近一次提交</div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git add .</code></div><div><code>git commit -m "..."</code></div>
+<div><code>git log --oneline</code></div><div><code>git diff</code> 与 <code>git diff --staged</code></div>
+</div>
+</div></section>
+
+<section id="m4"><div class="card orange-accent">
+<h2><span class="icn">↩️</span>④ 撤销与恢复</h2>
+<p>改错了、提交错了、想反悔——这是 Git 必须掌握的"后悔药"。</p>
+
+<h3>📌 git restore：撤销工作区修改</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git restore index.html</span>  <span class="co"># 放弃工作区的修改</span></div>
+<div class="warn"><b>不可恢复！</b><code>restore</code> 会<strong>直接覆盖</strong>工作区文件，放弃你对该文件的所有未保存修改。</div>
+
+<h3>📌 git restore --staged：取消暂存</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git restore --staged index.html</span>  <span class="co"># 把文件从暂存区拿出来（修改保留在工作区）</span></div>
+
+<h3>📌 git commit --amend：修改最后一次提交</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git commit -m "Add login page"</span>
+<span class="co"># 啊，提交信息写错了，或者漏了文件！</span>
+<span class="p">$</span> <span class="c">git add missed-file.html</span>
+<span class="p">$</span> <span class="c">git commit --amend -m "Add login page and missed file"</span></div>
+<div class="tip"><b>适用场景：</b>刚刚提交、但发现提交信息写错或漏了文件。已推送（push）到远程的提交<strong>不要 amend</strong>。</div>
+
+<h3>📌 git reset 三种模式</h3>
+<table>
+<tr><th>模式</th><th>影响</th><th>用法</th></tr>
+<tr><td><code>--soft</code></td><td>只改 HEAD 指针，修改保留在暂存区</td><td>想"撤销提交但保留文件改动"</td></tr>
+<tr><td><code>--mixed</code></td><td>HEAD 指针+暂存区都还原，修改保留在工作区（默认）</td><td>想"撤销提交+撤销暂存，但保留工作区"</td></tr>
+<tr><td><code>--hard</code></td><td>HEAD 指针+暂存区+工作区全部还原</td><td>想"完全回到某次提交"</td></tr>
+</table>
+<div class="cmd"><span class="p">$</span> <span class="c">git reset --soft HEAD~1</span>   <span class="co"># 撤销最近 1 次 commit，文件改动保留在暂存区</span>
+<span class="p">$</span> <span class="c">git reset HEAD~1</span>         <span class="co"># 等价于 --mixed</span>
+<span class="p">$</span> <span class="c">git reset --hard HEAD~1</span>  <span class="co"># ⚠️ 完全回到上一次提交，未提交的改动全没了</span></div>
+
+<div class="warn"><b>危险操作：</b><code>git reset --hard</code> 会<strong>永久丢弃</strong>未保存的工作区修改。除非你很确定，否则不要用。已经推送的提交也不要用 reset。</div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git restore</code> 撤销工作区</div><div><code>git restore --staged</code> 取消暂存</div>
+<div><code>git commit --amend</code> 改最后提交</div><div>知道 <code>reset --soft/--mixed/--hard</code> 区别</div>
+</div>
+</div></section>
+
+<section id="m5"><div class="card orange-accent">
+<h2><span class="icn">🌿</span>⑤ 分支 Branch</h2>
+<p class="lead">分支是 Git 的<strong>灵魂功能</strong>。学会分支，就学会了并行开发和团队协作。</p>
+
+<h3>📌 什么是分支</h3>
+<div class="example">
+<pre>           main
+             │
+       C4 ─ C5 ─ C6
+       │
+       C3
+       │
+       C1 ─ C2
+
+           develop (从 main 分出)
+              │
+              D3
+              │
+              D1 ─ D2</pre>
+</div>
+
+<h3>📌 git branch：查看/创建分支</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git branch</span>             <span class="co"># 列出所有本地分支（* 表示当前）</span>
+<span class="o">* </span><span class="br">main</span>
+
+<span class="p">$</span> <span class="c">git branch feature</span>    <span class="co"># 创建分支（不切换）</span>
+<span class="o">  feature
+* </span><span class="br">main</span></div>
+
+<h3>📌 git switch：切换分支（推荐）</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git switch feature</span>    <span class="co"># 切换到 feature</span>
+<span class="o">Switched to branch 'feature'</span>
+
+<span class="p">$</span> <span class="c">git switch -c feature-login</span>  <span class="co"># 创建并切换（c = create）</span>
+<span class="o">Switched to a new branch 'feature-login'</span></div>
+<div class="tip"><b>推荐用 <code>switch</code> 而不是 <code>checkout</code></b>。<code>checkout</code> 功能太多（既能切分支又能恢复文件），容易出错；<code>switch</code> 只管切换分支，更清晰。</div>
+
+<h3>📌 分支综合实例</h3>
+<div class="cmd"><span class="co"># 当前在 main</span>
+<span class="p">$</span> <span class="c">git switch -c feature-login</span>
+<span class="o">Switched to a new branch 'feature-login'</span>
+
+<span class="co"># 修改代码并提交</span>
+<span class="p">$</span> <span class="c">git add .</span>
+<span class="p">$</span> <span class="c">git commit -m "Add login feature"</span>
+<span class="o">[feature-login 9c8d7b2] Add login feature
+ 1 file changed, 25 insertions(+)</span></div>
+
+<h3>📌 git merge：合并分支</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git switch main</span>            <span class="co"># 先切回 main</span>
+<span class="o">Switched to branch 'main'</span>
+
+<span class="p">$</span> <span class="c">git merge feature-login</span>    <span class="co"># 把 feature-login 合并到 main</span>
+<span class="o">Updating a82f31a..9c8d7b2
+Fast-forward
+ index.html | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)</span></div>
+
+<h3>📌 删除分支</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git branch -d feature-login</span>  <span class="co"># 安全删除（已合并）</span>
+<span class="p">$</span> <span class="c">git branch -D feature-login</span>  <span class="co"># 强制删除（未合并，会丢改动）</span></div>
+
+<h3>📌 看分支图</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git log --oneline --graph --all</span>
+<span class="o">* 9c8d7b2 (</span><span class="br">feature-login</span><span class="o">) Add login feature
+* a82f31a (</span><span class="br">HEAD</span> <span class="o">-> </span><span class="br">main</span><span class="o">) Initial commit</span></div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git branch</code></div><div><code>git switch</code></div>
+<div><code>git switch -c</code> 创建并切换</div><div><code>git merge</code></div>
+<div><code>git branch -d</code> 删除分支</div><div>能用 <code>--graph</code> 看分支图</div>
+</div>
+</div></section>
+
+<section id="m6"><div class="card orange-accent">
+<h2><span class="icn">💥</span>⑥ 合并冲突 Conflict</h2>
+<p class="lead">冲突<strong>不可怕</strong>——它只是告诉你"两个人改了同一处，你来决定保留哪个"。</p>
+
+<h3>📌 冲突如何产生</h3>
+<div class="example">
+<pre>main 分支：把 index.html 标题改成 "Welcome"
+                         ↓
+                  同一个文件同一行被两个人修改
+                         ↓
+feature 分支：把 index.html 标题改成 "Hello"
+             ↓
+       git merge 时发生 CONFLICT</pre>
+</div>
+
+<h3>📌 冲突标记</h3>
+<p>Git 会在文件中插入冲突标记，需要你手动解决：</p>
+<div class="cmd"><span class="o">&lt;h1&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Welcome
+=======
+Hello
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature
+&lt;/h1&gt;</span></div>
+<div class="example">
+<b>冲突标记含义：</b><br>
+* <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> —— 当前分支的内容<br>
+* <code>=======</code> —— 分隔线<br>
+* <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code> —— 要合并过来的分支
+</div>
+
+<h3>📌 解决冲突的步骤</h3>
+<div class="step">
+<div>看到 <code>CONFLICT</code> 提示后，打开冲突文件。</div>
+<div>手动决定保留哪部分内容，把冲突标记（<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>）全部删除。</div>
+<div>必要时把双方内容合并到一起。</div>
+<div><code>git add &lt;file&gt;</code> 标记冲突已解决。</div>
+<div><code>git commit</code> 完成合并（Git 会生成默认的 merge 提交信息）。</div>
+</div>
+
+<h3>📌 实操示例</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git merge feature</span>
+<span class="err">Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.</span>
+
+<span class="p">$</span> <span class="c">git status</span>
+<span class="o">On branch </span><span class="br">main</span>
+<span class="o">You have unmerged paths.
+  (fix conflicts and run "git commit")
+Unmerged paths:
+  (use "git add &lt;file&gt;..." to mark resolution)
+        both modified:   index.html</span>
+
+<span class="co"># 编辑 index.html，保留期望内容，删除冲突标记...</span>
+
+<span class="p">$</span> <span class="c">git add index.html</span>
+<span class="p">$</span> <span class="c">git commit</span>
+<span class="o">[main 3f4e2a1] Merge branch 'feature'</span></div>
+
+<div class="tip"><b>小贴士：</b>VS Code、IntelliJ IDEA 等编辑器都有<strong>图形化冲突解决界面</strong>，点击 Accept Current/Incoming/Both 即可，比手动改快得多。</div>
+<div class="warn"><b>常见错误：</b>冲突文件中漏删了 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 或 <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 标记就直接 commit——会导致标记作为文本保存到代码里。</div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div>识别冲突标记</div><div>手动编辑文件解决冲突</div>
+<div><code>git add</code> 标记已解决</div><div><code>git commit</code> 完成合并</div>
+</div>
+</div></section>
+
+<section id="m7"><div class="card orange-accent">
+<h2><span class="icn">☁️</span>⑦ 远程仓库</h2>
+<p>本地的提交要推到远程（如 GitHub）才算"备份"和"分享"。</p>
+
+<h3>📌 远程仓库平台</h3>
+<table>
+<tr><th>平台</th><th>特点</th></tr>
+<tr><td><b>GitHub</b></td><td>全球最大，英文为主，开源生态</td></tr>
+<tr><td><b>GitLab</b></td><td>可自部署，企业常用</td></tr>
+<tr><td><b>Gitee</b></td><td>国内访问快，中文界面</td></tr>
+<tr><td><b>Bitbucket</b></td><td>与 Atlassian 工具链集成</td></tr>
+</table>
+
+<h3>📌 git remote：管理远程地址</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git remote -v</span>                  <span class="co"># 查看所有远程仓库</span>
+<span class="o">origin  https://github.com/user/project.git (fetch)
+origin  https://github.com/user/project.git (push)</span>
+
+<span class="p">$</span> <span class="c">git remote add origin &lt;url&gt;</span>  <span class="co"># 添加远程（origin 是约定名）</span>
+<span class="p">$</span> <span class="c">git remote remove origin</span>     <span class="co"># 删除远程</span></div>
+
+<h3>📌 git push：推送到远程</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git push -u origin main</span>     <span class="co"># 第一次推送，-u 建立追踪关系</span>
+<span class="o">Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Writing objects: 100% (3/3), 320 bytes | 320.00 KiB/s
+* To https://github.com/user/project.git
+   a82f31a..3f4e2a1  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.</span>
+
+<span class="p">$</span> <span class="c">git push</span>                     <span class="co"># 之后直接 push（已建立追踪）</span></div>
+
+<h3>📌 git clone：克隆远程仓库</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git clone https://github.com/user/project.git</span>
+<span class="o">Cloning into 'project'...</span>
+
+<span class="co"># 也可以用 SSH</span>
+<span class="p">$</span> <span class="c">git clone git@github.com:user/project.git</span></div>
+
+<h3>📌 git fetch vs git pull</h3>
+<table>
+<tr><th>命令</th><th>作用</th><th>等价于</th></tr>
+<tr><td><code>git fetch</code></td><td>下载远程更新，但不合并</td><td>只 fetch 不 merge</td></tr>
+<tr><td><code>git pull</code></td><td>下载并自动合并到当前分支</td><td><code>fetch</code> + <code>merge</code></td></tr>
+</table>
+<div class="cmd"><span class="p">$</span> <span class="c">git fetch origin</span>          <span class="co"># 只下载，可先看一眼</span>
+<span class="p">$</span> <span class="c">git log origin/main --oneline</span> <span class="co"># 查看远程 main 的更新</span>
+<span class="p">$</span> <span class="c">git merge origin/main</span>      <span class="co"># 再合并</span>
+
+<span class="p">$</span> <span class="c">git pull</span>                  <span class="co"># 一步搞定：fetch + merge</span></div>
+<div class="tip"><b>推荐：</b>协作时先用 <code>fetch</code> 看一眼远程更新再决定怎么合并；个人项目直接 <code>pull</code> 即可。</div>
+
+<h3>📌 团队开发工作流</h3>
+<div class="flow-block">开始工作 <span class="arrow">→</span> git pull <span class="arrow">→</span> 创建/切换分支 <span class="arrow">→</span> 修改代码 <span class="arrow">→</span> git add <span class="arrow">→</span> git commit <span class="arrow">→</span> git push</div>
+
+<h3>🔑 必须掌握</h3>
+<div class="check">
+<div><code>git remote add origin</code></div><div><code>git push -u origin main</code></div>
+<div><code>git clone</code></div><div><code>git pull</code></div>
+<div>区分 <code>fetch</code> 和 <code>pull</code></div><div>理解本地/远程仓库的双向关系</div>
+</div>
+</div></section>
+
+<section id="m8"><div class="card orange-accent">
+<h2><span class="icn">🔧</span>⑧ 常用工具</h2>
+
+<h3>📌 git show：查看某次提交</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git show HEAD</span>             <span class="co"># 查看最近一次提交</span>
+<span class="p">$</span> <span class="c">git show a82f31a</span>         <span class="co"># 查看指定 commit</span></div>
+
+<h3>📌 git stash：暂存工作</h3>
+<p>正在改 A 任务，突然要切到 B 任务修 bug，但 A 还没改完不想提交——用 stash 暂存起来：</p>
+<div class="cmd"><span class="p">$</span> <span class="c">git stash</span>                 <span class="co"># 暂存当前所有未提交的修改</span>
+<span class="o">Saved working directory and index state WIP on main: a82f31a</span>
+
+<span class="co"># 这时切到其他分支处理 bug...</span>
+
+<span class="p">$</span> <span class="c">git stash pop</span>            <span class="co"># 回到原分支，恢复暂存</span>
+<span class="p">$</span> <span class="c">git stash list</span>           <span class="co"># 查看暂存列表</span>
+<span class="p">$</span> <span class="c">git stash drop</span>           <span class="co"># 删除某个暂存</span></div>
+
+<h3>📌 git tag：版本标签</h3>
+<div class="cmd"><span class="p">$</span> <span class="c">git tag v1.0</span>             <span class="co"># 给当前 commit 打轻量标签</span>
+<span class="p">$</span> <span class="c">git tag -a v1.0 -m "正式版"</span>  <span class="co"># 打带注释的标签</span>
+<span class="p">$</span> <span class="c">git tag</span>                  <span class="co"># 查看所有标签</span>
+<span class="p">$</span> <span class="c">git push origin v1.0</span>     <span class="co"># 推送标签到远程</span></div>
+
+<h3>📌 .gitignore：忽略文件</h3>
+<p>仓库中不应该被跟踪的文件（如临时文件、密码、构建产物）放在 <code>.gitignore</code>：</p>
+<div class="example">
+<b>常见 .gitignore 示例：</b>
+<pre># 操作系统
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Python
+__pycache__/
+*.pyc
+
+# 密钥
+.env
+*.pem</pre>
+</div>
+
+<h3>📌 图形化 Git 工具</h3>
+<table>
+<tr><th>工具</th><th>特点</th></tr>
+<tr><td><b>Git GUI</b></td><td>Git 自带的图形界面</td></tr>
+<tr><td><b>Sourcetree</b></td><td>免费、跨平台、功能强</td></tr>
+<tr><td><b>VS Code 源代码管理</b></td><td>编辑器内置，无需切换</td></tr>
+<tr><td><b>GitKraken</b></td><td>漂亮好用，免费版够用</td></tr>
+</table>
+
+<h3>📌 ⭐ 初学者必背 15 个命令</h3>
+<div class="check">
+<div><code>git --version</code></div><div><code>git config</code></div>
+<div><code>git init</code></div><div><code>git status</code></div>
+<div><code>git add</code></div><div><code>git commit</code></div>
+<div><code>git log</code></div><div><code>git diff</code></div>
+<div><code>git restore</code></div><div><code>git branch</code></div>
+<div><code>git switch</code></div><div><code>git merge</code></div>
+<div><code>git clone</code></div><div><code>git pull</code></div>
+<div><code>git push</code></div><div>以上 15 个全掌握 = Git 入门毕业</div>
+</div>
+</div></section>
+
+<section id="project"><div class="card orange-accent">
+<h2><span class="icn">🎯</span>综合实训：个人 HTML 学习网站 Git 项目</h2>
+<p class="lead">用一个 9 步的真实项目，把所有命令跑一遍。</p>
+<h3>📌 项目结构</h3>
+<div class="example">
+<b>MyWeb</b>
+<pre>├── index.html
+├── style.css
+├── script.js
+└── README.md</pre>
+</div>
+
+<h3>📌 完整操作流程（9 步）</h3>
+<div class="cmd"><span class="co"># ① 进入项目目录</span>
+<span class="p">$</span> <span class="c">cd MyWeb</span>
+
+<span class="co"># ② 初始化 Git</span>
+<span class="p">$</span> <span class="c">git init</span>
+<span class="o">Initialized empty Git repository in C:/MyWeb/.git/</span>
+
+<span class="co"># ③ 查看状态（应该是干净的）</span>
+<span class="p">$</span> <span class="c">git status</span>
+<span class="o">On branch </span><span class="br">main</span>
+<span class="o">nothing to commit, working tree clean</span>
+
+<span class="co"># ④ 创建文件（README.md 和 index.html），然后第一次提交</span>
+<span class="p">$</span> <span class="c">git add .</span>
+<span class="p">$</span> <span class="c">git commit -m "Initial website"</span>
+<span class="o">[main (root-commit) a82f31a] Initial website
+ 2 files changed, 30 insertions(+)</span>
+
+<span class="co"># ⑤ 创建并切换到开发分支</span>
+<span class="p">$</span> <span class="c">git switch -c feature-home</span>
+<span class="o">Switched to a new branch 'feature-home'</span>
+
+<span class="co"># ⑥ 修改 index.html 和 style.css，然后提交</span>
+<span class="p">$</span> <span class="c">git add .</span>
+<span class="p">$</span> <span class="c">git commit -m "Improve homepage"</span>
+
+<span class="co"># ⑦ 切回 main，合并</span>
+<span class="p">$</span> <span class="c">git switch main</span>
+<span class="p">$</span> <span class="c">git merge feature-home</span>
+<span class="o">Updating a82f31a..9c8d7b2
+Fast-forward
+ index.html | 25 +++++++++++
+ style.css  | 18 +++++++
+ 2 files changed, 43 insertions(+)</span>
+
+<span class="co"># ⑧ 看一眼完整历史（含分支图）</span>
+<span class="p">$</span> <span class="c">git log --oneline --graph --all</span>
+<span class="o">* 9c8d7b2 (</span><span class="br">feature-home</span><span class="o">) Improve homepage
+* a82f31a (</span><span class="br">HEAD</span> <span class="o">-> </span><span class="br">main</span><span class="o">) Initial website</span>
+
+<span class="co"># ⑨ 连接远程（先去 GitHub 建一个空仓库），推送</span>
+<span class="p">$</span> <span class="c">git remote add origin https://github.com/yourname/MyWeb.git</span>
+<span class="p">$</span> <span class="c">git push -u origin main</span>
+<span class="o">* To https://github.com/yourname/MyWeb.git
+   a82f31a..9c8d7b2  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.</span></div>
+
+<h3>📌 12 项最终能力测试</h3>
+<div class="check">
+<div>能解释 Git 是什么</div><div>能区分 Git 与 GitHub</div>
+<div>能创建 Git 仓库</div><div>能用 git status 查看状态</div>
+<div>能提交文件</div><div>能查看提交历史</div>
+<div>能查看文件修改（diff）</div><div>能撤销简单修改</div>
+<div>能创建并切换分支</div><div>能合并分支</div>
+<div>能克隆远程项目</div><div>能从远程拉取/推送代码</div>
+</div>
+
+<h3>📈 Git 知识体系</h3>
+<table>
+<tr><th>层次</th><th>核心内容</th><th>学习重点</th></tr>
+<tr><td>第一层：基础</td><td>Git 是什么、安装、配置</td><td>会用 git --version 和 config</td></tr>
+<tr><td>第二层：仓库</td><td>init、status、.git、Repository</td><td>理解工作区/暂存区/仓库</td></tr>
+<tr><td>第三层：基本操作</td><td>add、commit、log、diff</td><td>核心三连形成肌肉记忆</td></tr>
+<tr><td>第四层：撤销</td><td>restore、amend、reset</td><td>理解 reset 三种模式区别</td></tr>
+<tr><td>第五层：分支</td><td>branch、switch、merge</td><td>独立开发不干扰主线</td></tr>
+<tr><td>第六层：冲突</td><td>识别和解决冲突</td><td>冲突不可怕，手动编辑即可</td></tr>
+<tr><td>第七层：远程</td><td>remote、clone、fetch、pull、push</td><td>团队协作核心</td></tr>
+<tr><td>第八层：工具</td><td>show、stash、tag、.gitignore</td><td>提效 + 团队规范</td></tr>
+</table>
+<div class="tip"><b>最后一句话：</b>Git 学习的核心不是背命令，而是掌握这条主线 —— <strong>修改 → status → diff → add → commit → branch → merge → pull → push</strong>。这条线跑顺，再学 <code>stash</code>、<code>rebase</code>、<code>tag</code> 等进阶就容易了。</div>
+</div></section>
+
+<div class="footer">Git 初学者学习计划 · <a href="../daolun/index.html">返回导航首页</a></div>
+</main>
+</body>
+</html>

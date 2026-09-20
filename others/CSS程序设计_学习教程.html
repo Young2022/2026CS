@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI CSS 程序设计学习教程：从选择器到 Flexbox、Grid，覆盖响应式、动画与现代特性。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>CSS 程序设计 · 学习教程</title>
+<style>
+/* ========== CSS 主题：冷蓝/紫（玻璃质感） ========== */
+:root{
+  --bg:#eef3fb;             /* 浅蓝背景 */
+  --bg2:#e0e9f7;
+  --surface:#ffffff;
+  --card:#f6f9ff;
+  --card-hov:#eaf1fc;
+  --primary:#2965F1;        /* CSS3 蓝 */
+  --primary-dim:#1e4eba;
+  --accent:#8e44ad;          /* 紫 */
+  --accent2:#9b59b6;
+  --success:#27ae60;
+  --danger:#e74c3c;
+  --text:#1f2c3d;
+  --text-soft:#44546b;
+  --text-mute:#8595a8;
+  --border:#d2deec;
+  --border-strong:#aebdd1;
+  --code-bg:#0f1c33;
+  --code-head:#0a1428;
+  --tok-sel:#5dade2;          /* 选择器 */
+  --tok-prop:#ffb86c;         /* 属性名 */
+  --tok-val:#a8e6a3;          /* 值 */
+  --tok-com:#7d8aa8;          /* 注释 */
+  --tok-key:#bb8cf6;          /* 关键字 */
+  --tok-unit:#ffd166;
+  --tok-fn:#ff8a9b;
+  --shadow:0 4px 14px rgba(41,101,241,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--accent);text-decoration:underline}
+code{font-family:"Fira Code","JetBrains Mono","Consolas",monospace;font-size:13.5px}
+
+/* ========== 顶栏 ========== */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:3px solid var(--primary);
+  box-shadow:var(--shadow);
+  padding:10px 20px;display:flex;align-items:center;gap:18px;
+}
+.topnav .logo{font-size:18px;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:8px}
+.topnav .logo::before{content:"◈";color:var(--accent);font-size:22px}
+.topnav a.nav-link{color:var(--text-soft);font-size:13.5px;padding:4px 8px;border-radius:4px;transition:.15s}
+.topnav a.nav-link:hover{background:rgba(41,101,241,.08);color:var(--primary)}
+.topnav a.nav-link.active{background:var(--primary);color:#fff;font-weight:600}
+
+/* ========== Hero ========== */
+.hero{
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(30,60,180,.35) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(100,40,140,.30) 0%,transparent 55%),
+    linear-gradient(135deg,#1a3a8a 0%,#2d1b69 100%);
+  padding:40px 24px 28px;border-bottom:3px solid var(--primary);
+}
+.hero .inner{max-width:1080px;margin:0 auto}
+.hero .kicker{
+  display:inline-block;background:var(--primary);color:#fff;
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  letter-spacing:.5px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(28px,4.2vw,40px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;text-shadow:0 2px 8px rgba(20,40,90,.25)}
+.hero h1 em{color:#ffd166;font-style:normal}
+.hero p.lead{font-size:17px;color:#fff;max-width:780px;margin-bottom:20px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:12px;color:#fff;font-size:13px}
+.hero .meta span{background:rgba(255,255,255,.2);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.3);color:#fff;backdrop-filter:blur(8px)}
+
+/* ========== 章节流图 ========== */
+.flow{
+  max-width:1080px;margin:30px auto;padding:0 24px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.flow .step{background:var(--card);border:1px solid var(--border);padding:8px 14px;border-radius:6px;font-size:13px;color:var(--text-soft)}
+.flow .step strong{color:var(--primary)}
+.flow .arr{color:var(--primary);font-weight:700;opacity:.7}
+
+/* ========== 内容主体 ========== */
+main{max-width:1080px;margin:0 auto;padding:30px 24px 80px}
+
+section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:22px 26px;margin-bottom:22px;
+  scroll-margin-top:80px;transition:.2s;border-left:4px solid var(--primary);
+  box-shadow:var(--shadow);
+}
+section:hover{box-shadow:0 6px 20px rgba(41,101,241,.18)}
+
+section h2{
+  font-size:24px;color:var(--primary);margin-bottom:18px;
+  padding-bottom:10px;border-bottom:2px dashed var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+section h2::before{
+  content:attr(data-num);background:var(--primary);color:#fff;
+  width:30px;height:30px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-size:14px;font-weight:800;
+}
+section h3{
+  font-size:17px;color:var(--accent);margin:22px 0 10px;
+  padding-left:10px;border-left:3px solid var(--accent);
+}
+section h4{font-size:15px;color:var(--text);margin:16px 0 8px;font-weight:600}
+section p{margin-bottom:10px;color:var(--text-soft)}
+section ul,section ol{margin-left:24px;margin-bottom:12px;color:var(--text-soft)}
+section li{margin-bottom:6px}
+section strong{color:var(--text)}
+section em.hint{color:var(--accent);font-style:normal;font-weight:600}
+
+/* 卡片 */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:14px 18px;margin:14px 0;
+}
+.card.success{border-left:4px solid var(--success)}
+.card.warn{border-left:4px solid var(--accent)}
+.card.danger{border-left:4px solid var(--danger)}
+.card.info{border-left:4px solid var(--primary)}
+.card-title{font-weight:700;color:var(--primary);margin-bottom:6px;font-size:14px}
+.card p:last-child{margin-bottom:0}
+
+/* 代码框 */
+.codebox{
+  background:var(--code-bg);border:1px solid #1a2a4a;
+  border-radius:8px;margin:14px 0;overflow:hidden;
+}
+.codebox-head{
+  background:var(--code-head);padding:8px 14px;font-size:12px;
+  color:var(--text-mute);display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid #1a2a4a;
+}
+.codebox-head .lang{color:var(--accent2);font-weight:600}
+.codebox-head .copy{
+  background:var(--primary);color:#fff;border:none;
+  padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;
+  font-weight:600;transition:.15s;
+}
+.codebox-head .copy:hover{background:var(--accent)}
+.codebox pre{
+  padding:16px;overflow-x:auto;color:#dde6f5;
+  font-family:"Fira Code","JetBrains Mono","Consolas",monospace;
+  font-size:13.5px;line-height:1.6;
+}
+.codebox code{display:block;white-space:pre}
+
+/* CSS 语法高亮 */
+.tok-sel{color:var(--tok-sel)}
+.tok-prop{color:var(--tok-prop)}
+.tok-val{color:var(--tok-val)}
+.tok-com{color:var(--tok-com);font-style:italic}
+.tok-key{color:var(--tok-key)}
+.tok-fn{color:var(--tok-fn)}
+.tok-unit{color:var(--tok-unit)}
+
+/* 表格 */
+table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  background:var(--bg2);border-radius:6px;overflow:hidden;
+}
+table th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:700;border:1px solid var(--border);font-size:13px}
+table td{padding:9px 12px;border:1px solid var(--border);color:var(--text-soft);font-size:13.5px}
+table tr:nth-child(even) td{background:rgba(41,101,241,.04)}
+
+/* 训练题 */
+.q-card{
+  background:var(--card);border:1px solid var(--border);
+  border-left:4px solid var(--accent);border-radius:8px;
+  padding:18px;margin:16px 0;
+}
+.q-card .q-title{color:var(--accent);font-weight:700;margin-bottom:10px;font-size:15px}
+.q-card ol{padding-left:20px}
+.q-card ol li{
+  background:var(--surface);border:1px solid var(--border);
+  padding:8px 14px;border-radius:6px;margin-bottom:8px;
+  cursor:pointer;transition:.15s;color:var(--text-soft);
+}
+.q-card ol li:hover{border-color:var(--primary);transform:translateX(3px)}
+.q-card ol li.correct{background:rgba(39,174,96,.18);border-color:var(--success);color:var(--text)}
+.q-card ol li.wrong{background:rgba(231,76,60,.18);border-color:var(--danger);color:var(--text)}
+.q-card .q-explain{
+  background:rgba(41,101,241,.06);border:1px dashed var(--primary);
+  border-radius:6px;padding:10px 14px;margin-top:10px;
+  display:none;font-size:13px;color:var(--text-soft);
+}
+.q-card .q-explain.show{display:block}
+.q-card .q-explain strong{color:var(--primary)}
+
+/* 项目卡片 */
+.proj{
+  background:linear-gradient(135deg,#f0f6ff 0%,#eae2f7 100%);
+  border:1px solid var(--border);border-left:5px solid var(--accent);
+  border-radius:8px;padding:20px;margin:18px 0;
+}
+.proj-title{
+  color:var(--accent);font-size:18px;font-weight:700;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.proj-title::before{content:"🎨";font-size:20px}
+.proj-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:12px}
+.proj-meta span{background:var(--surface);padding:3px 9px;border-radius:4px;border:1px solid var(--border);color:var(--text-soft)}
+
+/* 实时预览 */
+.live-demo{
+  background:linear-gradient(135deg,#fff 0%,#f0f6ff 100%);
+  border:1px solid var(--border);border-radius:8px;
+  padding:18px;margin:14px 0;
+  position:relative;
+}
+.live-demo::before{
+  content:"实时预览";position:absolute;top:-10px;left:14px;
+  background:var(--accent);color:#fff;font-size:11px;
+  padding:2px 10px;border-radius:10px;
+}
+
+/* SVG */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:14px 0;display:flex;justify-content:center}
+
+/* Flex/Grid 可视化示例 */
+.demo-flex{display:flex;gap:10px;padding:14px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);margin:10px 0}
+.demo-flex div{flex:1;background:var(--primary);color:#fff;text-align:center;padding:14px;border-radius:4px;font-weight:600}
+
+/* 速查表 */
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.cheat-cell{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px}
+.cheat-cell h4{color:var(--primary);font-size:14px;margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.cheat-cell ul{margin-left:18px;font-size:13px}
+.cheat-cell li{color:var(--text-soft);margin-bottom:4px}
+.cheat-cell code{background:var(--code-bg);padding:1px 6px;border-radius:3px;color:var(--accent2);font-size:12.5px}
+
+/* 进度条 */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
+  z-index:200;width:0%;transition:width .1s;
+  box-shadow:0 0 10px var(--primary);
+}
+#to-top{
+  position:fixed;bottom:30px;right:30px;
+  background:var(--primary);color:#fff;
+  width:45px;height:45px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 12px rgba(41,101,241,.4);border:none;transition:.2s;
+}
+#to-top:hover{background:var(--accent);transform:translateY(-3px)}
+
+.tip{background:rgba(41,101,241,.06);border-left:4px solid var(--primary);padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px}
+.tip strong{color:var(--primary)}
+
+@media (max-width:720px){
+  .hero h1{font-size:28px}
+  section{padding:20px 16px}
+  main{padding:20px 14px 60px}
+  .topnav{padding:8px 12px;gap:10px;flex-wrap:wrap}
+  .topnav .logo{font-size:14px}
+  .topnav a.nav-link{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav class="topnav">
+  <a href="../../daolun/index.html" class="logo" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>CSAI</a>
+  <a class="nav-link" href="#s00">指南</a>
+  <a class="nav-link" href="#s01">引入</a>
+  <a class="nav-link" href="#s02">选择器</a>
+  <a class="nav-link" href="#s04">盒模型</a>
+  <a class="nav-link" href="#s11">Flex</a>
+  <a class="nav-link" href="#s12">Grid</a>
+  <a class="nav-link" href="#s14">响应式</a>
+  <a class="nav-link" href="#s23">项目</a>
+  <a class="nav-link" href="#s25">速查</a>
+</nav>
+
+<header class="hero">
+  <div class="inner">
+    <span class="kicker">WEB 前端核心 · 大学一年级</span>
+    <h1>掌握 <em>CSS</em>：让网页<strong>漂亮</strong>起来</h1>
+    <p class="lead">
+      从选择器与盒模型开始，到 Flexbox 与 Grid 布局，再到响应式、动画与现代特性。
+      本教程与本系列前序课程（C → C++ → Java → Python → SQL → JavaScript → HTML）保持一致的节奏与难度梯度。
+    </p>
+    <div class="meta">
+      <span>🟦 25 章正文</span>
+      <span>📦 2 个综合项目</span>
+      <span>❓ 10 道课堂训练</span>
+      <span>🎨 视觉 + 布局</span>
+      <span>📱 响应式与动画</span>
+    </div>
+  </div>
+</header>
+
+<div class="flow">
+  <span class="step"><strong>选择器</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>盒模型</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>排版与颜色</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>Flex / Grid</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>响应式</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>动画 + 项目</strong></span>
+</div>
+
+<main>
+
+<!-- ========== 00 ========== -->
+<section id="s00">
+<h2 data-num="00">学习指南：CSS 是什么、怎么学、学到什么</h2>
+
+<p><strong>CSS</strong> = <em>Cascading Style Sheets</em>（层叠样式表），负责网页<strong>外观</strong>：颜色、字体、布局、动画、响应式。HTML 是骨架，CSS 是皮肤。</p>
+
+<h3>0.1 学习路径</h3>
+<div class="card success">
+<ol style="padding-left:24px">
+<li><strong>基础语法</strong>：选择器、声明、属性、值</li>
+<li><strong>盒模型</strong>：外边距、内边距、边框、宽高</li>
+<li><strong>排版</strong>：字体、颜色、背景、阴影</li>
+<li><strong>布局</strong>：正常流、Flexbox、Grid、Position</li>
+<li><strong>响应式</strong>：媒体查询、相对单位、移动优先</li>
+<li><strong>动画</strong>：transition、transform、animation</li>
+</ol>
+</div>
+
+<h3>0.2 学习建议</h3>
+<ul>
+<li>每个示例都打开 DevTools 检查元素的 Computed Style</li>
+<li>现代项目用 <strong>Flexbox + Grid</strong>，别再用 <code>float</code> 做主布局</li>
+<li>善用 CSS 变量（Custom Properties）+ 预处理器思维</li>
+</ul>
+
+<div class="tip"><strong>衔接</strong>：本教程衔接到本系列 JavaScript 与 Vue 教程，用 CSS 设计界面、用 JS/框架驱动交互。</div>
+</section>
+
+<!-- ========== 01 ========== -->
+<section id="s01">
+<h2 data-num="01">CSS 引入方式 ⭐⭐⭐</h2>
+
+<h3>1.1 三种引入</h3>
+<table>
+<tr><th>方式</th><th>语法</th><th>使用</th></tr>
+<tr><td>行内</td><td><code>&lt;div style="color:red"&gt;</code></td><td>❌ 不推荐</td></tr>
+<tr><td>内部</td><td><code>&lt;style&gt;...&lt;/style&gt;</code> 在 <code>&lt;head&gt;</code></td><td>小型 demo</td></tr>
+<tr><td>外部</td><td><code>&lt;link rel="stylesheet" href="x.css"&gt;</code></td><td>✅ 真实项目</td></tr>
+</table>
+
+<h3>1.2 推荐结构</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">&lt;!DOCTYPE html&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-str">"zh-CN"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head&gt;</span>
+    <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span>=<span class="tok-str">"UTF-8"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span>CSS 教程<span class="tok-tag">&lt;/title&gt;</span>
+    <span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-str">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-str">"style.css"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span>
+<span class="tok-tag">&lt;body&gt;</span>...<span class="tok-tag">&lt;/body&gt;</span>
+<span class="tok-tag">&lt;/html&gt;</span></code></pre>
+</div>
+
+<h3>1.3 @import（不推荐）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">/* 在 CSS 里再引入另一个 CSS（性能差，一般不用） */</span>
+<span class="tok-key">@import</span> <span class="tok-fn">url</span>(<span class="tok-str">"reset.css"</span>);</code></pre>
+</div>
+
+<h3>1.4 基本语法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">h1</span> {                       <span class="tok-com">/* 选择器 */</span>
+    <span class="tok-prop">color</span>:         <span class="tok-val">red</span>;       <span class="tok-com">/* 属性: 值; */</span>
+    <span class="tok-prop">font-size</span>:     <span class="tok-val">32</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">font-weight</span>:   <span class="tok-val">bold</span>;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 02 ========== -->
+<section id="s02">
+<h2 data-num="02">选择器 ⭐⭐⭐</h2>
+
+<h3>2.1 基础选择器</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">h1</span>          <span class="tok-com">/* 元素 */</span>
+<span class="tok-sel">.box</span>       <span class="tok-com">/* class */</span>
+<span class="tok-sel">#title</span>     <span class="tok-com">/* id */</span>
+<span class="tok-sel">*</span>           <span class="tok-com">/* 所有元素 */</span></code></pre>
+</div>
+
+<h3>2.2 关系选择器</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">ul li</span>            <span class="tok-com">/* 后代（不限层级） */</span>
+<span class="tok-sel">ul &gt; li</span>          <span class="tok-com">/* 直接子元素 */</span>
+<span class="tok-sel">h2 + p</span>           <span class="tok-com">/* 紧邻的兄弟 */</span>
+<span class="tok-sel">h2 ~ p</span>           <span class="tok-com">/* 之后所有兄弟 */</span></code></pre>
+</div>
+
+<h3>2.3 属性选择器</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">[type="text"]</span>          <span class="tok-com">/* 属性等于某值 */</span>
+<span class="tok-sel">[class~="active"]</span>      <span class="tok-com">/* 包含某词 */</span>
+<span class="tok-sel">[href^="https"]</span>       <span class="tok-com">/* 以...开始 */</span>
+<span class="tok-sel">[href$=".pdf"]</span>         <span class="tok-com">/* 以...结束 */</span>
+<span class="tok-sel">[title*="教育"]</span>      <span class="tok-com">/* 包含子串 */</span></code></pre>
+</div>
+
+<h3>2.4 伪类</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">a:hover</span>             <span class="tok-com">/* 鼠标悬停 */</span>
+<span class="tok-sel">a:active</span>            <span class="tok-com">/* 点击瞬间 */</span>
+<span class="tok-sel">a:focus</span>             <span class="tok-com">/* 键盘聚焦 */</span>
+<span class="tok-sel">input:disabled</span>      <span class="tok-com">/* 禁用状态 */</span>
+<span class="tok-sel">input:checked</span>       <span class="tok-com">/* 选中状态 */</span>
+<span class="tok-sel">li:first-child</span>      <span class="tok-com">/* 第一个子元素 */</span>
+<span class="tok-sel">li:last-child</span>       <span class="tok-com">/* 最后一个 */</span>
+<span class="tok-sel">li:nth-child(2)</span>     <span class="tok-com">/* 第 n 个 */</span>
+<span class="tok-sel">li:nth-child(odd)</span>   <span class="tok-com">/* 奇数 */</span>
+<span class="tok-sel">li:nth-child(even)</span>  <span class="tok-com">/* 偶数 */</span></code></pre>
+</div>
+
+<h3>2.5 伪元素</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">p::first-line</span>     <span class="tok-com">/* 首行 */</span>
+<span class="tok-sel">p::first-letter</span>   <span class="tok-com">/* 首字母 */</span>
+<span class="tok-sel">::before</span>          <span class="tok-com">/* 内容之前 */</span>
+<span class="tok-sel">::after</span>           <span class="tok-com">/* 内容之后（常用于清除浮动、装饰） */</span>
+<span class="tok-sel">::placeholder</span>     <span class="tok-com">/* 占位文本 */</span>
+<span class="tok-sel">::selection</span>       <span class="tok-com">/* 文字被选中时 */</span></code></pre>
+</div>
+
+<h3>2.6 组合与分组</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">h1, h2, h3</span> {           <span class="tok-com">/* 并列选择器 */</span>
+    <span class="tok-prop">color</span>: <span class="tok-val">#333</span>;
+}
+
+<span class="tok-sel">article h2.title</span> {     <span class="tok-com">/* 复合选择器 */</span>
+    <span class="tok-prop">font-weight</span>: <span class="tok-val">bold</span>;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 03 ========== -->
+<section id="s03">
+<h2 data-num="03">优先级与继承 ⭐⭐</h2>
+
+<h3>3.1 优先级（特异性）</h3>
+<table>
+<tr><th>选择器</th><th>优先级</th></tr>
+<tr><td>行内 <code>style=""</code></td><td>1000</td></tr>
+<tr><td><code>#id</code></td><td>100</td></tr>
+<tr><td><code>.class</code> / 伪类 / 属性</td><td>10</td></tr>
+<tr><td>元素 / 伪元素</td><td>1</td></tr>
+<tr><td><code>*</code> / 继承</td><td>0</td></tr>
+</table>
+<div class="card warn">
+<div class="card-title">⚠️ !important</div>
+<p>除非第三方样式冲突，否则<strong>别用</strong>。会让以后维护非常痛苦。</p>
+</div>
+
+<h3>3.2 继承</h3>
+<p>文字相关属性默认继承：<code>color</code>、<code>font-*</code>、<code>text-align</code>、<code>line-height</code>。<br>
+布局属性不继承：<code>width</code>、<code>height</code>、<code>margin</code>、<code>padding</code>、<code>border</code>。</p>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">body</span> {
+    <span class="tok-prop">color</span>: <span class="tok-val">#333</span>;
+    <span class="tok-prop">font-family</span>: <span class="tok-val">"PingFang SC"</span>, sans-serif;
+}
+<span class="tok-sel">h1</span> { <span class="tok-prop">color</span>: <span class="tok-val">#000</span>; }   <span class="tok-com">/* 覆盖 */</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 04 ========== -->
+<section id="s04">
+<h2 data-num="04">盒模型 ⭐⭐⭐</h2>
+
+<div class="tip">CSS 把每个元素都视为一个<strong>盒子</strong>，由内容、内边距、边框、外边距组成。</div>
+
+<div class="diagram">
+<svg width="600" height="320" viewBox="0 0 600 320">
+  <rect x="20" y="20" width="560" height="280" fill="#fff5cc" stroke="#f0c040" stroke-width="3" stroke-dasharray="6 3"/>
+  <text x="40" y="40" fill="#a07a00" font-size="13" font-weight="700">margin (外边距)</text>
+
+  <rect x="60" y="60" width="480" height="200" fill="#ffd6cc" stroke="#e07050" stroke-width="3" stroke-dasharray="6 3"/>
+  <text x="80" y="80" fill="#a04030" font-size="13" font-weight="700">border (边框)</text>
+
+  <rect x="100" y="100" width="400" height="120" fill="#cee0ff" stroke="#2965F1" stroke-width="2"/>
+  <text x="120" y="120" fill="#2965F1" font-size="13" font-weight="700">padding (内边距)</text>
+
+  <rect x="130" y="135" width="340" height="60" fill="#a8e6a3" stroke="#27ae60" stroke-width="2"/>
+  <text x="290" y="170" text-anchor="middle" fill="#1f5d2d" font-size="13" font-weight="700">content (内容)</text>
+
+  <text x="305" y="240" text-anchor="middle" fill="#1f2c3d" font-size="11">盒模型：margin + border + padding + content</text>
+</svg>
+</div>
+
+<h3>4.1 box-sizing</h3>
+<table>
+<tr><th>值</th><th>width 包含</th><th>box 实际宽</th></tr>
+<tr><td>content-box（默认）</td><td>仅内容</td><td>width + 2·(padding+border)</td></tr>
+<tr><td>border-box（推荐）</td><td>内容+内边距+边框</td><td>width</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">*</span> {
+    <span class="tok-prop">box-sizing</span>: <span class="tok-val">border-box</span>;   <span class="tok-com">/* 全局推荐 */</span>
+}
+
+<span class="tok-sel">.box</span> {
+    <span class="tok-prop">width</span>:  <span class="tok-val">300</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">height</span>: <span class="tok-val">200</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">padding</span>: <span class="tok-val">20</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">border</span>:  <span class="tok-val">5</span><span class="tok-unit">px</span> solid <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">margin</span>:  <span class="tok-val">30</span><span class="tok-unit">px</span>;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 05 ========== -->
+<section id="s05">
+<h2 data-num="05">文字与排版 ⭐⭐⭐</h2>
+
+<h3>5.1 字体</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">body</span> {
+    <span class="tok-prop">font-family</span>: <span class="tok-val">"PingFang SC"</span>, <span class="tok-val">"Microsoft YaHei"</span>, sans-serif;
+    <span class="tok-prop">font-size</span>:   <span class="tok-val">16</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">font-weight</span>: <span class="tok-val">400</span>;        <span class="tok-com">/* 100-900 或 bold */</span>
+    <span class="tok-prop">line-height</span>: <span class="tok-val">1.6</span>;          <span class="tok-com">/* 推荐用单位less，乘数 */</span>
+    <span class="tok-prop">letter-spacing</span>: <span class="tok-val">0.5</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">text-align</span>:  <span class="tok-val">justify</span>;     <span class="tok-com">/* justify 两端对齐 */</span>
+}</code></pre>
+</div>
+
+<h3>5.2 加载自定义字体</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">@font-face</span> {
+    <span class="tok-prop">font-family</span>: <span class="tok-val">"MyFont"</span>;
+    <span class="tok-prop">src</span>: <span class="tok-fn">url</span>(<span class="tok-str">"myfont.woff2"</span>) <span class="tok-fn">format</span>(<span class="tok-str">"woff2"</span>);
+    <span class="tok-prop">font-display</span>: <span class="tok-val">swap</span>;   <span class="tok-com">/* 不阻塞渲染 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 06 ========== -->
+<section id="s06">
+<h2 data-num="06">颜色与背景 ⭐⭐</h2>
+
+<h3>6.1 颜色写法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-prop">color</span>: <span class="tok-val">red</span>;                    <span class="tok-com">/* 关键字 */</span>
+<span class="tok-prop">color</span>: <span class="tok-val">#ff0000</span>;               <span class="tok-com">/* 16进制 */</span>
+<span class="tok-prop">color</span>: <span class="tok-val">#f00</span>;                  <span class="tok-com">/* 短 16 进制 */</span>
+<span class="tok-prop">color</span>: <span class="tok-fn">rgb</span>(<span class="tok-val">255, 0, 0</span>);
+<span class="tok-prop">color</span>: <span class="tok-fn">rgba</span>(<span class="tok-val">255, 0, 0</span>, <span class="tok-val">0.5</span>); <span class="tok-com">/* a = 透明度 */</span>
+<span class="tok-prop">color</span>: <span class="tok-fn">hsl</span>(<span class="tok-val">0</span>, <span class="tok-val">100%</span>, <span class="tok-val">50%</span>);</code></pre>
+</div>
+
+<h3>6.2 背景</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.card</span> {
+    <span class="tok-prop">background-color</span>: <span class="tok-val">#fff</span>;
+    <span class="tok-prop">background-image</span>:    <span class="tok-fn">linear-gradient</span>(<span class="tok-val">45deg</span>, <span class="tok-val">#2965F1</span>, <span class="tok-val">#8e44ad</span>);
+    <span class="tok-prop">background-repeat</span>:   <span class="tok-val">no-repeat</span>;
+    <span class="tok-prop">background-position</span>: <span class="tok-val">center</span>;
+    <span class="tok-prop">background-size</span>:     <span class="tok-val">cover</span>;       <span class="tok-com">/* contain 也常用 */</span>
+    <span class="tok-prop">background-attachment</span>: <span class="tok-val">fixed</span>;    <span class="tok-com">/* 视差 */</span>
+}
+
+<span class="tok-com">/* 简写 */</span>
+<span class="tok-prop">background</span>: <span class="tok-val">#fff</span> <span class="tok-fn">url</span>(<span class="tok-str">"bg.jpg"</span>) <span class="tok-val">no-repeat</span> <span class="tok-val">center</span> / <span class="tok-val">cover</span>;</code></pre>
+</div>
+</section>
+
+<!-- ========== 07 ========== -->
+<section id="s07">
+<h2 data-num="07">边框与圆角 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.box</span> {
+    <span class="tok-prop">border</span>: <span class="tok-val">2</span><span class="tok-unit">px</span> solid <span class="tok-val">#2965F1</span>;          <span class="tok-com">/* width style color */</span>
+    <span class="tok-prop">border-top</span>: <span class="tok-val">4</span><span class="tok-unit">px</span> dashed <span class="tok-val">red</span>;
+
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">8</span><span class="tok-unit">px</span>;               <span class="tok-com">/* 全部四个角 */</span>
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">50%</span>;                  <span class="tok-com">/* 圆形 */</span>
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">12</span><span class="tok-unit">px</span> <span class="tok-val">4</span><span class="tok-unit">px</span> <span class="tok-val">20</span><span class="tok-unit">px</span> <span class="tok-val">0</span>;  <span class="tok-com">/* 左上 右上 右下 左下 */</span>
+}
+
+<span class="tok-sel">.pill</span> {
+    <span class="tok-prop">padding</span>: <span class="tok-val">8</span><span class="tok-unit">px</span> <span class="tok-val">20</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">9999</span><span class="tok-unit">px</span>;            <span class="tok-com">/* 胶囊形 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 08 ========== -->
+<section id="s08">
+<h2 data-num="08">阴影 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.card</span> {
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">2</span><span class="tok-unit">px</span> <span class="tok-val">4</span><span class="tok-unit">px</span> <span class="tok-val">12</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.1</span>);
+    <span class="tok-com">/* x-offset y-offset blur spread color */</span>
+}
+
+<span class="tok-sel">.glow</span> {
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">0</span> <span class="tok-val">0</span> <span class="tok-val">20</span><span class="tok-unit">px</span> <span class="tok-val">#2965F1</span>;
+}
+
+<span class="tok-sel">h1</span> {
+    <span class="tok-prop">text-shadow</span>: <span class="tok-val">2</span><span class="tok-unit">px</span> <span class="tok-val">2</span><span class="tok-unit">px</span> <span class="tok-val">4</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.5</span>);
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 09 ========== -->
+<section id="s09">
+<h2 data-num="09">display 属性 ⭐⭐⭐</h2>
+
+<table>
+<tr><th>值</th><th>行为</th></tr>
+<tr><td><code>block</code></td><td>块级，独占一行，可设宽高</td></tr>
+<tr><td><code>inline</code></td><td>行内，不能设宽高</td></tr>
+<tr><td><code>inline-block</code></td><td>行内但能设宽高</td></tr>
+<tr><td><code>none</code></td><td>隐藏（不占据位置）</td></tr>
+<tr><td><code>flex</code></td><td>Flex 容器</td></tr>
+<tr><td><code>grid</code></td><td>Grid 容器</td></tr>
+<tr><td><code>contents</code></td><td>自身消失、子元素直接参与父级布局</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.inline-block</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">inline-block</span>;
+    <span class="tok-prop">width</span>:  <span class="tok-val">120</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">height</span>: <span class="tok-val">60</span><span class="tok-unit">px</span>;
+}
+
+<span class="tok-sel">.hide</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">none</span>;       <span class="tok-com">/* 隐藏 */</span>
+}
+
+<span class="tok-sel">.gone</span> {
+    <span class="tok-prop">visibility</span>: <span class="tok-val">hidden</span>;  <span class="tok-com">/* 隐藏但占位 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 10 ========== -->
+<section id="s10">
+<h2 data-num="10">Position 定位 ⭐⭐⭐</h2>
+
+<table>
+<tr><th>值</th><th>说明</th><th>参照</th></tr>
+<tr><td><code>static</code>（默认）</td><td>正常流</td><td>—</td></tr>
+<tr><td><code>relative</code></td><td>相对自身偏移，仍占位</td><td>自身原位置</td></tr>
+<tr><td><code>absolute</code></td><td>脱离文档流</td><td>最近的 positioned 祖先</td></tr>
+<tr><td><code>fixed</code></td><td>相对视口</td><td>浏览器视口</td></tr>
+<tr><td><code>sticky</code></td><td>滚动到阈值后"粘住"</td><td>滚动容器</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.parent</span> { <span class="tok-prop">position</span>: <span class="tok-val">relative</span>; }   <span class="tok-com">/* 子 absolute 参照这个 */</span>
+
+<span class="tok-sel">.modal</span> {
+    <span class="tok-prop">position</span>: <span class="tok-val">fixed</span>;
+    <span class="tok-prop">top</span>:  <span class="tok-val">50%</span>;
+    <span class="tok-prop">left</span>: <span class="tok-val">50%</span>;
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translate</span>(<span class="tok-val">-50%</span>, <span class="tok-val">-50%</span>);   <span class="tok-com">/* 居中 */</span>
+}
+
+<span class="tok-sel">.head</span> {
+    <span class="tok-prop">position</span>: <span class="tok-val">sticky</span>;
+    <span class="tok-prop">top</span>: <span class="tok-val">0</span>;                          <span class="tok-com">/* 滚动时粘顶部 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 11 ========== -->
+<section id="s11">
+<h2 data-num="11">Flexbox 弹性布局 ⭐⭐⭐</h2>
+
+<div class="tip"><strong>Flexbox = 一维布局。</strong>让一行或一列的元素自动占满空间、对齐、均分。</div>
+
+<h3>11.1 基本结构</h3>
+<div class="live-demo">
+<div class="demo-flex" style="background:#fff;border:2px dashed #2965F1;">
+  <div>A</div><div>B</div><div>C</div>
+</div>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.container</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;             <span class="tok-com">/* 开启 Flexbox */</span>
+    <span class="tok-prop">flex-direction</span>: <span class="tok-val">row</span>;    <span class="tok-com">/* row | column | row-reverse | column-reverse */</span>
+    <span class="tok-prop">justify-content</span>: <span class="tok-val">space-between</span>;  <span class="tok-com">/* 主轴对齐 */</span>
+    <span class="tok-prop">align-items</span>: <span class="tok-val">center</span>;     <span class="tok-com">/* 交叉轴对齐 */</span>
+    <span class="tok-prop">flex-wrap</span>: <span class="tok-val">wrap</span>;          <span class="tok-com">/* 自动换行 */</span>
+    <span class="tok-prop">gap</span>: <span class="tok-val">10</span><span class="tok-unit">px</span>;                 <span class="tok-com">/* flex 子项间距 */</span>
+}
+
+<span class="tok-sel">.item</span> {
+    <span class="tok-prop">flex</span>: <span class="tok-val">1</span>;                 <span class="tok-com">/* 子项均分剩余空间 */</span>
+    <span class="tok-prop">flex-basis</span>: <span class="tok-val">200</span><span class="tok-unit">px</span>;       <span class="tok-com">/* 初始尺寸 */</span>
+    <span class="tok-prop">flex-grow</span>:   <span class="tok-val">1</span>;          <span class="tok-com">/* 增长比例 */</span>
+    <span class="tok-prop">flex-shrink</span>: <span class="tok-val">1</span>;          <span class="tok-com">/* 收缩比例 */</span>
+}</code></pre>
+</div>
+
+<h3>11.2 justify-content 速查</h3>
+<table>
+<tr><th>值</th><th>效果</th></tr>
+<tr><td><code>flex-start</code></td><td>左对齐</td></tr>
+<tr><td><code>flex-end</code></td><td>右对齐</td></tr>
+<tr><td><code>center</code></td><td>居中</td></tr>
+<tr><td><code>space-between</code></td><td>两端贴边，中间均分</td></tr>
+<tr><td><code>space-around</code></td><td>两端各留一半间距</td></tr>
+<tr><td><code>space-evenly</code></td><td>所有间距相等</td></tr>
+</table>
+
+<h3>11.3 经典：水平垂直居中</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.center</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;
+    <span class="tok-prop">justify-content</span>: <span class="tok-val">center</span>;
+    <span class="tok-prop">align-items</span>:     <span class="tok-val">center</span>;
+    <span class="tok-prop">min-height</span>: <span class="tok-val">100vh</span>;       <span class="tok-com">/* 屏幕高度 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 12 ========== -->
+<section id="s12">
+<h2 data-num="12">Grid 网格布局 ⭐⭐⭐</h2>
+
+<div class="tip"><strong>Grid = 二维布局。</strong>适合<strong>网格卡片</strong>、仪表盘、整体页面布局。</div>
+
+<h3>12.1 三种定义方式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.grid</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;
+
+    <span class="tok-com">/* 方法 1：固定列 */</span>
+    <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">200</span><span class="tok-unit">px</span> <span class="tok-val">200</span><span class="tok-unit">px</span> <span class="tok-val">200</span><span class="tok-unit">px</span>;
+
+    <span class="tok-com">/* 方法 2：分数单位（推荐） */</span>
+    <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">1</span><span class="tok-unit">fr</span> <span class="tok-val">2</span><span class="tok-unit">fr</span> <span class="tok-val">1</span><span class="tok-unit">fr</span>;
+
+    <span class="tok-com">/* 方法 3：自适应最小值 */</span>
+    <span class="tok-prop">grid-template-columns</span>: <span class="tok-fn">repeat</span>(<span class="tok-val">auto-fill</span>, <span class="tok-fn">minmax</span>(<span class="tok-val">250</span><span class="tok-unit">px</span>, <span class="tok-val">1</span><span class="tok-unit">fr</span>));
+
+    <span class="tok-prop">grid-template-rows</span>: <span class="tok-val">100</span><span class="tok-unit">px</span> <span class="tok-val">auto</span> <span class="tok-val">1</span><span class="tok-unit">fr</span>;
+
+    <span class="tok-prop">gap</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>;
+}
+
+<span class="tok-sel">.item-wide</span> {
+    <span class="tok-prop">grid-column</span>: <span class="tok-val">1</span> / <span class="tok-val">3</span>;       <span class="tok-com">/* 跨第 1 到 第 2 列（语法：start / end） */</span>
+    <span class="tok-prop">grid-row</span>:    <span class="tok-val">1</span> / <span class="tok-val">span</span> <span class="tok-val">2</span>;   <span class="tok-com">/* 跨 2 行 */</span>
+}</code></pre>
+</div>
+
+<h3>12.2 命名区（更直观）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.layout</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;
+    <span class="tok-prop">grid-template-areas</span>:
+        <span class="tok-str">"header header header"</span>
+        <span class="tok-str">"nav    main   aside"</span>
+        <span class="tok-str">"footer footer footer"</span>;
+    <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">200</span><span class="tok-unit">px</span> <span class="tok-val">1</span><span class="tok-unit">fr</span> <span class="tok-val">200</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">grid-template-rows</span>: <span class="tok-val">auto</span> <span class="tok-val">1</span><span class="tok-unit">fr</span> <span class="tok-val">auto</span>;
+}
+
+<span class="tok-sel">.layout &gt; header</span>  { <span class="tok-prop">grid-area</span>: <span class="tok-val">header</span>; }
+<span class="tok-sel">.layout &gt; nav</span>    { <span class="tok-prop">grid-area</span>: <span class="tok-val">nav</span>; }
+<span class="tok-sel">.layout &gt; main</span>   { <span class="tok-prop">grid-area</span>: <span class="tok-val">main</span>; }
+<span class="tok-sel">.layout &gt; aside</span>  { <span class="tok-prop">grid-area</span>: <span class="tok-val">aside</span>; }
+<span class="tok-sel">.layout &gt; footer</span> { <span class="tok-prop">grid-area</span>: <span class="tok-val">footer</span>; }</code></pre>
+</div>
+</section>
+
+<!-- ========== 13 ========== -->
+<section id="s13">
+<h2 data-num="13">float 浮动（了解即可）</h2>
+
+<p>历史方案，<strong>现代布局请用 Flex / Grid</strong>。这里介绍是因为老代码可能看到。</p>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.img</span>  { <span class="tok-prop">float</span>: <span class="tok-val">left</span>; }
+<span class="tok-sel">.img2</span> { <span class="tok-prop">float</span>: <span class="tok-val">right</span>; }
+
+<span class="tok-comment">/* 清除浮动 */</span>
+<span class="tok-sel">.clear</span>::<span class="tok-key">after</span> {
+    <span class="tok-prop">content</span>: <span class="tok-str">""</span>;
+    <span class="tok-prop">display</span>: <span class="tok-val">table</span>;
+    <span class="tok-prop">clear</span>: <span class="tok-val">both</span>;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 14 ========== -->
+<section id="s14">
+<h2 data-num="14">响应式设计：媒体查询 ⭐⭐⭐</h2>
+
+<h3>14.1 基本语法</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-com">/* 默认（手机） */</span>
+<span class="tok-sel">.container</span> { <span class="tok-prop">width</span>: <span class="tok-val">100%</span>; }
+
+<span class="tok-comment">/* 平板 ≥768px */</span>
+<span class="tok-key">@media</span> (<span class="tok-prop">min-width</span>: <span class="tok-val">768</span><span class="tok-unit">px</span>) {
+    <span class="tok-sel">.container</span> { <span class="tok-prop">width</span>: <span class="tok-val">750</span><span class="tok-unit">px</span>; }
+}
+
+<span class="tok-comment">/* 桌面 ≥992px */</span>
+<span class="tok-key">@media</span> (<span class="tok-prop">min-width</span>: <span class="tok-val">992</span><span class="tok-unit">px</span>) {
+    <span class="tok-sel">.container</span> { <span class="tok-prop">width</span>: <span class="tok-val">970</span><span class="tok-unit">px</span>; }
+}
+
+<span class="tok-comment">/* 大屏 ≥1200px */</span>
+<span class="tok-key">@media</span> (<span class="tok-prop">min-width</span>: <span class="tok-val">1200</span><span class="tok-unit">px</span>) {
+    <span class="tok-sel">.container</span> { <span class="tok-prop">width</span>: <span class="tok-val">1170</span><span class="tok-unit">px</span>; }
+}</code></pre>
+</div>
+
+<h3>14.2 媒体查询操作符</h3>
+<table>
+<tr><th>类型</th><th>例子</th></tr>
+<tr><td>屏幕宽度</td><td><code>(min-width: 768px)</code> / <code>(max-width: 991px)</code></td></tr>
+<tr><td>方向</td><td><code>(orientation: landscape | portrait)</code></td></tr>
+<tr><td>是否触屏</td><td><code>(hover: hover)</code> / <code>(pointer: fine | coarse)</code></td></tr>
+<tr><td>暗色模式</td><td><code>(prefers-color-scheme: dark)</code></td></tr>
+<tr><td>动效偏好</td><td><code>(prefers-reduced-motion: reduce)</code></td></tr>
+</table>
+</section>
+
+<!-- ========== 15 ========== -->
+<section id="s15">
+<h2 data-num="15">单位与移动优先 ⭐⭐</h2>
+
+<h3>15.1 常用单位</h3>
+<table>
+<tr><th>单位</th><th>基于</th><th>用途</th></tr>
+<tr><td><code>px</code></td><td>绝对</td><td>边框、阴影</td></tr>
+<tr><td><code>%</code></td><td>父元素</td><td>宽度</td></tr>
+<tr><td><code>em</code></td><td>父元素 font-size</td><td>缩放</td></tr>
+<tr><td><code>rem</code></td><td>根 html font-size</td><td>全局缩放</td></tr>
+<tr><td><code>vw</code> / <code>vh</code></td><td>视口宽 / 高 1%</td><td>大块尺寸</td></tr>
+<tr><td><code>vmin</code> / <code>vmax</code></td><td>视口较短的边</td><td>横竖屏</td></tr>
+<tr><td><code>fr</code></td><td>剩余空间</td><td>Grid</td></tr>
+<tr><td><code>clamp()</code></td><td>范围限定</td><td><code>clamp(min, ideal, max)</code></td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">html</span> { <span class="tok-prop">font-size</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>; }   <span class="tok-com">/* 1rem = 16px */</span>
+
+<span class="tok-sel">h1</span> { <span class="tok-prop">font-size</span>: <span class="tok-fn">clamp</span>(<span class="tok-val">1.5</span><span class="tok-unit">rem</span>, <span class="tok-val">5</span><span class="tok-unit">vw</span>, <span class="tok-val">3</span><span class="tok-unit">rem</span>); }
+<span class="tok-sel">.box</span> { <span class="tok-prop">width</span>: <span class="tok-fn">min</span>(<span class="tok-val">90%</span>, <span class="tok-val">1200</span><span class="tok-unit">px</span>); }
+
+<span class="tok-comment">/* 卡片响应式 */</span>
+<span class="tok-sel">.card</span> {
+    <span class="tok-prop">padding</span>: <span class="tok-fn">clamp</span>(<span class="tok-val">12</span><span class="tok-unit">px</span>, <span class="tok-val">3</span><span class="tok-unit">vw</span>, <span class="tok-val">24</span><span class="tok-unit">px</span>);
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 16 ========== -->
+<section id="s16">
+<h2 data-num="16">过渡 transition ⭐⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.btn</span> {
+    <span class="tok-prop">background</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">color</span>: <span class="tok-val">white</span>;
+    <span class="tok-prop">transition</span>: <span class="tok-prop">background</span> <span class="tok-val">0.3</span><span class="tok-unit">s</span> <span class="tok-val">ease</span>,
+                <span class="tok-prop">transform</span> <span class="tok-val">0.2</span><span class="tok-unit">s</span>;
+}
+
+<span class="tok-sel">.btn:hover</span> {
+    <span class="tok-prop">background</span>: <span class="tok-val">#1e4eba</span>;
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translateY</span>(<span class="tok-val">-2</span><span class="tok-unit">px</span>);
+}
+
+<span class="tok-sel">.btn:active</span> {
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translateY</span>(<span class="tok-val">0</span>);
+}</code></pre>
+</div>
+
+<h3>16.1 缓动函数</h3>
+<table>
+<tr><th>值</th><th>特点</th></tr>
+<tr><td><code>ease</code>（默认）</td><td>慢-快-慢</td></tr>
+<tr><td><code>linear</code></td><td>匀速</td></tr>
+<tr><td><code>ease-in</code></td><td>加速</td></tr>
+<tr><td><code>ease-out</code></td><td>减速</td></tr>
+<tr><td><code>ease-in-out</code></td><td>先加速再减速</td></tr>
+<tr><td><code>cubic-bezier(.4,0,.2,1)</code></td><td>Material 风格</td></tr>
+</table>
+</section>
+
+<!-- ========== 17 ========== -->
+<section id="s17">
+<h2 data-num="17">变换 transform ⭐⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.box</span> {
+    <span class="tok-comment">/* 平移 */</span>
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translate</span>(<span class="tok-val">20</span><span class="tok-unit">px</span>, <span class="tok-val">-10</span><span class="tok-unit">px</span>);
+
+    <span class="tok-comment">/* 旋转 */</span>
+    <span class="tok-prop">transform</span>: <span class="tok-fn">rotate</span>(<span class="tok-val">45</span><span class="tok-unit">deg</span>);
+
+    <span class="tok-comment">/* 缩放 */</span>
+    <span class="tok-prop">transform</span>: <span class="tok-fn">scale</span>(<span class="tok-val">1.2</span>);
+
+    <span class="tok-comment">/* 倾斜 */</span>
+    <span class="tok-prop">transform</span>: <span class="tok-fn">skew</span>(<span class="tok-val">10</span><span class="tok-unit">deg</span>, <span class="tok-val">0</span>);
+
+    <span class="tok-comment">/* 组合 */</span>
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translateX</span>(<span class="tok-val">50%</span>) <span class="tok-fn">rotate</span>(<span class="tok-val">45</span><span class="tok-unit">deg</span>) <span class="tok-fn">scale</span>(<span class="tok-val">1.1</span>);
+}
+
+<span class="tok-comment">/* 3D */</span>
+<span class="tok-sel">.card3d</span> {
+    <span class="tok-prop">transform-style</span>: <span class="tok-val">preserve-3d</span>;
+    <span class="tok-prop">perspective</span>: <span class="tok-val">1000</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">transform</span>: <span class="tok-fn">rotateY</span>(<span class="tok-val">180</span><span class="tok-unit">deg</span>);
+}</code></pre>
+</div>
+<div class="tip"><strong>提示：</strong><code>transform</code> 与 <code>position</code> 不同，<strong>不影响布局</strong>，适合做悬浮交互。</div>
+</section>
+
+<!-- ========== 18 ========== -->
+<section id="s18">
+<h2 data-num="18">动画 animation ⭐⭐⭐</h2>
+
+<h3>18.1 @keyframes 与 animation</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">@keyframes</span> <span class="tok-fn">spin</span> {
+    <span class="tok-key">from</span> { <span class="tok-prop">transform</span>: <span class="tok-fn">rotate</span>(<span class="tok-val">0</span>); }
+    <span class="tok-key">to</span>   { <span class="tok-prop">transform</span>: <span class="tok-fn">rotate</span>(<span class="tok-val">360</span><span class="tok-unit">deg</span>); }
+}
+
+<span class="tok-sel">.spinner</span> {
+    <span class="tok-prop">width</span>: <span class="tok-val">40</span><span class="tok-unit">px</span>; <span class="tok-prop">height</span>: <span class="tok-val">40</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">border</span>: <span class="tok-val">4</span><span class="tok-unit">px</span> solid <span class="tok-val">#d2deec</span>;
+    <span class="tok-prop">border-top-color</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">50%</span>;
+    <span class="tok-prop">animation</span>: <span class="tok-fn">spin</span> <span class="tok-val">1</span><span class="tok-unit">s</span> <span class="tok-val">linear</span> <span class="tok-val">infinite</span>;
+}
+
+<span class="tok-comment">/* 多个动画 */</span>
+<span class="tok-sel">.pulse</span> {
+    <span class="tok-prop">animation</span>: <span class="tok-fn">pulse</span> <span class="tok-val">2</span><span class="tok-unit">s</span> <span class="tok-val">ease-in-out</span> <span class="tok-val">infinite</span>,
+               <span class="tok-fn">glow</span>  <span class="tok-val">3</span><span class="tok-unit">s</span> <span class="tok-val">ease-in-out</span> <span class="tok-val">alternate infinite</span>;
+}</code></pre>
+</div>
+
+<h3>18.2 animation 简写 8 个属性</h3>
+<table>
+<tr><th>属性</th><th>作用</th></tr>
+<tr><td><code>animation-name</code></td><td>@keyframes 名</td></tr>
+<tr><td><code>animation-duration</code></td><td>持续时间</td></tr>
+<tr><td><code>animation-timing-function</code></td><td>缓动</td></tr>
+<tr><td><code>animation-delay</code></td><td>延迟</td></tr>
+<tr><td><code>animation-iteration-count</code></td><td>次数（infinite 无限）</td></tr>
+<tr><td><code>animation-direction</code></td><td>normal/alternate/reverse</td></tr>
+<tr><td><code>animation-fill-mode</code></td><td>forwards/backwards/both</td></tr>
+<tr><td><code>animation-play-state</code></td><td>running/paused</td></tr>
+</table>
+</section>
+
+<!-- ========== 19 ========== -->
+<section id="s19">
+<h2 data-num="19">CSS 变量（Custom Properties）⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">:root</span> {
+    <span class="tok-prop">--color-primary</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">--color-bg</span>:      <span class="tok-val">#fff</span>;
+    <span class="tok-prop">--radius</span>:        <span class="tok-val">8</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">--space</span>:         <span class="tok-fn">clamp</span>(<span class="tok-val">12</span><span class="tok-unit">px</span>, <span class="tok-val">3</span><span class="tok-unit">vw</span>, <span class="tok-val">24</span><span class="tok-unit">px</span>);
+}
+
+<span class="tok-sel">.btn</span> {
+    <span class="tok-prop">background</span>: <span class="tok-fn">var</span>(<span class="tok-val">--color-primary</span>);
+    <span class="tok-prop">border-radius</span>: <span class="tok-fn">var</span>(<span class="tok-val">--radius</span>);
+}
+
+<span class="tok-comment">/* 暗色模式 */</span>
+<span class="tok-sel">[data-theme="dark"]</span> {
+    <span class="tok-prop">--color-bg</span>:      <span class="tok-val">#1a1f2c</span>;
+    <span class="tok-prop">--color-primary</span>: <span class="tok-val">#5dade2</span>;
+}
+
+<span class="tok-sel">.card</span> {
+    <span class="tok-prop">background</span>: <span class="tok-fn">var</span>(<span class="tok-val">--color-bg</span>, <span class="tok-val">white</span>);   <span class="tok-com">/* 可设默认值 */</span>
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 20 ========== -->
+<section id="s20">
+<h2 data-num="20">现代 CSS 特性 ⭐⭐</h2>
+
+<h3>20.1 filter 滤镜</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">img</span> {
+    <span class="tok-prop">filter</span>: <span class="tok-fn">blur</span>(<span class="tok-val">5</span><span class="tok-unit">px</span>)          <span class="tok-com">/* 模糊 */</span>
+           <span class="tok-fn">grayscale</span>(<span class="tok-val">50%</span>)    <span class="tok-com">/* 灰度 */</span>
+           <span class="tok-fn">brightness</span>(<span class="tok-val">1.2</span>)    <span class="tok-com">/* 变亮 */</span>
+           <span class="tok-fn">sepia</span>(<span class="tok-val">80%</span>);       <span class="tok-com">/* 复古褐 */</span>
+}
+
+<span class="tok-sel">.glass</span> {
+    <span class="tok-prop">backdrop-filter</span>: <span class="tok-fn">blur</span>(<span class="tok-val">10</span><span class="tok-unit">px</span>) <span class="tok-fn">saturate</span>(<span class="tok-val">1.5</span>);   <span class="tok-com">/* 毛玻璃 */</span>
+    <span class="tok-prop">background</span>: <span class="tok-fn">rgba</span>(<span class="tok-val">255</span>,<span class="tok-val">255</span>,<span class="tok-val">255</span>,<span class="tok-val">0.5</span>);
+}</code></pre>
+</div>
+
+<h3>20.2 clip-path 裁剪</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.polygon</span>    { <span class="tok-prop">clip-path</span>: <span class="tok-fn">polygon</span>(<span class="tok-val">50%</span> <span class="tok-val">0</span>, <span class="tok-val">100%</span> <span class="tok-val">100%</span>, <span class="tok-val">0</span> <span class="tok-val">100%</span>); }
+<span class="tok-sel">.circle</span>     { <span class="tok-prop">clip-path</span>: <span class="tok-fn">circle</span>(<span class="tok-val">50%</span> <span class="tok-val">at</span> <span class="tok-val">50%</span> <span class="tok-val">50%</span>); }
+<span class="tok-sel">.parallelogram</span> { <span class="tok-prop">clip-path</span>: <span class="tok-fn">polygon</span>(<span class="tok-val">10%</span> <span class="tok-val">0</span>, <span class="tok-val">100%</span> <span class="tok-val">0</span>, <span class="tok-val">90%</span> <span class="tok-val">100%</span>, <span class="tok-val">0</span> <span class="tok-val">100%</span>); }</code></pre>
+</div>
+
+<h3>20.3 object-fit</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">img</span> {
+    <span class="tok-prop">width</span>: <span class="tok-val">100%</span>; <span class="tok-prop">height</span>: <span class="tok-val">200</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">object-fit</span>: <span class="tok-val">cover</span>;   <span class="tok-com">/* 与 background-size 类似 */</span>
+    <span class="tok-prop">object-position</span>: <span class="tok-val">center</span>;
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 21 ========== -->
+<section id="s21">
+<h2 data-num="21">表单与交互样式 ⭐⭐</h2>
+
+<h3>21.1 自定义 input</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">input[type="text"]</span> {
+    <span class="tok-prop">width</span>: <span class="tok-val">100%</span>;
+    <span class="tok-prop">padding</span>: <span class="tok-val">12</span><span class="tok-unit">px</span> <span class="tok-val">16</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">border</span>: <span class="tok-val">2</span><span class="tok-unit">px</span> solid <span class="tok-val">#d2deec</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">8</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">font-size</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">transition</span>: <span class="tok-prop">border-color</span> <span class="tok-val">0.2</span><span class="tok-unit">s</span>;
+}
+
+<span class="tok-sel">input[type="text"]:focus</span> {
+    <span class="tok-prop">outline</span>: <span class="tok-val">none</span>;
+    <span class="tok-prop">border-color</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">0</span> <span class="tok-val">0</span> <span class="tok-val">0</span> <span class="tok-val">3</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">41</span>,<span class="tok-val">101</span>,<span class="tok-val">241</span>,<span class="tok-val">.15</span>);
+}</code></pre>
+</div>
+
+<h3>21.2 卡片悬停</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.card</span> {
+    <span class="tok-prop">padding</span>: <span class="tok-val">24</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">12</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">0</span> <span class="tok-val">2</span><span class="tok-unit">px</span> <span class="tok-val">8</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.06</span>);
+    <span class="tok-prop">transition</span>: <span class="tok-prop">transform</span> <span class="tok-val">0.3</span><span class="tok-unit">s</span>, <span class="tok-prop">box-shadow</span> <span class="tok-val">0.3</span><span class="tok-unit">s</span>;
+}
+
+<span class="tok-sel">.card:hover</span> {
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translateY</span>(<span class="tok-val">-6</span><span class="tok-unit">px</span>);
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">0</span> <span class="tok-val">12</span><span class="tok-unit">px</span> <span class="tok-val">24</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.12</span>);
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 22 ========== -->
+<section id="s22">
+<h2 data-num="22">CSS 方法论 BEM ⭐</h2>
+
+<p>BEM = Block / Element / Modifier，是流行的 CSS 类名命名规范。</p>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;article</span> <span class="tok-attr">class</span>=<span class="tok-str">"card"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;img</span>     <span class="tok-attr">class</span>=<span class="tok-str">"card__img"</span> <span class="tok-attr">src</span>=<span class="tok-str">"x.jpg"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h3</span>      <span class="tok-attr">class</span>=<span class="tok-str">"card__title"</span><span class="tok-tag">&gt;</span>标题<span class="tok-tag">&lt;/h3&gt;</span>
+    <span class="tok-tag">&lt;p</span>       <span class="tok-attr">class</span>=<span class="tok-str">"card__desc"</span><span class="tok-tag">&gt;</span>描述<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;button</span>  <span class="tok-attr">class</span>=<span class="tok-str">"card__btn card__btn--primary"</span><span class="tok-tag">&gt;</span>行动<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span></code></pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.card</span>              { <span class="tok-comment">/* block */</span> }
+<span class="tok-sel">.card__img</span>        { <span class="tok-comment">/* element */</span> }
+<span class="tok-sel">.card__btn</span>        { <span class="tok-comment">/* element */</span> }
+<span class="tok-sel">.card__btn--primary</span>{ <span class="tok-comment">/* modifier */</span> }</code></pre>
+</div>
+
+<p>其他方法论：<code>OOCSS</code>、<code>SMACSS</code>、<code>Utility-first</code>（Tailwind）也可了解。</p>
+</section>
+
+<!-- ========== 23 ========== -->
+<section id="s23">
+<h2 data-num="23">项目一：响应式作品集 ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 1：响应式作品集页面</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>Grid + 响应式 + hover</span>
+</div>
+
+<h3>完整 CSS</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">@import</span> <span class="tok-fn">url</span>(<span class="tok-str">"https://fonts.googleapis.com/css?family=Inter:wght@400;700"</span>);
+
+<span class="tok-sel">:root</span> {
+    <span class="tok-prop">--primary</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">--bg</span>: <span class="tok-val">#f6f9ff</span>;
+    <span class="tok-prop">--shadow</span>: <span class="tok-val">0</span> <span class="tok-val">2</span><span class="tok-unit">px</span> <span class="tok-val">8</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.06</span>);
+}
+
+<span class="tok-sel">*</span> { <span class="tok-prop">box-sizing</span>: <span class="tok-val">border-box</span>; }
+
+<span class="tok-sel">body</span> {
+    <span class="tok-prop">margin</span>: <span class="tok-val">0</span>;
+    <span class="tok-prop">font-family</span>: <span class="tok-val">Inter</span>, sans-serif;
+    <span class="tok-prop">background</span>: <span class="tok-fn">var</span>(<span class="tok-val">--bg</span>);
+}
+
+<span class="tok-sel">.container</span> {
+    <span class="tok-prop">max-width</span>: <span class="tok-val">1100</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">margin</span>: <span class="tok-val">0</span> auto;
+    <span class="tok-prop">padding</span>: <span class="tok-fn">clamp</span>(<span class="tok-val">16</span><span class="tok-unit">px</span>, <span class="tok-val">4</span><span class="tok-unit">vw</span>, <span class="tok-val">40</span><span class="tok-unit">px</span>);
+}
+
+<span class="tok-sel">.hero</span> {
+    <span class="tok-prop">text-align</span>: <span class="tok-val">center</span>;
+    <span class="tok-prop">padding</span>: <span class="tok-val">80</span><span class="tok-unit">px</span> <span class="tok-val">20</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">background</span>: <span class="tok-fn">linear-gradient</span>(<span class="tok-val">135deg</span>, <span class="tok-val">#2965F1</span>, <span class="tok-val">#8e44ad</span>);
+    <span class="tok-prop">color</span>: <span class="tok-val">white</span>;
+}
+<span class="tok-sel">.hero h1</span> { <span class="tok-prop">font-size</span>: <span class="tok-fn">clamp</span>(<span class="tok-val">2</span><span class="tok-unit">rem</span>, <span class="tok-val">6</span><span class="tok-unit">vw</span>, <span class="tok-val">4</span><span class="tok-unit">rem</span>); <span class="tok-prop">margin-bottom</span>: <span class="tok-val">10</span><span class="tok-unit">px</span>; }
+
+<span class="tok-sel">.grid</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;
+    <span class="tok-prop">grid-template-columns</span>: <span class="tok-fn">repeat</span>(<span class="tok-val">auto-fit</span>, <span class="tok-fn">minmax</span>(<span class="tok-val">280</span><span class="tok-unit">px</span>, <span class="tok-val">1</span><span class="tok-unit">fr</span>));
+    <span class="tok-prop">gap</span>: <span class="tok-val">24</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">margin-top</span>: <span class="tok-val">50</span><span class="tok-unit">px</span>;
+}
+
+<span class="tok-sel">.card</span> {
+    <span class="tok-prop">background</span>: <span class="tok-val">white</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">12</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">overflow</span>: <span class="tok-val">hidden</span>;
+    <span class="tok-prop">box-shadow</span>: <span class="tok-fn">var</span>(<span class="tok-val">--shadow</span>);
+    <span class="tok-prop">transition</span>: <span class="tok-prop">transform</span> <span class="tok-val">0.3</span><span class="tok-unit">s</span>, <span class="tok-prop">box-shadow</span> <span class="tok-val">0.3</span><span class="tok-unit">s</span>;
+}
+<span class="tok-sel">.card:hover</span> {
+    <span class="tok-prop">transform</span>: <span class="tok-fn">translateY</span>(<span class="tok-val">-8</span><span class="tok-unit">px</span>);
+    <span class="tok-prop">box-shadow</span>: <span class="tok-val">0</span> <span class="tok-val">12</span><span class="tok-unit">px</span> <span class="tok-val">24</span><span class="tok-unit">px</span> <span class="tok-fn">rgba</span>(<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">0</span>,<span class="tok-val">.15</span>);
+}
+<span class="tok-sel">.card img</span> { <span class="tok-prop">width</span>: <span class="tok-val">100%</span>; <span class="tok-prop">height</span>: <span class="tok-val">200</span><span class="tok-unit">px</span>; <span class="tok-prop">object-fit</span>: <span class="tok-val">cover</span>; }
+<span class="tok-sel">.card-body</span> { <span class="tok-prop">padding</span>: <span class="tok-val">20</span><span class="tok-unit">px</span>; }
+
+<span class="tok-sel">.btn</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">inline-block</span>;
+    <span class="tok-prop">padding</span>: <span class="tok-val">10</span><span class="tok-unit">px</span> <span class="tok-val">20</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">background</span>: <span class="tok-fn">var</span>(<span class="tok-val">--primary</span>);
+    <span class="tok-prop">color</span>: <span class="tok-val">white</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">8</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">text-decoration</span>: <span class="tok-val">none</span>;
+    <span class="tok-prop">transition</span>: <span class="tok-prop">background</span> <span class="tok-val">0.2</span><span class="tok-unit">s</span>;
+}
+<span class="tok-sel">.btn:hover</span> { <span class="tok-prop">background</span>: <span class="tok-val">#1e4eba</span>; }</code></pre>
+</div>
+
+<h3>对应 HTML</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;section</span> <span class="tok-attr">class</span>=<span class="tok-str">"hero"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h1&gt;</span>我的作品集<span class="tok-tag">&lt;/h1&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>学生作品 · 课程项目 · 实验记录<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/section&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"container"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"grid"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;article</span> <span class="tok-attr">class</span>=<span class="tok-str">"card"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span>=<span class="tok-str">"p1.jpg"</span> <span class="tok-attr">alt</span>=<span class="tok-str">"作品 1"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"card-body"</span><span class="tok-tag">&gt;</span>
+                <span class="tok-tag">&lt;h3&gt;</span>项目一：计算器<span class="tok-tag">&lt;/h3&gt;</span>
+                <span class="tok-tag">&lt;p&gt;</span>用 HTML/CSS/JS 实现。<span class="tok-tag">&lt;/p&gt;</span>
+                <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-str">"#"</span> <span class="tok-attr">class</span>=<span class="tok-str">"btn"</span><span class="tok-tag">&gt;</span>查看<span class="tok-tag">&lt;/a&gt;</span>
+            <span class="tok-tag">&lt;/div&gt;</span>
+        <span class="tok-tag">&lt;/article&gt;</span>
+        <span class="tok-com">…更多卡片…</span>
+    <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 24 ========== -->
+<section id="s24">
+<h2 data-num="24">项目二：交互动效卡片 ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 2：3D 翻转 + 加载动画</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>综合：transform / animation / Flex</span>
+</div>
+
+<h3>3D 翻转卡片</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-sel">.flip-card</span> {
+    <span class="tok-prop">width</span>: <span class="tok-val">300</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">height</span>: <span class="tok-val">200</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">perspective</span>: <span class="tok-val">1000</span><span class="tok-unit">px</span>;
+}
+
+<span class="tok-sel">.flip-inner</span> {
+    <span class="tok-prop">position</span>: <span class="tok-val">relative</span>;
+    <span class="tok-prop">width</span>: <span class="tok-val">100%</span>; <span class="tok-prop">height</span>: <span class="tok-val">100%</span>;
+    <span class="tok-prop">transition</span>: <span class="tok-prop">transform</span> <span class="tok-val">0.8</span><span class="tok-unit">s</span>;
+    <span class="tok-prop">transform-style</span>: <span class="tok-val">preserve-3d</span>;
+}
+
+<span class="tok-sel">.flip-card:hover .flip-inner</span> {
+    <span class="tok-prop">transform</span>: <span class="tok-fn">rotateY</span>(<span class="tok-val">180</span><span class="tok-unit">deg</span>);
+}
+
+<span class="tok-sel">.flip-front</span>, <span class="tok-sel">.flip-back</span> {
+    <span class="tok-prop">position</span>: <span class="tok-val">absolute</span>;
+    <span class="tok-prop">inset</span>: <span class="tok-val">0</span>;
+    <span class="tok-prop">backface-visibility</span>: <span class="tok-val">hidden</span>;
+    <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;
+    <span class="tok-prop">align-items</span>: <span class="tok-val">center</span>;
+    <span class="tok-prop">justify-content</span>: <span class="tok-val">center</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">12</span><span class="tok-unit">px</span>;
+}
+
+<span class="tok-sel">.flip-front</span> { <span class="tok-prop">background</span>: <span class="tok-val">#2965F1</span>; <span class="tok-prop">color</span>: <span class="tok-val">white</span>; }
+<span class="tok-sel">.flip-back</span>  { <span class="tok-prop">background</span>: <span class="tok-val">#8e44ad</span>; <span class="tok-prop">color</span>: <span class="tok-val">white</span>; <span class="tok-prop">transform</span>: <span class="tok-fn">rotateY</span>(<span class="tok-val">180</span><span class="tok-unit">deg</span>); }</code></pre>
+</div>
+
+<h3>Loading 加载动画</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">CSS</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">@keyframes</span> <span class="tok-fn">bounce</span> {
+    <span class="tok-val">0%, 80%, 100%</span> { <span class="tok-prop">transform</span>: <span class="tok-fn">scale</span>(<span class="tok-val">0</span>); }
+    <span class="tok-val">40%</span>            { <span class="tok-prop">transform</span>: <span class="tok-fn">scale</span>(<span class="tok-val">1</span>); }
+}
+
+<span class="tok-sel">.loader</span> {
+    <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;
+    <span class="tok-prop">gap</span>: <span class="tok-val">8</span><span class="tok-unit">px</span>;
+}
+<span class="tok-sel">.loader &gt; div</span> {
+    <span class="tok-prop">width</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>; <span class="tok-prop">height</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>;
+    <span class="tok-prop">background</span>: <span class="tok-val">#2965F1</span>;
+    <span class="tok-prop">border-radius</span>: <span class="tok-val">50%</span>;
+    <span class="tok-prop">animation</span>: <span class="tok-fn">bounce</span> <span class="tok-val">1.4</span><span class="tok-unit">s</span> <span class="tok-val">ease-in-out</span> <span class="tok-val">infinite</span>;
+}
+<span class="tok-sel">.loader &gt; div:nth-child(2)</span> { <span class="tok-prop">animation-delay</span>: <span class="tok-val">0.16</span><span class="tok-unit">s</span>; }
+<span class="tok-sel">.loader &gt; div:nth-child(3)</span> { <span class="tok-prop">animation-delay</span>: <span class="tok-val">0.32</span><span class="tok-unit">s</span>; }</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 25 ========== -->
+<section id="s25">
+<h2 data-num="25">CSS 速查手册 + 课堂训练</h2>
+
+<h3>25.1 CSS 属性速查</h3>
+<div class="cheat-grid">
+
+<div class="cheat-cell">
+<h4>文字 / 字体</h4>
+<ul>
+<li><code>font-family</code></li>
+<li><code>font-size / weight / style</code></li>
+<li><code>line-height</code></li>
+<li><code>letter-spacing</code></li>
+<li><code>text-align / indent</code></li>
+<li><code>color</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>盒模型</h4>
+<ul>
+<li><code>width / height</code></li>
+<li><code>padding / margin</code></li>
+<li><code>border</code></li>
+<li><code>border-radius</code></li>
+<li><code>box-sizing</code></li>
+<li><code>box-shadow</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>背景</h4>
+<ul>
+<li><code>background-color</code></li>
+<li><code>background-image</code></li>
+<li><code>background-repeat</code></li>
+<li><code>background-position</code></li>
+<li><code>background-size: cover</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>布局</h4>
+<ul>
+<li><code>display</code> (block, flex, grid)</li>
+<li><code>position</code></li>
+<li><code>top / left / right / bottom</code></li>
+<li><code>flex-direction / wrap</code></li>
+<li><code>justify-content / align-items</code></li>
+<li><code>grid-template-columns</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>变换 & 动画</h4>
+<ul>
+<li><code>transform</code></li>
+<li><code>transition</code></li>
+<li><code>animation / @keyframes</code></li>
+<li><code>will-change</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>响应式</h4>
+<ul>
+<li><code>@media (max/min-width)</code></li>
+<li><code>vw / vh / vmin / vmax</code></li>
+<li><code>rem / em</code></li>
+<li><code>clamp(min, ideal, max)</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>现代</h4>
+<ul>
+<li><code>filter / backdrop-filter</code></li>
+<li><code>clip-path</code></li>
+<li><code>object-fit</code></li>
+<li><code>aspect-ratio</code></li>
+<li><code>--variable (变量)</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>交互</h4>
+<ul>
+<li><code>:hover / focus / active</code></li>
+<li><code>cursor</code></li>
+<li><code>pointer-events</code></li>
+<li><code>scroll-behavior: smooth</code></li>
+</ul>
+</div>
+
+</div>
+
+<h3>25.2 课堂训练（10 题）</h3>
+
+<div class="q-card" data-answer="B" id="q1">
+<div class="q-title">Q1. 想让两个并排子元素等分父容器宽度，最适合的方式？</div>
+<ol>
+<li data-idx="A">A. table + table-cell</li>
+<li data-idx="B">B. flex + flex:1</li>
+<li data-idx="C">C. float: left</li>
+<li data-idx="D">D. position: absolute</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>Flex 是当代主流方案；float 已过时，absolute 不参与父高度。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q2">
+<div class="q-title">Q2. width: 200px; padding: 20px; border: 5px; box-sizing: border-box; 最终元素总宽度？</div>
+<ol>
+<li data-idx="A">A. 250px</li>
+<li data-idx="B">B. 230px</li>
+<li data-idx="C">C. 200px</li>
+<li data-idx="D">D. 220px</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>box-sizing: border-box 时 width 包含 padding+border。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q3">
+<div class="q-title">Q3. 关于 position: absolute 描述，正确的是？</div>
+<ol>
+<li data-idx="A">A. 相对视口定位</li>
+<li data-idx="B">B. 相对 body 定位</li>
+<li data-idx="C">C. 占原位置</li>
+<li data-idx="D">D. 相对最近的 positioned 祖先</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>absolute 相对最近的 position 非 static 祖先，自身不占位。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q4">
+<div class="q-title">Q4. 水平垂直居中一个元素，写法？</div>
+<ol>
+<li data-idx="A">A. margin: center</li>
+<li data-idx="B">B. parent { display: flex; justify-content: center; align-items: center }</li>
+<li data-idx="C">C. text-align: center</li>
+<li data-idx="D">D. position: center</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>Flex 一行搞定，是现代首选。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q5">
+<div class="q-title">Q5. Grid 中 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) 的含义？</div>
+<ol>
+<li data-idx="A">A. 强制 3 列</li>
+<li data-idx="B">B. 列宽固定 200px</li>
+<li data-idx="C">C. 自适应列数，每列最小 200px、均分剩余空间</li>
+<li data-idx="D">D. 单列布局</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>auto-fill + minmax 是经典响应式网格写法。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q6">
+<div class="q-title">Q6. @media (prefers-color-scheme: dark) 用于？</div>
+<ol>
+<li data-idx="A">A. 暗色模式</li>
+<li data-idx="B">B. 减少动效</li>
+<li data-idx="C">C. 横屏</li>
+<li data-idx="D">D. 触屏</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>prefers-color-scheme 切换深浅色，主流 OS 已支持。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q7">
+<div class="q-title">Q7. 想做动画"鼠标悬停时用 transition 平滑过渡"，哪个写法正确？</div>
+<ol>
+<li data-idx="A">A. 写 @keyframes 然后 animation</li>
+<li data-idx="B">B. 写 transform: hover</li>
+<li data-idx="C">C. 在 :hover 内加 transition</li>
+<li data-idx="D">D. 在基类加 transition 属性，:hover 修改属性值</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>transition 加在「原始状态」而非 hover；hover 只改值。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q8">
+<div class="q-title">Q8. --primary: #2965F1; 这种写法是？</div>
+<ol>
+<li data-idx="A">A. SCSS 变量</li>
+<li data-idx="B">B. CSS Custom Property（CSS 变量）</li>
+<li data-idx="C">C. Less 变量</li>
+<li data-idx="D">D. JS 变量</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>原生 CSS 变量，用 var(--primary) 引用。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q9">
+<div class="q-title">Q9. 让图片填充容器且不拉伸，用？</div>
+<ol>
+<li data-idx="A">A. width: 100%</li>
+<li data-idx="B">B. background-size: cover</li>
+<li data-idx="C">C. object-fit: cover</li>
+<li data-idx="D">D. 强制设置高度</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>&lt;img&gt; 用 object-fit；CSS 背景图用 background-size。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q10">
+<div class="q-title">Q10. 想让页面在手机、平板、PC 都能看，应该？</div>
+<ol>
+<li data-idx="A">A. 媒体查询 + 相对单位（rem/%/vw）+ Flex/Grid</li>
+<li data-idx="B">B. 写 3 个 HTML 文件</li>
+<li data-idx="C">C. 用 JS 检测设备</li>
+<li data-idx="D">D. 缩小一切</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>响应式设计的三大要素。</div>
+</div>
+
+</section>
+
+<!-- ========== 结束语 ========== -->
+<section id="end">
+<h2 data-num="完">写在最后：CSS 是 Web 的画笔</h2>
+
+<div class="card success">
+<div class="card-title">🎓 与本系列衔接</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--accent);font-weight:700">HTML</span>     → 骨架（语义、文档、表单）
+<span style="color:var(--accent);font-weight:700">CSS</span>      → 皮肤（颜色、布局、响应式、动画）
+<span style="color:var(--accent);font-weight:700">JavaScript</span>→ 行为（DOM、事件、异步）
+<span style="color:var(--accent);font-weight:700">Vue</span>      → 框架（组件化、响应式数据）
+</pre>
+</div>
+<p>掌握 CSS 后，再学 Vue 会发现：组件 scoped 样式和动态 class 绑定会非常重要。</p>
+<div class="tip"><strong>练习建议：</strong>把博客、官网、个人主页的样式全部用纯 CSS 重写一遍练手。</div>
+</section>
+
+</main>
+
+<button id="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+const bar = document.getElementById('progress-bar');
+function updateProgress(){
+    const sc = window.scrollY;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh > 0 ? (sc / sh) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', updateProgress);
+
+const toTop = document.getElementById('to-top');
+window.addEventListener('scroll', () =&gt; {
+    toTop.style.display = window.scrollY &gt; 400 ? 'flex' : 'none';
+});
+
+const navLinks = document.querySelectorAll('.topnav a.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () =&gt; {
+    let cur = '';
+    sections.forEach(s =&gt; {
+        if (window.scrollY &gt;= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a =&gt; {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+});
+
+function cp(btn){
+    const code = btn.closest('.codebox').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() =&gt; {
+        const old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() =&gt; btn.textContent = old, 1200);
+    });
+}
+window.cp = cp;
+
+document.querySelectorAll('.q-card').forEach(card =&gt; {
+    const ans = card.dataset.answer;
+    card.querySelectorAll('ol li').forEach(li =&gt; {
+        li.addEventListener('click', () =&gt; {
+            if (card.dataset.done) return;
+            const pick = li.dataset.idx;
+            if (pick === ans) li.classList.add('correct');
+            else {
+                li.classList.add('wrong');
+                card.querySelector(`[data-idx="${ans}"]`)?.classList.add('correct');
+            }
+            card.querySelector('.q-explain').classList.add('show');
+            card.dataset.done = '1';
+        });
+    });
+});
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--text-mute);border-top:1px solid var(--border)">
+  CSS 程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--primary)">返回导航首页</a>
+</footer>
+
+@media print{
+  .topnav,#progress-bar,#to-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important}
+  .hero h1{color:#000!important;text-shadow:none!important}
+  .hero p,.hero .meta{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  .codebox{background:#f5f5f5!important;color:#000!important}
+}
+</script>
+</body>
+</html>

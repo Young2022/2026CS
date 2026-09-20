@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2章 数据操作 · Data Manipulation — 计算机科学概论</title>
+<style>
+:root{
+  --primary:#203D74; --secondary:#2C477A; --accent:#49B7D0; --accent-deep:#2e93ac;
+  --red:#E94B3B; --orange:#FD9F66; --green:#3BAA6C;
+  --ink:#1c2740; --muted:#5d6880; --line:#D9DEE7; --soft:#F0F6FA; --soft2:#E4EDF5;
+  --paper:#ffffff; --code-bg:#16213a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;color:var(--ink);background:var(--paper);line-height:1.75;font-size:16px}
+h1,h2,h3,h4{font-weight:700;line-height:1.35}
+.mono{font-family:"SF Mono",Consolas,"Courier New",monospace}
+.wrap{max-width:980px;margin:0 auto;padding:0 28px}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:620px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#16294f 0%,#203D74 55%,#2C477A 100%);color:#fff;overflow:hidden}
+#bits{position:absolute;inset:0;opacity:.5}
+.hero-inner{position:relative;z-index:2;text-align:center;padding:60px 28px}
+.hero-eyebrow{font-size:13px;letter-spacing:.35em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:52px;letter-spacing:.04em}
+.hero h1 .en{display:block;font-size:20px;font-weight:400;color:#9db4d8;letter-spacing:.28em;margin-top:10px}
+.hero-sub{margin-top:26px;font-size:17px;color:#cfdcf0}
+.hero-tags{margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero-tags span{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:4px 16px;font-size:12.5px;color:#dbe7f7}
+.hero-book{margin-top:34px;font-size:12px;color:#8aa2c6;letter-spacing:.08em}
+
+/* ===== NAV ===== */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav a{white-space:nowrap;font-size:13.5px;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;transition:.2s}
+.nav a:hover{background:var(--soft);color:var(--primary)}
+.nav a.hot{color:var(--primary);font-weight:600}
+
+/* ===== SECTION ===== */
+.sec{padding:64px 0 8px}
+.sec-head{display:flex;align-items:baseline;gap:18px;border-bottom:3px solid var(--primary);padding-bottom:14px;margin-bottom:30px}
+.sec-num{font-size:38px;font-weight:800;color:var(--accent);font-family:Consolas,monospace}
+.sec-title{font-size:30px}
+.sec-title .en{display:block;font-size:14px;font-weight:400;color:var(--muted);letter-spacing:.18em;margin-top:4px;text-transform:uppercase}
+h3.blk{font-size:19px;margin:34px 0 14px;padding-left:12px;border-left:4px solid var(--accent);line-height:1.4}
+h3.blk .en{color:var(--muted);font-size:13px;font-weight:400;margin-left:8px}
+p.lead{color:#33405c}
+p+p{margin-top:10px}
+strong{color:var(--primary)}
+
+/* concept cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:18px 0}
+.card{background:var(--soft);border:1px solid var(--soft2);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.card .t-en{font-size:13px;color:var(--accent-deep);letter-spacing:.06em;font-weight:700;text-transform:uppercase}
+.card .t-cn{font-size:17.5px;font-weight:700;color:var(--primary);margin:2px 0 8px}
+.card .t-ex{margin-top:10px;font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:8px;padding:8px 12px}
+.card .t-ex b{color:var(--accent-deep)}
+.card p{font-size:14.5px}
+
+/* tables */
+table.tb{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px}
+table.tb th{background:var(--primary);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
+table.tb td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.tb tr:nth-child(even) td{background:#f7fafd}
+table.tb .mono{color:var(--accent-deep);font-weight:600}
+table.tb.center td,table.tb.center th{text-align:center}
+
+/* summary box */
+.sumbox{margin:36px 0 8px;background:linear-gradient(135deg,#F0F6FA,#EAF3F9);border:1px solid var(--soft2);border-left:5px solid var(--accent);border-radius:12px;padding:20px 24px}
+.sumbox .lbl{font-size:13px;font-weight:800;color:var(--accent-deep);letter-spacing:.25em}
+.sumbox ul{margin:10px 0 0 20px;font-size:14.5px}
+.sumbox li{margin:4px 0}
+
+/* example callout */
+.exbox{background:#fffdf6;border:1px solid #f3e3bd;border-left:5px solid var(--orange);border-radius:10px;padding:14px 20px;margin:16px 0;font-size:14.5px}
+.exbox .lbl{font-weight:800;color:#c07b2d;font-size:13px;letter-spacing:.15em}
+
+/* code */
+pre.code{background:var(--code-bg);color:#dbe6f5;border-radius:12px;padding:18px 22px;font-family:Consolas,"SF Mono",monospace;font-size:14px;line-height:1.7;overflow-x:auto;margin:14px 0}
+pre.code .cm{color:#6f83ad}
+pre.code .kw{color:#7fd1e8}
+pre.code .st{color:#ffd58a}
+pre.code .fn{color:#9fe8b8}
+pre.code .out{color:#8a9cc0}
+pre.code .err{color:#ff8d7e}
+
+/* figure frame */
+.fig{background:#fbfdff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:20px 0;text-align:center}
+.fig .cap{font-size:13px;color:var(--muted);margin-top:12px}
+svg text{font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+
+/* quiz */
+.quiz{margin:38px 0 12px}
+.quiz-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.quiz-head .tag{background:var(--primary);color:#fff;font-size:12px;letter-spacing:.2em;padding:4px 12px;border-radius:6px}
+.quiz-head .tt{font-size:17px;font-weight:700;color:var(--primary)}
+.q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:14px 0}
+.q .qt{font-weight:600;margin-bottom:12px}
+.q .qt .qn{display:inline-block;background:var(--soft);color:var(--primary);font-family:Consolas,monospace;font-weight:700;font-size:13px;border-radius:6px;padding:1px 9px;margin-right:8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:9px;padding:9px 14px;cursor:pointer;font-size:14.5px;transition:.15s;background:#fff;user-select:none}
+.opt:hover{border-color:var(--accent);background:var(--soft)}
+.opt .k{width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:var(--soft);color:var(--primary);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.opt.right{border-color:var(--green);background:#eef9f2}
+.opt.right .k{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:#fdf0ee}
+.opt.wrong .k{background:var(--red);color:#fff}
+.q .why{display:none;margin-top:12px;font-size:13.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:9px 14px}
+.q .why b{color:var(--green)}
+.q.done .why{display:block}
+
+/* answer key */
+.akey{background:linear-gradient(135deg,#16294f,#203D74);border-radius:16px;color:#fff;padding:34px 36px;margin:26px 0}
+.akey h3{font-size:22px;margin-bottom:4px}
+.akey .en{color:#9db4d8;font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+.akey table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}
+.akey th{color:var(--accent);text-align:left;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.25)}
+.akey td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.12);color:#dbe6f5;vertical-align:top}
+.akey .ans{display:inline-block;background:var(--accent);color:#0e2a3a;font-weight:800;border-radius:6px;padding:0 10px}
+.akey .fast{margin-top:16px;font-family:Consolas,monospace;letter-spacing:.14em;color:var(--accent);font-size:15px}
+
+/* pipeline anim */
+.pipe-stage{display:inline-block}
+
+/* reveal */
+.rv{transition:opacity .7s ease,transform .7s ease}
+
+footer{margin-top:70px;background:#16213a;color:#8fa3c8;padding:34px 0;font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.toc{background:var(--soft);border-radius:14px;padding:24px 28px;margin:34px 0}
+.toc ol{margin-left:22px;font-size:15px}
+.toc a{color:var(--primary);text-decoration:none}
+.toc a:hover{color:var(--accent-deep);text-decoration:underline}
+.backtop{position:fixed;right:26px;bottom:26px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:18px;cursor:pointer;opacity:0;pointer-events:none;transition:.3s;box-shadow:0 6px 18px rgba(32,61,116,.35);z-index:60}
+.backtop.show{opacity:1;pointer-events:auto}
+@media(max-width:640px){.hero h1{font-size:36px}.sec-title{font-size:24px}.wrap{padding:0 18px}}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <canvas id="bits"></canvas>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Computer Science · An Overview · Chapter 2</div>
+    <h1>数据操作<span class="en">DATA MANIPULATION</span></h1>
+    <p class="hero-sub">位模式如何被“动起来”——CPU、机器语言与程序执行的秘密</p>
+    <div class="hero-tags">
+      <span>计算机体系结构</span><span>机器语言</span><span>程序执行</span><span>算术/逻辑指令</span><span>设备通信</span><span>Python 实践</span><span>并行体系结构</span>
+    </div>
+    <p class="hero-book">《计算机科学概论》（第 13 版） J. Glenn Brookshear ｜ 大学一年级 · 教学配套网页</p>
+  </div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top">封面</a>
+    <a href="#map">学习地图</a>
+    <a href="#s21">2.1 体系结构</a>
+    <a href="#s22">2.2 机器语言</a>
+    <a href="#s23">2.3 程序执行</a>
+    <a href="#s24">2.4 算术/逻辑</a>
+    <a href="#s25">2.5 设备通信</a>
+    <a href="#s26">2.6 Python 实践</a>
+    <a href="#s27">2.7 其他体系结构</a>
+    <a href="#answers">参考答案</a>
+    <a href="#glossary">术语表</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ MAP ============ -->
+<section class="sec rv" id="map">
+  <div class="sec-head">
+    <div class="sec-num">MAP</div>
+    <h2 class="sec-title">本章学习地图<span class="en">Learning Map</span></h2>
+  </div>
+  <div class="toc">
+    <ol>
+      <li><a href="#s21"><b>2.1 计算机体系结构</b>——CPU 由哪三部分组成？程序存放在哪里？</a></li>
+      <li><a href="#s22"><b>2.2 机器语言</b>——CPU 能“听懂”的唯一语言长什么样？</a></li>
+      <li><a href="#s23"><b>2.3 程序执行</b>——取指 → 译码 → 执行，机器周期如何循环？</a></li>
+      <li><a href="#s24"><b>2.4 算术/逻辑指令</b>——位运算与移位能玩出什么花样？</a></li>
+      <li><a href="#s25"><b>2.5 与其他设备的通信</b>——数据如何进出计算机？</a></li>
+      <li><a href="#s26"><b>2.6 用 Python 操作数据</b>——亲手写代码实现位操作</a></li>
+      <li><a href="#s27"><b>2.7 其他体系结构</b>——怎样让计算机更快？流水线与并行</a></li>
+    </ol>
+  </div>
+  <table class="tb">
+    <tr><th style="width:32%">核心问题</th><th style="width:20%">对应小节</th><th>你将得到的关键结论</th></tr>
+    <tr><td>计算机内部由什么构成？</td><td>2.1</td><td>CPU = 运算器 + 控制器 + 寄存器组，经总线与主存交换数据</td></tr>
+    <tr><td>程序如何被表示？</td><td>2.2</td><td>指令 = 操作码 + 操作数；机器语言是 CPU 的母语</td></tr>
+    <tr><td>程序如何被执行？</td><td>2.3</td><td>机器周期：取指 → 译码 → 执行，周而复始</td></tr>
+    <tr><td>数据如何被加工？</td><td>2.4</td><td>按位运算 + 移位，是位模式的“手术刀”</td></tr>
+    <tr><td>数据如何进出主机？</td><td>2.5</td><td>控制器、端口、DMA 与握手协议</td></tr>
+    <tr><td>如何动手实践？</td><td>2.6</td><td>用 Python 的 0b 字面量与 &amp; | ^ 直接操作位</td></tr>
+    <tr><td>还能更快吗？</td><td>2.7</td><td>流水线与多核并行：吞吐率 ≠ 单任务速度</td></tr>
+  </table>
+</section>
+<!-- ============ 2.1 ============ -->
+<section class="sec rv" id="s21">
+  <div class="sec-head">
+    <div class="sec-num">2.1</div>
+    <h2 class="sec-title">计算机体系结构<span class="en">Computer Architecture</span></h2>
+  </div>
+
+  <p class="lead">操纵数据的设备是 <strong>中央处理器</strong>（<strong>CPU</strong>, Central Processing Unit），它由三部分组成：<strong>运算器</strong>、<strong>控制器</strong>和<strong>寄存器组</strong>。CPU 通过<strong>总线</strong>与主存储器相连，程序与数据都存放在主存中。</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Arithmetic/Logic Unit · ALU</div>
+      <div class="t-cn">运算器（算术/逻辑单元）</div>
+      <p>执行<b>算术运算</b>（加、减）与<b>逻辑运算</b>（AND、OR、XOR），并对数据进行移位的电路部件。</p>
+      <div class="t-ex"><b>例子：</b>计算两数之和时，实际执行“加法”这一步的正是 ALU。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Control Unit</div>
+      <div class="t-cn">控制器</div>
+      <p>整机运行的“指挥”：从主存<b>取指令</b>、<b>译码</b>，再向其他部件发出控制信号，协调各部件步调一致。</p>
+      <div class="t-ex"><b>例子：</b>像交通警察，自己不搬货，只发号施令、维持秩序。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Register Unit</div>
+      <div class="t-cn">寄存器组</div>
+      <p>CPU 内部的高速临时存储单元。分<b>通用寄存器</b>（general-purpose，暂存正在加工的数据）和<b>专用寄存器</b>（special-purpose，如 IR、PC）。</p>
+      <div class="t-ex"><b>例子：</b>厨师手边的案板——正在切的菜（数据）先放在案板上，而不是每次回仓库取。</div>
+    </div>
+  </div>
+
+  <!-- CPU 结构动画 -->
+  <div class="fig">
+    <svg viewBox="0 0 760 330" width="100%" style="max-width:720px" aria-label="CPU结构图">
+      <defs>
+        <style>
+          .box{fill:#F0F6FA;stroke:#203D74;stroke-width:2;rx:10}
+          .busline{stroke:#49B7D0;stroke-width:4;fill:none}
+          .flow{stroke:#FD9F66;stroke-width:4;fill:none;stroke-dasharray:14 46;animation:dash 1.2s linear infinite}
+          @keyframes dash{to{stroke-dashoffset:-60}}
+        </style>
+      </defs>
+      <!-- CPU 外框 -->
+      <rect x="40" y="30" width="440" height="270" rx="16" fill="#fbfdff" stroke="#203D74" stroke-width="2.5" stroke-dasharray="8 5"/>
+      <text x="60" y="58" font-size="16" font-weight="700" fill="#203D74">CPU 中央处理器</text>
+      <!-- ALU -->
+      <rect class="box" x="70" y="80" width="180" height="80" rx="10"/>
+      <text x="160" y="114" font-size="15" font-weight="700" fill="#203D74" text-anchor="middle">运算器 ALU</text>
+      <text x="160" y="136" font-size="11.5" fill="#5d6880" text-anchor="middle">算术 / 逻辑运算</text>
+      <!-- Control -->
+      <rect class="box" x="270" y="80" width="180" height="80" rx="10"/>
+      <text x="360" y="114" font-size="15" font-weight="700" fill="#203D74" text-anchor="middle">控制器</text>
+      <text x="360" y="136" font-size="11.5" fill="#5d6880" text-anchor="middle">Control Unit · 指挥协调</text>
+      <!-- Registers -->
+      <rect class="box" x="70" y="190" width="380" height="70" rx="10"/>
+      <text x="260" y="216" font-size="15" font-weight="700" fill="#203D74" text-anchor="middle">寄存器组 Register Unit</text>
+      <text x="260" y="238" font-size="11.5" fill="#5d6880" text-anchor="middle">通用寄存器 + 专用寄存器（IR / PC）</text>
+      <!-- 内部连线 -->
+      <line x1="160" y1="160" x2="160" y2="190" class="busline" opacity=".5"/>
+      <line x1="360" y1="160" x2="360" y2="190" class="busline" opacity=".5"/>
+      <!-- 主存 -->
+      <rect x="560" y="60" width="160" height="210" rx="12" fill="#203D74"/>
+      <text x="640" y="100" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">主存储器</text>
+      <text x="640" y="122" font-size="11.5" fill="#9db4d8" text-anchor="middle">Main Memory</text>
+      <g font-size="11" fill="#cfdcf0">
+        <rect x="580" y="140" width="120" height="22" rx="4" fill="#2C477A"/><text x="640" y="155" text-anchor="middle">指令（程序）</text>
+        <rect x="580" y="170" width="120" height="22" rx="4" fill="#2C477A"/><text x="640" y="185" text-anchor="middle">数据</text>
+        <rect x="580" y="200" width="120" height="22" rx="4" fill="#2C477A"/><text x="640" y="215" text-anchor="middle">…</text>
+      </g>
+      <!-- 总线 -->
+      <line x1="480" y1="165" x2="560" y2="165" class="busline"/>
+      <line x1="480" y1="165" x2="560" y2="165" class="flow"/>
+      <text x="520" y="150" font-size="13" font-weight="700" fill="#2e93ac" text-anchor="middle">总线 Bus</text>
+      <text x="520" y="192" font-size="11" fill="#5d6880" text-anchor="middle">位模式双向传输</text>
+    </svg>
+    <div class="cap">图 2-1 ｜ CPU 通过总线与主存相连：寄存器组暂存数据，控制器指挥，ALU 执行运算（动画示意数据流动）</div>
+  </div>
+
+  <h3 class="blk">一次加法的完整旅程<span class="en">Example: Adding Two Values</span></h3>
+  <p>“把主存中两个数相加、结果存回主存”，CPU 要走 5 步，恰好体现三大部件的分工：</p>
+  <table class="tb">
+    <tr><th style="width:8%">步骤</th><th style="width:38%">动作</th><th>由谁完成</th></tr>
+    <tr><td>①</td><td>从主存取一个数到寄存器（LOAD）</td><td>控制器发令，总线搬运</td></tr>
+    <tr><td>②</td><td>从主存取另一个数到另一个寄存器（LOAD）</td><td>控制器发令，总线搬运</td></tr>
+    <tr><td>③</td><td>让 ALU 把两个寄存器的值相加，结果放寄存器</td><td><span class="mono" style="color:var(--accent-deep);font-weight:600">ALU 运算器</span></td></tr>
+    <tr><td>④</td><td>把结果从寄存器存回主存（STORE）</td><td>控制器发令，总线搬运</td></tr>
+    <tr><td>⑤</td><td>停止（HALT）</td><td>控制器</td></tr>
+  </table>
+
+  <h3 class="blk">存储程序概念<span class="en">Stored-program Concept</span></h3>
+  <div class="cards" style="grid-template-columns:1fr">
+    <div class="card">
+      <div class="t-en">Stored-program Concept</div>
+      <div class="t-cn">存储程序概念</div>
+      <p>把<b>程序像数据一样</b>编码成位模式、存入主存储器；CPU 从主存中取出指令并执行。计算机因此只需改写主存内容就能改变功能，而不必重新布线。</p>
+      <div class="t-ex"><b>例子：</b>同一台电脑上午写作文、下午打游戏——硬件没变，只是主存里装进了不同的程序。这一思想源自冯·诺依曼（von Neumann），是现代计算机的基石。</div>
+    </div>
+  </div>
+
+  <h3 class="blk">缓存与存储层次<span class="en">Cache &amp; Memory Hierarchy</span></h3>
+  <p>CPU 速度远高于主存，因此设置<strong>高速缓存</strong>（<strong>cache</strong>）：CPU 把即将用到的数据<b>预先复制</b>到 cache 中，读写优先命中 cache，大大减少等待。</p>
+  <table class="tb">
+    <tr><th>层次</th><th>速度</th><th>容量</th><th>类比</th></tr>
+    <tr><td>寄存器 Registers</td><td>最快</td><td>极小</td><td>手里的笔</td></tr>
+    <tr><td>高速缓存 Cache</td><td>很快</td><td>小</td><td>办公桌抽屉</td></tr>
+    <tr><td>主存储器 Main memory</td><td>较慢</td><td>较大（GB 级）</td><td>书房书架</td></tr>
+    <tr><td>外存（磁盘/固态盘）</td><td>慢</td><td>巨大（TB 级）</td><td>图书馆仓库</td></tr>
+  </table>
+  <p style="font-size:14px;color:var(--muted)">补充阅读：维基百科 “Memory hierarchy（存储器层次结构）” 词条对本图有详尽展开。CPU 做在单块芯片上时称为<strong>微处理器</strong>（microprocessor），它插在<strong>主板</strong>（motherboard）上。</p>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.1 SUMMARY</div>
+    <ul>
+      <li>CPU 三件套：<b>运算器 ALU</b>（算）＋<b>控制器</b>（指挥）＋<b>寄存器组</b>（暂存）。</li>
+      <li>CPU 通过<b>总线 bus</b> 与主存交换位模式；通用寄存器存数据，专用寄存器（IR/PC）管执行。</li>
+      <li><b>存储程序概念</b>：程序=数据，都以位模式存主存——计算机“通用性”的根源。</li>
+      <li><b>Cache</b> 缓解 CPU 与主存的速度差，形成“寄存器→cache→主存→外存”的存储层次。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.1 -->
+  <div class="quiz" data-sec="2.1">
+    <div class="quiz-head"><span class="tag">2.1 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q1</span>CPU 的三个基本组成部分是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>运算器、存储器、输入设备</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>运算器、控制器、寄存器组</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>控制器、总线、cache</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>ALU、主板、端口</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>教材定义 CPU = 算术/逻辑单元（运算器）+ 控制单元（控制器）+ 寄存器单元；总线、cache、主板都是重要部件，但不是 CPU 的三大组成。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q2</span>“存储程序概念”指的是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>程序必须刻在只读存储器里，不可更改</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>程序像数据一样以位模式存储在主存中，由 CPU 取出执行</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>程序存储在 CPU 的通用寄存器中</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>每个程序需要重新连接电路才能运行</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>程序与数据同处主存，使同一硬件可运行任意程序，这是现代计算机通用性的基础。</div>
+    </div>
+  </div>
+</section>
+<!-- ============ 2.2 ============ -->
+<section class="sec rv" id="s22">
+  <div class="sec-head">
+    <div class="sec-num">2.2</div>
+    <h2 class="sec-title">机器语言<span class="en">Machine Language</span></h2>
+  </div>
+
+  <p class="lead"><strong>机器语言</strong>（<strong>machine language</strong>）是 CPU 能直接识别和执行的指令集合。每条<strong>机器指令</strong>（machine instruction）由两部分组成：<strong>操作码</strong>（<strong>op-code</strong>，指明做什么操作）＋<strong>操作数</strong>（<strong>operand</strong>，指明对“谁”操作）。</p>
+
+  <div class="exbox">
+    <span class="lbl">例子 ｜ 译码一条指令</span><br>
+    指令 <span class="mono"><b>0x35A7</b></span>（十六进制）= 操作码 <span class="mono"><b>3</b></span> ＋ 操作数 <span class="mono"><b>5A7</b></span>，含义：把寄存器 <b>5</b> 中的位模式<b>存（STORE）</b>到主存地址 <span class="mono">0xA7</span> 的单元中。
+  </div>
+
+  <h3 class="blk">两种设计哲学<span class="en">RISC vs CISC</span></h3>
+  <table class="tb">
+    <tr><th style="width:16%"></th><th>RISC 精简指令集</th><th>CISC 复杂指令集</th></tr>
+    <tr><td><b>全称</b></td><td>Reduced Instruction Set Computer</td><td>Complex Instruction Set Computer</td></tr>
+    <tr><td><b>指令特点</b></td><td>少而简单，长度固定，每条都很快</td><td>多而强大，一条指令可完成多步任务</td></tr>
+    <tr><td><b>代价</b></td><td>完成同一任务需要更多条指令</td><td>译码电路复杂、部分指令很慢</td></tr>
+    <tr><td><b>代表</b></td><td>ARM（手机）、RISC-V、Apple M 系列</td><td>Intel x86（PC）</td></tr>
+  </table>
+
+  <h3 class="blk">机器指令的三大类<span class="en">Three Classes of Instructions</span></h3>
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Data Transfer 数据传输</div>
+      <div class="t-cn">搬运位模式，不改变内容</div>
+      <p><b>LOAD</b>（主存→寄存器）、<b>STORE</b>（寄存器→主存）、CPU 与外设之间的 I/O 传送。</p>
+      <div class="t-ex"><b>例子：</b>把 0x6C 单元的值装入寄存器 5：<span class="mono">0x156C</span>。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Arithmetic/Logic 算术逻辑</div>
+      <div class="t-cn">对数据做运算</div>
+      <p>加法（补码/浮点）、AND、OR、XOR、移位与循环移位。</p>
+      <div class="t-ex"><b>例子：</b>寄存器 5 与 6 相加，结果放寄存器 0：<span class="mono">0x5056</span>。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Control 控制</div>
+      <div class="t-cn">改变执行顺序</div>
+      <p><b>JUMP</b>（条件/无条件跳转）、<b>HALT</b>（停机）——决定“下一条执行谁”。</p>
+      <div class="t-ex"><b>例子：</b>若寄存器 2 = 寄存器 0，跳到 0x58：<span class="mono">0xB258</span>。</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Vole：一台教学用模型机<span class="en">The Vole Machine</span></h3>
+  <p>教材附录 C 定义了一台极简但五脏俱全的模型机 <b>Vole</b>：</p>
+  <table class="tb">
+    <tr><th style="width:30%">部件</th><th>规格</th></tr>
+    <tr><td>通用寄存器</td><td>16 个，编号 <span class="mono">0x0–0xF</span>，每个存 8 位</td></tr>
+    <tr><td>主存单元</td><td>256 个，地址 <span class="mono">0x00–0xFF</span>，每个存 8 位</td></tr>
+    <tr><td>指令长度</td><td>16 位 = 4 位十六进制：<b>第 1 位是操作码，后 3 位是操作数</b></td></tr>
+  </table>
+
+  <table class="tb center" style="font-size:13.5px">
+    <tr><th style="width:12%">操作码</th><th style="width:18%">指令</th><th>含义（R、S、T 为寄存器号；X、Y 为十六进制数字）</th></tr>
+    <tr><td class="mono">0x1</td><td>LOAD R, [XY]</td><td>R ← 主存单元 XY 中的位模式</td></tr>
+    <tr><td class="mono">0x2</td><td>LOAD R, XY</td><td>R ← 位模式 XY 本身（立即数）</td></tr>
+    <tr><td class="mono">0x3</td><td>STORE R, [XY]</td><td>主存单元 XY ← R 中的位模式</td></tr>
+    <tr><td class="mono">0x4</td><td>MOVE R, S</td><td>S ← R（寄存器间复制，操作数形如 0x0RS）</td></tr>
+    <tr><td class="mono">0x5</td><td>ADD R, S, T</td><td>R ← S + T（二进制补码加法）</td></tr>
+    <tr><td class="mono">0x6</td><td>ADD R, S, T</td><td>R ← S + T（浮点加法，不同电路！）</td></tr>
+    <tr><td class="mono">0x7</td><td>OR R, S, T</td><td>R ← S OR T</td></tr>
+    <tr><td class="mono">0x8</td><td>AND R, S, T</td><td>R ← S AND T</td></tr>
+    <tr><td class="mono">0x9</td><td>XOR R, S, T</td><td>R ← S XOR T</td></tr>
+    <tr><td class="mono">0xA</td><td>ROTATE R, X</td><td>R 中的位模式向右循环移位 X 次</td></tr>
+    <tr><td class="mono">0xB</td><td>JUMP R, [XY]</td><td>若 R = 寄存器 0，则跳转到地址 XY；否则顺序执行</td></tr>
+    <tr><td class="mono">0xC</td><td>HALT</td><td>停机（操作数 0x000）</td></tr>
+  </table>
+
+  <div class="exbox">
+    <span class="lbl">思考 ｜ 为什么 RISC 指令长度固定更好？</span><br>
+    指令长度固定 → CPU 总能在存储单元边界整齐取指、译码电路简单快速；x86 这类 CISC 指令长短不一，取指前先要“猜”指令有多长。长度固定正是 RISC 跑得快的关键之一。
+  </div>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.2 SUMMARY</div>
+    <ul>
+      <li>机器语言 = CPU 唯一直接执行的指令集；指令 = <b>操作码 op-code</b> ＋ <b>操作数 operand</b>。</li>
+      <li>设计哲学两派：<b>RISC</b>（少而快、定长）与 <b>CISC</b>（多而强、复杂）。</li>
+      <li>指令三大类：<b>数据传输</b>、<b>算术/逻辑</b>、<b>控制</b>——任何程序都由它们组合而成。</li>
+      <li>Vole 模型机：16 寄存器、256 存储单元、16 位定长指令、12 种操作码，是理解真机的最小样本。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.2 -->
+  <div class="quiz" data-sec="2.2">
+    <div class="quiz-head"><span class="tag">2.2 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q3</span>Vole 指令 <span class="mono">0x35A7</span> 的操作码（op-code）是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span class="mono">0xA7</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span class="mono">0x35</span></div>
+        <div class="opt" data-a="1"><span class="k">C</span><span class="mono">0x3</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span class="mono">0x5A7</span></div>
+      </div>
+      <div class="why"><b>答案：C。</b>Vole 指令 16 位中第 1 个十六进制位是操作码，即 0x3（STORE）；后 3 位 5A7 是操作数。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q4</span>指令 <span class="mono">LOAD</span> 属于哪一类指令？其含义是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>控制类；跳转到指定地址</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>数据传输类；把数据装入寄存器</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>算术类；把两个数相加</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>数据传输类；把寄存器内容存入主存</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>LOAD 是“主存 → 寄存器”的数据传输；D 描述的是 STORE。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2.3 ============ -->
+<section class="sec rv" id="s23">
+  <div class="sec-head">
+    <div class="sec-num">2.3</div>
+    <h2 class="sec-title">程序执行<span class="en">Program Execution</span></h2>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Instruction Register · IR</div>
+      <div class="t-cn">指令寄存器</div>
+      <p>专用寄存器，保存<b>当前正在执行的那条指令</b>，供控制器译码。</p>
+    </div>
+    <div class="card">
+      <div class="t-en">Program Counter · PC</div>
+      <div class="t-cn">程序计数器</div>
+      <p>专用寄存器，保存<b>下一条待取指令的地址</b>。取指后立即自动加 2（Vole 指令长 2 字节）。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">机器周期<span class="en">The Machine Cycle</span></h3>
+  <p>CPU 执行程序，就是不停重复一个三步循环：<strong>取指（fetch）→ 译码（decode）→ 执行（execute）</strong>，直到遇到 HALT。</p>
+
+  <!-- 机器周期动画 -->
+  <div class="fig" style="text-align:left">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="cycleBoxes">
+      <div class="cyc" data-i="0" style="flex:1;min-width:180px;border:2px solid var(--line);border-radius:12px;padding:14px 16px;transition:.3s">
+        <div style="font-weight:800;color:var(--primary)">① 取指 Fetch</div>
+        <div style="font-size:13px;color:var(--muted)">按 PC 从主存取指令 → IR，然后 PC+2</div>
+      </div>
+      <div class="cyc" data-i="1" style="flex:1;min-width:180px;border:2px solid var(--line);border-radius:12px;padding:14px 16px;transition:.3s">
+        <div style="font-weight:800;color:var(--primary)">② 译码 Decode</div>
+        <div style="font-size:13px;color:var(--muted)">控制器解析 IR 中的操作码与操作数</div>
+      </div>
+      <div class="cyc" data-i="2" style="flex:1;min-width:180px;border:2px solid var(--line);border-radius:12px;padding:14px 16px;transition:.3s">
+        <div style="font-weight:800;color:var(--primary)">③ 执行 Execute</div>
+        <div style="font-size:13px;color:var(--muted)">发出控制信号，完成指令要求的操作</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;justify-content:center;margin-top:18px;flex-wrap:wrap">
+      <div style="font-family:Consolas,monospace;font-size:15px">PC = <b id="pcVal" style="color:var(--accent-deep)">0xA0</b></div>
+      <div style="font-family:Consolas,monospace;font-size:15px">IR = <b id="irVal" style="color:var(--accent-deep)">0x156C</b></div>
+      <div style="font-size:14px;color:var(--muted)" id="cycNote">取指：把 0xA0 处的指令 0x156C 装入 IR，PC 变为 0xA2</div>
+      <button id="cycBtn" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 18px;font-size:14px;cursor:pointer">▶ 自动演示</button>
+    </div>
+    <div class="cap" style="text-align:center">图 2-2 ｜ 机器周期循环演示：把存放在 0xA0 处的“加法程序”逐条执行（LOAD、LOAD、ADD、STORE、HALT）</div>
+  </div>
+
+  <h3 class="blk">逐周期追踪一段程序<span class="en">Tracing a Program</span></h3>
+  <p>把这段 Vole 程序装入主存 <span class="mono">0xA0</span> 处，并把 PC 初始化为 <span class="mono">0xA0</span>：</p>
+  <table class="tb center">
+    <tr><th>地址</th><th>指令</th><th>含义</th><th>执行结果</th></tr>
+    <tr><td class="mono">0xA0</td><td class="mono">0x156C</td><td>LOAD R5 ← [0x6C]</td><td>寄存器5 = 主存0x6C的值</td></tr>
+    <tr><td class="mono">0xA2</td><td class="mono">0x166D</td><td>LOAD R6 ← [0x6D]</td><td>寄存器6 = 主存0x6D的值</td></tr>
+    <tr><td class="mono">0xA4</td><td class="mono">0x5056</td><td>ADD R0 ← R5 + R6（补码）</td><td>寄存器0 = 两数之和</td></tr>
+    <tr><td class="mono">0xA6</td><td class="mono">0x306E</td><td>STORE R0 → [0x6E]</td><td>和写入主存0x6E</td></tr>
+    <tr><td class="mono">0xA8</td><td class="mono">0xC000</td><td>HALT</td><td>停机</td></tr>
+  </table>
+  <p>执行过程中 PC 的变化是 <span class="mono">A0→A2→A4→A6→A8</span>：每取出一条 2 字节指令，PC 就加 2，指向下一条。这就是“程序顺序执行”的机械本质。</p>
+
+  <div class="exbox">
+    <span class="lbl">跳转 ｜ 打破顺序执行</span><br>
+    <span class="mono">0xB258</span>：<b>若</b>寄存器 2 的内容等于寄存器 0，则把 PC 改为 <span class="mono">0x58</span>（条件跳转）；<br>
+    <span class="mono">0xB0XY</span>：寄存器 0 永远等于寄存器 0 → 一定跳转，即<b>无条件跳转</b>。<br>
+    高级语言的 if / while / for，最终都被编译成这样的条件跳转。
+  </div>
+
+  <h3 class="blk">多快才算快<span class="en">Clock &amp; Benchmark</span></h3>
+  <p>机器周期的节拍由<strong>时钟</strong>（clock）驱动，频率单位 Hz：1 GHz = 每秒 10⁹ 个节拍。但“主频高 ≠ 一定快”，因此用<strong>基准测试</strong>（<strong>benchmark</strong>）：让不同机器跑同一组有代表性的程序，比较实际用时。</p>
+  <div class="exbox" style="border-left-color:var(--accent);background:#f6fbfd;border-color:var(--soft2)">
+    <span class="lbl" style="color:var(--accent-deep)">概念辨析 ｜ 程序 vs 数据</span><br>
+    主存里的位模式本身不分“程序”或“数据”——同一位模式被取进 IR 就是<b>指令</b>，被 LOAD 进寄存器就是<b>数据</b>。身份由“谁来使用它”决定。
+  </div>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.3 SUMMARY</div>
+    <ul>
+      <li>两个专用寄存器：<b>IR</b> 存当前指令，<b>PC</b> 存下一条指令地址。</li>
+      <li><b>机器周期</b> = 取指 → 译码 → 执行；Vole 每次取指后 PC+2。</li>
+      <li>顺序执行为常态，<b>JUMP</b> 打破常态；条件跳转是 if/循环的机器级实现。</li>
+      <li>时钟定节拍（GHz），<b>benchmark</b> 比真实性能；“程序还是数据”取决于被谁使用。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.3 -->
+  <div class="quiz" data-sec="2.3">
+    <div class="quiz-head"><span class="tag">2.3 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q5</span>机器周期（machine cycle）的正确顺序是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>译码 → 取指 → 执行</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>取指 → 译码 → 执行</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>执行 → 译码 → 取指</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>取指 → 执行 → 译码</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>先按 PC 取指入 IR，再译码，最后执行；如此循环直至 HALT。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q6</span>Vole 中执行完一次“取指”后，程序计数器 PC 的值会？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>加 1</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>加 2</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>不变</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>清零</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>每条 Vole 指令占 2 个存储单元（16 位），取指后 PC+2，指向下一条指令。</div>
+    </div>
+  </div>
+</section>
+<!-- ============ 2.4 ============ -->
+<section class="sec rv" id="s24">
+  <div class="sec-head">
+    <div class="sec-num">2.4</div>
+    <h2 class="sec-title">算术/逻辑指令<span class="en">Arithmetic/Logic Instructions</span></h2>
+  </div>
+
+  <p class="lead"><strong>按位运算</strong>（<strong>bitwise operation</strong>）把两个位模式<b>逐位</b>套用布尔运算：AND（与）、OR（或）、XOR（异或，不同为 1）。它们是位模式的“手术刀”。</p>
+
+  <table class="tb center mono">
+    <tr><th></th><th colspan="8">逐位演算</th></tr>
+    <tr><td>操作数 A</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>操作数 B</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr><td><b>A AND B</b></td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td><b>A OR B</b></td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+    <tr><td><b>A XOR B</b></td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+  </table>
+  <p style="font-size:14px;color:var(--muted)">Vole 中对应指令：OR=<span class="mono">0x7</span>、AND=<span class="mono">0x8</span>、XOR=<span class="mono">0x9</span>。</p>
+
+  <!-- 位运算交互演示 -->
+  <div class="fig" style="text-align:center">
+    <div style="font-weight:700;color:var(--primary);margin-bottom:12px">试一试 ｜ 按位运算交互演示</div>
+    <div id="bitDemo" style="font-family:Consolas,monospace;font-size:24px;letter-spacing:.12em;line-height:2.1">
+      <div>A&nbsp;=&nbsp;<span id="bA"></span></div>
+      <div>B&nbsp;=&nbsp;<span id="bB"></span></div>
+      <div style="border-top:2px solid var(--line);display:inline-block;padding-top:2px"><span id="bOp">AND</span>&nbsp;=&nbsp;<b id="bR" style="color:var(--accent-deep)"></b></div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="opbtn" data-op="AND" style="background:var(--primary)">AND 与</button>
+      <button class="opbtn" data-op="OR">OR 或</button>
+      <button class="opbtn" data-op="XOR">XOR 异或</button>
+      <button id="bRand" style="background:var(--accent)">🎲 随机换一组</button>
+    </div>
+    <div class="cap">点击 A 或 B 中的任意一位可翻转它；点击按钮切换运算符，观察结果如何逐位变化</div>
+  </div>
+
+  <h3 class="blk">掩码：位运算的三大用途<span class="en">Masks</span></h3>
+  <p>精心设计的第二个操作数叫<strong>掩码</strong>（<strong>mask</strong>），三种运算各有绝活：</p>
+  <table class="tb">
+    <tr><th style="width:20%">运算</th><th style="width:30%">掩码的作用</th><th>例子</th></tr>
+    <tr><td class="mono">AND</td><td>掩码为 0 的位被<b>清零</b>（屏蔽）</td><td><span class="mono">10110101 AND 00001111 = 00000101</span>，只保留低 4 位</td></tr>
+    <tr><td class="mono">OR</td><td>掩码为 1 的位被<b>置 1</b></td><td><span class="mono">10110101 OR 11110000 = 11110101</span>，高 4 位全置 1</td></tr>
+    <tr><td class="mono">XOR</td><td>掩码为 1 的位被<b>取反</b></td><td><span class="mono">10110101 XOR 11111111 = 01001010</span>，整字节取反</td></tr>
+  </table>
+  <div class="exbox">
+    <span class="lbl">应用 ｜ 一键“反色”</span><br>
+    一张 RGB 图片的每个像素是 24 位（3 字节）位模式。把每个字节与 <span class="mono">11111111</span> 做 <b>XOR</b>，每一位都翻转——就得到了底片般的反色图。这就是 XOR 掩码的真实用途。
+  </div>
+
+  <h3 class="blk">移位与循环移位<span class="en">Shift &amp; Rotation</span></h3>
+  <table class="tb">
+    <tr><th style="width:22%">操作</th><th>规则</th><th>效果 / 用途</th></tr>
+    <tr><td><b>循环移位</b> rotation</td><td>移出的位从另一端绕回来</td><td>位模式整体“转圈”，不丢位。Vole：<span class="mono">0xA501</span> 把寄存器5向右循环移 1 位</td></tr>
+    <tr><td><b>逻辑移位</b> logical shift</td><td>移出丢弃，空位补 0</td><td>左移 1 位 ≈ <b>×2</b>；右移 1 位 ≈ <b>÷2</b>（无符号数）</td></tr>
+    <tr><td><b>算术移位</b> arithmetic shift</td><td>右移时空位复制<b>符号位</b></td><td>保持补码数的正负号不变地 ÷2</td></tr>
+  </table>
+
+  <!-- 循环位移动画 -->
+  <div class="fig" style="text-align:center">
+    <div style="font-weight:700;color:var(--primary)">动画 ｜ 0x65 = <span class="mono">01100101</span> 向右循环移 1 位 → <span class="mono">10110010</span> = 0xB2</div>
+    <div id="rotRow" style="font-family:Consolas,monospace;font-size:30px;letter-spacing:.18em;margin:14px 0 4px"></div>
+    <div style="font-size:13px;color:var(--muted)" id="rotNote">最右边的 1 会绕回最左边</div>
+    <button id="rotBtn" style="margin-top:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 20px;font-size:14px;cursor:pointer">▶ 播放</button>
+    <div class="cap">图 2-3 ｜ 循环移位：移出的位绕到另一端，8 步后回到原样</div>
+  </div>
+
+  <h3 class="blk">算术运算的实现<span class="en">Arithmetic</span></h3>
+  <p>加法由 ALU 中的<b>加法电路</b>完成；<strong>减法 = 加法 + 取负</strong>（补码世界里不需要专门的减法电路）。注意 Vole 有两条“加法”：<span class="mono">0x5</span> 用<b>二进制补码</b>解释操作数，<span class="mono">0x6</span> 用<b>浮点记数法</b>解释——同一位模式，不同电路、不同含义（呼应第 1 章！）。</p>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.4 SUMMARY</div>
+    <ul>
+      <li><b>AND</b> 清零、<b>OR</b> 置位、<b>XOR</b> 取反——掩码三绝技，图像反色就是 XOR 的应用。</li>
+      <li><b>循环移位</b>不丢位；<b>逻辑移位</b>补 0（×2 / ÷2）；<b>算术移位</b>保符号。</li>
+      <li>减法 = 加法 + 取负；补码加法（0x5）与浮点加法（0x6）是两套不同电路。</li>
+      <li>位运算是加密、压缩、图像处理、权限标志等无数技术的底层积木。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.4 -->
+  <div class="quiz" data-sec="2.4">
+    <div class="quiz-head"><span class="tag">2.4 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q7</span>想把 8 位模式 <span class="mono">11000011</span> 的<b>中间 4 位取反</b>、其余不变，应使用什么运算和掩码？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span class="mono">AND 00111100</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span class="mono">OR 11000011</span></div>
+        <div class="opt" data-a="1"><span class="k">C</span><span class="mono">XOR 00111100</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span class="mono">XOR 11000011</span></div>
+      </div>
+      <div class="why"><b>答案：C。</b>“取反”是 XOR 的绝活；掩码在要翻转的位置放 1：<span class="mono">00111100</span>。结果 <span class="mono">11111111</span>。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q8</span>对位模式 <span class="mono">01100101</span>（0x65）执行“向右循环移 1 位”，结果是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span class="mono">00110010</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span class="mono">10110010</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span class="mono">11001010</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span class="mono">00110100</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>最右的 1 绕回最左：<span class="mono">01100101 → 10110010</span>（0xB2）。A 是逻辑右移（补 0）的结果。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2.5 ============ -->
+<section class="sec rv" id="s25">
+  <div class="sec-head">
+    <div class="sec-num">2.5</div>
+    <h2 class="sec-title">与其他设备的通信<span class="en">Communicating with Other Devices</span></h2>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Controller</div>
+      <div class="t-cn">控制器（适配卡）</div>
+      <p>插在主板插槽上的电路板（或 SoC 内的电路），<b>代理 CPU 管理某类外围设备</b>，负责主机与设备之间的数据交换与信号转换。</p>
+      <div class="t-ex"><b>例子：</b>显卡、磁盘控制器、USB 控制器——CPU 只需对它下命令。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Port</div>
+      <div class="t-cn">端口</div>
+      <p>控制器引出的物理接口，设备经它接入系统。常见：<b>USB</b>（通用串行总线，可接多种设备）、<b>HDMI / DisplayPort</b>（音视频）。</p>
+      <div class="t-ex"><b>例子：</b>把 U 盘插进 USB 口，实际上插到的是 USB 控制器。</div>
+    </div>
+  </div>
+
+  <h3 class="blk">CPU 怎样与控制器打交道<span class="en">Memory-mapped I/O &amp; DMA</span></h3>
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Memory-mapped I/O</div>
+      <div class="t-cn">存储映射输入/输出</div>
+      <p>把控制器的寄存器“映射”到主存地址空间：CPU 用普通的 LOAD / STORE 指令读写这些“假内存”，就完成了与外设的通信。</p>
+      <div class="t-ex"><b>例子：</b>Vole 中地址 0xFC 被映射给打印机控制器——向 0xFC STORE 一个位模式，打印机就把它打印出来。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">DMA · Direct Memory Access</div>
+      <div class="t-cn">直接存储器存取</div>
+      <p>大批量数据传输时，控制器<b>绕过 CPU</b>直接在主存与设备之间成块搬运，CPU 只下命令、收完成通知。</p>
+      <div class="t-ex"><b>例子：</b>从磁盘读 1 GB 文件，若逐字节经 CPU 转发会累死 CPU；DMA 一次搬完，CPU 同时去干别的。</div>
+    </div>
+  </div>
+
+  <h3 class="blk">握手与状态字<span class="en">Handshaking &amp; Status Word</span></h3>
+  <p>设备速度千差万别，主机与控制器之间通过<strong>握手</strong>（<strong>handshaking</strong>）协调步调：双方交换“准备好了吗 / 完成了”等信号。<strong>状态字</strong>（<strong>status word</strong>）是控制器寄存器中的一组位，每位报告一件事（如“打印机缺纸”“数据已就绪”），CPU 读取它来决定下一步。</p>
+
+  <h3 class="blk">并行 vs 串行<span class="en">Parallel vs Serial Communication</span></h3>
+  <div class="fig" style="text-align:center">
+    <svg viewBox="0 0 720 210" width="100%" style="max-width:680px">
+      <defs><style>
+        .w{stroke:#203D74;stroke-width:2.5}
+        .dot{fill:#FD9F66}
+        .mover{animation:mv 1.6s linear infinite}
+        @keyframes mv{from{transform:translateX(0)}to{transform:translateX(60px)}}
+      </style></defs>
+      <text x="30" y="34" font-size="15" font-weight="700" fill="#203D74">并行 Parallel：8 条线同时传 8 位</text>
+      <g>
+        <line x1="150" y1="30" x2="640" y2="30" class="w"/><line x1="150" y1="50" x2="640" y2="50" class="w"/>
+        <line x1="150" y1="70" x2="640" y2="70" class="w"/><line x1="150" y1="90" x2="640" y2="90" class="w" opacity=".35"/>
+        <g class="mover">
+          <circle cx="160" cy="30" r="6" class="dot"/><circle cx="160" cy="50" r="6" class="dot"/>
+          <circle cx="160" cy="70" r="6" class="dot"/><circle cx="160" cy="90" r="6" class="dot"/>
+        </g>
+      </g>
+      <text x="30" y="150" font-size="15" font-weight="700" fill="#203D74">串行 Serial：1 条线一位接一位传</text>
+      <line x1="150" y1="146" x2="640" y2="146" class="w"/>
+      <g class="mover">
+        <circle cx="160" cy="146" r="6" class="dot"/><circle cx="180" cy="146" r="6" class="dot" opacity=".8"/>
+        <circle cx="200" cy="146" r="6" class="dot" opacity=".6"/><circle cx="220" cy="146" r="6" class="dot" opacity=".45"/>
+      </g>
+    </svg>
+    <div class="cap">图 2-4 ｜ 并行多条线“齐步走”，串行一条线“排队走”。现代接口（USB、PCIe、SATA）反而都是串行——线少、干扰小、频率可以做得很高</div>
+  </div>
+
+  <table class="tb center">
+    <tr><th>速率单位</th><th>含义</th><th>常见场景</th></tr>
+    <tr><td class="mono">Kbit/s</td><td>10³ bit/s</td><td>早期调制解调器</td></tr>
+    <tr><td class="mono">Mbit/s</td><td>10⁶ bit/s</td><td>家庭宽带（如 100M、1000M）</td></tr>
+    <tr><td class="mono">Gbit/s</td><td>10⁹ bit/s</td><td>千兆以太网、USB 3.x</td></tr>
+  </table>
+  <div class="exbox">
+    <span class="lbl">易混点 ｜ b 与 B、带宽与宽带</span><br>
+    小写 <b>b</b> = bit（位），大写 <b>B</b> = Byte（字节），1 B = 8 b。运营商说的“100M 宽带”是 100 <b>Mbit/s</b>，下载速度 ÷ 8 约为 12.5 <b>MB/s</b>。<br>
+    <b>带宽 bandwidth</b>：通信路径的最大传输速率；<b>宽带 broadband</b>：高速率（常指 ≥25 Mbit/s）的互联网接入。
+  </div>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.5 SUMMARY</div>
+    <ul>
+      <li><b>控制器</b>代理 CPU 管理外设，设备经<b>端口</b>（USB/HDMI/DisplayPort）接入。</li>
+      <li><b>存储映射 I/O</b>：读写“特殊内存地址”即读写设备；<b>DMA</b> 让成块传输绕过 CPU。</li>
+      <li><b>握手</b>协调快慢双方，<b>状态字</b>汇报设备状态。</li>
+      <li>并行多线齐传、串行单线排队；速率单位 K/M/G bit/s，注意 8b = 1B。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.5 -->
+  <div class="quiz" data-sec="2.5">
+    <div class="quiz-head"><span class="tag">2.5 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q9</span>DMA（直接存储器存取）的主要好处是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>让主存容量翻倍</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>大批量数据传输时不必占用 CPU，CPU 可同时处理其他任务</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>让所有设备共享一个端口</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>提高时钟频率</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>DMA 控制器直接经总线在主存与设备间成块搬运数据，把 CPU 从“搬运工”角色中解放出来。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q10</span>一条 48 Mbit/s 的链路，理论上每秒最多传输多少字节？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>48 MB/s</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span>384 MB/s</span></div>
+        <div class="opt" data-a="1"><span class="k">C</span><span>6 MB/s</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>0.6 MB/s</span></div>
+      </div>
+      <div class="why"><b>答案：C。</b>1 Byte = 8 bit，48 ÷ 8 = 6 MB/s。bit 与 Byte 的换算是本章高频考点！</div>
+    </div>
+  </div>
+</section>
+<!-- ============ 2.6 ============ -->
+<section class="sec rv" id="s26">
+  <div class="sec-head">
+    <div class="sec-num">2.6</div>
+    <h2 class="sec-title">用 Python 操作数据<span class="en">Programming Data Manipulation</span></h2>
+  </div>
+
+  <p class="lead">高级语言把本章的底层操作“翻译”成人类友好的写法。Python 中用 <span class="mono" style="color:var(--accent-deep)"><b>0b</b></span> 前缀直接书写二进制，用 <span class="mono" style="color:var(--accent-deep)"><b>&amp; | ^</b></span> 做按位运算。</p>
+
+  <pre class="code"><span class="cm"># 二进制字面量：0b 前缀</span>
+x = <span class="kw">0b</span>00110011      <span class="cm"># 等价于十进制 51</span>
+mask = <span class="kw">0b</span>00001111  <span class="cm"># 掩码：低 4 位</span>
+print(x &amp; mask)       <span class="cm"># AND 清零高 4 位 → 0b00000011 → 3</span>
+
+<span class="cm"># 十进制视角下的位运算（教材示例）</span>
+print(<span class="st">5 ^ 4</span>)   <span class="out"># 1   （0101 XOR 0100 = 0001）</span>
+print(<span class="st">5 | 4</span>)   <span class="out"># 5   （0101 OR  0100 = 0101）</span>
+print(<span class="st">5 &amp; 4</span>)   <span class="out"># 4   （0101 AND 0100 = 0100）</span>
+print(bin(12))  <span class="out"># '0b1100' ← bin() 把整数显示为二进制</span></pre>
+
+  <h3 class="blk">控制结构：if 与 while<span class="en">Control Structures</span></h3>
+  <pre class="code"><span class="kw">if</span> waterLevel &gt; 50:
+    drainWater()        <span class="cm"># 条件成立才执行（对应机器的“条件跳转”）</span>
+
+<span class="kw">while</span> waterLevel &gt; 50:
+    drainWater()        <span class="cm"># 反复执行，直到条件不成立</span></pre>
+  <p style="font-size:14px;color:var(--muted)">注意：<span class="mono">if</span> 与 <span class="mono">while</span> 语法几乎一样，语义却不同——if 只做一次判断，while 是循环。它们最终都被翻译成 2.3 节的条件跳转 JUMP。</p>
+
+  <h3 class="blk">函数：给操作起个名字<span class="en">Functions</span></h3>
+  <table class="tb">
+    <tr><th style="width:26%">概念</th><th>说明</th></tr>
+    <tr><td><b>def / 函数体 body</b></td><td><span class="mono">def 函数名(参数):</span> 定义函数；缩进的代码块是函数体</td></tr>
+    <tr><td><b>实参 argument</b></td><td>调用时传进去的<b>具体值</b>（如 <span class="mono">max(20, 78)</span> 中的 20 和 78）</td></tr>
+    <tr><td><b>有返回值 fruitful</b></td><td>用 <span class="mono">return</span> 交出结果，如 <span class="mono">max(20, 78)</span> → <span class="mono">78</span></td></tr>
+    <tr><td><b>无返回值 void / 过程 procedure</b></td><td>只做事、不交结果，如 <span class="mono">print()</span></td></tr>
+  </table>
+
+  <pre class="code"><span class="kw">import</span> math            <span class="cm"># 引入数学库（现成的“工具箱”）</span>
+<span class="kw">def</span> <span class="fn">hypotenuse</span>(a, b):  <span class="cm"># 求直角三角形斜边：√(a²+b²)</span>
+    <span class="kw">return</span> math.sqrt(a**2 + b**2)
+print(hypotenuse(3, 4))   <span class="out"># 5.0</span></pre>
+
+  <h3 class="blk">输入的类型陷阱<span class="en">The input() Trap</span></h3>
+  <pre class="code">echo = input(<span class="st">"Echo: "</span>)   <span class="cm"># input() 永远返回字符串 str！</span>
+<span class="out"># Echo: Hello</span>
+print(echo * 3)            <span class="out"># HelloHelloHello  ← 字符串“乘法”是重复</span>
+
+age = input(<span class="st">"Age: "</span>)
+age + 1                    <span class="err"># TypeError: can only concatenate str (not "int") to str</span>
+age = int(age)             <span class="cm"># 用 int() 转换；int(3.9) → 3（直接截断小数）</span></pre>
+
+  <div class="exbox">
+    <span class="lbl">综合示例 ｜ 马拉松训练助手（教材脚本）</span><br>
+    读取配速与距离 → 计算总时间 → 输出训练建议。短短十几行，串起了本章全部技能：输入/输出、类型转换、算术运算、if 分支、函数封装——它们最终都化身为 CPU 的 LOAD/ADD/JUMP。
+  </div>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.6 SUMMARY</div>
+    <ul>
+      <li>Python 位操作：<span class="mono">0b</span> 前缀写字面量，<span class="mono">&amp; | ^</span> 按位运算，<span class="mono">bin()</span> 查看二进制。</li>
+      <li><span class="mono">if</span> 判断一次，<span class="mono">while</span> 循环执行——机器层都是条件跳转。</li>
+      <li>函数 = <span class="mono">def</span> 定义 + 实参传入 + <span class="mono">return</span> 返回；分 fruitful 与 void 两类。</li>
+      <li><span class="mono">input()</span> 永远返回 str，算术前必须 <span class="mono">int()</span>/<span class="mono">float()</span> 转换——新手第一大坑。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.6 -->
+  <div class="quiz" data-sec="2.6">
+    <div class="quiz-head"><span class="tag">2.6 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q11</span>Python 表达式 <span class="mono">print(0b1010 ^ 0b0110)</span> 的输出是？</div>
+      <div class="opts">
+        <div class="opt" data-a="1"><span class="k">A</span><span class="mono">12</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span class="mono">0b1100</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span class="mono">1110</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span class="mono">14</span></div>
+      </div>
+      <div class="why"><b>答案：A。</b><span class="mono">1010 ^ 0110 = 1100</span> = 十进制 12；print 默认按十进制输出，要显示二进制需用 <span class="mono">bin()</span>。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q12</span><span class="mono">age = input("Age: ")</span> 之后，变量 age 的类型是？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>int 整数</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span>取决于用户输入的内容</span></div>
+        <div class="opt" data-a="1"><span class="k">C</span><span>str 字符串</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>float 浮点数</span></div>
+      </div>
+      <div class="why"><b>答案：C。</b>input() 无论用户输入什么都返回字符串，参与算术运算前必须用 int() 或 float() 转换。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2.7 ============ -->
+<section class="sec rv" id="s27">
+  <div class="sec-head">
+    <div class="sec-num">2.7</div>
+    <h2 class="sec-title">其他体系结构<span class="en">Other Architectures</span></h2>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="t-en">Throughput</div>
+      <div class="t-cn">吞吐率</div>
+      <p>单位时间内机器完成的<b>工作总量</b>。注意：提高吞吐率不等于让单个任务更快——两者经常不是一回事。</p>
+      <div class="t-ex"><b>例子：</b>洗衣店一天能洗 40 缸衣服（吞吐率高），但你那一缸仍要洗 2 小时。</div>
+    </div>
+    <div class="card">
+      <div class="t-en">Pipelining</div>
+      <div class="t-cn">流水线</div>
+      <p>把指令执行拆成多个阶段（取指/译码/执行…），不同阶段<b>同时处理不同指令</b>，像工厂装配线一样重叠作业，大幅提高吞吐率。</p>
+      <div class="t-ex"><b>例子：</b>第 1 条指令在“执行”时，第 2 条在“译码”，第 3 条正在“取指”。</div>
+    </div>
+  </div>
+
+  <!-- 流水线动画 -->
+  <div class="fig" style="text-align:center">
+    <div style="font-weight:700;color:var(--primary)">动画 ｜ 洗衣店流水线（吞吐率 4 倍于串行）</div>
+    <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;align-items:center;margin-top:16px;font-size:13.5px" id="pipeGrid">
+      <div style="font-weight:700;color:var(--muted);text-align:right">阶段</div>
+      <div style="background:var(--soft);border-radius:8px;padding:6px;font-weight:700">洗涤 Wash</div>
+      <div style="background:var(--soft);border-radius:8px;padding:6px;font-weight:700">烘干 Dry</div>
+      <div style="background:var(--soft);border-radius:8px;padding:6px;font-weight:700">折叠 Fold</div>
+      <div style="background:var(--soft);border-radius:8px;padding:6px;font-weight:700">存放 Store</div>
+    </div>
+    <div id="pipeRows"></div>
+    <div style="font-size:13px;color:var(--muted);margin-top:10px">4 缸衣服串行要 16 步，流水线只需 7 步；缸数越多，优势越接近 4 倍</div>
+    <div class="cap">图 2-5 ｜ 流水线类比：每缸衣服在 4 个阶段中顺次流动，各阶段同时忙碌</div>
+  </div>
+
+  <h3 class="blk">多处理器与多核<span class="en">Parallel Processing</span></h3>
+  <p><strong>并行处理</strong>（parallel processing）：多台/多个处理单元同时工作。今天的 CPU 多为<strong>多核</strong>（<strong>multi-core</strong>）芯片——一块芯片里集成多个完整处理单元；再把 CPU、GPU、控制器等都集成到一块芯片上，就是<strong>片上系统</strong>（<strong>SoC</strong>, System on a Chip，手机处理器的主流形态）。</p>
+
+  <table class="tb center">
+    <tr><th>Flynn 分类</th><th>含义</th><th>例子</th></tr>
+    <tr><td class="mono"><b>SISD</b></td><td>单指令流单数据流：传统单核 CPU</td><td>经典冯·诺依曼机、Vole</td></tr>
+    <tr><td class="mono"><b>MIMD</b></td><td>多指令流多数据流：各核各干各的</td><td>多核 CPU、服务器集群</td></tr>
+    <tr><td class="mono"><b>SIMD</b></td><td>单指令流多数据流：一条指令同时处理一批数据</td><td>GPU 图形渲染、图像处理</td></tr>
+  </table>
+
+  <div class="sumbox">
+    <div class="lbl">本节小结 ｜ SECTION 2.7 SUMMARY</div>
+    <ul>
+      <li>评价机器别只看主频：<b>吞吐率</b>衡量单位时间完成的总工作量。</li>
+      <li><b>流水线</b>：阶段重叠，提高吞吐率而非单条指令速度。</li>
+      <li><b>多核</b>芯片 + <b>SoC</b> 集成是现代处理器的主流。</li>
+      <li>Flynn 分类：<b>SISD</b>（传统单机）、<b>MIMD</b>（多核）、<b>SIMD</b>（GPU 式批量同操作）。</li>
+    </ul>
+  </div>
+
+  <!-- QUIZ 2.7 -->
+  <div class="quiz" data-sec="2.7">
+    <div class="quiz-head"><span class="tag">2.7 课堂练习 · QUIZ</span><span class="tt">点击选项，即时查看对错</span></div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q13</span>流水线（pipelining）技术主要提高了计算机的？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>单条指令的执行速度</span></div>
+        <div class="opt" data-a="1"><span class="k">B</span><span>吞吐率（单位时间完成的工作总量）</span></div>
+        <div class="opt" data-a="0"><span class="k">C</span><span>主存容量</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>时钟频率</span></div>
+      </div>
+      <div class="why"><b>答案：B。</b>流水线让多个阶段同时处理不同指令，单条指令耗时不变，但整体吞吐率大增——正如洗衣店。</div>
+    </div>
+    <div class="q">
+      <div class="qt"><span class="qn">Q14</span>“同一时刻对多批数据执行<b>同一条</b>指令”的体系结构属于？</div>
+      <div class="opts">
+        <div class="opt" data-a="0"><span class="k">A</span><span>SISD</span></div>
+        <div class="opt" data-a="0"><span class="k">B</span><span>MIMD</span></div>
+        <div class="opt" data-a="1"><span class="k">C</span><span>SIMD</span></div>
+        <div class="opt" data-a="0"><span class="k">D</span><span>CISC</span></div>
+      </div>
+      <div class="why"><b>答案：C。</b>SIMD = 单指令流多数据流，典型代表是 GPU：一条指令同时给整幅图像的所有像素做同一种运算。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANSWERS ============ -->
+<section class="sec rv" id="answers">
+  <div class="sec-head">
+    <div class="sec-num">KEY</div>
+    <h2 class="sec-title">课堂练习参考答案<span class="en">Answer Key</span></h2>
+  </div>
+  <div class="akey">
+    <h3>答案与解析速查</h3>
+    <div class="en">14 Questions · Chapter 2</div>
+    <table>
+      <tr><th style="width:12%">题号</th><th style="width:12%">章节</th><th style="width:10%">答案</th><th>一句话解析</th></tr>
+      <tr><td>Q1</td><td>2.1</td><td><span class="ans">B</span></td><td>CPU = 运算器 + 控制器 + 寄存器组</td></tr>
+      <tr><td>Q2</td><td>2.1</td><td><span class="ans">B</span></td><td>程序与数据同以位模式存于主存</td></tr>
+      <tr><td>Q3</td><td>2.2</td><td><span class="ans">C</span></td><td>第 1 个十六进制位是操作码：0x3</td></tr>
+      <tr><td>Q4</td><td>2.2</td><td><span class="ans">B</span></td><td>LOAD = 数据传输类，装入寄存器</td></tr>
+      <tr><td>Q5</td><td>2.3</td><td><span class="ans">B</span></td><td>取指 → 译码 → 执行</td></tr>
+      <tr><td>Q6</td><td>2.3</td><td><span class="ans">B</span></td><td>指令占 2 个存储单元，PC+2</td></tr>
+      <tr><td>Q7</td><td>2.4</td><td><span class="ans">C</span></td><td>取反用 XOR，掩码 00111100</td></tr>
+      <tr><td>Q8</td><td>2.4</td><td><span class="ans">B</span></td><td>循环右移，末位的 1 绕回首位 → 0xB2</td></tr>
+      <tr><td>Q9</td><td>2.5</td><td><span class="ans">B</span></td><td>DMA 成块传输，解放 CPU</td></tr>
+      <tr><td>Q10</td><td>2.5</td><td><span class="ans">C</span></td><td>48 ÷ 8 = 6 MB/s（8b = 1B）</td></tr>
+      <tr><td>Q11</td><td>2.6</td><td><span class="ans">A</span></td><td>1010^0110=1100=12，print 输出十进制</td></tr>
+      <tr><td>Q12</td><td>2.6</td><td><span class="ans">C</span></td><td>input() 恒返回 str</td></tr>
+      <tr><td>Q13</td><td>2.7</td><td><span class="ans">B</span></td><td>流水线提高吞吐率，非单指令速度</td></tr>
+      <tr><td>Q14</td><td>2.7</td><td><span class="ans">C</span></td><td>单指令多数据 = SIMD</td></tr>
+    </table>
+    <div class="fast">速记 ｜ B B C B ｜ B B C B ｜ B C A C ｜ B C</div>
+  </div>
+  <div class="exbox" style="border-left-color:var(--red);background:#fdf6f4;border-color:#f5d7d2">
+    <span class="lbl" style="color:var(--red)">易错点提醒</span><br>
+    ① 掩码“取反”选 <b>XOR</b>，不是 AND/OR（Q7）；② 速率换算务必 <b>÷8</b>（Q10）；③ Python 的 print 默认输出<b>十进制</b>（Q11）；④ Vole 指令长 2 字节，取指后 <b>PC+2</b>（Q6）。
+  </div>
+</section>
+
+<!-- ============ GLOSSARY ============ -->
+<section class="sec rv" id="glossary">
+  <div class="sec-head">
+    <div class="sec-num">ABC</div>
+    <h2 class="sec-title">本章术语表<span class="en">Glossary</span></h2>
+  </div>
+  <table class="tb" style="font-size:14px">
+    <tr><th style="width:30%">中文</th><th style="width:34%">English</th><th>一句话释义</th></tr>
+    <tr><td>中央处理器</td><td class="mono">CPU (Central Processing Unit)</td><td>执行程序的电路：运算器+控制器+寄存器组</td></tr>
+    <tr><td>运算器</td><td class="mono">ALU (Arithmetic/Logic Unit)</td><td>执行算术与逻辑运算的部件</td></tr>
+    <tr><td>控制器 / 寄存器</td><td class="mono">control unit / register</td><td>指挥协调 / CPU 内高速暂存单元</td></tr>
+    <tr><td>主板 / 总线</td><td class="mono">motherboard / bus</td><td>承载芯片的电路板 / 连接 CPU 与主存的线路</td></tr>
+    <tr><td>存储程序概念</td><td class="mono">stored-program concept</td><td>程序像数据一样存入主存并被执行</td></tr>
+    <tr><td>高速缓存</td><td class="mono">cache</td><td>CPU 与主存之间的高速小容量存储</td></tr>
+    <tr><td>机器语言 / 机器指令</td><td class="mono">machine language / instruction</td><td>CPU 直接执行的指令集 / 一条二进制指令</td></tr>
+    <tr><td>精简/复杂指令集</td><td class="mono">RISC / CISC</td><td>少而快 vs 多而强两种设计哲学</td></tr>
+    <tr><td>操作码 / 操作数</td><td class="mono">op-code / operand</td><td>做什么 / 对谁做</td></tr>
+    <tr><td>指令寄存器 / 程序计数器</td><td class="mono">instruction register (IR) / program counter (PC)</td><td>当前指令 / 下一条指令地址</td></tr>
+    <tr><td>机器周期 / 基准测试</td><td class="mono">machine cycle / benchmark</td><td>取指-译码-执行 / 标准化性能测试</td></tr>
+    <tr><td>按位运算 / 掩码</td><td class="mono">bitwise operation / mask</td><td>逐位布尔运算 / 精心设计的第二个操作数</td></tr>
+    <tr><td>循环移位 / 逻辑移位 / 算术移位</td><td class="mono">rotation / logical shift / arithmetic shift</td><td>绕回 / 补 0 / 保符号</td></tr>
+    <tr><td>控制器 / 端口</td><td class="mono">controller / port</td><td>代理 CPU 管理外设 / 设备接入的接口</td></tr>
+    <tr><td>直接存储器存取</td><td class="mono">DMA (Direct Memory Access)</td><td>外设与主存直接成块传输，绕过 CPU</td></tr>
+    <tr><td>握手 / 状态字</td><td class="mono">handshaking / status word</td><td>协调通信步调 / 报告设备状态的一组位</td></tr>
+    <tr><td>带宽 / 宽带</td><td class="mono">bandwidth / broadband</td><td>最大传输速率 / 高速互联网接入</td></tr>
+    <tr><td>吞吐率 / 流水线</td><td class="mono">throughput / pipelining</td><td>单位时间工作总量 / 阶段重叠执行</td></tr>
+    <tr><td>多核 / 片上系统</td><td class="mono">multi-core / SoC</td><td>一芯片多处理单元 / 整机集成于一芯片</td></tr>
+    <tr><td>弗林分类</td><td class="mono">SISD / MIMD / SIMD</td><td>按指令流×数据流对体系结构分类</td></tr>
+  </table>
+  <p style="margin-top:22px;text-align:center;color:var(--muted);font-size:14.5px">📖 下一章预告：<b>第 3 章 操作系统 Operating Systems</b>——谁来管理这台会执行程序的机器？</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>第 2 章 · 数据操作 Data Manipulation ｜ 《计算机科学概论》（第 13 版）教学配套网页</div>
+    <div>单文件离线可用 · 建议 Chrome / Edge 打开</div>
+  </div>
+</footer>
+
+<button class="backtop" id="backTop" title="回到顶部">↑</button>
+
+<script>
+/* ===== Hero: 二进制雨 ===== */
+(function(){
+  var cv=document.getElementById('bits'),ctx=cv.getContext('2d');
+  function size(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+  size();window.addEventListener('resize',size);
+  var cols=Math.floor(window.innerWidth/22),drops=[];
+  for(var i=0;i<cols;i++)drops[i]=Math.random()*40;
+  setInterval(function(){
+    ctx.fillStyle='rgba(22,41,79,0.16)';ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.font='15px Consolas,monospace';ctx.fillStyle='#49B7D0';
+    for(var i=0;i<drops.length;i++){
+      ctx.fillText(Math.random()>0.5?'1':'0',i*22,drops[i]*20);
+      if(drops[i]*20>cv.height&&Math.random()>0.975)drops[i]=0;
+      drops[i]++;
+    }
+  },66);
+})();
+
+/* ===== 2.3 机器周期演示 ===== */
+(function(){
+  var prog=[
+    {pc:'0xA0',ir:'0x156C',note:'取指：把 0xA0 处的指令 0x156C 装入 IR，PC 变为 0xA2'},
+    {pc:'0xA2',ir:'0x166D',note:'取指：装入 0x166D → LOAD R6 ← [0x6D]'},
+    {pc:'0xA4',ir:'0x5056',note:'取指：装入 0x5056 → ADD R0 ← R5+R6'},
+    {pc:'0xA6',ir:'0x306E',note:'取指：装入 0x306E → STORE R0 → [0x6E]'},
+    {pc:'0xA8',ir:'0xC000',note:'取指：装入 0xC000 → HALT，程序结束'}
+  ];
+  var boxes=document.querySelectorAll('#cycleBoxes .cyc');
+  var pcEl=document.getElementById('pcVal'),irEl=document.getElementById('irVal'),noteEl=document.getElementById('cycNote');
+  var step=0,inst=0,timer=null;
+  function render(){
+    boxes.forEach(function(b,i){
+      var on=(i===step);
+      b.style.borderColor=on?'var(--accent)':'var(--line)';
+      b.style.background=on?'#eaf7fb':'#fff';
+      b.style.transform=on?'scale(1.03)':'scale(1)';
+      b.style.boxShadow=on?'0 6px 16px rgba(73,183,208,.25)':'none';
+    });
+    if(step===0){var p=prog[inst];pcEl.textContent=p.pc;irEl.textContent=p.ir;noteEl.textContent=p.note;}
+    if(step===1){noteEl.textContent='译码：控制器解析操作码 '+prog[inst].ir[2]+'，识别操作数';}
+    if(step===2){noteEl.textContent='执行：完成指令动作；随后回到取指，进入下一周期';}
+  }
+  function tick(){step++;if(step>2){step=0;inst=(inst+1)%prog.length;}render();}
+  var btn=document.getElementById('cycBtn');
+  btn.addEventListener('click',function(){
+    if(timer){clearInterval(timer);timer=null;btn.textContent='▶ 自动演示';}
+    else{timer=setInterval(tick,1100);btn.textContent='⏸ 暂停';}
+  });
+  render();
+})();
+
+/* ===== 2.4 位运算交互 ===== */
+(function(){
+  var A=[0,1,1,0,0,1,0,1],B=[1,1,0,0,1,0,0,1],op='AND';
+  var bA=document.getElementById('bA'),bB=document.getElementById('bB'),bR=document.getElementById('bR'),bOp=document.getElementById('bOp');
+  function bitSpan(arr,idx,who){
+    return '<span data-w="'+who+'" data-i="'+idx+'" style="cursor:pointer;padding:0 3px;border-radius:5px;transition:.15s" onmouseover="this.style.background=\'#dceefb\'" onmouseout="this.style.background=\'\'">'+arr[idx]+'</span>';
+  }
+  function render(){
+    var i,h1='',h2='',hr='';
+    for(i=0;i<8;i++){h1+=bitSpan(A,i,'a');h2+=bitSpan(B,i,'b');}
+    for(i=0;i<8;i++){
+      var v= op==='AND'?(A[i]&B[i]): op==='OR'?(A[i]|B[i]):(A[i]^B[i]);
+      hr+='<span style="padding:0 3px'+(v===1?';color:var(--red);font-weight:800':'')+'">'+v+'</span>';
+    }
+    bA.innerHTML=h1;bB.innerHTML=h2;bR.innerHTML=hr;bOp.textContent=op;
+  }
+  document.getElementById('bitDemo').addEventListener('click',function(e){
+    var t=e.target;if(!t.dataset.w)return;
+    var i=+t.dataset.i;
+    if(t.dataset.w==='a')A[i]^=1;else B[i]^=1;
+    render();
+  });
+  document.querySelectorAll('.opbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      op=b.dataset.op;
+      document.querySelectorAll('.opbtn').forEach(function(x){x.style.background='var(--secondary)';});
+      b.style.background='var(--primary)';render();
+    });
+    b.style.cssText='background:var(--secondary);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:14px;cursor:pointer';
+  });
+  var rb=document.getElementById('bRand');
+  rb.style.cssText='background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:14px;cursor:pointer';
+  rb.addEventListener('click',function(){
+    for(var i=0;i<8;i++){A[i]=Math.random()>0.5?1:0;B[i]=Math.random()>0.5?1:0;}
+    render();
+  });
+  render();
+})();
+
+/* ===== 2.4 循环位移动画 ===== */
+(function(){
+  var bits='01100101',row=document.getElementById('rotRow'),note=document.getElementById('rotNote');
+  function render(hl){
+    var h='';
+    for(var i=0;i<8;i++){
+      var style='';
+      if(hl===0&&i===0)style='color:var(--red);font-weight:800';
+      else if(hl===7&&i===7)style='color:var(--red);font-weight:800';
+      h+='<span style="'+style+'">'+bits[i]+'</span>';
+    }
+    row.innerHTML=h;
+    note.textContent='0x'+parseInt(bits,2).toString(16).toUpperCase().padStart(2,'0')+'（向右循环移 1 位：末位绕回首位）';
+  }
+  render();
+  document.getElementById('rotBtn').addEventListener('click',function(){
+    var n=0;var t=setInterval(function(){
+      render(7);
+      setTimeout(function(){
+        bits=bits[7]+bits.slice(0,7);render(0);n++;
+        if(n>=8)clearInterval(t);
+      },350);
+    },700);
+  });
+})();
+
+/* ===== 2.7 流水线动画 ===== */
+(function(){
+  var stages=4,loads=4,steps=7;
+  var rows=document.getElementById('pipeRows');
+  var names=['👕 第1缸','🧺 第2缸','👖 第3缸','🧦 第4缸'];
+  var colors=['#49B7D0','#FD9F66','#3BAA6C','#E94B3B'];
+  var html='';
+  for(var l=0;l<loads;l++){
+    html+='<div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;align-items:center;margin-top:8px">';
+    html+='<div style="text-align:right;color:var(--muted);font-size:13px">'+names[l]+'</div>';
+    for(var s=0;s<stages;s++)html+='<div class="pc" id="pc-'+l+'-'+s+'" style="height:26px;border-radius:7px;background:#eef1f6;transition:.3s"></div>';
+    html+='</div>';
+  }
+  rows.innerHTML=html;
+  var step=0;
+  setInterval(function(){
+    for(var l=0;l<loads;l++)for(var s=0;s<stages;s++){
+      var el=document.getElementById('pc-'+l+'-'+s);
+      var active=(step-l)===s&&step>=l&&step<loads+s;
+      el.style.background=active?colors[l]:((step>s+l)?'#cfe6ef':'#eef1f6');
+    }
+    step=(step+1)%(steps+2);
+  },600);
+})();
+
+/* ===== 测验交互 ===== */
+document.querySelectorAll('.q').forEach(function(q){
+  q.querySelectorAll('.opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      if(o.dataset.a==='1')o.classList.add('right');
+      else{
+        o.classList.add('wrong');
+        q.querySelector('.opt[data-a="1"]').classList.add('right');
+      }
+    });
+  });
+});
+
+/* ===== 回到顶部 & 滚动显现 ===== */
+(function(){
+  var bt=document.getElementById('backTop');
+  window.addEventListener('scroll',function(){
+    bt.classList.toggle('show',window.scrollY>600);
+  });
+  bt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var secs=document.querySelectorAll('.rv');
+  function showEl(s){s.style.opacity=1;s.style.transform='none';}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){showEl(e.target);io.unobserve(e.target);}});
+    },{threshold:0.05});
+    secs.forEach(function(s){s.style.opacity=0;s.style.transform='translateY(26px)';io.observe(s);});
+    /* 立即显示已在视口内的元素（应对 IO 不触发的环境） */
+    secs.forEach(function(s){
+      var r=s.getBoundingClientRect();
+      if(r.top<window.innerHeight&&r.bottom>0){showEl(s);io.unobserve(s);}
+    });
+    /* 保底：1.5 秒后无论 IO 是否触发，全部显示，防止空白页 */
+    setTimeout(function(){secs.forEach(showEl);},1500);
+  }
+})();
+</script>
+</body>
+</html>

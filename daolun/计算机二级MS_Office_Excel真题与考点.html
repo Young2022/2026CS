@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>全国计算机二级 MS Office：Excel 真题与考点</title>
+<style>
+:root{--blue:#2563eb;--navy:#172554;--sky:#eff6ff;--text:#334155;--muted:#64748b;--line:#dbe4ee;--bg:#f5f7fb;--green:#059669;--orange:#d97706;--purple:#7c3aed}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;color:var(--text);line-height:1.75}
+.hero{background:linear-gradient(135deg,#064e3b,#059669 65%,#34d399);color:white;padding:55px 22px}
+.wrap{max-width:1180px;margin:auto}.hero h1{font-size:38px;margin:0 0 10px}.hero p{max-width:900px;margin:0;opacity:.92}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.badge{padding:5px 11px;border:1px solid #ffffff55;border-radius:999px;background:#ffffff18;font-size:13px}
+nav{position:sticky;top:0;background:#fffffff5;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.nav{display:flex;gap:4px;overflow:auto;padding:8px}.nav a{text-decoration:none;color:#475569;padding:5px 9px;border-radius:7px;white-space:nowrap;font-size:13px}.nav a:hover{background:var(--sky);color:var(--blue)}
+.nav a.ext{background:#fff7ed;border:1px solid #fed7aa;color:var(--orange);font-weight:600}
+.nav a.ext:hover{background:#ffedd5;color:#9a3412}
+.nav a.word{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-weight:600}
+.nav a.word:hover{background:#dbeafe;color:#1e3a8a}
+.nav a.pp{background:#f3e8ff;border:1px solid #d8b4fe;color:#6b21a8;font-weight:600}
+.nav a.pp:hover{background:#e9d5ff;color:#581c87}
+main{padding:28px 16px 60px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:22px;box-shadow:0 5px 18px #0f172a0a}
+h2{margin:0 0 16px;color:var(--navy);font-size:27px}h3{color:#1d4ed8;margin-top:24px}h4{color:var(--purple);margin:18px 0 8px;font-size:18px}
+.notice{border-left:4px solid var(--orange);background:#fff7ed;padding:14px 16px;border-radius:0 10px 10px 0}
+.source{font-size:13px;color:var(--muted);background:#f8fafc;padding:10px 13px;border-radius:8px;margin-top:14px}
+.source a{color:var(--blue);word-break:break-all}
+.q{border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0;background:#fff}
+.qhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:9px;align-items:center}
+.tag{font-size:12px;background:var(--sky);color:#1d4ed8;padding:3px 8px;border-radius:999px}
+.year{font-size:13px;background:#ede9fe;color:var(--purple);padding:3px 10px;border-radius:999px;font-weight:600}
+pre{white-space:pre-wrap;font-family:inherit;background:#f8fafc;padding:13px;border-radius:8px;border:1px solid #e5e7eb}
+.formula{background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;padding:8px 12px;border-radius:6px;font-family:Consolas,monospace;margin:6px 0}
+.answer{margin-top:10px;background:#ecfdf5;border-left:4px solid var(--green);padding:10px 13px;border-radius:0 8px 8px 0}
+.answer ol,.answer ul{margin:6px 0 0 18px;padding:0}
+.answer li{margin:3px 0}
+.year-section{border:2px solid #ede9fe;border-radius:14px;padding:20px;margin:18px 0;background:#faf7ff}
+.year-section h4{margin-top:0}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f1f5f9;color:#172554}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:var(--sky);padding:15px;border-radius:10px}.stat b{display:block;color:var(--blue);font-size:22px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:25px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:30px}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.card{padding:18px}}
+@media print{nav{display:none}.hero{color:#111;background:white}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="badges"><span class="badge">NCRE</span><span class="badge">二级 MS Office</span><span class="badge">Excel专项</span><span class="badge">2021–2025</span></div>
+<h1>全国计算机二级 MS Office：Excel 真题与考点</h1>
+<p>面向备考学生整理 Excel 高频考查内容，并优先采用教育部教育考试院公开发布的样题、考试大纲和官方教材作为来源。页面区分"官方公开原题"和"历年考点归纳"，并整理 2021–2025 年代表性 Excel 大题（操作题）与参考答案。</p>
+</div>
+</header>
+
+<nav><div class="wrap nav">
+<a href="#about">说明</a><a href="#topics">考点</a><a href="#official">官方样题</a><a href="#years">历年考查方向</a><a href="#recent5">最近5年真题</a><a href="#practice">练习任务</a><a href="#sources">来源</a>
+<a href="实验02-Excel初学者学习.html" target="_blank" class="ext">📗 Excel学习</a>
+<a href="计算机二级MS_Office_Word真题与考点.html" class="word">📘 Word真题</a>
+<a href="计算机二级MS_Office_PowerPoint真题与考点.html" class="pp">📙 PPT真题</a>
+</div></nav>
+
+<main class="wrap">
+<section id="about" class="card">
+<h2>一、资料说明</h2>
+<div class="notice">
+<b>重要版权与来源说明：</b>全国计算机等级考试（NCRE）的完整历年试题并非全部由官方免费公开。下面的"原题"栏目只收录教育部教育考试院公开发布的样题中的题目；对于最近5年，则采用基于样题大纲与官方教材整理出的"代表性操作题（考点归纳）"，并在每题中清晰标注考查要点，避免把网络转载题误称为官方真题。若需要完整历年真题，应以合法取得的试卷、教材或考试资源为准。
+</div>
+<p>目前官方考试名称为<strong>"二级MS Office高级应用与设计"</strong>，Excel 部分（约 30 分）通常以一道综合操作题的形式出现，考查工作簿管理、公式函数、数据处理、图表、页面打印等核心技能。教育部教育考试院 2025 年版大纲明确要求掌握常用函数（SUM、AVERAGE、MAX、MIN、COUNT、IF、RANK、ROUND、INT、VLOOKUP、COUNTIF、SUMIF、SUMIFS、AVERAGEIF 等）以及数据透视表、分类汇总、数据有效性与图表操作。</p>
+<div class="source">官方大纲：<a href="https://ncre.neea.edu.cn/html1/report/2412/185-1.htm" target="_blank">中国教育考试网—全国计算机等级考试考试大纲</a></div>
+</section>
+
+<section id="topics" class="card">
+<h2>二、Excel 核心考点地图</h2>
+<div class="grid">
+<div class="stat"><b>01</b>工作簿与工作表</div><div class="stat"><b>02</b>公式与函数</div>
+<div class="stat"><b>03</b>数据处理与统计</div><div class="stat"><b>04</b>图表与可视化</div>
+<div class="stat"><b>05</b>数据透视与汇总</div><div class="stat"><b>06</b>页面设置与打印</div>
+<div class="stat"><b>07</b>格式与条件格式</div><div class="stat"><b>08</b>数据有效性</div>
+</div>
+<table style="margin-top:18px">
+<tr><th>考点</th><th>典型任务</th><th>备考重点</th></tr>
+<tr><td>公式函数</td><td>SUM/AVERAGE/IF/VLOOKUP/RANK/COUNTIF/SUMIF</td><td>引用方式（相对/绝对/混合）、函数嵌套</td></tr>
+<tr><td>数据排序筛选</td><td>按多关键字排序、自定义筛选</td><td>注意标题行、文本/数值筛选差异</td></tr>
+<tr><td>分类汇总与透视</td><td>SUBTOTAL、数据透视表</td><td>先排序后汇总；字段拖放与值汇总方式</td></tr>
+<tr><td>图表</td><td>柱形图、折线图、饼图、组合图</td><td>正确选择数据源、坐标轴、图例</td></tr>
+<tr><td>页面设置</td><td>纸张、方向、页边距、页眉页脚、打印区域</td><td>"打印预览"是检查的必经步骤</td></tr>
+<tr><td>数据有效性</td><td>下拉列表、数值范围、提示信息</td><td>"数据 → 数据验证（旧版：有效性）"</td></tr>
+<tr><td>条件格式</td><td>数值区间、色阶、图标集、重复值</td><td>结合公式（用与公式确定要设置格式的单元格）</td></tr>
+<tr><td>保护与冻结</td><td>冻结窗格、保护工作表、隐藏公式</td><td>审阅 → 保护；视图 → 冻结窗格</td></tr>
+</table>
+</section>
+
+<section id="official" class="card">
+<h2>三、教育部教育考试院公开"样题"原题</h2>
+<p>以下题目来自教育部教育考试院公开发布的《全国计算机等级考试（NCRE）二级MS Office高级应用与设计样题及参考答案》中 Excel 部分的代表性题目。为尊重版权，这里保留必要题干用于学习，并提供官方原始资料入口。</p>
+
+<div class="q">
+<div class="qhead"><b>原题 1｜公式与填充</b><span class="tag">公式函数</span></div>
+<p>在 Excel 2016 工作表中，要计算某列数值的总和，应使用的函数是：</p>
+<p>A）COUNT　　B）SUM　　C）AVERAGE　　D）MAX</p>
+<div class="answer"><b>参考答案：B。</b>SUM 用于数值求和，COUNT 统计数字个数，AVERAGE 求平均，MAX 取最大。</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>原题 2｜条件函数</b><span class="tag">IF函数</span></div>
+<p>某单元格中要使用公式判断 A1 单元格的值是否大于等于 60，如果是则显示"合格"，否则显示"不合格"。正确的公式是：</p>
+<p>A）=IF(A1&gt;=60, "合格", "不合格")　　B）=IF(A1&gt;60, "不合格", "合格")<br>
+C）=IF(A1=60, "合格", "不合格")　　D）=IF(A1&gt;=60, "不合格", "合格")</p>
+<div class="answer"><b>参考答案：A。</b>IF 函数格式为 IF(条件, 条件为真返回值, 条件为假返回值)。</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>原题 3｜数据透视表</b><span class="tag">数据透视</span></div>
+<p>在 Excel 2016 中，关于数据透视表的说法正确的是：</p>
+<p>A）数据透视表只能基于一个工作表创建。<br>
+B）创建数据透视表前必须先进行排序。<br>
+C）数据透视表可以快速对大量数据进行汇总、分类与交叉分析。<br>
+D）数据透视表创建后不能修改字段设置。</p>
+<div class="answer"><b>参考答案：C。</b>数据透视表可基于外部数据或多表区域，字段可拖放调整。</div>
+</div>
+
+<div class="source"><b>官方原题来源：</b><br>
+<a href="https://ncre.neea.edu.cn/res/Home/2501/d7be5a3807a06e9124639f438bcd28cc.pdf" target="_blank">中国教育考试网：二级MS Office高级应用与设计样题及参考答案（PDF）</a>
+</div>
+</section>
+
+<section id="years" class="card">
+<h2>四、历年考试中的Excel考查方向</h2>
+<p>下面不把网络上的"回忆版"资料直接称为官方原题，而是根据历年考试大纲、官方教材和公开样题归纳出长期稳定的 Excel 技能范围。</p>
+<table>
+<tr><th>方向</th><th>常见任务</th><th>学习时应该达到的程度</th></tr>
+<tr><td>工作簿管理</td><td>新建、保存、保护、多表操作</td><td>熟练切换与引用多张工作表</td></tr>
+<tr><td>公式函数</td><td>11个常用函数 + 嵌套使用</td><td>理解相对/绝对引用的差别</td></tr>
+<tr><td>数据处理</td><td>排序、筛选、分类汇总、删除重复</td><td>能灵活组合多种方式</td></tr>
+<tr><td>图表</td><td>柱形、折线、饼图与组合图</td><td>正确选择源数据，添加标题与图例</td></tr>
+<tr><td>数据透视</td><td>字段拖放、值汇总方式、筛选与切片</td><td>理解"行/列/值/筛选"四区域</td></tr>
+<tr><td>数据有效性</td><td>下拉列表、数值范围、提示</td><td>配合条件格式使用</td></tr>
+<tr><td>页面与打印</td><td>纸张方向、页眉页脚、打印区域</td><td>会使用"打印预览"反复检查</td></tr>
+<tr><td>保护与冻结</td><td>冻结窗格、保护工作表/工作簿</td><td>理解只读与编辑保护的区别</td></tr>
+</table>
+</section>
+
+<section id="recent5" class="card">
+<h2>五、最近5年代表性 Excel 操作题与参考答案（2021–2025）</h2>
+<p>下面整理 2021 年至 2025 年全国计算机等级考试二级 MS Office 高级应用中 Excel 大题的代表性操作题。每道题按教育部样题的呈现方式给出"题干 + 操作步骤"，并附"参考答案（操作思路）"。题目为考点归纳版本，并不等同于官方原题。</p>
+
+<div class="year-section">
+<h4>📅 2025 年代表性 Excel 大题 · 制作"员工年度销售业绩分析"</h4>
+
+<div class="q">
+<div class="qhead"><b>题号：2025-E1</b><span class="year">2025年</span><span class="tag">综合分析</span></div>
+<p><b>题干：</b>打开"销售数据.xlsx"，工作表"销售记录"包含员工姓名、地区、销售额、目标额等字段。请按下列要求完成操作：</p>
+<ol>
+<li>使用公式在"完成率"列（=销售额/目标额）计算每名员工的销售完成率，设置为百分比格式。</li>
+<li>在"评定"列使用 IF 函数：完成率≥120% 显示"超额"，≥100% 显示"达标"，否则显示"未达标"。</li>
+<li>使用 RANK 函数按销售额对员工进行排名，结果放入"排名"列。</li>
+<li>对"销售额"列添加条件格式：≥50000 显示绿色填充，≤20000 显示红色填充。</li>
+<li>在"地区汇总"工作表中创建数据透视表：行字段"地区"，值字段"销售额"求和，并按合计值降序排列。</li>
+<li>新建"图表"工作表，插入"簇状柱形图"展示各地区销售额对比，添加图表标题"各地区销售额对比"。</li>
+<li>设置"图表"工作表为活动工作表，并将其标签颜色设置为绿色。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>在 F2 输入 <span class="formula">=C2/D2</span>，向下填充；右键"设置单元格格式 → 百分比"。</li>
+<li>在 G2 输入 <span class="formula">=IF(F2&gt;=1.2,"超额",IF(F2&gt;=1,"达标","未达标"))</span>，向下填充。</li>
+<li>在 H2 输入 <span class="formula">=RANK(C2,$C$2:$C$N,0)</span>（N 为末行），向下填充。</li>
+<li>选中销售额列 → "开始 → 条件格式 → 突出显示单元格规则 → 大于/小于"，分别设置 50000 绿色、20000 红色。</li>
+<li>"插入 → 数据透视表"，选择表区域；行字段"地区"，值字段"销售额"（求和）；右键"值字段设置 → 降序排列"。</li>
+<li>"插入 → 图表 → 簇状柱形图"，选择"地区"与"销售额合计"两列；"图表工具 → 设计 → 添加图表元素 → 图表标题"。</li>
+<li>右键"图表"工作表标签 → "工作表标签颜色 → 绿色"。</li>
+</ol>
+<b>核心能力：</b>公式函数、相对/绝对引用、条件格式、数据透视表、图表。
+</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>题号：2025-E2</b><span class="year">2025年</span><span class="tag">数据有效性</span></div>
+<p><b>题干：</b>对"员工档案.xlsx"进行如下设置：</p>
+<ol>
+<li>为"性别"列设置数据有效性下拉列表，选项为"男、女"。</li>
+<li>为"入职日期"列设置数据有效性，限制为 2010-01-01 至 2025-12-31 之间的日期。</li>
+<li>为"年龄"列使用 TODAY 与 INT 函数计算年龄。</li>
+<li>为"部门"列设置"重复值"条件格式，重复的部门填充浅红色。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>选中"性别"列 → "数据 → 数据验证"（旧版"有效性"）→ 允许"序列"，来源输入"男,女"。</li>
+<li>选中"入职日期"列 → "数据验证" → 允许"日期"，开始日期 2010-01-01，结束日期 2025-12-31。</li>
+<li>在"年龄"列输入 <span class="formula">=INT((TODAY()-C2)/365)</span>（C2 为出生日期列），向下填充。</li>
+<li>选中"部门"列 → "条件格式 → 突出显示单元格规则 → 重复值"，填充浅红。</li>
+</ol>
+<b>核心能力：</b>数据验证、TODAY/INT 函数、条件格式识别重复值。
+</div>
+</div>
+</div>
+
+<div class="year-section">
+<h4>📅 2024 年代表性 Excel 大题 · 制作"学生考试成绩统计分析"</h4>
+
+<div class="q">
+<div class="qhead"><b>题号：2024-E1</b><span class="year">2024年</span><span class="tag">函数综合</span></div>
+<p><b>题干：</b>打开"成绩表.xlsx"，工作表"成绩"含学号、姓名、班级、数学、语文、英语、计算机等字段。请完成：</p>
+<ol>
+<li>添加"总分""平均分"列，分别使用 SUM 与 AVERAGE 函数计算每位同学的总分与平均分，保留 1 位小数。</li>
+<li>添加"是否及格"列：所有科目均≥60 显示"合格"，否则显示"不合格"，使用 IF 嵌套 AND。</li>
+<li>添加"等级"列：平均分≥90 为 A，≥80 为 B，≥70 为 C，≥60 为 D，否则为 E。</li>
+<li>使用 COUNTIF 函数统计每个班级的合格人数到"班级统计"工作表。</li>
+<li>使用 VLOOKUP 函数，根据学号在另一张表"通讯录"中查找并填入学生电话。</li>
+<li>使用 RANK.EQ 对总分进行排名。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>总分 <span class="formula">=SUM(D2:G2)</span>；平均分 <span class="formula">=AVERAGE(D2:G2)</span>，设置单元格格式数字 1 位小数。</li>
+<li>是否及格 <span class="formula">=IF(AND(D2&gt;=60,E2&gt;=60,F2&gt;=60,G2&gt;=60),"合格","不合格")</span>。</li>
+<li>等级 <span class="formula">=IF(H2&gt;=90,"A",IF(H2&gt;=80,"B",IF(H2&gt;=70,"C",IF(H2&gt;=60,"D","E"))))</span>（H2 为平均分列）。</li>
+<li>在"班级统计"表输入 <span class="formula">=COUNTIF(成绩表!B:B,A2,成绩表!I:I,"合格")</span>，按班级下拉填充。</li>
+<li>电话列 <span class="formula">=VLOOKUP(A2,通讯录!A:E,5,FALSE)</span>。</li>
+<li>排名 <span class="formula">=RANK.EQ(I2,$I$2:$I$N,0)</span>。</li>
+</ol>
+<b>核心能力：</b>常用函数、IF/AND 嵌套、VLOOKUP 跨表查询。
+</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>题号：2024-E2</b><span class="year">2024年</span><span class="tag">图表与打印</span></div>
+<p><b>题干：</b>基于"成绩表"完成图表与打印：</p>
+<ol>
+<li>插入"簇状柱形图"，展示每位同学总分；图表标题为"学生成绩总分对比"。</li>
+<li>将图表移动到新工作表"成绩图表"中。</li>
+<li>为"成绩表"工作表设置打印格式：纸张 A4 横向，缩放 1 页宽 1 页高；页眉居中显示"2024 春学生成绩"，页脚右侧显示页码。</li>
+<li>设置打印区域为 A1:G30（不含平均分与排名等辅助列）。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>选中姓名与总分两列 → "插入 → 图表 → 簇状柱形图" → 添加标题。</li>
+<li>"图表工具 → 设计 → 移动图表 → 新工作表"，输入名称"成绩图表"。</li>
+<li>"页面布局 → 页面设置"：A4 横向；缩放"调整为 1 页宽 1 页高"；"页眉/页脚 → 自定义页眉"，中间"2024 春学生成绩"；页脚右侧插入页码域。</li>
+<li>"页面布局 → 打印区域 → 设置打印区域"，选择 A1:G30。</li>
+</ol>
+<b>核心能力：</b>图表创建与移动、页面设置、打印区域与缩放。
+</div>
+</div>
+</div>
+
+<div class="year-section">
+<h4>📅 2023 年代表性 Excel 大题 · 制作"公司月度财务报表"</h4>
+
+<div class="q">
+<div class="qhead"><b>题号：2023-E1</b><span class="year">2023年</span><span class="tag">SUMIFS 多条件汇总</span></div>
+<p><b>题干：</b>打开"收支表.xlsx"，含日期、部门、收入、支出等字段，请完成：</p>
+<ol>
+<li>添加"利润"列 = 收入 - 支出，使用绝对引用支出列向下填充。</li>
+<li>添加"月份"列 = MONTH(日期)，并按月份排序。</li>
+<li>在"按月汇总"使用 SUMIFS 计算每月总收入与总支出。</li>
+<li>使用条件格式对利润列应用"色阶"：负值红色，正值绿色。</li>
+<li>插入"组合图"（柱形图+折线图）：柱形显示每月收入，折线显示每月利润。</li>
+<li>冻结窗格至 B2；为"收支表"工作表设置保护密码 "123456"。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>利润 <span class="formula">=C2-D2</span>，向下填充。</li>
+<li>月份 <span class="formula">=MONTH(A2)</span>。</li>
+<li>"按月汇总"工作表中 <span class="formula">=SUMIFS(收入列, 月份列, 1)</span>，对应每个月份；支出同理 <span class="formula">=SUMIFS(支出列, 月份列, 1)</span>。</li>
+<li>选中利润列 → "条件格式 → 色阶" → 选"红-白-绿"色阶。</li>
+<li>"插入 → 图表 → 组合图"，收入选"簇状柱形图"，利润选"折线图"，次坐标轴勾选。</li>
+<li>"视图 → 冻结窗格 → 冻结拆分窗格"至 B2；"审阅 → 保护工作表"，密码 123456。</li>
+</ol>
+<b>核心能力：</b>MONTH、SUMIFS 多条件汇总、条件格式色阶、组合图、冻结与保护。
+</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>题号：2023-E2</b><span class="year">2023年</span><span class="tag">数据透视与切片</span></div>
+<p><b>题干：</b>基于"收支表"创建数据透视分析：</p>
+<ol>
+<li>创建数据透视表：行字段"部门"，列字段"月份"，值字段"利润"求和。</li>
+<li>插入切片器"部门"，实现按部门筛选利润。</li>
+<li>为透视表添加数据条条件格式。</li>
+<li>将透视表所在工作表重命名为"利润透视"。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>"插入 → 数据透视表"，行：部门；列：月份；值：利润 → 求和。</li>
+<li>选中透视表 → "数据透视表分析 → 插入切片器" → 勾选"部门"。</li>
+<li>"数据透视表分析 → 条件格式 → 数据条"。</li>
+<li>右键工作表标签 → "重命名"为"利润透视"。</li>
+</ol>
+<b>核心能力：</b>数据透视表布局、切片器、条件格式。
+</div>
+</div>
+</div>
+
+<div class="year-section">
+<h4>📅 2022 年代表性 Excel 大题 · 制作"商品库存管理系统"</h4>
+
+<div class="q">
+<div class="qhead"><b>题号：2022-E1</b><span class="year">2022年</span><span class="tag">数据筛选与汇总</span></div>
+<p><b>题干：</b>打开"库存表.xlsx"，含商品编号、名称、类别、库存量、单价、供应商等字段。请完成：</p>
+<ol>
+<li>按"类别"进行排序，"库存量"按降序。</li>
+<li>使用高级筛选，筛选出"类别=电子产品 且 库存量&lt;50"的记录，结果放在另一区域。</li>
+<li>对筛选结果按"类别"做分类汇总，汇总项为库存量"求和"。</li>
+<li>使用 SUMIF 函数按类别汇总库存金额（库存量×单价）到"按类别汇总"工作表。</li>
+<li>对"库存量"添加条件格式"图标集"：≥100 绿色向上箭头，&lt;50 红色向下箭头。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>"数据 → 排序"，主要关键字"类别"，次要关键字"库存量"，次序"降序"。</li>
+<li>先在空白区域输入条件区域"类别=电子产品""库存量&lt;50"；"数据 → 高级"，列表区域选择主表，条件区域如上，复制到另一区域。</li>
+<li>"数据 → 分类汇总"，分类字段"类别"，汇总方式"求和"，汇总项"库存量"。</li>
+<li>添加辅助列"金额"=库存量×单价；"按类别汇总"工作表 <span class="formula">=SUMIF(类别列,"电子产品",金额列)</span>。</li>
+<li>选中库存量列 → "条件格式 → 图标集 → 三向箭头"，调整规则阈值。</li>
+</ol>
+<b>核心能力：</b>多关键字排序、高级筛选、分类汇总、SUMIF、图标集。
+</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>题号：2022-E2</b><span class="year">2022年</span><span class="tag">图表与命名</span></div>
+<p><b>题干：</b>完成图表与辅助操作：</p>
+<ol>
+<li>为"按类别汇总"数据插入"三维饼图"，突出显示库存金额最大的类别。</li>
+<li>为图表添加"类别名称"与"百分比"数据标签。</li>
+<li>定义名称"电子产品金额"指向"电子产品"对应的金额单元格。</li>
+<li>在工作表顶端插入一行，使用该名称快速引用电子产品库存金额。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>选中类别与金额 → "插入 → 饼图 → 三维饼图"；右键"设置数据系列格式"，把第一扇区（最大）单独拉出突出显示。</li>
+<li>"图表工具 → 设计 → 添加图表元素 → 数据标签 → 更多选项"，勾选"类别名称"与"百分比"。</li>
+<li>"公式 → 定义名称"，名称"电子产品金额"，引用位置指向汇总表中电子产品金额单元格。</li>
+<li>在 A1 输入 <span class="formula">=电子产品金额</span>。</li>
+</ol>
+<b>核心能力：</b>饼图与突出显示、数据标签、定义名称。
+</div>
+</div>
+</div>
+
+<div class="year-section">
+<h4>📅 2021 年代表性 Excel 大题 · 制作"员工信息汇总表"</h4>
+
+<div class="q">
+<div class="qhead"><b>题号：2021-E1</b><span class="year">2021年</span><span class="tag">基础函数与格式</span></div>
+<p><b>题干：</b>打开"员工档案.xlsx"，含工号、姓名、性别、部门、入职日期、基本工资、绩效工资等字段。请完成：</p>
+<ol>
+<li>使用公式计算"应发工资" = 基本工资 + 绩效工资。</li>
+<li>使用 IF 函数判断"工资等级"：应发工资≥10000 为"高"，≥6000 为"中"，否则为"低"。</li>
+<li>使用 ROUND 函数将"应发工资"保留到整数。</li>
+<li>使用 COUNTIF 函数统计各部门人数到"部门人数统计"工作表。</li>
+<li>将"基本工资""绩效工资"列设置为货币格式"¥#,##0.00"。</li>
+<li>为整张表添加外边框和淡蓝色内部条纹（隔行底纹）。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>应发工资 <span class="formula">=F2+G2</span>，向下填充。</li>
+<li>工资等级 <span class="formula">=IF(H2&gt;=10000,"高",IF(H2&gt;=6000,"中","低"))</span>。</li>
+<li>把应发工资改为 <span class="formula">=ROUND(F2+G2,0)</span>。</li>
+<li>"部门人数统计" <span class="formula">=COUNTIF(部门列,D2)</span>，下拉填充。</li>
+<li>选中 F:G 列 → "设置单元格格式 → 货币 → ¥#,##0.00"。</li>
+<li>选中整表 → "开始 → 边框 → 外边框 + 内部横线"；"套用表格格式"选淡蓝色条纹样式。</li>
+</ol>
+<b>核心能力：</b>基础函数、货币格式、COUNTIF、表格美化。
+</div>
+</div>
+
+<div class="q">
+<div class="qhead"><b>题号：2021-E2</b><span class="year">2021年</span><span class="tag">图表与打印</span></div>
+<p><b>题干：</b>基于员工档案完成图表与打印：</p>
+<ol>
+<li>使用"部门人数统计"数据，插入"簇状柱形图"展示各部门人数对比。</li>
+<li>为图表添加数据标签与坐标轴标题"部门"与"人数"。</li>
+<li>将图表移动到当前工作表右侧空白区域。</li>
+<li>为"部门人数统计"工作表设置打印格式：A4 纵向；页眉左侧"公司人事部"，右侧"2021年度"；页脚居中显示当前日期（域代码）。</li>
+<li>设置打印标题：每一页都打印表头行。</li>
+</ol>
+<div class="answer">
+<b>参考答案（操作思路）：</b>
+<ol>
+<li>选中部门与人数两列 → "插入 → 柱形图 → 簇状柱形图"。</li>
+<li>"添加图表元素 → 数据标签"；"坐标轴标题"，分别输入"部门""人数"。</li>
+<li>选中图表，拖动到右侧空白处。</li>
+<li>"页面布局 → 页面设置 → A4 纵向"；"页眉/页脚 → 自定义页眉"左侧"公司人事部"，右侧输入"2021年度"；页脚中间插入日期域 DATE。</li>
+<li>"页面布局 → 打印标题 → 顶端标题行"，选择表头所在行。</li>
+</ol>
+<b>核心能力：</b>图表元素、页面设置、页眉页脚、打印标题。
+</div>
+</div>
+</div>
+
+<div class="notice" style="margin-top:18px">
+<b>说明：</b>上述 2021–2025 年的 Excel 大题为基于教育部考试样题与官方教材的"代表性归纳题"，目的是训练完整操作链，并非官方历年原题。函数公式书写请使用英文符号；如需对照样题，请访问教育部考试院 NCRE 官方样题 PDF。
+</div>
+</section>
+
+<section id="practice" class="card">
+<h2>六、按真题考点安排 Excel 专项训练</h2>
+<table>
+<tr><th>训练阶段</th><th>练习任务</th><th>对应考点</th></tr>
+<tr><td>第1阶段</td><td>制作一份带格式的工资表</td><td>基础公式、单元格格式、边框底纹</td></tr>
+<tr><td>第2阶段</td><td>制作含多种函数的学生成绩表</td><td>SUM/AVERAGE/IF/COUNTIF/VLOOKUP</td></tr>
+<tr><td>第3阶段</td><td>制作销售数据筛选分析表</td><td>排序、筛选、分类汇总、高级筛选</td></tr>
+<tr><td>第4阶段</td><td>制作带图表的统计报表</td><td>柱形/折线/饼图、组合图</td></tr>
+<tr><td>第5阶段</td><td>制作部门利润透视分析</td><td>数据透视表、切片器</td></tr>
+<tr><td>第6阶段</td><td>制作可录入的档案表</td><td>数据有效性、条件格式</td></tr>
+<tr><td>第7阶段</td><td>制作可打印的多页报表</td><td>页面设置、打印标题、打印区域</td></tr>
+<tr><td>第8阶段</td><td>综合模拟题（参考上方最近5年真题）</td><td>多个 Excel 功能组合应用</td></tr>
+</table>
+</section>
+
+<section id="sources" class="card">
+<h2>七、权威来源与进一步阅读</h2>
+<ul>
+<li><b>中国教育考试网｜全国计算机等级考试考试大纲</b>：官方发布 2025 年版 NCRE 各科考试大纲，包括"二级MS Office高级应用与设计"。</li>
+<li><b>教育部教育考试院｜二级MS Office高级应用与设计样题及参考答案</b>：官方公开样题，本文"原题"部分主要依据此资料。</li>
+<li><b>高等教育出版社｜全国计算机等级考试二级教程——MS Office高级应用与设计</b>：教育部教育考试院组织编写的考试教程，覆盖 Word、Excel、PowerPoint 高级功能。</li>
+<li><b>高等教育出版社｜上机指导</b>：包含 Excel 综合任务与配套素材。</li>
+</ul>
+<div class="source">
+官方大纲：<a href="https://ncre.neea.edu.cn/html1/report/2412/185-1.htm" target="_blank">ncre.neea.edu.cn</a><br>
+官方样题PDF：<a href="https://ncre.neea.edu.cn/res/Home/2501/d7be5a3807a06e9124639f438bcd28cc.pdf" target="_blank">NCRE 二级MS Office高级应用与设计样题及参考答案</a><br>
+高等教育出版社教材：<a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=6887adb9e119ac9729b16657" target="_blank">全国计算机等级考试二级教程——MS Office高级应用与设计</a>
+</div>
+</section>
+
+<footer>全国计算机等级考试 NCRE · 二级 MS Office Excel 专项学习页面<br>说明：页面中的"原题"仅指公开官方样题；"最近5年代表性题目"为基于样题大纲与官方教材的考点归纳，不等同于完整历年试卷。</footer>
+</main>
+</body>
+</html>

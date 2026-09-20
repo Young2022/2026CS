@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI 计算机科学导论 · 第3章 计算机体系基础：从抽象层次到简单计算机 · 课堂讲义，含课堂训练与随机提问。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>第3章 计算机体系基础 · 课堂讲义</title>
+<style>
+
+:root {
+  --bg: #f8fafc;
+  --bg2: #f1f5f9;
+  --card: #ffffff;
+  --line: rgba(15, 23, 42, 0.08);
+  --line2: rgba(15, 23, 42, 0.16);
+  --txt: #0f172a;
+  --mut: #334155;
+  --dim: #64748b;
+  --teal: #0284c7;
+  --teal-soft: rgba(2, 132, 199, 0.10);
+  --coral: #dc2626;
+  --coral-soft: rgba(220, 38, 38, 0.10);
+  --violet: #5b21b6;
+  --violet-soft: rgba(91, 33, 182, 0.10);
+  --green: #166534;
+  --green-soft: rgba(22, 101, 52, 0.12);
+  --amber: #a34a08;
+  --amber-soft: rgba(163, 74, 8, 0.12);
+  --sans: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--sans);
+  line-height: 1.75;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(2, 132, 199, 0.15); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--teal-soft);
+  border: 1px solid rgba(2, 132, 199, 0.20);
+  border-radius: 6px;
+  padding: 2px 7px;
+  color: var(--teal);
+}
+h2 { font-size: 1.55rem; line-height: 1.35; font-weight: 700; }
+h3 { font-size: 1.2rem; line-height: 1.4; font-weight: 700; }
+h4 { font-size: 1.05rem; line-height: 1.4; font-weight: 650; }
+
+/* 进度条 */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--teal), #38bdf8);
+  z-index: 2000; transition: width 0.08s linear;
+}
+
+/* 导航 */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap {
+  display: flex; align-items: center; gap: 16px; height: 56px;
+}
+nav .brand {
+  font-weight: 800; font-size: 15px; white-space: nowrap; color: var(--txt);
+}
+nav .brand b { color: var(--teal); }
+nav .navlinks {
+  display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1;
+}
+nav .navlinks::-webkit-scrollbar { display: none; }
+nav .navlinks a {
+  color: var(--mut); font-size: 14.5px; padding: 7px 12px;
+  border-radius: 8px; white-space: nowrap; transition: 0.15s;
+}
+nav .navlinks a:hover { color: var(--txt); background: var(--bg2); }
+nav .navlinks a.cur {
+  color: var(--teal); background: var(--teal-soft); font-weight: 600;
+}
+nav .qbtn {
+  flex: none; background: var(--teal-soft);
+  border: 1px solid rgba(2, 132, 199, 0.28);
+  color: var(--teal); font-size: 14px; padding: 7px 14px;
+  border-radius: 9px; cursor: pointer; font-family: inherit; transition: 0.15s;
+}
+nav .qbtn:hover { background: rgba(2, 132, 199, 0.16); }
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  padding: 28px 0 2%;
+  background: linear-gradient(165deg, #e0f2fe 0%, #f0f9ff 60%);
+}
+.hero .wrap { max-width: 1080px; }
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px;
+}
+.hero-chips span {
+  font-size: 13.5px; font-weight: 600;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--line2);
+  color: var(--mut);
+}
+.hero h1 {
+  font-size: 2.15rem; font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 12px; color: var(--txt);
+}
+.hero .sub {
+  font-size: 1.05rem; color: var(--mut); max-width: 820px;
+  line-height: 1.7; margin-bottom: 28px;
+}
+.map {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 12px rgba(40, 35, 30, 0.04);
+}
+.map-t {
+  font-size: 14px; font-weight: 700; color: var(--teal);
+  margin-bottom: 6px; letter-spacing: 0.02em;
+}
+.map-line {
+  font-size: 15px; color: var(--mut); margin-bottom: 16px;
+}
+.flow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 4px;
+}
+.flow .node {
+  background: var(--bg);
+  border: 1.5px solid var(--line2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px; font-weight: 650;
+  text-align: center; min-width: 110px;
+}
+.flow .node em {
+  display: block; font-style: normal; font-size: 12.5px;
+  font-weight: 500; color: var(--mut); margin-top: 2px;
+}
+.flow .arrow {
+  width: 18px; height: 2px; background: var(--line2);
+  position: relative;
+}
+.flow .arrow::after {
+  content: ""; position: absolute; right: -1px; top: -3px;
+  border: 4px solid transparent; border-left-color: var(--line2);
+}
+
+/* Section */
+section { padding: 52px 0 12px; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 10px;
+}
+.sec-num {
+  font-size: 1.8rem; font-weight: 800; opacity: 0.85;
+  line-height: 1;
+}
+.sec-lead {
+  font-size: 1.05rem; color: var(--mut);
+  margin-bottom: 28px; max-width: 900px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 8px rgba(40, 35, 30, 0.03);
+  border-left: 4px solid var(--acc, var(--teal));
+}
+.card h3 {
+  margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+}
+.card h3 .sub {
+  font-size: 0.9rem; font-weight: 500; color: var(--mut);
+}
+.kv { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.kv .it {
+  display: grid; grid-template-columns: 160px 1fr;
+  gap: 12px; padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.kv .it:last-child { border-bottom: none; }
+.kv .it b {
+  font-size: 15.5px; color: var(--txt); font-weight: 650;
+}
+.kv .it span {
+  font-size: 16px; color: var(--mut); line-height: 1.65;
+}
+@media (max-width: 640px) {
+  .kv .it { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* 表格 */
+.tbl { overflow-x: auto; margin: 14px 0; }
+.tbl table {
+  width: 100%; border-collapse: collapse;
+  font-size: 16px;
+}
+.tbl th, .tbl td {
+  padding: 11px 14px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.tbl th {
+  background: var(--bg2); font-weight: 650;
+  color: var(--txt); font-size: 15px;
+}
+.tbl td { color: var(--mut); }
+.tbl tr:hover td { background: rgba(2, 132, 199, 0.03); }
+
+/* 步骤 */
+.steps-v { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.steps-v .step {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 16.5px; line-height: 1.65;
+}
+.steps-v .step .n {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 26px; border-radius: 8px;
+  background: var(--teal-soft); color: var(--teal);
+  font-size: 13.5px; font-weight: 800; flex: 0 0 auto;
+}
+
+/* 提示框 */
+.warn, .tipbox, .sum1 {
+  border-radius: 12px; padding: 14px 18px; margin: 16px 0;
+  font-size: 16.5px; line-height: 1.7;
+}
+.warn {
+  background: var(--amber-soft);
+  border: 1px solid rgba(163, 74, 8, 0.28);
+  color: #6b3206;
+}
+.tipbox {
+  background: var(--teal-soft);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  color: #0a4540;
+}
+.sum1 {
+  background: linear-gradient(135deg, var(--teal-soft), rgba(20, 184, 166, 0.06));
+  border: 1px solid rgba(2, 132, 199, 0.15);
+  font-weight: 500;
+}
+.sum1 b { color: var(--teal); }
+
+/* 小结框 */
+.summary-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 20px 0 28px;
+  border-top: 3px solid var(--acc, var(--teal));
+}
+.summary-box .t {
+  font-weight: 700; font-size: 16px; margin-bottom: 10px;
+  color: var(--txt);
+}
+.summary-box ul {
+  padding-left: 20px; color: var(--mut); font-size: 16px;
+}
+.summary-box li { margin-bottom: 6px; line-height: 1.65; }
+
+/* 图示 */
+.fig {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.fig .cap {
+  font-size: 14.5px; color: var(--mut);
+  margin-bottom: 12px; text-align: center;
+}
+.fig svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+/* 练习 */
+.quiz-head {
+  display: flex; align-items: center; gap: 12px;
+  margin: 32px 0 14px;
+}
+.quiz-head .qn {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--acc, var(--teal)); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px;
+}
+.quiz-head .qt {
+  font-size: 1.1rem; font-weight: 700;
+}
+.quiz { margin-bottom: 24px; }
+.quiz .q {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.quiz .stem {
+  font-size: 17px; font-weight: 600; margin-bottom: 12px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.quiz .stem .idx {
+  background: var(--bg2); color: var(--mut);
+  font-size: 13.5px; font-weight: 700;
+  min-width: 24px; height: 24px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+}
+.quiz .opts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+@media (max-width: 640px) {
+  .quiz .opts { grid-template-columns: 1fr; }
+}
+.quiz .opt {
+  text-align: left; font-family: inherit; font-size: 15.5px;
+  padding: 11px 14px; border-radius: 10px;
+  border: 1.5px solid var(--line2);
+  background: var(--bg); color: var(--txt);
+  cursor: pointer; transition: 0.15s;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.quiz .opt:hover:not(:disabled) {
+  border-color: var(--teal); background: var(--teal-soft);
+}
+.quiz .opt .k {
+  font-weight: 700; color: var(--teal); min-width: 18px;
+}
+.quiz .opt.correct {
+  border-color: var(--green); background: var(--green-soft);
+}
+.quiz .opt.wrong {
+  border-color: #dc2626; background: rgba(220, 38, 38, 0.08);
+}
+.quiz .opt:disabled { cursor: default; opacity: 0.95; }
+.quiz .qexp {
+  display: none; margin-top: 12px; padding: 12px 14px;
+  background: var(--bg); border-radius: 10px;
+  font-size: 15.5px; color: var(--mut); line-height: 1.7;
+}
+.quiz .qexp.show { display: block; }
+.quiz .qexp .ans-line { color: var(--green); font-weight: 650; }
+
+/* 资源 */
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-top: 18px;
+}
+.res-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  transition: 0.18s;
+}
+.res-card:hover {
+  border-color: rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);
+}
+.res-card h4 { font-size: 16.5px; color: var(--teal); margin-bottom: 6px; }
+.res-card .url {
+  font-family: var(--mono); font-size: 13.5px;
+  color: var(--amber); word-break: break-all; margin-bottom: 8px;
+}
+.res-card p { font-size: 15px; color: var(--mut); line-height: 1.6; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 80px;
+  margin-top: 48px;
+  color: var(--dim); font-size: 14.5px;
+  text-align: center; line-height: 1.9;
+}
+
+/* 返回顶部 */
+.back-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: 0.2s; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.back-top.show { opacity: 1; pointer-events: auto; }
+.back-top:hover { background: var(--bg2); border-color: var(--teal); }
+.back-top svg { width: 20px; height: 20px; color: var(--teal); }
+
+/* 随机提问浮窗 */
+.qz-widget {
+  position: fixed; bottom: 90px; right: 24px; width: 300px;
+  background: var(--card); border: 1px solid var(--line2);
+  border-radius: 16px; box-shadow: 0 8px 32px rgba(40,35,30,0.14);
+  z-index: 100; font-size: 14.5px; overflow: hidden;
+  display: none;
+}
+.qz-widget.show { display: block; }
+.qz-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 14px; background: var(--bg2);
+  border-bottom: 1px solid var(--line); font-weight: 700;
+}
+.qz-head .date { font-weight: 500; color: var(--mut); margin-left: 8px; font-size: 13px; }
+.qz-fold {
+  background: none; border: none; font-size: 18px; cursor: pointer;
+  color: var(--mut); width: 28px; height: 28px; border-radius: 6px;
+  line-height: 1;
+}
+.qz-fold:hover { background: var(--line); color: var(--txt); }
+.qz-body { padding: 14px; }
+.qz-classes { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.qz-classes button {
+  font-family: inherit; font-size: 13.5px; padding: 5px 12px;
+  border-radius: 8px; border: 1px solid var(--line2);
+  background: var(--bg); cursor: pointer; color: var(--mut);
+}
+.qz-classes button.on {
+  background: var(--teal-soft); border-color: var(--teal); color: var(--teal); font-weight: 650;
+}
+.qz-result {
+  text-align: center; min-height: 70px;
+  display: flex; flex-direction: column; justify-content: center;
+  margin-bottom: 12px;
+}
+.qz-result .tip { color: var(--dim); }
+.qz-result .nm { font-size: 1.4rem; font-weight: 800; color: var(--txt); }
+.qz-result .id { font-size: 13.5px; color: var(--mut); margin-top: 2px; }
+.qz-toggle {
+  width: 100%; font-family: inherit; font-size: 15px; font-weight: 650;
+  padding: 11px; border-radius: 10px; border: none;
+  background: var(--teal); color: #fff; cursor: pointer; transition: 0.15s;
+}
+.qz-toggle:hover { background: #0c4a6e; }
+.qz-toggle.on { background: var(--coral); }
+.qz-rows {
+  display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+}
+.qz-rows button {
+  flex: 1; font-family: inherit; font-size: 13px;
+  padding: 7px 8px; border-radius: 8px;
+  border: 1px solid var(--line2); background: var(--bg);
+  cursor: pointer; color: var(--mut);
+}
+.qz-rows button:hover { border-color: var(--teal); color: var(--teal); }
+.qz-note {
+  margin-top: 10px; font-size: 13.5px; color: var(--mut);
+  display: none;
+}
+.qz-list {
+  margin-top: 10px; max-height: 140px; overflow-y: auto;
+  font-size: 13.5px; display: none;
+}
+.qz-list .log-line {
+  padding: 5px 0; border-bottom: 1px dashed var(--line); color: var(--mut);
+}
+.qz-stats {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 12px; font-size: 13.5px; color: var(--mut);
+}
+.qz-stats button {
+  font-family: inherit; font-size: 12.5px; padding: 4px 10px;
+  border-radius: 6px; border: 1px solid var(--line2);
+  background: var(--bg); cursor: pointer; color: var(--mut);
+}
+
+/* 重新作答按钮 */
+.quiz .qexp .retry {
+  display: inline-block;
+  margin-left: 12px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(2, 132, 199, 0.35);
+  background: var(--teal-soft);
+  color: var(--teal);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: 0.15s;
+}
+.quiz .qexp .retry:hover {
+  background: rgba(2, 132, 199, 0.18);
+  border-color: var(--teal);
+}
+
+/* 响应式 */
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  section { padding: 40px 0 8px; }
+  .hero { padding: 36px 0 32px; }
+  nav .brand { font-size: 13.5px; }
+  nav .qbtn { font-size: 13px; padding: 6px 10px; }
+  h2 { font-size: 1.35rem; }
+  .card { padding: 18px 16px; }
+  .flow .node { min-width: 90px; font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .qz-widget {
+    width: min(300px, calc(100vw - 28px));
+    right: 14px; bottom: 80px;
+  }
+}
+
+
+/* ===== 第03章专属：演示区 / 指令周期 / chips ===== */
+:root {
+  --cyan: var(--teal);
+  --cyan-soft: var(--teal-soft);
+}
+.chip-row {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 20px;
+}
+.chip {
+  background: var(--card);
+  border: 1px solid var(--line2);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--mut);
+  box-shadow: 0 1px 4px rgba(40,35,30,0.04);
+  min-width: 120px;
+}
+.chip b {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: var(--teal);
+  line-height: 1.3;
+}
+.chip span { font-size: 13px; }
+.hero h1 .hl, .hl {
+  color: var(--teal);
+  font-style: normal;
+}
+.tagline {
+  display: flex; flex-wrap: wrap; gap: 8px 14px;
+  margin-top: 16px;
+  font-size: 14px; color: var(--dim);
+}
+.tagline span {
+  position: relative;
+  padding-left: 12px;
+}
+.tagline span::before {
+  content: "";
+  position: absolute; left: 0; top: 0.55em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--teal);
+}
+div.map {
+  padding: 28px 0 8px;
+}
+div.map > .wrap {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 12px rgba(40,35,30,0.04);
+}
+div.map h2 {
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+  color: var(--txt);
+}
+.flow .arr {
+  color: var(--dim);
+  font-weight: 700;
+  padding: 0 4px;
+  font-size: 16px;
+}
+.flow .node b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--txt);
+}
+.flow .node span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--mut);
+  margin-top: 3px;
+  font-weight: 500;
+}
+.card > p { margin-bottom: 10px; color: var(--mut); font-size: 16.5px; line-height: 1.75; }
+.card > p b { color: var(--txt); }
+.fig svg text { fill: var(--mut) !important; }
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid rgba(163,74,8,0.28);
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* 交互演示区 */
+.demo {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 14px 0;
+  background: var(--bg);
+}
+.demo .demo-t {
+  font-weight: 800;
+  color: var(--teal);
+  font-size: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.demo label {
+  font-size: 14.5px;
+  color: var(--mut);
+  margin-right: 8px;
+}
+.demo input[type=number],
+.demo input[type=text],
+.demo select {
+  border: 1.5px solid var(--line2);
+  background: var(--card);
+  color: var(--txt);
+  border-radius: 9px;
+  padding: 8px 12px;
+  font-size: 15px;
+  font-family: var(--mono);
+  margin-right: 8px;
+}
+.demo input:focus,
+.demo select:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+.demo .btn {
+  border: 1px solid rgba(2,132,199,0.35);
+  background: var(--teal-soft);
+  color: var(--teal);
+  border-radius: 9px;
+  padding: 9px 16px;
+  font-size: 14.5px;
+  font-weight: 650;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.15s;
+  margin: 4px 4px 4px 0;
+}
+.demo .btn:hover { background: rgba(2,132,199,0.18); }
+.demo .btn.amber {
+  border-color: rgba(163,74,8,0.35);
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.demo .btn.amber:hover { background: rgba(163,74,8,0.18); }
+.demo .out {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.demo .box {
+  flex: 1;
+  min-width: 120px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+}
+.demo .box b {
+  display: block;
+  font-size: 12.5px;
+  color: var(--dim);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.demo .box .v {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--teal);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.demo .steps,
+.steps {
+  display: none;
+  margin-top: 14px;
+  border-top: 1px dashed var(--line2);
+  padding-top: 12px;
+}
+.demo .steps.show,
+.steps.show { display: block; }
+.demo .step,
+.step {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--txt);
+  padding: 4px 0;
+  line-height: 1.6;
+}
+.demo .step .n,
+.step .n {
+  color: var(--dim);
+  font-size: 12.5px;
+  min-width: 42px;
+  font-weight: 700;
+}
+.demo .step.hl,
+.step.hl {
+  color: var(--amber);
+  font-weight: 600;
+}
+/* 指令周期寄存器条 */
+.demo .regs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.g2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+.g3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+@media (max-width: 720px) {
+  .g2, .g3 { grid-template-columns: 1fr; }
+}
+pre {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--txt);
+  line-height: 1.75;
+  margin: 0;
+  white-space: pre-wrap;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+/* ---- 与主页 IndexOx 统一的品牌 logo ---- */
+nav .brand-logo {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none; flex-shrink: 0;
+}
+nav .brand-logo:hover { text-decoration: none; }
+.logo-icon-wrapper {
+  width: 32px; height: 32px; flex: none;
+  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(2, 132, 199, 0.25);
+}
+.logo-icon-wrapper svg { width: 18px; height: 18px; }
+.brand-title {
+  font-size: 1.05rem; font-weight: 900; letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #0284c7, #4f46e5);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+nav .brand { padding-left: 14px; border-left: 1px solid var(--line2); }
+nav .brand b { color: var(--teal); }
+
+@media (max-width: 760px) {
+  .brand-title { display: none; }
+}
+
+</style>
+</head>
+<body>
+<!-- ===== 导航 ===== -->
+<nav>
+  <div class="wrap">
+    <a class="brand-logo" href="../daolun/index.html" aria-label="返回 CSAI 导航首页">
+      <span class="logo-icon-wrapper" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="5"/><line x1="15" y1="2" x2="15" y2="5"/><line x1="9" y1="19" x2="9" y2="22"/><line x1="15" y1="19" x2="15" y2="22"/><line x1="2" y1="9" x2="5" y2="9"/><line x1="2" y1="15" x2="5" y2="15"/><line x1="19" y1="9" x2="22" y2="9"/><line x1="19" y1="15" x2="22" y2="15"/></svg>
+      </span>
+      <span class="brand-title">CSAI</span>
+    </a>
+    <div class="brand">第<b>03</b>章 · 计算机体系基础</div>
+    <div class="navlinks" id="navlinks">
+      <a href="#s1">1 层次结构</a>
+      <a href="#s2">2 数字系统</a>
+      <a href="#s3">3 数据表示</a>
+      <a href="#s4">4 数字逻辑</a>
+      <a href="#s5">5 计算机组成</a>
+      <a href="#res">资源</a>
+    </div>
+    <!-- <button class="qbtn" id="navQz" type="button">随机提问</button> -->
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="chip-row">
+      <div class="chip"><b>9 层</b><span>抽象层次</span></div>
+      <div class="chip"><b>4 种</b><span>位置化数制</span></div>
+      <div class="chip"><b>IEEE 754</b><span>浮点标准</span></div>
+      <div class="chip"><b>Simple-1</b><span>简单计算机</span></div>
+    </div>
+    <h1>第3章 计算机体系基础：<br>从<span class="hl">抽象层次</span>到<span class="hl">简单计算机</span></h1>
+    <p class="sub">本章沿两条主线展开：先自上而下认识计算机系统的抽象层次，理解"复杂性靠抽象来管理"；再自底向上从二进制数制、数据表示、数字逻辑，一步步搭建出一台能执行程序的简单计算机 Simple-1。</p>
+    <div class="tagline">
+      <span>抽象层次</span><span>数字系统与数制转换</span>      <span>数据的表示和存储</span><span>布尔代数与逻辑门</span><span>冯·诺依曼架构</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 知识地图 ===== -->
+<div class="map">
+  <div class="wrap">
+    <h2>本章知识地图</h2>
+    <p style="color:var(--mut);font-size:14px">一条主线：抽象分层理解 → 二进制数制 → 数据编码 → 数字逻辑 → 整机组成</p>
+    <div class="flow">
+      <div class="node"><b>抽象层次</b><span>用分层简化复杂系统</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>数字系统</b><span>0/1 与各进制转换</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>数据表示</b><span>数值·字符·多媒体编码</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>数字逻辑</b><span>门电路构建运算部件</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>计算机组成</b><span>冯·诺依曼架构与执行</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== 1 层次结构 -->
+<section id="s1" style="--acc:var(--cyan)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--cyan)">01</div>
+      <h2><b>SECTION 1</b>计算机系统的层次结构</h2>
+    </div>
+    <p class="sec-lead">计算机既是最复杂的系统，也是最简单的系统——复杂世界由 0 和 1 的二进制逻辑层层抽象而成。</p>
+
+    <div class="card" style="--acc:var(--cyan)">
+      <h3>抽象：管理复杂性的关键<span class="sub">Abstraction —— 隐藏底层细节，分层处理问题</span></h3>
+      <p>计算机由数以亿计的晶体管、庞大的软件系统和复杂的人机交互组成，但本质上只遵循两个基本规则：<b style="color:var(--cyan)">0 和 1、开与关</b>。管理复杂性的关键技术是<b>抽象</b>：通过隐藏底层细节，在不同层次上处理不同复杂度的问题。</p>
+      <p style="color:var(--dim);font-size:14px">CEO 的类比：战略层只关心各"业务板块"营收 → 管理层关心"部门"绩效 → 执行层分配任务 → 实施层处理具体事务。CEO 不需要知道每个员工的工作细节，就能掌控整个公司。</p>
+    </div>
+
+    <div class="fig" style="--acc:var(--cyan)">
+      <svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="计算机系统抽象层次金字塔">
+        <defs>
+          <linearGradient id="gC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3be1ff" stop-opacity=".30"/><stop offset="1" stop-color="#3be1ff" stop-opacity=".06"/></linearGradient>
+        </defs>
+        <text x="460" y="22" text-anchor="middle" fill="#9db0c8" font-size="13">计算机系统的抽象层次（自底向上）</text>
+        <!-- 层次：越往上越抽象 -->
+        <g font-size="13">
+          <rect x="60"  y="40"  width="800" height="26" rx="6" fill="rgba(255,255,255,.05)" stroke="#2a3e5c"/><text x="80" y="58" fill="#9db0c8">物理（电子运动）</text>
+          <rect x="110" y="72"  width="700" height="26" rx="6" fill="rgba(255,255,255,.06)" stroke="#2a3e5c"/><text x="130" y="90" fill="#c7d3e4">器件（晶体管、二极管）</text>
+          <rect x="160" y="104" width="600" height="26" rx="6" fill="rgba(255,255,255,.07)" stroke="#2a3e5c"/><text x="180" y="122" fill="#c7d3e4">模拟电路（放大器、滤波器）</text>
+          <rect x="210" y="136" width="500" height="26" rx="6" fill="rgba(59,225,255,.12)" stroke="#3e6f8c"/><text x="230" y="154" fill="#b9f3ff">数字电路（与门、或门）</text>
+          <rect x="260" y="168" width="400" height="26" rx="6" fill="rgba(59,225,255,.16)" stroke="#3e6f8c"/><text x="280" y="186" fill="#b9f3ff">逻辑（加法器、存储器）</text>
+          <rect x="310" y="200" width="300" height="26" rx="6" fill="rgba(59,225,255,.20)" stroke="#4a8aa8"/><text x="330" y="218" fill="#dff6ff">微体系结构（数据路径、控制器）</text>
+          <rect x="360" y="232" width="200" height="26" rx="6" fill="rgba(255,199,102,.20)" stroke="#a8844a"/><text x="380" y="250" fill="#ffe2b0">体系结构（指令、寄存器）</text>
+          <rect x="410" y="264" width="100" height="26" rx="6" fill="rgba(255,199,102,.30)" stroke="#c9a35c"/><text x="430" y="282" fill="#ffe2b0">操作系统</text>
+          <rect x="410" y="296" width="100" height="26" rx="6" fill="rgba(185,163,255,.28)" stroke="#8a7cc9"/><text x="430" y="314" fill="#e4dcff">应用软件</text>
+        </g>
+        <text x="460" y="334" text-anchor="middle" fill="#6f83a0" font-size="12">越向上，离物理世界越远、越贴近用户；越向下，越接近电子的物理本质</text>
+      </svg>
+      <div class="figcap">计算机系统的抽象层次 —— 每个层次只关心本层的模块与元素</div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan)">
+      <h3>各抽象层次速览<span class="sub">表 1.1 计算机系统的抽象层次</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:22%"><col style="width:46%"><col style="width:32%"></colgroup>
+          <thead><tr><th>抽象层次</th><th>模块与元素</th><th>一句话说明</th></tr></thead>
+          <tbody>
+            <tr><td>应用软件</td><td>电子游戏、浏览器</td><td>使用操作系统功能解决用户问题</td></tr>
+            <tr><td>操作系统</td><td>设备驱动程序等</td><td>管理底层抽象，如访问硬盘、管理存储器</td></tr>
+            <tr><td>体系结构</td><td>指令、寄存器</td><td>程序员视角的计算机抽象（如 x86）</td></tr>
+            <tr><td>微体系结构</td><td>数据路径、控制器</td><td>用逻辑实现体系结构定义的指令</td></tr>
+            <tr><td>逻辑</td><td>加法器、存储器</td><td>用数字电路构造复杂结构</td></tr>
+            <tr><td>数字电路</td><td>与门、或门</td><td>电压限定在离散范围表示 0/1</td></tr>
+            <tr><td>模拟电路</td><td>放大器、滤波器</td><td>输入输出为连续电压</td></tr>
+            <tr><td>器件</td><td>晶体管、二极管</td><td>建立端子上电压与电流的关系模型</td></tr>
+            <tr><td>物理</td><td>电子</td><td>最底层抽象，由量子力学和麦克斯韦方程描述</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warn"><b>要点：</b>同一个体系结构可以有不同微结构实现（如 Intel Core i7、80486、AMD Athlon 都是 x86 的不同微结构），在价格、性能、功耗间取折中。</div>
+    </div>
+
+    <div class="sum1" style="--acc:var(--cyan)"><b>一句话总结：</b>计算机通过"抽象"把从电子到应用软件的复杂系统划分为逐层简化的层次，每层只关注本层细节，这正是理解复杂计算机系统的钥匙。</div>
+
+    <div class="summary-box" style="--acc:var(--cyan)">
+      <div class="t">本节小结</div>
+      <ul>
+        <li>计算机本质只遵循 0 和 1 两个基本规则，复杂来自层层叠加与抽象。</li>
+        <li>抽象通过隐藏底层细节，在不同层次处理不同复杂度的问题（CEO 分层管理类比）。</li>
+        <li>抽象层次自底向上：物理 → 器件 → 模拟电路 → 数字电路 → 逻辑 → 微体系结构 → 体系结构 → 操作系统 → 应用软件。</li>
+        <li>一个体系结构（如 x86）可有多种微结构实现，以取得价格、性能、功耗的折中。</li>
+        <li>理解计算机系统应同时关注上下层关系，选择合适的抽象层次思考问题。</li>
+      </ul>
+    </div>
+
+    <div class="quiz-head" style="--acc:var(--cyan)"><div class="qn">?</div><div class="qt">课堂练习 · 1 计算机系统的层次结构</div></div>
+    <div class="quiz" style="--acc:var(--cyan)" data-sec="s1">
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">1</span>计算机系统管理复杂性的关键技术是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>并行处理</button>
+          <button class="opt" type="button"><span class="k">B</span>抽象</button>
+          <button class="opt" type="button"><span class="k">C</span>虚拟化</button>
+          <button class="opt" type="button"><span class="k">D</span>缓存</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>教材明确指出"管理复杂性的关键技术在于抽象（Abstraction）"——通过隐藏底层细节，在不同层次处理不同复杂度的问题。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">2</span>在抽象层次中，位于"逻辑"层次之下（更接近物理）的一层是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>体系结构</button>
+          <button class="opt" type="button"><span class="k">B</span>微体系结构</button>
+          <button class="opt" type="button"><span class="k">C</span>操作系统</button>
+          <button class="opt" type="button"><span class="k">D</span>数字电路</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>自底向上为：物理 → 器件 → 模拟电路 → 数字电路 → 逻辑 → 微体系结构 → …，因此逻辑之下（更底层）是数字电路。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">3</span>程序员编写程序时直接面对、定义了指令系统和寄存器的抽象层次是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>逻辑</button>
+          <button class="opt" type="button"><span class="k">B</span>操作系统</button>
+          <button class="opt" type="button"><span class="k">C</span>体系结构</button>
+          <button class="opt" type="button"><span class="k">D</span>数字电路</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>体系结构描述了程序员观点的计算机抽象，例如 x86 定义了一套指令系统和寄存器，程序员可以使用这些指令和寄存器。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">4</span>关于"一个体系结构对应多种微结构实现"，下列说法正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>不同微结构必须完全相同</button>
+          <button class="opt" type="button"><span class="k">B</span>可在价格、性能和功耗间取不同折中</button>
+          <button class="opt" type="button"><span class="k">C</span>微结构即指令集</button>
+          <button class="opt" type="button"><span class="k">D</span>每个体系结构只能有一种实现</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>Intel Core i7、Intel 80486 和 AMD Athlon 都是 x86 体系结构的三种不同微结构实现，目的就是取得价格、性能、功耗等方面的折中。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">5</span>"数字电路"层次最核心的特征是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>将电压控制在离散范围内表示 0 和 1</button>
+          <button class="opt" type="button"><span class="k">B</span>输入输出为连续电压</button>
+          <button class="opt" type="button"><span class="k">C</span>处理电子的量子行为</button>
+          <button class="opt" type="button"><span class="k">D</span>管理硬盘访问</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>数字电路将电压控制在离散范围内以表示 0 和 1；连续电压是模拟电路的特征，电子行为属物理层，管理硬盘属操作系统层。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">6</span>本章学习抽象层次的主要目的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>只掌握最底层电路知识</button>
+          <button class="opt" type="button"><span class="k">B</span>只掌握最高层软件知识</button>
+          <button class="opt" type="button"><span class="k">C</span>面对问题时能选择合适的抽象层次思考</button>
+          <button class="opt" type="button"><span class="k">D</span>记住每一层的具体电路图</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>教材强调：理解系统时不能局限于某一层次，应同时关注上下层关系，在面对问题时能选择合适的抽象层次，并意识到设计决策对其他层次的影响。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================================================== 2 数字系统 -->
+<section id="s2" style="--acc:var(--amber)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--amber)">02</div>
+      <h2><b>SECTION 2</b>数字系统</h2>
+    </div>
+    <p class="sec-lead">任何语言的符号数量都有限——选取哪些符号、如何重复使用，就产生了各种位置化数字系统（数制）。</p>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3>基数与位权：数制的两个基本概念<span class="sub">Radix 与 Place Value —— 一切数制转换的基础</span></h3>
+      <div class="kv">
+        <div class="it"><b>基数（Radix）R</b><span>该数制中符号的总数。如十进制的基数 R=10，二进制的 R=2。</span></div>
+        <div class="it"><b>位权（Place Value）Rⁱ</b><span>不同数位上的固定常数，即以基数为底的整数次幂。</span></div>
+      </div>
+      <p>以 R 为基数、n 个整数位、m 个小数位的数 K，可按位权展开为多项式：</p>
+      <div class="formula">K = Σ Kᵢ × Rⁱ = Kₙ₋₁Rⁿ⁻¹ + … + K₁R¹ + K₀R⁰ + K₋₁R⁻¹ + … + K₋ₘR⁻ᵐ</div>
+      <p>例：<code>(1011.01)₂ = 1×2³ + 0×2² + 1×2¹ + 1×2⁰ + 0×2⁻¹ + 1×2⁻² = 11.25D</code></p>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3>四种位置化数字系统<span class="sub">表 2.1 数字系统的基本概念</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:22%"><col style="width:22%"><col style="width:14%"><col style="width:22%"><col style="width:20%"></colgroup>
+          <thead><tr><th>数字系统</th><th>英文名</th><th class="c">基数</th><th>基本符号</th><th>进位规则</th></tr></thead>
+          <tbody>
+            <tr><td>十进制</td><td>Decimal</td><td class="c m">10</td><td class="m">0…9</td><td>逢 10 进 1</td></tr>
+            <tr><td>二进制</td><td>Binary</td><td class="c m">2</td><td class="m">0, 1</td><td>逢 2 进 1</td></tr>
+            <tr><td>八进制</td><td>Octal</td><td class="c m">8</td><td class="m">0…7</td><td>逢 8 进 1</td></tr>
+            <tr><td>十六进制</td><td>Hexadecimal</td><td class="c m">16</td><td class="m">0…9, A…F</td><td>逢 16 进 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warn"><b>记忆点：</b>二进制书写冗长易错，常用八进制（1 位对应 3 位二进制）与十六进制（1 位对应 4 位二进制）缩写。右下角标注或后缀 D / B / O(Q) / H 表示所属数制。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3>数制转换规则<span class="sub">2.5 数制转换 —— 四把"瑞士军刀"</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:30%"><col style="width:40%"><col style="width:30%"></colgroup>
+          <thead><tr><th>转换</th><th>方法</th><th>要点</th></tr></thead>
+          <tbody>
+            <tr><td>任意进制 → 十进制</td><td>按位权展开多项式并求和</td><td>例如 <code>(456.7)₈ = 4×8²+5×8¹+6×8⁰+7×8⁻¹ = 302.875D</code></td></tr>
+            <tr><td>十进制整数 → 二进制</td><td><b>除二取余法</b></td><td>不断除以 2 取余数，<b>逆序</b>输出（余数为最低位）</td></tr>
+            <tr><td>十进制小数 → 二进制</td><td><b>乘二取整法</b></td><td>不断乘 2 取整数部分，<b>顺序</b>输出（达到所需精度即可停止）</td></tr>
+            <tr><td>二进制 ↔ 八进制</td><td><b>三位一并 / 一分为三</b></td><td>以小数点为界分组，不足三位补零</td></tr>
+            <tr><td>二进制 ↔ 十六进制</td><td><b>四位一并 / 一分为四</b></td><td>以小数点为界分组，不足四位补零</td></tr>
+            <tr><td>八进制 ↔ 十六进制</td><td>以二进制为中介</td><td>先转二进制再转目标进制</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>例：<code>111101001.11001B = 751.62Q = 1E9.C8H</code>；<code>23D = 10111B</code>；<code>0.8125D = 0.1101B</code></p>
+    </div>
+
+    <div class="demo" style="--acc:var(--amber)">
+      <div class="demo-t">数制转换演示 <span class="badge">交互</span></div>
+      <label>输入十进制数：</label>
+      <input type="number" id="decIn" value="23" step="any">
+      <button class="btn" id="convBtn" type="button">转换</button>
+      <div class="out">
+        <div class="box"><b>二进制</b><div class="v" id="outBin">10111</div></div>
+        <div class="box"><b>八进制</b><div class="v" id="outOct">27</div></div>
+        <div class="box"><b>十六进制</b><div class="v" id="outHex">17</div></div>
+      </div>
+      <div style="margin-top:10px">
+        <button class="btn amber" id="stepBtn" type="button">演示：除二取余步骤</button>
+        <button class="btn" id="stepReset" type="button" style="display:none">重置</button>
+      </div>
+      <div class="steps" id="convSteps"></div>
+    </div>
+
+    <div class="sum1" style="--acc:var(--amber)"><b>一句话总结：</b>计算机只用 0 和 1 的二进制数制，通过基数与位权可统一描述十进制、二进制、八进制、十六进制，并以"位权展开、除二取余、乘二取整、三位/四位分组"完成各进制间的相互转换。</div>
+
+    <div class="summary-box" style="--acc:var(--amber)">
+      <div class="t">本节小结</div>
+      <ul>
+        <li>位置化数字系统中，每个符号的值与它所在的位置有关；基数 = 符号总数，位权 = Rⁱ。</li>
+        <li>十进制 R=10、二进制 R=2、八进制 R=8、十六进制 R=16（A…F 代表 10…15）。</li>
+        <li>任意进制转十进制：按位权展开求和；十进制转二进制：整数"除二取余逆序"，小数"乘二取整顺序"。</li>
+        <li>二进制与八进制"三位一并/一分为三"，与十六进制"四位一并/一分为四"，分组不足补零。</li>
+        <li>八进制与十六进制之间以二进制为中介转换；小数转换满足所需精度即可停止。</li>
+      </ul>
+    </div>
+
+    <div class="quiz-head" style="--acc:var(--amber)"><div class="qn">?</div><div class="qt">课堂练习 · 2 数字系统</div></div>
+    <div class="quiz" style="--acc:var(--amber)" data-sec="s2">
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">1</span>二进制数 (1011)₂ 按位权展开为十进制是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>10</button>
+          <button class="opt" type="button"><span class="k">B</span>11</button>
+          <button class="opt" type="button"><span class="k">C</span>12</button>
+          <button class="opt" type="button"><span class="k">D</span>13</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>(1011)₂ = 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8 + 2 + 1 = 11。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">2</span>十六进制数 9AC 中的字母 C 表示十进制数（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>10</button>
+          <button class="opt" type="button"><span class="k">B</span>11</button>
+          <button class="opt" type="button"><span class="k">C</span>12</button>
+          <button class="opt" type="button"><span class="k">D</span>13</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>十六进制中 A、B、C、D、E、F 分别代表十进制 10、11、12、13、14、15。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">3</span>十进制数 23 转换为二进制数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>11001</button>
+          <button class="opt" type="button"><span class="k">B</span>10011</button>
+          <button class="opt" type="button"><span class="k">C</span>11101</button>
+          <button class="opt" type="button"><span class="k">D</span>10111</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>23 ÷ 2 余 1，11 ÷ 2 余 1，5 ÷ 2 余 1，2 ÷ 2 余 0，1 ÷ 2 余 1，逆序输出 10111。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">4</span>十进制小数 0.8125 转换为二进制数为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>0.1101</button>
+          <button class="opt" type="button"><span class="k">B</span>0.1011</button>
+          <button class="opt" type="button"><span class="k">C</span>0.1110</button>
+          <button class="opt" type="button"><span class="k">D</span>0.1100</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>0.8125×2=1.625 取 1；0.625×2=1.25 取 1；0.25×2=0.5 取 0；0.5×2=1 取 1，顺序输出 0.1101。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">5</span>二进制数 111101001.11001B 对应的八进制数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>771.72</button>
+          <button class="opt" type="button"><span class="k">B</span>751.61</button>
+          <button class="opt" type="button"><span class="k">C</span>751.62</button>
+          <button class="opt" type="button"><span class="k">D</span>761.62</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>三位一并：111 101 001 . 110 010 → 7 5 1 . 6 2，即 751.62Q。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">6</span>二进制数 111101001.11001B 对应的十六进制数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>1D9.C8</button>
+          <button class="opt" type="button"><span class="k">B</span>1E9.C8</button>
+          <button class="opt" type="button"><span class="k">C</span>1E9.C4</button>
+          <button class="opt" type="button"><span class="k">D</span>1F9.C8</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>四位一并：0001 1110 1001 . 1100 1000 → 1 E 9 . C 8，即 1E9.C8H。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">7</span>将十六进制数 3C98.A6H 转为二进制，正确的补零分组结果是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>11 1100 1001 1000 . 1010 011</button>
+          <button class="opt" type="button"><span class="k">B</span>111 100 1001 1000 . 1010 0110</button>
+          <button class="opt" type="button"><span class="k">C</span>0011 1100 1001 100 . 1010 0110</button>
+          <button class="opt" type="button"><span class="k">D</span>0011 1100 1001 1000 . 1010 0110</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>一分为四：3→0011、C→1100、9→1001、8→1000，A→1010、6→0110，即 0011 1100 1001 1000 . 1010 0110B。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">8</span>关于二进制与十六进制的转换，正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>一位十六进制数对应四位二进制数</button>
+          <button class="opt" type="button"><span class="k">B</span>一位十六进制数对应三位二进制数</button>
+          <button class="opt" type="button"><span class="k">C</span>一位二进制数对应四位十六进制数</button>
+          <button class="opt" type="button"><span class="k">D</span>十六进制与二进制之间必须借助八进制转换</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>16¹ = 2⁴，故一位十六进制数对应四位二进制数；八进制才是对应三位（8¹ = 2³）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================================================== 3 数据的表示和存储 -->
+<section id="s3" style="--acc:var(--violet)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet)">03</div>
+      <h2><b>SECTION 3</b>数据的表示和存储</h2>
+    </div>
+    <p class="sec-lead">在计算机中，数据是一串包含 0 和 1 的二进制组合——数值、字符、音频、图像、视频都必须先"编码"成二进制才能被计算机识别和处理。</p>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>数据类型与数据单位<span class="sub">3.1–3.2 —— 数据分三类，单位按 2 的幂次递进</span></h3>
+      <div class="kv">
+        <div class="it"><b>数值型</b><span>无符号数、定点数、浮点数…</span></div>
+        <div class="it"><b>字符型</b><span>ASCII、GBK、Unicode…</span></div>
+        <div class="it"><b>多媒体数据</b><span>音频、图像、视频…</span></div>
+      </div>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:14%"><col style="width:14%"><col style="width:20%"><col style="width:26%"><col style="width:26%"></colgroup>
+          <thead><tr><th>中文</th><th>简称</th><th>英文</th><th>字节数</th><th>近似值</th></tr></thead>
+          <tbody>
+            <tr><td>位</td><td>b</td><td>bit</td><td class="m">1/8</td><td>数据最小单位</td></tr>
+            <tr><td>字节</td><td>B</td><td>Byte</td><td class="m">1</td><td>1B = 8b</td></tr>
+            <tr><td>千字节</td><td>KB</td><td>KiloByte</td><td class="m">2¹⁰</td><td>≈ 10³</td></tr>
+            <tr><td>兆字节</td><td>MB</td><td>MegaByte</td><td class="m">2²⁰</td><td>≈ 10⁶</td></tr>
+            <tr><td>吉字节</td><td>GB</td><td>GigaByte</td><td class="m">2³⁰</td><td>≈ 10⁹</td></tr>
+            <tr><td>太字节</td><td>TB</td><td>TeraByte</td><td class="m">2⁴⁰</td><td>≈ 10¹²</td></tr>
+            <tr><td>拍字节</td><td>PB</td><td>Petabyte</td><td class="m">2⁵⁰</td><td>≈ 10¹⁵</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warn"><b>字（Word）：</b>计算机一次处理数据的位数，字长通常为 8 的整数倍（8/16/32/64 位），位数越多精度越高、运算越快。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>数值型数据：无符号数、原码、补码<span class="sub">3.3 —— 一个"符号"与"减法转加法"的故事</span></h3>
+      <div class="kv">
+        <div class="it"><b>无符号数</b><span>字长 n 范围 0 ~ 2ⁿ−1（8 位：0~255）；超出字长即溢出</span></div>
+        <div class="it"><b>原码</b><span>最高位为符号位（0 正 1 负），数值位为绝对值；±0 两种表示；范围 −(2ⁿ⁻¹−1) ~ +(2ⁿ⁻¹−1)</span></div>
+        <div class="it"><b>补码</b><span>正数与原码相同；负数 = 符号位不变、数值位取反加 1；0 唯一；范围 −2ⁿ⁻¹ ~ +(2ⁿ⁻¹−1)</span></div>
+      </div>
+      <p><b style="color:var(--violet)">补的直觉（时钟模型）：</b>把 8 点拨到 5 点，可逆拨 3 格也可顺拨 9 格——对模 12，−3 ≡ +9。只要确定"模"（n 位二进制的模为 2ⁿ），就可以用等价正数代替负数，把<b>减法变成加法</b>。</p>
+      <div class="formula">[A+B]补 = [A]补 + [B]补 (mod 2ⁿ)　　[A−B]补 = [A]补 + [−B]补 (mod 2ⁿ)</div>
+      <div class="warn"><b>运算规则：</b>符号位和数值位一起参加运算，符号位产生的进位直接丢掉；[-B]补 = [B]补连同符号位取反加 1（求补）。</div>
+      <p>例：8 位下求 [50−30]补 → [50]补=00110010，[−30]补=11100010，相加得 00010100（进位丢弃）= 20 ✓</p>
+    </div>
+
+    <div class="demo" style="--acc:var(--violet)">
+      <div class="demo-t">原码 / 补码转换演示 <span class="badge">交互</span></div>
+      <label>输入十进制整数（−128 ~ 127）：</label>
+      <input type="number" id="sgnIn" value="-33" min="-128" max="127">
+      <button class="btn" id="sgnBtn" type="button">转换</button>
+      <div class="out">
+        <div class="box"><b>二进制真值</b><div class="v" id="sgnTrue" style="font-size:15px">−100001</div></div>
+        <div class="box"><b>原码</b><div class="v" id="sgnMag" style="font-size:15px">1010 0001</div></div>
+        <div class="box"><b>补码</b><div class="v" id="sgnCpl" style="font-size:15px">1101 1111</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>实数：从定点到浮点<span class="sub">3.4 —— 小数点要么固定，要么浮动</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:20%"><col style="width:26%"><col style="width:26%"><col style="width:28%"></colgroup>
+          <thead><tr><th>表示法</th><th>核心思想</th><th>优点</th><th>缺点</th></tr></thead>
+          <tbody>
+            <tr><td>定点数</td><td>预先约定小数点位置（定点整数 / 定点小数）</td><td>实现简单、计算速度快</td><td>表示范围有限、精度浪费</td></tr>
+            <tr><td>浮点数</td><td>小数点位置随数值大小浮动（借鉴科学计数法 N = M × Rᴱ）</td><td>表示范围极大、灵活性高</td><td>实现复杂、存在舍入误差</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b style="color:var(--violet)">8 位简化浮点模型：</b>符号位 1 位 + 指数位 3 位（偏移 Bias = 2³⁻¹−1 = 3）+ 尾数位 4 位（隐含整数位 1，只存小数部分）。</p>
+      <div class="formula">+5.5 → 标准化 1.011×2² → 符号 0，指数 2+3=5=<b>101</b>，尾数 .011 补零为 <b>0110</b> → 存储 <b>0 101 0110</b></div>
+      <p><b style="color:var(--violet)">工业标准 IEEE 754：</b>单精度 float 32 位（1 符号 + 8 指数 + 23 尾数）；双精度 double 64 位（1 + 11 + 52）。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>字符型数据：ASCII → Unicode → 汉字国标码<span class="sub">3.5 —— 从 128 个字符到全人类字符</span></h3>
+      <div class="kv">
+        <div class="it"><b>ASCII</b><span>7 位编码 2⁷=128 个字符；通常用 1 字节存储（最高位为 0）；控制字符 00H–1FH 与 7FH，可显示字符 20H–7EH</span></div>
+        <div class="it"><b>Unicode</b><span>为每个字符定义唯一码位（如"知"= U+77E5）；UTF-8 用 1–4 字节变长编码且完全兼容 ASCII，是互联网主流</span></div>
+        <div class="it"><b>汉字国标码</b><span>GB2312（6763 汉字）→ GBK（21003 汉字，Windows 默认 CP936）→ GB18030（70244 汉字，现行强制标准，兼容 ASCII/GBK）</span></div>
+      </div>
+      <p>例："BYTE" 每个字符占 1 字节：B=42H、Y=59H、T=54H、E=45H，共 4 字节。例：U+77E5 在 UTF-8 中编码为 <code>E7 9F A5</code>（3 字节）。</p>
+      <div class="warn"><b>为什么不用定长 UTF-32 直接存码位？</b>① 对大量 ASCII 字符浪费 3/4 空间；② 多字节码位引发大端/小端字节序问题。UTF-8 无字节序问题、兼容 ASCII，因此成为 Web 与存储首选。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>多媒体数据：音频、图像、视频<span class="sub">3.6–3.8 —— 数字化 + 压缩</span></h3>
+      <p><b style="color:var(--violet)">音频数字化：</b>采样（奈奎斯特定理：采样率 ≥ 最高频率 2 倍；CD 44.1kHz）→ 量化（位深度 8/16/24 位）→ 编码（PCM/DPCM）。</p>
+      <div class="formula">音频比特率 = 采样率 × 位深度 × 通道数　（CD：44.1k×16×2 ≈ 1.41 Mbit/s，1 小时约 635MB）</div>
+      <div class="fig" style="--acc:var(--violet)">
+        <svg viewBox="0 0 920 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="音频数字化流程">
+          <g font-size="13.5">
+            <rect x="20" y="70" width="160" height="60" rx="12" fill="rgba(59,225,255,.10)" stroke="#3e6f8c"/><text x="100" y="97" text-anchor="middle" fill="#b9f3ff">模拟信号</text><text x="100" y="115" text-anchor="middle" fill="#6f83a0" font-size="11.5">连续波形</text>
+            <rect x="240" y="70" width="140" height="60" rx="12" fill="rgba(255,199,102,.10)" stroke="#a8844a"/><text x="310" y="97" text-anchor="middle" fill="#ffe2b0">采样</text><text x="310" y="115" text-anchor="middle" fill="#6f83a0" font-size="11.5">按时隔取振幅</text>
+            <rect x="440" y="70" width="140" height="60" rx="12" fill="rgba(255,199,102,.10)" stroke="#a8844a"/><text x="510" y="97" text-anchor="middle" fill="#ffe2b0">量化</text><text x="510" y="115" text-anchor="middle" fill="#6f83a0" font-size="11.5">映射离散等级</text>
+            <rect x="640" y="70" width="140" height="60" rx="12" fill="rgba(185,163,255,.12)" stroke="#8a7cc9"/><text x="710" y="97" text-anchor="middle" fill="#e4dcff">编码</text><text x="710" y="115" text-anchor="middle" fill="#6f83a0" font-size="11.5">转为二进制</text>
+            <rect x="840" y="70" width="70" height="60" rx="12" fill="rgba(74,222,128,.10)" stroke="#3e8a5f"/><text x="875" y="97" text-anchor="middle" fill="#c9f6dd">数字</text><text x="875" y="115" text-anchor="middle" fill="#6f83a0" font-size="11.5">信号</text>
+          </g>
+          <g stroke="#3e6f8c" stroke-width="2" marker-end="url(#arrV)">
+            <defs><marker id="arrV" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#3e6f8c"/></marker></defs>
+            <line x1="180" y1="100" x2="238" y2="100"/><line x1="380" y1="100" x2="438" y2="100"/><line x1="580" y1="100" x2="638" y2="100"/><line x1="780" y1="100" x2="838" y2="100"/>
+          </g>
+          <text x="460" y="30" text-anchor="middle" fill="#9db0c8" font-size="13">音频数字化的三个基本步骤</text>
+        </svg>
+        <div class="figcap">图 3.1 音频数字化过程：采样 → 量化 → 编码</div>
+      </div>
+      <p style="margin-top:14px"><b style="color:var(--violet)">图像：</b>位图由像素矩阵组成（分辨率 + 色彩深度决定质量，放大有锯齿）；矢量图用数学公式描述（无限缩放不失真，适合标志/字体）。</p>
+      <div class="formula">位图文件大小 = 宽 × 高 × 色彩深度 / 8　（1600×1200×24bit ≈ 5.49MB）</div>
+      <div class="fig" style="--acc:var(--violet)">
+        <svg viewBox="0 0 920 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="位图与矢量图对比">
+          <text x="235" y="24" text-anchor="middle" fill="#9db0c8" font-size="13">矢量图（放大 300% 边缘光滑）</text>
+          <text x="685" y="24" text-anchor="middle" fill="#9db0c8" font-size="13">位图（放大 300% 出现锯齿）</text>
+          <g transform="translate(70,40)">
+            <circle cx="90" cy="90" r="80" fill="rgba(59,225,255,.10)" stroke="#3be1ff" stroke-width="2.5"/>
+            <polygon points="30,30 60,75 45,90 60,105 30,150 90,105 80,90 90,75" fill="#3be1ff" opacity=".7"/>
+          </g>
+          <g transform="translate(520,40)">
+            <circle cx="90" cy="90" r="80" fill="rgba(255,133,133,.10)" stroke="#ff8585" stroke-width="2.5"/>
+            <polygon points="30,30 60,75 45,90 60,105 30,150 90,105 80,90 90,75" fill="#ff8585" opacity=".7"/>
+            <g stroke="#ff8585" stroke-width="1" opacity=".5">
+              <line x1="0" y1="0" x2="180" y2="0"/><line x1="0" y1="15" x2="180" y2="15"/><line x1="0" y1="30" x2="180" y2="30"/><line x1="0" y1="45" x2="180" y2="45"/><line x1="0" y1="60" x2="180" y2="60"/><line x1="0" y1="75" x2="180" y2="75"/><line x1="0" y1="90" x2="180" y2="90"/><line x1="0" y1="105" x2="180" y2="105"/><line x1="0" y1="120" x2="180" y2="120"/><line x1="0" y1="135" x2="180" y2="135"/><line x1="0" y1="150" x2="180" y2="150"/><line x1="0" y1="165" x2="180" y2="165"/>
+              <line x1="0" y1="0" x2="0" y2="180"/><line x1="15" y1="0" x2="15" y2="180"/><line x1="30" y1="0" x2="30" y2="180"/><line x1="45" y1="0" x2="45" y2="180"/><line x1="60" y1="0" x2="60" y2="180"/><line x1="75" y1="0" x2="75" y2="180"/><line x1="90" y1="0" x2="90" y2="180"/><line x1="105" y1="0" x2="105" y2="180"/><line x1="120" y1="0" x2="120" y2="180"/><line x1="135" y1="0" x2="135" y2="180"/><line x1="150" y1="0" x2="150" y2="180"/><line x1="165" y1="0" x2="165" y2="180"/><line x1="180" y1="0" x2="180" y2="180"/>
+            </g>
+          </g>
+          <text x="460" y="184" text-anchor="middle" fill="#6f83a0" font-size="12">图 3.2 位图和矢量图放大对比（示意）</text>
+        </svg>
+      </div>
+      <p style="margin-top:14px"><b style="color:var(--violet)">视频：</b>帧率（24/30/60fps）× 分辨率 × 色彩深度决定数据量；I 帧（独立帧）、P 帧（参考前帧）、B 帧（参考前后帧）通过帧间压缩消除时间冗余，可把数据量减少数十至数百倍。</p>
+      <div class="formula">未压缩视频比特率 = 帧率 × 宽 × 高 × 色彩深度　（1080p@30fps×24bit ≈ 1.5 Gbit/s，1 小时约 675GB！）</div>
+      <div class="warn"><b>主流编码：</b>H.264/AVC（最广泛）、H.265/HEVC（效率翻倍）、AV1/VP9（开放格式）；容器 MP4/AVI/MKV/MOV/WebM。音频编码：无损 WAV/FLAC/ALAC，有损 MP3/AAC/WMA/Ogg，语音 AMR/Opus。</div>
+    </div>
+
+    <div class="sum1" style="--acc:var(--violet)"><b>一句话总结：</b>一切数据（数值、字符、音频、图像、视频）最终都编码为二进制——整数用无符号/原码/补码、实数用定点/浮点、文本用 ASCII/Unicode/国标码、多媒体用采样量化编码，并通过压缩在有限存储内实现。</div>
+
+    <div class="summary-box" style="--acc:var(--violet)">
+      <div class="t">本节小结</div>
+      <ul>
+        <li>数据分数值型、字符型、多媒体三类；位是最小单位，1B=8b，容量单位按 2¹⁰ 递进。</li>
+        <li>无符号数范围 0~2ⁿ−1；原码有 ±0、范围 −(2ⁿ⁻¹−1)~+(2ⁿ⁻¹−1)；补码 0 唯一、范围 −2ⁿ⁻¹~+(2ⁿ⁻¹−1)，且减法可转加法。</li>
+        <li>定点数小数点固定、简单但范围小；浮点数借鉴科学计数法（符号+指数+尾数），IEEE 754 定义 float/double。</li>
+        <li>ASCII 7 位 128 字符；Unicode 提供唯一码位，UTF-8 变长编码兼容 ASCII；汉字编码演进 GB2312→GBK→GB18030。</li>
+        <li>音频 = 采样×量化×编码，数据量 = 采样率×位深×通道数；图像分位图/矢量图；视频靠 I/P/B 帧帧间压缩大幅减量。</li>
+      </ul>
+    </div>
+
+    <div class="quiz-head" style="--acc:var(--violet)"><div class="qn">?</div><div class="qt">课堂练习 · 3 数据的表示和存储</div></div>
+    <div class="quiz" style="--acc:var(--violet)" data-sec="s3">
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">1</span>字长为 8 位时，无符号数的表示范围是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>−128 ~ 127</button>
+          <button class="opt" type="button"><span class="k">B</span>−127 ~ 127</button>
+          <button class="opt" type="button"><span class="k">C</span>0 ~ 255</button>
+          <button class="opt" type="button"><span class="k">D</span>0 ~ 256</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>无符号数只含零和正数，范围 0 ~ 2ⁿ−1 = 0 ~ 255。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">2</span>真值 −33 的 8 位原码机器数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>0010 0001</button>
+          <button class="opt" type="button"><span class="k">B</span>1101 1111</button>
+          <button class="opt" type="button"><span class="k">C</span>0010 0011</button>
+          <button class="opt" type="button"><span class="k">D</span>1010 0001</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>33 的 7 位二进制为 010 0001，符号位为 1（负）置于最高位：1010 0001。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">3</span>字长为 8 位的补码可表示的最小负数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>−127</button>
+          <button class="opt" type="button"><span class="k">B</span>−128</button>
+          <button class="opt" type="button"><span class="k">C</span>−255</button>
+          <button class="opt" type="button"><span class="k">D</span>−256</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>补码中 0 只有一种表示，因此比原码多表示一个数 −2ⁿ⁻¹ = −128，范围 −128 ~ +127。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">4</span>已知 [x]补 = 1110 0110，则 [x]原 和真值 x 为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>1001 1010，−26</button>
+          <button class="opt" type="button"><span class="k">B</span>1001 1010，−25</button>
+          <button class="opt" type="button"><span class="k">C</span>1001 1001，−26</button>
+          <button class="opt" type="button"><span class="k">D</span>1110 0110，−26</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>由补码求原码：符号位不变，数值位取反加 1 → 1 001 1010 = −(0011010)₂ = −26。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">5</span>8 位字长下计算 [50−30]补，正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>需要借位，结果为 00100001</button>
+          <button class="opt" type="button"><span class="k">B</span>50 的补码是 10110010</button>
+          <button class="opt" type="button"><span class="k">C</span>减法转为 [50]补 + [−30]补，最高位进位丢弃，结果 20</button>
+          <button class="opt" type="button"><span class="k">D</span>结果溢出</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>[50]补=00110010，[−30]补=11100010，相加得 1 00010100，丢弃最高位进位得 00010100 = 20。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">6</span>8 位简化浮点模型中表示 +5.5（1 位符号 + 3 位指数 + 4 位尾数，偏移 3），存储结果是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>0 010 0110</button>
+          <button class="opt" type="button"><span class="k">B</span>0 101 0110</button>
+          <button class="opt" type="button"><span class="k">C</span>0 100 0110</button>
+          <button class="opt" type="button"><span class="k">D</span>1 101 0110</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>+5.5 = 1.011×2²：符号 0；指数 2+3=5=101；尾数隐含 1 只存 011，补零为 0110 → 0 101 0110。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">7</span>IEEE 754 双精度浮点数（double）的位分配是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>1 符号 + 8 指数 + 23 尾数</button>
+          <button class="opt" type="button"><span class="k">B</span>1 符号 + 11 指数 + 23 尾数</button>
+          <button class="opt" type="button"><span class="k">C</span>8 符号 + 11 指数 + 45 尾数</button>
+          <button class="opt" type="button"><span class="k">D</span>1 符号 + 11 指数 + 52 尾数</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>double 共 64 位 = 1 符号 + 11 指数 + 52 尾数；float 共 32 位 = 1 + 8 + 23。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">8</span>汉字"知"的 Unicode 码位 U+77E5 在 UTF-8 中编码为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>E7 9F A5</button>
+          <button class="opt" type="button"><span class="k">B</span>77 E5</button>
+          <button class="opt" type="button"><span class="k">C</span>77 E5 00</button>
+          <button class="opt" type="button"><span class="k">D</span>E7 A5 9F</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>U+77E5 落在 3 字节区（0800~FFFF），填入 1110xxxx 10xxxxxx 10xxxxxx 得 E7 9F A5。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">9</span>CD 音质音频（44.1kHz、16 位、双声道）的未压缩比特率约为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>64 kbit/s</button>
+          <button class="opt" type="button"><span class="k">B</span>705 kbit/s</button>
+          <button class="opt" type="button"><span class="k">C</span>1.41 Mbit/s</button>
+          <button class="opt" type="button"><span class="k">D</span>9.22 Mbit/s</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>比特率 = 44100 × 16 × 2 ≈ 1,411,200 bit/s ≈ 1.41 Mbit/s。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">10</span>关于视频压缩中的帧，下列说法正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>I 帧需要参考其他帧才能解码</button>
+          <button class="opt" type="button"><span class="k">B</span>P 帧记录与前一个 I 帧或 P 帧的差别</button>
+          <button class="opt" type="button"><span class="k">C</span>B 帧只参考前一个帧</button>
+          <button class="opt" type="button"><span class="k">D</span>帧间压缩与帧内压缩相同</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>I 帧是独立完整帧；P 帧记录与前一 I/P 帧的差别；B 帧双向参考前后帧（需解码后面的帧），帧间压缩利用连续帧的相似性。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================================================== 4 数字逻辑基础 -->
+<section id="s4" style="--acc:var(--green)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green)">04</div>
+      <h2><b>SECTION 4</b>数字逻辑基础</h2>
+    </div>
+    <p class="sec-lead">计算机对二进制的处理最终由数字逻辑电路完成——理论源于布尔代数，物理实现是逻辑门。</p>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3>布尔代数：与、或、非<span class="sub">4.1 —— 乔治·布尔 19 世纪提出的二值逻辑体系</span></h3>
+      <p>真/假对应二进制 1/0、电路中的高/低电平。任何复杂逻辑运算都可以由三种基本运算组合而成：</p>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:18%"><col style="width:34%"><col style="width:48%"></colgroup>
+          <thead><tr><th>运算</th><th>表达式</th><th>规则</th></tr></thead>
+          <tbody>
+            <tr><td>与 AND</td><td class="m">C = A · B</td><td>所有输入为 1 才输出 1</td></tr>
+            <tr><td>或 OR</td><td class="m">C = A + B</td><td>只要一个输入为 1 即输出 1</td></tr>
+            <tr><td>非 NOT</td><td class="m">B = Ā</td><td>输出是输入的相反值</td></tr>
+            <tr><td>与非 NAND</td><td class="m">C = A·B 取反</td><td>仅全 1 时输出 0</td></tr>
+            <tr><td>或非 NOR</td><td class="m">C = A+B 取反</td><td>仅全 0 时输出 1</td></tr>
+            <tr><td>异或 XOR</td><td class="m">C = A ⊕ B</td><td>相同时输出 0，不同时输出 1（加法器核心）</td></tr>
+            <tr><td>同或 XNOR</td><td class="m">C = A ⊕ B 取反</td><td>相同时输出 1，不同时输出 0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="formula">亨廷顿公理：封闭性 · 单位元（A+0=A，A·1=A）· 互补律（A+Ā=1，A·Ā=0）· 交换律 · 分配律</div>
+      <div class="formula">常用定理：同一律 A·A=A · 零元律 A·0=0 · 吸收律 A·(A+B)=A · 德摩根：A·B 取反 = Ā+B̄</div>
+      <div class="warn"><b>最小项与 SOP：</b>n 变量最小项是包含全部 n 个变量（原/反变量各一次）的乘积项，共 2ⁿ 个；任何逻辑函数可写成"所有输出为 1 的最小项之和"（标准与或式 F = Σmᵢ）。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3>逻辑运算的位操作应用<span class="sub">4.1.5 —— 用掩码做复位、置位、翻转</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:16%"><col style="width:30%"><col style="width:30%"><col style="width:24%"></colgroup>
+          <thead><tr><th>操作</th><th>方法</th><th>示例（8 位）</th><th>公式</th></tr></thead>
+          <tbody>
+            <tr><td>复位（清 0）</td><td>掩码目标位为 0、其余为 1，按位与</td><td class="m">1011 1100 AND 1111 0000 = 1011 0000</td><td>原数 AND 掩码</td></tr>
+            <tr><td>置位（置 1）</td><td>掩码目标位为 1、其余为 0，按位或</td><td class="m">1011 0000 OR 0000 1111 = 1011 1111</td><td>原数 OR 掩码</td></tr>
+            <tr><td>翻转（取反）</td><td>掩码目标位为 1、其余为 0，按位异或</td><td class="m">1011 1100 XOR 1000 0000 = 0011 1100</td><td>原数 XOR 掩码</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo" style="--acc:var(--green)">
+      <div class="demo-t">位操作演示 <span class="badge">交互</span></div>
+      <label>原数（8 位二进制）：</label>
+      <input type="text" id="bitVal" value="10111100" maxlength="8" style="width:110px">
+      <label>掩码（8 位二进制）：</label>
+      <input type="text" id="bitMask" value="11110000" maxlength="8" style="width:110px">
+      <label>操作：</label>
+      <select id="bitOp">
+        <option value="AND">AND 与（复位）</option>
+        <option value="OR">OR 或（置位）</option>
+        <option value="XOR">XOR 异或（翻转）</option>
+      </select>
+      <button class="btn" id="bitBtn" type="button">计算</button>
+      <div class="out">
+        <div class="box"><b>原数</b><div class="v" id="bitA" style="font-size:17px">1011 1100</div></div>
+        <div class="box"><b>掩码</b><div class="v" id="bitM" style="font-size:17px">1111 0000</div></div>
+        <div class="box"><b>结果</b><div class="v" id="bitR" style="font-size:17px;color:var(--green)">1011 0000</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3>逻辑门与组合逻辑电路<span class="sub">4.2–4.3 —— 从门到加法器、译码器、选择器</span></h3>
+      <div class="fig" style="--acc:var(--green)">
+        <svg viewBox="0 0 920 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="基本逻辑门符号">
+          <g font-size="13">
+            <g transform="translate(0,0)">
+              <text x="60" y="26" fill="#9db0c8">AND 与门</text>
+              <rect x="40" y="40" width="60" height="55" rx="8" fill="rgba(59,225,255,.10)" stroke="#3be1ff"/><line x1="20" y1="52" x2="40" y2="52" stroke="#3be1ff"/><line x1="20" y1="83" x2="40" y2="83" stroke="#3be1ff"/><line x1="100" y1="67" x2="120" y2="67" stroke="#3be1ff"/>
+            </g>
+            <g transform="translate(230,0)">
+              <text x="60" y="26" fill="#9db0c8">OR 或门</text>
+              <path d="M40 40 h20 a40 28 0 0 1 0 55 h-20 a28 28 0 0 0 0 -55 z" fill="rgba(255,199,102,.10)" stroke="#ffc766"/><line x1="6" y1="52" x2="17" y2="52" stroke="#ffc766"/><line x1="6" y1="83" x2="17" y2="83" stroke="#ffc766"/><line x1="100" y1="67" x2="120" y2="67" stroke="#ffc766"/>
+            </g>
+            <g transform="translate(460,0)">
+              <text x="60" y="26" fill="#9db0c8">NOT 非门</text>
+              <path d="M40 45 h60 l-30 22 z" fill="rgba(185,163,255,.10)" stroke="#b9a3ff"/><circle cx="70" cy="67" r="9" fill="rgba(185,163,255,.10)" stroke="#b9a3ff"/><line x1="20" y1="56" x2="55" y2="56" stroke="#b9a3ff"/><line x1="79" y1="67" x2="105" y2="67" stroke="#b9a3ff"/>
+            </g>
+            <g transform="translate(690,0)">
+              <text x="60" y="26" fill="#9db0c8">XOR 异或门</text>
+              <path d="M40 40 h20 a40 28 0 0 1 0 55 h-20 a28 28 0 0 0 0 -55 z" fill="rgba(74,222,128,.10)" stroke="#4ade80"/><path d="M26 40 a26 26 0 0 1 0 55" fill="none" stroke="#4ade80"/><line x1="6" y1="52" x2="17" y2="52" stroke="#4ade80"/><line x1="6" y1="83" x2="17" y2="83" stroke="#4ade80"/><line x1="100" y1="67" x2="120" y2="67" stroke="#4ade80"/>
+            </g>
+          </g>
+        </svg>
+        <div class="figcap">图 4.1 基本逻辑门图形符号（示意）</div>
+      </div>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:16%"><col style="width:44%"><col style="width:40%"></colgroup>
+          <thead><tr><th>部件</th><th>功能</th><th>构成</th></tr></thead>
+          <tbody>
+            <tr><td>半加器</td><td>两个 1 位二进制相加：S = A⊕B，C = A·B</td><td>1 个异或门 + 1 个与门</td></tr>
+            <tr><td>全加器</td><td>A、B 与低位进位 Cin 三者相加</td><td>2 个半加器 + 1 个或门</td></tr>
+            <tr><td>串行进位加法器</td><td>n 个全加器级联；结构简单但进位逐级传递、速度慢</td><td>n 个全加器</td></tr>
+            <tr><td>超前进位加法器</td><td>并行预计算所有进位，速度快但电路复杂、面积大功耗高</td><td>额外组合逻辑</td></tr>
+            <tr><td>译码器 Decoder</td><td>n 位输入 → 2ⁿ 个输出中唯一有效（如 2-4 译码器）；典型应用：内存地址译码</td><td>2 个非门 + 4 个与门（2-4）</td></tr>
+            <tr><td>多路选择器 MUX</td><td>按选择信号从多路输入选一路输出（4 选 1：S₁S₀=00/01/10/11 选 I₀~I₃）；CPU 中选寄存器送 ALU</td><td>2-4 译码器 + 4 与门 + 1 或门</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo" style="--acc:var(--green)">
+      <div class="demo-t">半加器演示 <span class="badge">交互</span></div>
+      <label>点击设置输入：</label>
+      <button class="btn" id="haA" type="button" style="margin:0 4px">A = 0</button>
+      <button class="btn" id="haB" type="button" style="margin:0 4px">B = 0</button>
+      <div class="out">
+        <div class="box"><b>本位和 S = A⊕B</b><div class="v" id="haS">0</div></div>
+        <div class="box"><b>进位 C = A·B</b><div class="v" id="haC" style="color:var(--amber)">0</div></div>
+        <div class="box"><b>二进制结果</b><div class="v" id="haRes" style="color:var(--green)">00</div></div>
+      </div>
+      <div class="note" style="margin-top:10px"><b>记忆：</b>异或恰好符合"和"的定义，与运算恰好符合"进位"的定义——这就是半加器只需要一个异或门和一个与门的原因。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3>从逻辑到运算器<span class="sub">4.4 —— 四步搭建计算机硬件</span></h3>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:22%"><col style="width:78%"></colgroup>
+          <thead><tr><th>层级</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>基础抽象</td><td>晶体管构成逻辑门（与、或、非）</td></tr>
+            <tr><td>功能模块</td><td>逻辑门组合成半加器、全加器、译码器、多路选择器</td></tr>
+            <tr><td>核心部件</td><td>功能模块组成加法器、运算器（ALU）</td></tr>
+            <tr><td>完整系统</td><td>运算器、控制器、存储器等组成完整计算机</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>一个简单 ALU 能进行加、减（补码加法）、逻辑与、逻辑或等操作——内部由加法器、逻辑门阵列和多路选择器构成，控制信号通过选择器决定当前执行哪种运算。</p>
+    </div>
+
+    <div class="sum1" style="--acc:var(--green)"><b>一句话总结：</b>从与、或、非三种基本运算出发，借助布尔代数的公理与定理，可以搭建逻辑门、加法器、译码器与多路选择器，最终构成能完成算术运算的 ALU 等核心部件。</div>
+
+    <div class="summary-box" style="--acc:var(--green)">
+      <div class="t">本节小结</div>
+      <ul>
+        <li>三种基本运算 AND / OR / NOT 可组合出 NAND、NOR、XOR、XNOR 等复合运算。</li>
+        <li>布尔代数有亨廷顿公理（封闭、单位元、互补、交换、分配）与常用定理（同一律、零元律、吸收律、德摩根）。</li>
+        <li>最小项对应真值表中唯一一行；逻辑函数可写成标准与或式（SOP）Σmᵢ。</li>
+        <li>位操作：AND 掩码复位（清 0）、OR 掩码置位（置 1）、XOR 掩码翻转（取反）。</li>
+        <li>半加器 = 异或 + 与；全加器 = 2 半加器 + 或；n 个全加器级联成串行进位加法器。</li>
+        <li>译码器把 n 位代码翻译成 2ⁿ 个输出中唯一有效者（内存地址译码）；MUX 按选择信号选一路数据输出。</li>
+      </ul>
+    </div>
+
+    <div class="quiz-head" style="--acc:var(--green)"><div class="qn">?</div><div class="qt">课堂练习 · 4 数字逻辑基础</div></div>
+    <div class="quiz" style="--acc:var(--green)" data-sec="s4">
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">1</span>逻辑表达式 C = A · B 中，当 A=1、B=0 时输出 C 为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>1</button>
+          <button class="opt" type="button"><span class="k">B</span>0</button>
+          <button class="opt" type="button"><span class="k">C</span>不确定</button>
+          <button class="opt" type="button"><span class="k">D</span>与输入无关</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>与运算要求所有输入都为 1 才输出 1，任一输入为 0 则输出 0。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">2</span>异或运算（XOR）的真值特征是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>相同时输出 1</button>
+          <button class="opt" type="button"><span class="k">B</span>只要一个为 1 就输出 1</button>
+          <button class="opt" type="button"><span class="k">C</span>只有全 1 才输出 0</button>
+          <button class="opt" type="button"><span class="k">D</span>两输入不同时输出 1</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>XOR：两个输入相同时输出 0，不同时输出 1；它是加法器中"和"运算的核心。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">3</span>将 8 位数 1011 1100 的低 4 位复位（清 0），应使用的掩码和运算是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>OR 0000 1111</button>
+          <button class="opt" type="button"><span class="k">B</span>XOR 1111 0000</button>
+          <button class="opt" type="button"><span class="k">C</span>AND 1111 0000</button>
+          <button class="opt" type="button"><span class="k">D</span>AND 0000 1111</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>复位用 AND，掩码目标位为 0、其余为 1：1011 1100 AND 1111 0000 = 1011 0000。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">4</span>半加器中本位和 S 与进位 C 的表达式是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>S = A⊕B，C = A·B</button>
+          <button class="opt" type="button"><span class="k">B</span>S = A+B，C = A·B</button>
+          <button class="opt" type="button"><span class="k">C</span>S = A·B，C = A⊕B</button>
+          <button class="opt" type="button"><span class="k">D</span>S = A⊕B，C = A+B</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>异或符合"和"，与符合"进位"：S = A⊕B，C = A·B；由 1 个异或门和 1 个与门构成。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">5</span>全加器与半加器的区别在于全加器（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>只做一位加法</button>
+          <button class="opt" type="button"><span class="k">B</span>没有进位输出</button>
+          <button class="opt" type="button"><span class="k">C</span>只由与门构成</button>
+          <button class="opt" type="button"><span class="k">D</span>多一个来自低位的进位输入 Cin</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>全加器实现 A、B 与低位进位 Cin 三者相加，输出 S 与 Cout；可由两个半加器加一个或门构成。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">6</span>关于串行进位加法器与超前进位加法器，正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>串行进位加法器速度更快</button>
+          <button class="opt" type="button"><span class="k">B</span>超前进位加法器结构更简单</button>
+          <button class="opt" type="button"><span class="k">C</span>超前进位加法器并行预计算进位、速度极快但电路复杂</button>
+          <button class="opt" type="button"><span class="k">D</span>两者结构完全相同</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>串行进位：结构简单、延迟高、位数越多越慢；超前进位：打破进位依赖链、并行算进位，速度极快但需大量额外逻辑门。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">7</span>2-4 译码器输入 A₁A₀ = 10 时，输出端状态为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>D₀ = 1</button>
+          <button class="opt" type="button"><span class="k">B</span>D₂ = 1，其余为 0</button>
+          <button class="opt" type="button"><span class="k">C</span>全部输出 1</button>
+          <button class="opt" type="button"><span class="k">D</span>D₁ = 1，其余为 0</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>2-4 译码器把 2 位输入翻译成 4 个输出中唯一有效者：10 对应 D₂ = 1（其余为 0）。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">8</span>4 选 1 多路选择器，选择信号 S₁S₀ = 11 时输出为（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>I₃</button>
+          <button class="opt" type="button"><span class="k">B</span>I₀</button>
+          <button class="opt" type="button"><span class="k">C</span>I₁</button>
+          <button class="opt" type="button"><span class="k">D</span>I₂</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>S₁S₀ = 00/01/10/11 依次选 I₀/I₁/I₂/I₃，故 11 选 I₃。CPU 中用它从多个寄存器中选一个送 ALU。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===================================================== 5 计算机组成 -->
+<section id="s5" style="--acc:var(--red)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--red)">05</div>
+      <h2><b>SECTION 5</b>计算机组成</h2>
+    </div>
+    <p class="sec-lead">把表示数据的部件与实现运算的部件组合起来，构成一台最简单的存储程序式计算机——Simple-1。</p>
+
+    <div class="card" style="--acc:var(--red)">
+      <h3>冯·诺依曼架构<span class="sub">5.1 —— 现代计算机的蓝图</span></h3>
+      <div class="kv">
+        <div class="it"><b>存储程序</b><span>程序指令和数据共同存储在同一个存储器中</span></div>
+        <div class="it"><b>顺序执行</b><span>CPU 通过程序计数器 PC 逐条取指令并执行</span></div>
+        <div class="it"><b>三大子系统</b><span>CPU（中央处理单元）、主存储器、输入/输出子系统，经系统总线互连</span></div>
+      </div>
+      <div class="fig" style="--acc:var(--red)">
+        <svg viewBox="0 0 920 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="计算机三大子系统">
+          <rect x="60" y="60" width="240" height="120" rx="14" fill="rgba(59,225,255,.08)" stroke="#3e6f8c"/>
+          <text x="180" y="110" text-anchor="middle" fill="#b9f3ff" font-size="14">CPU</text>
+          <text x="180" y="132" text-anchor="middle" fill="#6f83a0" font-size="11.5">中央处理单元</text>
+          <text x="180" y="152" text-anchor="middle" fill="#6f83a0" font-size="11.5">ALU · 寄存器 · CU</text>
+          <rect x="420" y="60" width="240" height="120" rx="14" fill="rgba(255,199,102,.08)" stroke="#a8844a"/>
+          <text x="540" y="110" text-anchor="middle" fill="#ffe2b0" font-size="14">主存储器 Memory</text>
+          <text x="540" y="132" text-anchor="middle" fill="#6f83a0" font-size="11.5">存放程序与数据</text>
+          <text x="540" y="152" text-anchor="middle" fill="#6f83a0" font-size="11.5">RAM · ROM · Cache</text>
+          <rect x="780" y="60" width="110" height="120" rx="14" fill="rgba(74,222,128,.08)" stroke="#3e8a5f"/>
+          <text x="835" y="110" text-anchor="middle" fill="#c9f6dd" font-size="13">输入/输出</text>
+          <text x="835" y="132" text-anchor="middle" fill="#6f83a0" font-size="11.5">子系统</text>
+          <g stroke="#4ade80" stroke-width="2.5">
+            <line x1="300" y1="120" x2="418" y2="120"/><line x1="660" y1="120" x2="778" y2="120"/>
+          </g>
+          <rect x="430" y="196" width="300" height="40" rx="10" fill="rgba(74,222,128,.06)" stroke="#3e8a5f"/>
+          <text x="580" y="221" text-anchor="middle" fill="#c9f6dd" font-size="12.5">系统总线（数据 / 地址 / 控制）</text>
+          <g stroke="#3e8a5f" stroke-width="1.5">
+            <line x1="180" y1="180" x2="420" y2="196"/><line x1="540" y1="180" x2="540" y2="196"/><line x1="835" y1="180" x2="740" y2="196"/>
+          </g>
+          <text x="460" y="252" text-anchor="middle" fill="#6f83a0" font-size="12">图 5.1 计算机硬件：三大子系统经系统总线互连（示意）</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--red)">
+      <h3>CPU 与主存储器<span class="sub">5.2–5.3 —— 大脑与仓库</span></h3>
+      <div class="kv">
+        <div class="it"><b>ALU</b><span>执行算术（加减乘除）与逻辑（与或非异或）运算，接收寄存器操作数并送回结果</span></div>
+        <div class="it"><b>寄存器</b><span>高速临时存储：数据寄存器 R0–Rn、指令寄存器 IR（当前指令）、程序计数器 PC（下条指令地址）</span></div>
+        <div class="it"><b>控制单元 CU</b><span>协调控制所有部件，发送控制信号，解释指令并生成微操作序列，管理指令周期</span></div>
+      </div>
+      <div class="formula">存储容量 = 存储单元个数 × 存储字长 / 8　（10 位地址 × 16 位字长 = 1K × 2B = 2KB）</div>
+      <p><b style="color:var(--red)">编址方式：</b>按字节编址（每字节唯一地址，n = ⌈log₂B⌉ 位；32MB 内存需 25 位地址）或按字编址（每字唯一地址，n = ⌈log₂(B/W)⌉ 位；128MB、字长 8B 需 24 位）。</p>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:26%"><col style="width:38%"><col style="width:36%"></colgroup>
+          <thead><tr><th>存储器</th><th>特点</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>SRAM（静态 RAM）</td><td>触发器保存数据，通电不刷新；快而贵</td><td>高速缓存</td></tr>
+            <tr><td>DRAM（动态 RAM）</td><td>电容存储，需周期性刷新；慢而便宜</td><td>主存</td></tr>
+            <tr><td>ROM（MROM/PROM/EPROM/EEPROM）</td><td>只读、非易失；可编程性与擦写能力逐级增强</td><td>开机程序等不可丢失内容</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fig" style="--acc:var(--red)">
+        <svg viewBox="0 0 920 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="存储层次结构金字塔">
+          <g font-size="12.5">
+            <rect x="380" y="20" width="160" height="30" rx="6" fill="rgba(59,225,255,.22)" stroke="#4a8aa8"/><text x="460" y="40" text-anchor="middle" fill="#dff6ff">寄存器（最快·最小·最贵）</text>
+            <rect x="320" y="56" width="280" height="30" rx="6" fill="rgba(59,225,255,.15)" stroke="#3e6f8c"/><text x="460" y="76" text-anchor="middle" fill="#b9f3ff">高速缓存 Cache</text>
+            <rect x="250" y="92" width="420" height="30" rx="6" fill="rgba(255,199,102,.15)" stroke="#a8844a"/><text x="460" y="112" text-anchor="middle" fill="#ffe2b0">主存储器（DRAM）</text>
+            <rect x="140" y="128" width="640" height="30" rx="6" fill="rgba(255,133,133,.15)" stroke="#a85a5a"/><text x="460" y="148" text-anchor="middle" fill="#ffc9c9">辅助存储器（硬盘、SSD——最慢·最大·最便宜）</text>
+          </g>
+          <text x="460" y="185" text-anchor="middle" fill="#9db0c8" font-size="13">容量↑ 速度↓ 成本↓</text>
+          <text x="460" y="215" text-anchor="middle" fill="#6f83a0" font-size="12">图 5.2 存储器的层次结构</text>
+        </svg>
+      </div>
+      <div class="warn"><b>Cache 与 80-20 规则：</b>Cache 是 CPU 与主存之间的小容量高速存储器，保存主存部分内容的副本。访问时先查 Cache——命中立即存取，未命中则把含目标字的数据块整体复制进 Cache（利用程序访问的<b>局部性原理</b>）。据统计计算机约 80% 的时间读取 20% 的数据，Cache 高速存下这 20%，存取至少快 80%。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--red)">
+      <h3>I/O 子系统与子系统互连<span class="sub">5.4–5.5 —— 与外界通信的桥</span></h3>
+      <div class="kv">
+        <div class="it"><b>非存储设备</b><span>键盘、显示器、打印机、鼠标——不能存储信息，需专用控制器与驱动</span></div>
+        <div class="it"><b>存储设备（辅助存储器）</b><span>磁表面（硬盘/磁带）、光存储（CD/DVD/蓝光）、半导体（SSD/闪存）——大容量非易失</span></div>
+        <div class="it"><b>I/O 控制器</b><span>I/O 设备是机电/磁性/光学设备，速度远慢于电子设备，必须经控制器（接口）接入总线；串行/并行</span></div>
+      </div>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:24%"><col style="width:76%"></colgroup>
+          <thead><tr><th>三组总线</th><th>作用与宽度</th></tr></thead>
+          <tbody>
+            <tr><td>数据总线</td><td>传送数据，每根线每次 1 位；宽度取决于字长（32 位字长需 32 根）</td></tr>
+            <tr><td>地址总线</td><td>寻址存储器的特定字；宽度取决于存储容量（2ⁿ 个字需 n 根）</td></tr>
+            <tr><td>控制总线</td><td>传输读写等控制信息；宽度取决于控制命令数量（2ᵐ 条命令需 m 根）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b style="color:var(--red)">I/O 寻址两种方式：</b></p>
+      <div class="tbl">
+        <table>
+          <colgroup><col style="width:30%"><col style="width:70%"></colgroup>
+          <thead><tr><th>方式</th><th>要点</th></tr></thead>
+          <tbody>
+            <tr><td>I/O 独立寻址</td><td>读写内存与读写 I/O 的<b>指令不同</b>（Read 101 读内存 / Input 101 读 I/O），I/O 地址可与内存地址重叠而不混淆</td></tr>
+            <tr><td>I/O 存储器映射寻址</td><td>把 I/O 控制器每个寄存器看作内存存储字，<b>指令集更小</b>但 I/O 控制器占用一部分内存地址（5 控制器 × 4 寄存器 = 占 20 个字）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--red)">
+      <h3>简单计算机模型 Simple-1<span class="sub">5.6 —— 一台能跑程序的机器</span></h3>
+      <div class="kv">
+        <div class="it"><b>CPU</b><span>16 个 16 位数据寄存器 R0–R15 + ALU + CU（PC 8 位保存下条指令地址、IR 16 位存当前指令）</span></div>
+        <div class="it"><b>主存</b><span>256 个 16 位存储单元；地址 00–FD；前 64 个单元（00–3F）存指令，其余（40–FD）存数据</span></div>
+        <div class="it"><b>I/O</b><span>键盘（FE）与监视器（FF），采用 I/O 存储器映射寻址，像 16 位寄存器一样与 CPU 交互</span></div>
+      </div>
+      <p><b style="color:var(--red)">指令格式：</b>每条指令 16 位、分 4 个 4 位域；最左域为操作码，其余 3 个域为操作数或地址。16 条指令：HALT、LOAD、STORE、ADDI、ADDF、MOVE、NOT、AND、OR、XOR、INC、DEC、ROTATE、JUMP 等。</p>
+      <div class="formula">机器周期：取指令 Fetch（按 PC 从内存读指令入 IR，PC+1）→ 译码 Decode（CU 解析指令与操作数）→ 执行 Execute（CU 发送命令，执行操作并存储结果）</div>
+      <div class="fig" style="--acc:var(--red)">
+        <svg viewBox="0 0 920 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="机器周期循环">
+          <defs><marker id="arrCyc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#9db0c8"/></marker></defs>
+          <ellipse cx="460" cy="75" rx="330" ry="55" fill="rgba(59,225,255,.04)" stroke="#3e6f8c" stroke-width="2" stroke-dasharray="6 4"/>
+          <g font-size="13.5" text-anchor="middle">
+            <rect x="370" y="45" width="120" height="34" rx="17" fill="rgba(59,225,255,.14)" stroke="#4a8aa8"/><text x="430" y="67" fill="#b9f3ff">取指令</text>
+            <rect x="540" y="45" width="120" height="34" rx="17" fill="rgba(255,199,102,.14)" stroke="#a8844a"/><text x="600" y="67" fill="#ffe2b0">译码</text>
+            <rect x="455" y="96" width="120" height="34" rx="17" fill="rgba(74,222,128,.14)" stroke="#3e8a5f"/><text x="515" y="118" fill="#c9f6dd">执行</text>
+          </g>
+          <g stroke="#9db0c8" stroke-width="1.5" marker-end="url(#arrCyc)">
+            <line x1="490" y1="62" x2="536" y2="62"/>
+            <line x1="600" y1="79" x2="519" y2="94"/>
+            <line x1="455" y1="113" x2="432" y2="81"/>
+          </g>
+          <text x="460" y="142" text-anchor="middle" fill="#6f83a0" font-size="12">图 5.3 机器周期：取指 → 译码 → 执行，循环直至无指令 / 停机</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="demo" style="--acc:var(--red)">
+      <div class="demo-t">Simple-1 执行演示：两数相加（161 + 254 = 415） <span class="badge">交互 · 逐步</span></div>
+      <p style="font-size:13.5px;color:var(--mut);margin-bottom:10px">程序 5 条指令：LOAD R₀←M₄₀ → LOAD R₁←M₄₁ → ADDI R₂←R₀+R₁ → STORE M₄₂←R₂ → HALT。点击"下一步"逐周期观察 PC、IR、寄存器与内存的变化。</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+        <button class="btn" id="cycNext" type="button">下一步（周期 1）</button>
+        <button class="btn amber" id="cycReset" type="button">重置</button>
+      </div>
+      <div class="out" style="margin-bottom:12px">
+        <div class="box"><b>周期</b><div class="v" id="cycNum" style="font-size:17px">0 / 5</div></div>
+        <div class="box"><b>PC</b><div class="v" id="cycPC" style="font-size:17px">00</div></div>
+        <div class="box"><b>IR（指令）</b><div class="v" id="cycIR" style="font-size:17px;color:var(--amber)">—</div></div>
+        <div class="box"><b>R₀</b><div class="v" id="cycR0" style="font-size:17px">—</div></div>
+        <div class="box"><b>R₁</b><div class="v" id="cycR1" style="font-size:17px">—</div></div>
+        <div class="box"><b>R₂</b><div class="v" id="cycR2" style="font-size:17px">—</div></div>
+      </div>
+      <div class="steps show" id="cycSteps">
+        <div class="step"><span class="n">00</span><span>程序装入内存：地址 00–04 存指令 (1040)(1141)(3201)(2422)(0000)₁₆，地址 40/41/42 存数据 00A1 / 00FE / —</span></div>
+      </div>
+      <div class="note" style="margin-top:10px"><b>思考：</b>若要数据从键盘输入、结果在监视器显示，应如何修改程序？——用 LOAD（操作数取 FE）从键盘读入，用 STORE（操作数取 FF）向监视器输出。</div>
+    </div>
+
+    <div class="sum1" style="--acc:var(--red)"><b>一句话总结：</b>冯·诺依曼架构把程序和数据同存于存储器，CPU 通过总线与主存、I/O 协作，以"取指—译码—执行"的机器周期循环驱动 Simple-1 这样的计算机完成计算。</div>
+
+    <div class="summary-box" style="--acc:var(--red)">
+      <div class="t">本节小结</div>
+      <ul>
+        <li>冯·诺依曼架构三要素：存储程序、顺序执行（PC 控制）、CPU+主存+I/O 三大子系统经总线互连。</li>
+        <li>CPU = ALU（运算）+ 寄存器组（R、IR、PC）+ 控制单元（协调、解释指令、管理指令周期）。</li>
+        <li>主存按字节或按字编址；存储容量 = 单元个数 × 字长/8；RAM（SRAM/DRAM）易失，ROM（MROM~EEPROM）非易失。</li>
+        <li>存储层次：寄存器 → Cache → 主存 → 辅助存储，速度递减、容量递增；Cache 依赖局部性与 80-20 规则。</li>
+        <li>三组总线：数据（按字长）、地址（按容量）、控制（按命令数）；I/O 经控制器接入总线，寻址分独立寻址与存储器映射寻址。</li>
+        <li>Simple-1：16 位指令分 4 域（操作码 + 3 操作数），机器周期 = 取指→译码→执行；5 条指令即可完成两数相加。</li>
+      </ul>
+    </div>
+
+    <div class="quiz-head" style="--acc:var(--red)"><div class="qn">?</div><div class="qt">课堂练习 · 5 计算机组成</div></div>
+    <div class="quiz" style="--acc:var(--red)" data-sec="s5">
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">1</span>冯·诺依曼架构的核心思想不包括（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>程序和数据共同存储在同一个存储器</button>
+          <button class="opt" type="button"><span class="k">B</span>指令顺序执行，由 PC 控制流程</button>
+          <button class="opt" type="button"><span class="k">C</span>用多个专用处理器并行执行</button>
+          <button class="opt" type="button"><span class="k">D</span>CPU、主存、I/O 三大子系统组成计算机</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>冯·诺依曼架构的核心是存储程序、顺序执行、三大子系统；并行多处理器并非其核心思想。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">2</span>CPU 中保存"下一条要执行指令地址"的寄存器是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>IR</button>
+          <button class="opt" type="button"><span class="k">B</span>R₀</button>
+          <button class="opt" type="button"><span class="k">C</span>ALU</button>
+          <button class="opt" type="button"><span class="k">D</span>PC</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>程序计数器 PC 存下一条要执行指令的地址；IR 存当前正在执行的指令。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">3</span>一台计算机有 32MB 内存、按字节编址，需要的地址位数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>24 位</button>
+          <button class="opt" type="button"><span class="k">B</span>25 位</button>
+          <button class="opt" type="button"><span class="k">C</span>26 位</button>
+          <button class="opt" type="button"><span class="k">D</span>32 位</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>32MB = 2²⁵ 字节，按字节编址需 n = log₂(2²⁵) = 25 根地址线。</div>
+      </div>
+      <div class="q" data-a="A">
+        <div class="stem"><span class="idx">4</span>关于 SRAM 与 DRAM，下列说法正确的是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>SRAM 用触发器保存数据、快而贵，常用于高速缓存</button>
+          <button class="opt" type="button"><span class="k">B</span>DRAM 用触发器保存数据、不需刷新</button>
+          <button class="opt" type="button"><span class="k">C</span>SRAM 比 DRAM 便宜</button>
+          <button class="opt" type="button"><span class="k">D</span>DRAM 常用于高速缓存</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：A</span><br>SRAM：触发器、通电即存、不需刷新、快而贵，用于高速缓存；DRAM：电容存储、需周期性刷新、慢而便宜，用于主存。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">5</span>Cache 高效工作的主要依据是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>数据总线宽度</button>
+          <button class="opt" type="button"><span class="k">B</span>CPU 主频</button>
+          <button class="opt" type="button"><span class="k">C</span>程序访问的局部性原理与 80-20 规则</button>
+          <button class="opt" type="button"><span class="k">D</span>操作系统调度算法</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>约 80% 的时间读取 20% 的数据，相同数据常被多次访问；Cache 高速存下这部分数据，使存取至少快 80%。</div>
+      </div>
+      <div class="q" data-a="B">
+        <div class="stem"><span class="idx">6</span>地址总线宽度由什么决定（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>字长</button>
+          <button class="opt" type="button"><span class="k">B</span>存储容量</button>
+          <button class="opt" type="button"><span class="k">C</span>控制命令数量</button>
+          <button class="opt" type="button"><span class="k">D</span>CPU 主频</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：B</span><br>存储容量为 2ⁿ 个字时需要 n 根地址线；数据总线宽度取决于字长，控制总线宽度取决于控制命令数量。</div>
+      </div>
+      <div class="q" data-a="D">
+        <div class="stem"><span class="idx">7</span>I/O 存储器映射寻址的特点是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>需要专门区分内存与 I/O 的指令</button>
+          <button class="opt" type="button"><span class="k">B</span>I/O 地址不能与内存地址重叠</button>
+          <button class="opt" type="button"><span class="k">C</span>指令集更大</button>
+          <button class="opt" type="button"><span class="k">D</span>指令集较小，但 I/O 控制器占用部分内存地址</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：D</span><br>CPU 把 I/O 控制器寄存器看作内存存储字，无专属指令、指令集小；代价是 I/O 控制器占用内存地址（如 5 控制器 × 4 寄存器 = 20 个地址）。</div>
+      </div>
+      <div class="q" data-a="C">
+        <div class="stem"><span class="idx">8</span>Simple-1 完成"两数相加"至少需要的指令条数是（　　）。</div>
+        <div class="opts">
+          <button class="opt" type="button"><span class="k">A</span>3 条</button>
+          <button class="opt" type="button"><span class="k">B</span>4 条</button>
+          <button class="opt" type="button"><span class="k">C</span>5 条</button>
+          <button class="opt" type="button"><span class="k">D</span>6 条</button>
+        </div>
+        <div class="qexp"><b>解析：</b><span class="ans-line">参考答案：C</span><br>两条 LOAD 装入 A、B，一条 ADDI 相加，一条 STORE 存结果，一条 HALT 停机——共 5 条。</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== 资源区 ===== -->
+<section id="res" style="--acc:var(--cyan)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--cyan)">↗</div>
+      <h2><b>EXTRA</b>延伸学习资源（网络资源）</h2>
+    </div>
+    <p class="sec-lead">课上演示与课后拓展建议——先试官方与交互工具，再读原始资料。</p>
+    <div class="res-grid">
+      <div class="res-card">
+        <h4>数制转换练习器</h4>
+        <div class="url">csgnetwork.com/numberhexconversion.html</div>
+        <p>在线十进制/二进制/八进制/十六进制互转，可随机出题自测数制转换。</p>
+      </div>
+      <div class="res-card">
+        <h4>Logic Gate Simulator</h4>
+        <div class="url">academo.org/demos/logic-gate-simulator</div>
+        <p>拖拽搭建与门、或门、异或门等，直观观察真值表与组合电路。</p>
+      </div>
+      <div class="res-card">
+        <h4>NandGame</h4>
+        <div class="url">nandgame.com</div>
+        <p>从与非门开始一步步搭出加法器、ALU 甚至 CPU 的互动游戏，对应"从逻辑到运算器"。</p>
+      </div>
+      <div class="res-card">
+        <h4>Nand2Tetris 课程</h4>
+        <div class="url">nand2tetris.org</div>
+        <p>《计算机系统的要素》配套课程：从与非门构建一台能运行程序的完整计算机。</p>
+      </div>
+      <div class="res-card">
+        <h4>维基百科 · 计算机组成原理</h4>
+        <div class="url">zh.wikipedia.org 计算机组成原理词条</div>
+        <p>冯·诺依曼结构、总线、存储层次等概念的扩展阅读与历史背景。</p>
+      </div>
+      <div class="res-card">
+        <h4>维基百科 · IEEE 754</h4>
+        <div class="url">zh.wikipedia.org 的 IEEE 754 词条</div>
+        <p>单精度/双精度浮点格式、特殊值（无穷、NaN）与舍入规则的权威说明。</p>
+      </div>
+      <div class="res-card">
+        <h4>ASCII Table 在线表</h4>
+        <div class="url">asciitable.com</div>
+        <p>完整 ASCII 编码表，十进制/十六进制/二进制对照，课堂查表演示。</p>
+      </div>
+      <div class="res-card">
+        <h4>哈佛 CS50（第 1 周）</h4>
+        <div class="url">cs50.harvard.edu</div>
+        <p>以"二进制与数据表示"为主题的公开课视频，双语对照理解本章核心。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    CSAI 计算机科学导论 · <a href="../daolun/index.html">返回导航首页</a><br>
+    第03章 计算机体系基础：从抽象层次到简单计算机 · 课堂讲义<br>
+    建议：先建立全景图，再按兴趣与方向深入一条主线。
+  </div>
+</footer>
+<!-- ===== 随机提问 ===== -->
+<div class="qz-widget" id="qzWidget">
+  <div class="qz-head">
+    <span><b>随机提问</b><span class="date" id="qzDate"></span></span>
+    <button class="qz-fold" id="qzFold" type="button" title="收起 / 展开">×</button>
+  </div>
+  <div class="qz-body" id="qzBody">
+    <div class="qz-classes" id="qzClasses"></div>
+    <div class="qz-result">
+      <div class="tip" id="qzTip">点击下方按钮开始</div>
+      <div class="nm" id="qzNm" style="display:none"></div>
+      <div class="id" id="qzId" style="display:none"></div>
+    </div>
+    <button class="qz-toggle" id="qzToggle" type="button">开始随机提问</button>
+    <div class="qz-rows" id="qzRows">
+      <button id="qzImport" type="button">导入班级</button>
+      <button id="qzManage" type="button">管理名单</button>
+      <button id="qzRecord" type="button">提问记录</button>
+    </div>
+    <div class="qz-note" id="qzNote"></div>
+    <div class="qz-list" id="qzList"></div>
+    <div class="qz-stats">
+      <span>今日已提问：<b id="qzCount">0/0</b></span>
+      <button id="qzClear" type="button">清空今日</button>
+    </div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+
+<script>
+(function(){
+  var decIn = document.getElementById('decIn');
+  var outBin = document.getElementById('outBin'), outOct = document.getElementById('outOct'), outHex = document.getElementById('outHex');
+  var stepsBox = document.getElementById('convSteps'), stepBtn = document.getElementById('stepBtn'), stepReset = document.getElementById('stepReset');
+  var intPart = 0, fracPart = 0, stepIdx = 0, intSteps = [], fracSteps = [];
+  function conv(){
+    var v = parseFloat(decIn.value);
+    if (isNaN(v)) return;
+    var neg = v < 0; v = Math.abs(v);
+    var iv = Math.floor(v), fv = v - iv;
+    outBin.textContent = (neg ? '-' : '') + iv.toString(2) + (fv ? '.' + fv.toString(2).slice(2) : '');
+    outOct.textContent = (neg ? '-' : '') + iv.toString(8) + (fv ? '.' + fv.toString(8).slice(2) : '');
+    outHex.textContent = (neg ? '-' : '') + iv.toString(16).toUpperCase() + (fv ? '.' + fv.toString(16).slice(2) : '');
+  }
+  function buildSteps(){
+    var v = Math.floor(Math.abs(parseFloat(decIn.value)));
+    if (isNaN(v)) return;
+    intPart = v; fracPart = Math.abs(parseFloat(decIn.value)) - v;
+    intSteps = []; fracSteps = [];
+    var q = intPart;
+    while (true){ intSteps.push(q); if (q === 0) break; q = Math.floor(q / 2); }
+    var f = fracPart, guard = 0;
+    while (f > 1e-9 && guard < 12){ fracSteps.push(Math.floor(f * 2)); f = f * 2 - Math.floor(f * 2); guard++; }
+    stepIdx = 0;
+    stepsBox.classList.add('show');
+    stepReset.style.display = 'inline-block';
+    renderSteps();
+  }
+  function bits(){ return intSteps.map(function(s){return s%2;}).slice(0,-1).reverse().join('') + (intSteps.length ? intSteps[intSteps.length-1]%2 : ''); }
+  function renderSteps(){
+    var html = '';
+    html += '<div class="step"><span class="n">整</span><span>除二取余（'+intPart+'D 的整数部分）：</span></div>';
+    intSteps.forEach(function(s, i){
+      var rem = s % 2, q = Math.floor(s / 2);
+      html += '<div class="step' + (stepIdx === i ? ' hl' : '') + '"><span class="n">' + (i+1) + '</span><span>' + s + ' ÷ 2 = ' + q + ' …… 余 ' + rem + '</span></div>';
+    });
+    html += '<div class="step"><span class="n">→</span><span>逆序输出：' + bits() + '</span></div>';
+    if (fracSteps.length){
+      html += '<div class="step"><span class="n">小</span><span>乘二取整（小数部分）：</span></div>';
+      var f = fracPart;
+      fracSteps.forEach(function(d, i){
+        var prod = f * 2;
+        html += '<div class="step' + (stepIdx === i + intSteps.length ? ' hl' : '') + '"><span class="n">' + (i+1) + '</span><span>' + f.toFixed(4) + ' × 2 = ' + prod.toFixed(4) + ' …… 取 ' + d + '</span></div>';
+        f = prod - d;
+      });
+      html += '<div class="step"><span class="n">→</span><span>顺序输出：0.' + fracSteps.join('') + '</span></div>';
+    }
+    html += '<div class="step" style="color:var(--green);font-weight:700"><span class="n">果</span><span>合并结果：' + decIn.value + 'D = ' + bits() + (fracSteps.length ? '.' + fracSteps.join('') : '') + 'B</span></div>';
+    stepsBox.innerHTML = html;
+  }
+  document.getElementById('convBtn').addEventListener('click', function(){ conv(); buildSteps(); });
+  stepBtn.addEventListener('click', function(){
+    if (stepIdx === 0) buildSteps();
+    stepIdx = Math.min(stepIdx + 1, intSteps.length + fracSteps.length);
+    renderSteps();
+  });
+  stepReset.addEventListener('click', function(){ buildSteps(); });
+  conv();
+})();
+(function(){
+  var progs = [
+    {ir:'1040', irTxt:'LOAD R₀ ← M₄₀', r0:'00A1', r1:'—', r2:'—', note:'取指：按 PC=00 从内存取出指令 (1040)₁₆ 入 IR，PC+1 → 01；译码：R₀ ← M₄₀；执行：把内存单元 40 的内容 00A1 装入 R0。'},
+    {ir:'1141', irTxt:'LOAD R₁ ← M₄₁', r0:'00A1', r1:'00FE', r2:'—', note:'取指：按 PC=01 取出 (1141)₁₆，PC+1 → 02；译码：R₁ ← M₄₁；执行：把内存单元 41 的内容 00FE（=254）装入 R1。'},
+    {ir:'3201', irTxt:'ADDI R₂ ← R₀+R₁', r0:'00A1', r1:'00FE', r2:'019F', note:'取指：按 PC=02 取出 (3201)₁₆，PC+1 → 03；译码：R₂ ← R₀+R₁；执行：ALU 计算 161+254=415=019F16，存入 R2。'},
+    {ir:'2422', irTxt:'STORE M₄₂ ← R₂', r0:'00A1', r1:'00FE', r2:'019F', note:'取指：按 PC=03 取出 (2422)₁₆，PC+1 → 04；译码：M₄₂ ← R₂；执行：把 R2 的值 019F 存回内存单元 42。'},
+    {ir:'0000', irTxt:'HALT', r0:'00A1', r1:'00FE', r2:'019F', note:'取指：按 PC=04 取出 (0000)₁₆，PC+1 → 05；译码：HALT；执行：计算机停止。结果：内存单元 42 = 019F16 = 415 正确！'}
+  ];
+  var idx = 0;
+  var elNum = document.getElementById('cycNum'), elPC = document.getElementById('cycPC'), elIR = document.getElementById('cycIR'),
+      elR0 = document.getElementById('cycR0'), elR1 = document.getElementById('cycR1'), elR2 = document.getElementById('cycR2'),
+      elSteps = document.getElementById('cycSteps'), btnNext = document.getElementById('cycNext');
+  function hexPC(){ return (idx).toString(16).padStart(2,'0').toUpperCase(); }
+  function render(){
+    if (idx === 0){
+      elNum.textContent = '0 / 5'; elPC.textContent = '00'; elIR.textContent = '—';
+      elR0.textContent = '—'; elR1.textContent = '—'; elR2.textContent = '—';
+      elSteps.innerHTML = '<div class="step"><span class="n">初</span><span>程序装入内存：地址 00–04 存指令 (1040)(1141)(3201)(2422)(0000)₁₆，地址 40/41/42 存数据 00A1 / 00FE / —</span></div>';
+      btnNext.textContent = '下一步（周期 1）';
+      return;
+    }
+    var p = progs[idx-1];
+    elNum.textContent = idx + ' / 5';
+    elPC.textContent = hexPC();
+    elIR.textContent = p.ir + '  ' + p.irTxt;
+    elR0.textContent = p.r0; elR1.textContent = p.r1; elR2.textContent = p.r2;
+    elSteps.innerHTML = '<div class="step hl"><span class="n">周期 ' + idx + '</span><span>' + p.note + '</span></div>';
+    btnNext.textContent = idx < 5 ? '下一步（周期 ' + (idx+1) + '）' : '执行完毕';
+  }
+  btnNext.addEventListener('click', function(){ if (idx < 5) idx++; render(); });
+  document.getElementById('cycReset').addEventListener('click', function(){ idx = 0; render(); });
+})();
+
+/* ===== 课堂练习：作答 + 重新作答 ===== */
+document.querySelectorAll('.quiz .q').forEach(function(q){
+  var opts = q.querySelectorAll('.opt');
+  var ans = (q.getAttribute('data-a') || '').trim();
+  var exp = q.querySelector('.qexp');
+  function reset(){
+    q.classList.remove('done');
+    opts.forEach(function(x){
+      x.disabled = false;
+      x.classList.remove('correct', 'wrong');
+    });
+    if (exp){
+      exp.classList.remove('show');
+      var r = exp.querySelector('.retry');
+      if (r) r.remove();
+    }
+  }
+  function showRetry(){
+    if (!exp) return;
+    if (exp.querySelector('.retry')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'retry';
+    btn.textContent = '重新作答';
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      reset();
+    });
+    exp.appendChild(btn);
+  }
+  opts.forEach(function(o){
+    o.addEventListener('click', function(){
+      if (q.classList.contains('done')) return;
+      q.classList.add('done');
+      var chosen = o.querySelector('.k').textContent.trim();
+      opts.forEach(function(x){ x.disabled = true; });
+      if (chosen === ans){
+        o.classList.add('correct');
+      } else {
+        o.classList.add('wrong');
+        opts.forEach(function(x){
+          if (x.querySelector('.k').textContent.trim() === ans) x.classList.add('correct');
+        });
+      }
+      if (exp){
+        exp.classList.add('show');
+        showRetry();
+      }
+    });
+  });
+});
+
+
+/* ===== 随机提问（菜单栏按钮开关浮窗） ===== */
+(function(){
+  var CLASS_ID = 'ch03';
+  var STORAGE_KEY = 'qzr_' + CLASS_ID;
+  var CLASS_KEYS = ['班级2','班级3'];
+  var ROSTER_BY_CLASS = {
+    '班级2': [
+      {id:'20260201', name:'张一'},{id:'20260202', name:'李二'},{id:'20260203', name:'王三'},{id:'20260204', name:'赵四'},
+      {id:'20260205', name:'钱五'},{id:'20260206', name:'孙六'},{id:'20260207', name:'周七'},{id:'20260208', name:'吴八'}
+    ],
+    '班级3': [
+      {id:'20260301', name:'郑九'},{id:'20260302', name:'冯十'},{id:'20260303', name:'陈十一'},{id:'20260304', name:'褚十二'},
+      {id:'20260305', name:'卫十三'},{id:'20260306', name:'蒋十四'},{id:'20260307', name:'沈十五'},{id:'20260308', name:'韩十六'}
+    ]
+  };
+  var state = { cls: '班级2', running: false, timer: null, roster: {}, asked: {}, logs: {} };
+  var today = (function(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); })();
+  function load(){
+    try {
+      var s = localStorage.getItem(STORAGE_KEY);
+      if (s) { var o = JSON.parse(s); if (o.roster) state.roster = o.roster; if (o.asked) state.asked = o.asked; if (o.logs) state.logs = o.logs; }
+    } catch(e){}
+  }
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({roster: state.roster, asked: state.asked, logs: state.logs})); } catch(e){}
+  }
+  function roster(cls){
+    if (state.roster[cls] && state.roster[cls].length) return state.roster[cls];
+    return ROSTER_BY_CLASS[cls] || [];
+  }
+  function todayLog(){
+    if (!state.logs[today]) state.logs[today] = {};
+    if (!state.logs[today][state.cls]) state.logs[today][state.cls] = [];
+    return state.logs[today][state.cls];
+  }
+  function askSet(){
+    if (!state.asked[today]) state.asked[today] = {};
+    if (!state.asked[today][state.cls]) state.asked[today][state.cls] = [];
+    return state.asked[today][state.cls];
+  }
+  function pickOne(){
+    var pool = roster(state.cls).filter(function(p){ return askSet().indexOf(p.id) < 0; });
+    if (!pool.length){ askSet().length = 0; pool = roster(state.cls).slice(); }
+    if (!pool.length) return {id:'', name:'（名单为空）'};
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  var elDate = document.getElementById('qzDate'), elCls = document.getElementById('qzClasses'), elTip = document.getElementById('qzTip'),
+      elNm = document.getElementById('qzNm'), elId = document.getElementById('qzId'), elToggle = document.getElementById('qzToggle'),
+      elNote = document.getElementById('qzNote'), elList = document.getElementById('qzList'), elCount = document.getElementById('qzCount'),
+      elFold = document.getElementById('qzFold'), elWidget = document.getElementById('qzWidget'),
+      elNavQz = document.getElementById('navQz');
+  if (!elWidget || !elNavQz) return;
+  function renderCls(){
+    if (!elCls) return;
+    elCls.innerHTML = '';
+    CLASS_KEYS.forEach(function(k){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = k;
+      if (k === state.cls) b.classList.add('on');
+      b.addEventListener('click', function(){
+        stopRoll(); state.cls = k; renderCls(); renderCount();
+        if (elTip) elTip.style.display = '';
+        if (elNm) elNm.style.display = 'none';
+        if (elId) elId.style.display = 'none';
+      });
+      elCls.appendChild(b);
+    });
+  }
+  function renderCount(){
+    if (!elCount) return;
+    var r = roster(state.cls), a = askSet();
+    elCount.textContent = a.length + '/' + r.length;
+  }
+  function roll(){
+    var p = pickOne();
+    if (elTip) elTip.style.display = 'none';
+    if (elNm){ elNm.style.display = ''; elNm.textContent = p.name; }
+    if (elId){ elId.style.display = ''; elId.textContent = p.id; }
+  }
+  function stopRoll(){
+    if (!state.running) return;
+    state.running = false;
+    clearInterval(state.timer);
+    if (elToggle){ elToggle.textContent = '开始随机提问'; elToggle.classList.remove('on'); }
+    var p = pickOne();
+    if (elTip) elTip.style.display = 'none';
+    if (elNm){ elNm.style.display = ''; elNm.textContent = p.name; }
+    if (elId){ elId.style.display = ''; elId.textContent = p.id; }
+    if (p.id && askSet().indexOf(p.id) < 0) askSet().push(p.id);
+    if (p.id) todayLog().push({t: new Date().toTimeString().slice(0,5), id: p.id, name: p.name});
+    save();
+    renderCount();
+  }
+  function toggleRoll(){
+    if (state.running){ stopRoll(); return; }
+    state.running = true;
+    if (elToggle){ elToggle.textContent = '停止 · 定格'; elToggle.classList.add('on'); }
+    roll();
+    state.timer = setInterval(roll, 80);
+  }
+  function showLog(){
+    var list = todayLog();
+    if (!list.length){
+      if (elNote){ elNote.textContent = '今天还没有提问记录。'; elNote.style.display = 'block'; }
+      if (elList) elList.style.display = 'none';
+      return;
+    }
+    if (elNote) elNote.style.display = 'none';
+    if (elList){
+      elList.style.display = 'block';
+      elList.innerHTML = list.slice(-50).reverse().map(function(x){
+        return '<div class="log-line">' + x.t + '　' + x.name + '（' + x.id + '）</div>';
+      }).join('');
+    }
+  }
+  function showManage(){
+    var r = roster(state.cls);
+    if (elList) elList.style.display = 'block';
+    if (elNote) elNote.style.display = 'none';
+    if (!elList) return;
+    elList.innerHTML = r.map(function(p, i){
+      return '<div class="log-line" style="display:flex;justify-content:space-between"><span>' + p.name + '（' + p.id + '）</span><a href="javascript:void(0)" data-i="' + i + '" style="color:#dc2626">删除</a></div>';
+    }).join('');
+    elList.querySelectorAll('a[data-i]').forEach(function(a){
+      a.addEventListener('click', function(){
+        var i = +a.getAttribute('data-i');
+        roster(state.cls).splice(i, 1);
+        save(); renderCount(); showManage();
+      });
+    });
+  }
+  function importData(){
+    var text = prompt('粘贴名单，每行格式：学号 姓名（可先复制 Excel 两列），或直接输入姓名（每行一个）：');
+    if (!text) return;
+    var lines = text.split(/\r?\n/).map(function(s){ return s.trim(); }).filter(Boolean);
+    var parsed = [];
+    lines.forEach(function(line){
+      var m = line.match(/^([0-9A-Za-z\-]+)\s+(.+)$/);
+      if (m) parsed.push({id: m[1], name: m[2].trim()});
+      else parsed.push({id: '', name: line});
+    });
+    var mode = prompt('导入方式：1 = 替换当前班级名单，2 = 追加（默认 2）：');
+    if (mode === '1') state.roster[state.cls] = parsed;
+    else state.roster[state.cls] = roster(state.cls).concat(parsed);
+    save(); renderCount(); showManage();
+    if (elNote){ elNote.textContent = '已导入 ' + parsed.length + ' 人（' + state.cls + '）。'; elNote.style.display = 'block'; }
+  }
+  function toggleWidget(){
+    elWidget.classList.toggle('show');
+  }
+  elNavQz.addEventListener('click', toggleWidget);
+  if (elFold){
+    elFold.addEventListener('click', function(){
+      elWidget.classList.remove('show');
+      if (state.running) stopRoll();
+    });
+  }
+  if (elToggle) elToggle.addEventListener('click', toggleRoll);
+  var elRecord = document.getElementById('qzRecord');
+  var elManage = document.getElementById('qzManage');
+  var elImport = document.getElementById('qzImport');
+  var elClear = document.getElementById('qzClear');
+  if (elRecord) elRecord.addEventListener('click', showLog);
+  if (elManage) elManage.addEventListener('click', showManage);
+  if (elImport) elImport.addEventListener('click', importData);
+  if (elClear) elClear.addEventListener('click', function(){
+    if (confirm('清空今日 ' + state.cls + ' 的提问记录与已问名单？')) {
+      if (!state.asked[today]) state.asked[today] = {};
+      state.asked[today][state.cls] = [];
+      if (!state.logs[today]) state.logs[today] = {};
+      state.logs[today][state.cls] = [];
+      save(); renderCount();
+      if (elNote){ elNote.textContent = '已清空今日记录。'; elNote.style.display = 'block'; }
+      if (elList) elList.style.display = 'none';
+    }
+  });
+  if (elDate) elDate.textContent = today;
+  load();
+  renderCls();
+  renderCount();
+})();
+
+
+/* ===== 进度条 & 返回顶部 & 导航高亮 ===== */
+(function(){
+  var bar = document.getElementById('progress'), backTop = document.getElementById('backTop');
+  var navLinks = document.querySelectorAll('#navlinks a');
+  var sections = [];
+  navLinks.forEach(function(a){
+    var id = a.getAttribute('href');
+    if (id && id.charAt(0) === '#') {
+      var el = document.querySelector(id);
+      if (el) sections.push({el: el, a: a});
+    }
+  });
+  function spy(){
+    var y = window.scrollY + 120;
+    var cur = null;
+    sections.forEach(function(s){
+      if (s.el.offsetTop <= y) cur = s;
+    });
+    navLinks.forEach(function(a){ a.classList.remove('cur'); });
+    if (cur) cur.a.classList.add('cur');
+  }
+  function upd(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max * 100) : 0;
+    if (bar) bar.style.width = p + '%';
+    if (backTop) backTop.classList.toggle('show', h.scrollTop > 600);
+    spy();
+  }
+  window.addEventListener('scroll', upd, {passive:true});
+  upd();
+  if (backTop) backTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+})();
+
+</script>
+</body>
+</html>

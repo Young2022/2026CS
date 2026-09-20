@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI Vue 程序设计学习教程：从基础语法到组合式 API，覆盖组件、路由、状态管理。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Vue 程序设计 · 学习教程</title>
+<style>
+/* ========== Vue 主题：薄荷绿/深绿（柔和现代） ========== */
+:root{
+  --bg:#f0faf4;             /* 极浅薄荷 */
+  --bg2:#dff3e8;
+  --surface:#ffffff;
+  --card:#f7fcf9;
+  --card-hov:#e8f6ee;
+  --primary:#42B883;         /* Vue 绿 */
+  --primary-dim:#2f8d62;
+  --accent:#35495E;           /* Vue dark */
+  --accent2:#5f7185;
+  --success:#27ae60;
+  --danger:#e74c3c;
+  --text:#1e2a35;
+  --text-soft:#475868;
+  --text-mute:#8492a4;
+  --border:#cfe7d9;
+  --border-strong:#a4cdb1;
+  --code-bg:#11231a;
+  --code-head:#0a1a13;
+  --tok-tag:#67d99e;
+  --tok-attr:#f7c873;
+  --tok-key:#ff8a9b;          /* Vue 关键字 */
+  --tok-fn:#5dade2;
+  --tok-str:#a8e6a3;
+  --tok-com:#7d9085;
+  --tok-num:#f4b860;
+  --tok-this:#ce93d8;
+  --shadow:0 3px 12px rgba(66,184,131,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--primary-dim);text-decoration:underline}
+code{font-family:"Fira Code","JetBrains Mono","Consolas",monospace;font-size:13.5px}
+
+/* ========== 顶栏 ========== */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg,#fff 0%,#f7fcf9 100%);
+  border-bottom:3px solid var(--primary);
+  box-shadow:var(--shadow);
+  padding:10px 20px;display:flex;align-items:center;gap:18px;
+}
+.topnav .logo{font-size:18px;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:8px}
+.topnav .logo::before{content:"▲";color:var(--accent);font-size:20px}
+.topnav a.nav-link{color:var(--text-soft);font-size:13.5px;padding:4px 8px;border-radius:4px;transition:.15s}
+.topnav a.nav-link:hover{background:rgba(66,184,131,.08);color:var(--primary)}
+.topnav a.nav-link.active{background:var(--primary);color:#fff;font-weight:600}
+
+/* ========== Hero ========== */
+.hero{
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(50,140,100,.35) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(40,60,80,.30) 0%,transparent 55%),
+    linear-gradient(135deg,#1a5c3a 0%,#1a3a4a 100%);
+  padding:40px 24px 28px;border-bottom:3px solid var(--primary);
+}
+.hero .inner{max-width:1080px;margin:0 auto}
+.hero .kicker{
+  display:inline-block;background:var(--primary);color:#fff;
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  letter-spacing:.5px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(28px,4.2vw,40px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2}
+.hero h1 em{color:#86efac;font-style:normal}
+.hero p.lead{font-size:17px;color:rgba(255,255,255,.85);max-width:780px;margin-bottom:20px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:12px;color:rgba(255,255,255,.7);font-size:13px}
+.hero .meta span{background:rgba(255,255,255,.15);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)}
+
+/* ========== 章节流图 ========== */
+.flow{max-width:1080px;margin:30px auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.flow .step{background:var(--card);border:1px solid var(--border);padding:8px 14px;border-radius:6px;font-size:13px;color:var(--text-soft)}
+.flow .step strong{color:var(--primary)}
+.flow .arr{color:var(--primary);font-weight:700;opacity:.7}
+
+/* ========== 内容主体 ========== */
+main{max-width:1080px;margin:0 auto;padding:30px 24px 80px}
+
+section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:22px 26px;margin-bottom:22px;
+  scroll-margin-top:80px;transition:.2s;border-left:4px solid var(--primary);
+  box-shadow:var(--shadow);
+}
+section:hover{box-shadow:0 6px 20px rgba(66,184,131,.18)}
+
+section h2{
+  font-size:20px;color:var(--primary);margin-bottom:14px;
+  padding-bottom:10px;border-bottom:2px dashed var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+section h2::before{
+  content:attr(data-num);background:var(--primary);color:#fff;
+  width:30px;height:30px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-size:14px;font-weight:800;
+}
+section h3{font-size:17px;color:var(--accent);margin:22px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
+section h4{font-size:15px;color:var(--text);margin:16px 0 8px;font-weight:600}
+section p{margin-bottom:10px;color:var(--text-soft)}
+section ul,section ol{margin-left:24px;margin-bottom:12px;color:var(--text-soft)}
+section li{margin-bottom:6px}
+section strong{color:var(--text)}
+section em.hint{color:var(--primary);font-style:normal;font-weight:600}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:14px 0}
+.card.success{border-left:4px solid var(--success)}
+.card.warn{border-left:4px solid var(--accent)}
+.card.danger{border-left:4px solid var(--danger)}
+.card.info{border-left:4px solid var(--primary)}
+.card-title{font-weight:700;color:var(--primary);margin-bottom:6px;font-size:14px}
+.card p:last-child{margin-bottom:0}
+
+.codebox{background:var(--code-bg);border:1px solid #1a3328;border-radius:8px;margin:14px 0;overflow:hidden}
+.codebox-head{background:var(--code-head);padding:8px 14px;font-size:12px;color:var(--text-mute);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a3328}
+.codebox-head .lang{color:var(--accent2);font-weight:600}
+.codebox-head .copy{background:var(--primary);color:#fff;border:none;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;transition:.15s}
+.codebox-head .copy:hover{background:var(--primary-dim)}
+.codebox pre{padding:16px;overflow-x:auto;color:#dff3e8;font-family:"Fira Code","JetBrains Mono","Consolas",monospace;font-size:13.5px;line-height:1.6}
+.codebox code{display:block;white-space:pre}
+
+.tok-tag{color:var(--tok-tag)}
+.tok-attr{color:var(--tok-attr)}
+.tok-key{color:var(--tok-key)}
+.tok-fn{color:var(--tok-fn)}
+.tok-str{color:var(--tok-str)}
+.tok-com{color:var(--tok-com);font-style:italic}
+.tok-num{color:var(--tok-num)}
+.tok-this{color:var(--tok-this)}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--bg2);border-radius:6px;overflow:hidden}
+table th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:700;border:1px solid var(--border);font-size:13px}
+table td{padding:9px 12px;border:1px solid var(--border);color:var(--text-soft);font-size:13.5px}
+table tr:nth-child(even) td{background:rgba(66,184,131,.04)}
+
+.q-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:18px;margin:16px 0}
+.q-card .q-title{color:var(--accent);font-weight:700;margin-bottom:10px;font-size:15px}
+.q-card ol{padding-left:20px}
+.q-card ol li{background:var(--surface);border:1px solid var(--border);padding:8px 14px;border-radius:6px;margin-bottom:8px;cursor:pointer;transition:.15s;color:var(--text-soft)}
+.q-card ol li:hover{border-color:var(--primary);transform:translateX(3px)}
+.q-card ol li.correct{background:rgba(39,174,96,.18);border-color:var(--success);color:var(--text)}
+.q-card ol li.wrong{background:rgba(231,76,60,.18);border-color:var(--danger);color:var(--text)}
+.q-card .q-explain{background:rgba(66,184,131,.06);border:1px dashed var(--primary);border-radius:6px;padding:10px 14px;margin-top:10px;display:none;font-size:13px;color:var(--text-soft)}
+.q-card .q-explain.show{display:block}
+.q-card .q-explain strong{color:var(--primary)}
+
+.proj{background:linear-gradient(135deg,#f0faf4 0%,#e0eee6 100%);border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:8px;padding:20px;margin:18px 0}
+.proj-title{color:var(--accent);font-size:18px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.proj-title::before{content:"⚡";font-size:20px}
+.proj-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:12px}
+.proj-meta span{background:var(--surface);padding:3px 9px;border-radius:4px;border:1px solid var(--border);color:var(--text-soft)}
+
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:14px 0;display:flex;justify-content:center}
+
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.cheat-cell{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px}
+.cheat-cell h4{color:var(--primary);font-size:14px;margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.cheat-cell ul{margin-left:18px;font-size:13px}
+.cheat-cell li{color:var(--text-soft);margin-bottom:4px}
+.cheat-cell code{background:var(--code-bg);padding:1px 6px;border-radius:3px;color:var(--accent2);font-size:12.5px}
+
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);z-index:200;width:0%;transition:width .1s;box-shadow:0 0 10px var(--primary)}
+#to-top{position:fixed;bottom:30px;right:30px;background:var(--primary);color:#fff;width:45px;height:45px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(66,184,131,.4);border:none;transition:.2s}
+#to-top:hover{background:var(--primary-dim);transform:translateY(-3px)}
+
+.tip{background:rgba(66,184,131,.06);border-left:4px solid var(--primary);padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px}
+.tip strong{color:var(--primary)}
+
+@media (max-width:720px){
+  .hero h1{font-size:28px}
+  section{padding:20px 16px}
+  main{padding:20px 14px 60px}
+  .topnav{padding:8px 12px;gap:10px;flex-wrap:wrap}
+  .topnav .logo{font-size:14px}
+  .topnav a.nav-link{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav class="topnav">
+  <a href="../../daolun/index.html" class="logo" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>CSAI</a>
+  <a class="nav-link" href="#s00">指南</a>
+  <a class="nav-link" href="#s01">起步</a>
+  <a class="nav-link" href="#s03">响应式</a>
+  <a class="nav-link" href="#s12">组件</a>
+  <a class="nav-link" href="#s16">组合式API</a>
+  <a class="nav-link" href="#s19">Router</a>
+  <a class="nav-link" href="#s20">Pinia</a>
+  <a class="nav-link" href="#s26">项目</a>
+  <a class="nav-link" href="#s29">速查</a>
+</nav>
+
+<header class="hero">
+  <div class="inner">
+    <span class="kicker">前端框架 · 大学二年级</span>
+    <h1>掌握 <em>Vue 3</em>：渐进式 JavaScript 框架</h1>
+    <p class="lead">
+      从响应式原理、模板语法到组件化、组合式 API，再到 Vue Router 路由、Pinia 状态管理，最后用 Vite 工具链完成 3 个真实项目。
+      本教程与本系列前序课程（C → C++ → Java → Python → SQL → JavaScript → HTML → CSS）保持一致的节奏与难度梯度。
+    </p>
+    <div class="meta">
+      <span>🟢 29 章正文</span>
+      <span>📦 3 个综合项目</span>
+      <span>❓ 12 道课堂训练</span>
+      <span>🎯 Composition API</span>
+      <span>🛠 Vite + Pinia + Router</span>
+    </div>
+  </div>
+</header>
+
+<div class="flow">
+  <span class="step"><strong>模板 + 响应式</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>组件基础</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>组合式 API</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>Router + Pinia</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>Vite 构建</strong></span>
+  <span class="arr">→</span>
+  <span class="step"><strong>真实项目</strong></span>
+</div>
+
+<main>
+
+<!-- ========== 00 ========== -->
+<section id="s00">
+<h2 data-num="00">学习指南：Vue 是什么、怎么学、学到什么</h2>
+
+<p><strong>Vue 3</strong> 是当前最主流的<strong>渐进式 JavaScript 框架</strong>。它用<strong>声明式渲染</strong> + <strong>响应式数据</strong> + <strong>组件化</strong>三大特性，让你能用更少代码写出可维护的前端应用。</p>
+
+<h3>0.1 Vue 三大特性</h3>
+<div class="card info">
+<div class="card-title">💡 三件套</div>
+<pre style="font-size:13px;line-height:1.8;color:var(--text);background:transparent">
+<span style="color:var(--primary);font-weight:700">声明式渲染</span>  · 用模板描述"长什么样"
+<span style="color:var(--primary);font-weight:700">响应式数据</span>  · 数据变化自动更新界面
+<span style="color:var(--primary);font-weight:700">组件化</span>     · 把页面拆成一个个可复用单元
+</pre>
+</div>
+
+<h3>0.2 Vue 2 vs Vue 3</h3>
+<table>
+<tr><th>维度</th><th>Vue 2</th><th>Vue 3</th></tr>
+<tr><td>语法</td><td>Options API</td><td>Composition API（推荐）</td></tr>
+<tr><td>响应式</td><td>Object.defineProperty</td><td>Proxy（更强大）</td></tr>
+<tr><td>TypeScript</td><td>支持一般</td><td>原生友好</td></tr>
+<tr><td>状态管理</td><td>Vuex</td><td>Pinia（官方推荐）</td></tr>
+<tr><td>构建工具</td><td>Vue CLI</td><td>Vite</td></tr>
+</table>
+
+<h3>0.3 路线</h3>
+<div class="card success">
+<ol style="padding-left:24px">
+<li>模板语法 + 响应式数据 + 事件</li>
+<li>组件化（props / emit / slot）</li>
+<li>组合式 API（setup / ref / computed / watch）</li>
+<li>生态：Vue Router + Pinia</li>
+<li>工程化：Vite + 单文件组件 + 部署</li>
+</ol>
+</div>
+
+<div class="tip"><strong>前置要求</strong>：需要掌握 HTML + CSS + JavaScript（尤其是 ES6+ 语法）。</div>
+</section>
+
+<!-- ========== 01 ========== -->
+<section id="s01">
+<h2 data-num="01">快速起步 ⭐⭐⭐</h2>
+
+<h3>1.1 两种启动方式</h3>
+<table>
+<tr><th>方式</th><th>适用</th><th>命令</th></tr>
+<tr><td>CDN 引入</td><td>学习、demo</td><td>直接在 HTML 加 <code>&lt;script&gt;</code></td></tr>
+<tr><td>Vite + npm</td><td>真实项目</td><td><code>npm create vue@latest</code></td></tr>
+</table>
+
+<h3>1.2 CDN Hello World</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">HTML</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-str">"app"</span><span class="tok-tag">&gt;</span>{{ msg }}<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-str">"module"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">createApp</span>, <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"https://unpkg.com/vue@3/dist/vue.esm-browser.js"</span>;
+
+    <span class="tok-fn">createApp</span>({
+        <span class="tok-fn">setup</span>() {
+            <span class="tok-key">const</span> msg = <span class="tok-fn">ref</span>(<span class="tok-str">"你好，Vue 3!"</span>);
+            <span class="tok-key">return</span> { msg };
+        }
+    }).<span class="tok-fn">mount</span>(<span class="tok-str">"#app"</span>);
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+
+<h3>1.3 用 Vite 脚手架</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">终端</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>npm create vue@latest
+<span class="tok-com"># 按提示选择 TypeScript / Router / Pinia / 测试</span>
+cd my-app
+npm install
+npm run dev   <span class="tok-com"># 启动 localhost:5173</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 02 ========== -->
+<section id="s02">
+<h2 data-num="02">模板语法 ⭐⭐⭐</h2>
+
+<h3>2.1 插值</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue 模板</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>{{ msg }}<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>{{ n + 1 }}<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>{{ ok ? <span class="tok-str">"YES"</span> : <span class="tok-str">"NO"</span> }}<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>{{ <span class="tok-fn">formatDate</span>(d) }}<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+
+<h3>2.2 常见指令</h3>
+<table>
+<tr><th>指令</th><th>作用</th></tr>
+<tr><td><code>v-text</code></td><td>更新文本</td></tr>
+<tr><td><code>v-html</code></td><td>解析 HTML（注意 XSS）</td></tr>
+<tr><td><code>v-show</code></td><td>切换 CSS display</td></tr>
+<tr><td><code>v-if</code> / <code>v-else</code></td><td>条件渲染（条件为 false 时销毁）</td></tr>
+<tr><td><code>v-for</code></td><td>列表渲染（必须加 <code>:key</code>）</td></tr>
+<tr><td><code>v-on</code> / <code>@</code></td><td>事件监听</td></tr>
+<tr><td><code>v-bind</code> / <code>:</code></td><td>属性绑定</td></tr>
+<tr><td><code>v-model</code></td><td>双向绑定（表单）</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue 模板</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;a</span> <span class="tok-attr">:href</span>=<span class="tok-str">"url"</span> <span class="tok-attr">:title</span>=<span class="tok-str">"tip"</span><span class="tok-tag">&gt;</span>链接<span class="tok-tag">&lt;/a&gt;</span>
+<span class="tok-tag">&lt;img</span> <span class="tok-attr">:src</span>=<span class="tok-str">"src"</span> <span class="tok-attr">alt</span>=<span class="tok-str">""</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"onClick"</span><span class="tok-tag">&gt;</span>点击<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">@keyup.enter</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;p</span> <span class="tok-attr">v-if</span>=<span class="tok-str">"seen"</span><span class="tok-tag">&gt;</span>看到了<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;p</span> <span class="tok-attr">v-else</span><span class="tok-tag">&gt;</span>没看到<span class="tok-tag">&lt;/p&gt;</span>
+
+<span class="tok-tag">&lt;li</span> <span class="tok-attr">v-for</span>=<span class="tok-str">"item in items"</span> <span class="tok-attr">:key</span>=<span class="tok-str">"item.id"</span><span class="tok-tag">&gt;</span>{{ item.name }}<span class="tok-tag">&lt;/li&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 03 ========== -->
+<section id="s03">
+<h2 data-num="03">响应式数据 ref / reactive ⭐⭐⭐</h2>
+
+<h3>3.1 ref：让任意类型变响应式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript (Vue)</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">const</span> count = <span class="tok-fn">ref</span>(<span class="tok-num">0</span>);
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(count.value);    <span class="tok-com">// 0（脚本里要 .value）</span>
+count.value++;             <span class="tok-com">// 修改</span>
+
+<span class="tok-comment">// 模板里自动解包，不需要 .value</span>
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"count++"</span><span class="tok-tag">&gt;</span>{{ count }}<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+
+<h3>3.2 reactive：对象式响应式</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">JavaScript (Vue)</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">reactive</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">const</span> state = <span class="tok-fn">reactive</span>({
+    name: <span class="tok-str">"张三"</span>,
+    age:  <span class="tok-num">18</span>,
+    hobbies: [<span class="tok-str">"代码"</span>, <span class="tok-str">"音乐"</span>]
+});
+
+state.age = <span class="tok-num">19</span>;                       <span class="tok-com">// 直接改属性</span>
+state.hobbies.<span class="tok-fn">push</span>(<span class="tok-str">"阅读"</span>);       <span class="tok-com">// 数组方法也响应</span></code></pre>
+</div>
+
+<h3>3.3 ref vs reactive 之选</h3>
+<table>
+<tr><th>ref</th><th>reactive</th></tr>
+<tr><td>任何值（基本/对象）</td><td>只用于对象</td></tr>
+<tr><td>用 .value 访问</td><td>直接访问属性</td></tr>
+<tr><td>现代风格推荐</td><td>深度嵌套数据方便</td></tr>
+</table>
+
+<div class="tip">
+<strong>推荐</strong>：默认用 <code>ref</code>，对象大且深嵌套时用 <code>reactive</code>。
+</div>
+</section>
+
+<!-- ========== 04 ========== -->
+<section id="s04">
+<h2 data-num="04">计算属性 computed ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">const</span> firstName = <span class="tok-fn">ref</span>(<span class="tok-str">"三"</span>);
+<span class="tok-key">const</span> lastName  = <span class="tok-fn">ref</span>(<span class="tok-str">"张"</span>);
+
+<span class="tok-key">const</span> fullName = <span class="tok-fn">computed</span>(() =&gt; lastName.value + firstName.value);
+
+<span class="tok-comment">// fullName 是只读的</span>
+<span class="tok-tag">&lt;p&gt;</span>{{ fullName }}<span class="tok-tag">&lt;/p&gt;</span></code></pre>
+</div>
+
+<h3>computed vs method</h3>
+<table>
+<tr><th>computed</th><th>method</th></tr>
+<tr><td>有缓存（依赖不变不重算）</td><td>每次重算</td></tr>
+<tr><td>适合"由其他数据派生"的值</td><td>适合事件/动作</td></tr>
+</table>
+</section>
+
+<!-- ========== 05 ========== -->
+<section id="s05">
+<h2 data-num="05">侦听器 watch / watchEffect ⭐⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">watch</span>, <span class="tok-fn">watchEffect</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">const</span> id = <span class="tok-fn">ref</span>(<span class="tok-num">1</span>);
+
+<span class="tok-comment">// 监听一个 ref</span>
+<span class="tok-fn">watch</span>(id, (newV, oldV) =&gt; {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">`id 从 </span><span class="tok-op">${</span>oldV<span class="tok-op">}</span><span class="tok-str"> → </span><span class="tok-op">${</span>newV<span class="tok-op">}</span><span class="tok-str">`</span>);
+});
+
+<span class="tok-comment">// 立即执行 + 自动监听</span>
+<span class="tok-fn">watchEffect</span>(() =&gt; {
+    <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-str">"id = "</span>, id.value);
+    <span class="tok-com">// 自动收集依赖</span>
+});
+
+<span class="tok-comment">// 监听对象里的属性</span>
+<span class="tok-key">const</span> user = <span class="tok-fn">reactive</span>({ name: <span class="tok-str">"Alice"</span>, age: <span class="tok-num">18</span> });
+<span class="tok-fn">watch</span>(() =&gt; user.age, (n, o) =&gt; <span class="tok-fn">console</span>.<span class="tok-fn">log</span>(n));</code></pre>
+</div>
+
+<h3>watch 选项速查</h3>
+<table>
+<tr><th>选项</th><th>作用</th></tr>
+<tr><td><code>immediate: true</code></td><td>立即执行一次回调</td></tr>
+<tr><td><code>deep: true</code></td><td>深度监听对象内部</td></tr>
+<tr><td><code>flush: "post"</code></td><td>DOM 更新后再触发</td></tr>
+</table>
+</section>
+
+<!-- ========== 06 ========== -->
+<section id="s06">
+<h2 data-num="06">class 与 style 绑定 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue 模板</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">:class</span>=<span class="tok-str">"{ active: isActive, 'text-danger': hasError }"</span><span class="tok-tag">&gt;</span>对象式<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">:class</span>=<span class="tok-str">"[a, b]"</span><span class="tok-tag">&gt;</span>数组式<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">:style</span>=<span class="tok-str">"{ color: c, fontSize: size + 'px' }"</span><span class="tok-tag">&gt;</span>行内<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 07 ========== -->
+<section id="s07">
+<h2 data-num="07">条件渲染与列表渲染 ⭐⭐⭐</h2>
+
+<h3>7.1 v-if vs v-show</h3>
+<table>
+<tr><th>v-if</th><th>v-show</th></tr>
+<tr><td>false 时<strong>不创建</strong></td><td>始终创建，CSS 切换</td></tr>
+<tr><td>首次渲染慢，切换开销小</td><td>首次渲染快，切换开销大</td></tr>
+<tr><td>适合不常切换</td><td>适合频繁切换</td></tr>
+</table>
+
+<h3>7.2 v-for 必须 :key</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li</span> <span class="tok-attr">v-for</span>=<span class="tok-str">"(user, i) in users"</span>
+        <span class="tok-attr">:key</span>=<span class="tok-str">"user.id"</span><span class="tok-tag">&gt;</span>
+        {{ i }} - {{ user.name }}
+    <span class="tok-tag">&lt;/li&gt;</span>
+<span class="tok-tag">&lt;/ul&gt;</span></code></pre>
+</div>
+<div class="card warn">
+<div class="card-title">⚠️ key 别用 index</div>
+<p><code>:key="i"</code> 在数据顺序变化时会导致 DOM 错误复用，<strong>应使用稳定 id</strong>。</p>
+</div>
+</section>
+
+<!-- ========== 08 ========== -->
+<section id="s08">
+<h2 data-num="08">事件处理 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"count++"</span><span class="tok-tag">&gt;</span>+<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"say('hi')"</span><span class="tok-tag">&gt;</span>问候<span class="tok-tag">&lt;/button&gt;</span>
+
+<span class="tok-comment">// 事件修饰符</span>
+<span class="tok-tag">&lt;form</span> <span class="tok-attr">@submit.prevent</span>=<span class="tok-str">"onSubmit"</span><span class="tok-tag">&gt;</span>      <span class="tok-com">// e.preventDefault()</span>
+<span class="tok-tag">&lt;div</span>   <span class="tok-attr">@click.stop</span>=<span class="tok-str">"onClick"</span><span class="tok-tag">&gt;</span>         <span class="tok-com">// e.stopPropagation()</span>
+<span class="tok-tag">&lt;div</span>   <span class="tok-attr">@click.once</span>=<span class="tok-str">"onClick"</span><span class="tok-tag">&gt;</span>        <span class="tok-com">// 只触发一次</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">@keyup.enter</span>=<span class="tok-str">"submit"</span><span class="tok-tag">&gt;</span>       <span class="tok-com">// 回车键</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">@click.ctrl</span>=<span class="tok-str">"onClick"</span><span class="tok-tag">&gt;</span>        <span class="tok-com">// Ctrl+点击</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 09 ========== -->
+<section id="s09">
+<h2 data-num="09">表单输入绑定 v-model ⭐⭐⭐</h2>
+
+<h3>9.1 各种控件</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue 模板</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;input</span>     <span class="tok-attr">v-model</span>=<span class="tok-str">"name"</span>          <span class="tok-tag">/&gt;</span>        <span class="tok-com">/* 文本 */</span>
+<span class="tok-tag">&lt;input</span>     <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">v-model</span>=<span class="tok-str">"ok"</span><span class="tok-tag">/&gt;</span>  <span class="tok-com">/* 复选框（boolean） */</span>
+<span class="tok-tag">&lt;input</span>     <span class="tok-attr">type</span>=<span class="tok-str">"checkbox"</span> <span class="tok-attr">value</span>=<span class="tok-str">"vue"</span>
+                                  <span class="tok-attr">v-model</span>=<span class="tok-str">"arr"</span><span class="tok-tag">/&gt;</span>  <span class="tok-com">/* 数组（多选） */</span>
+<span class="tok-tag">&lt;input</span>     <span class="tok-attr">type</span>=<span class="tok-str">"radio"</span> <span class="tok-attr">v-model</span>=<span class="tok-str">"pick"</span> <span class="tok-tag">/&gt;</span><span class="tok-com">/* 单选 */</span>
+<span class="tok-tag">&lt;select</span>   <span class="tok-attr">v-model</span>=<span class="tok-str">"city"</span><span class="tok-tag">&gt;</span>...<span class="tok-tag">&lt;/select&gt;</span>           <span class="tok-com">/* 下拉 */</span>
+<span class="tok-tag">&lt;textarea</span> <span class="tok-attr">v-model</span>=<span class="tok-str">"msg"</span><span class="tok-tag">&gt;&lt;/textarea&gt;</span>          <span class="tok-com">/* 多行 */</span>
+
+<span class="tok-comment">// 修饰符</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">v-model.lazy</span>=<span class="tok-str">"name"</span><span class="tok-tag">&gt;</span>            <span class="tok-com">// change 时同步</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">v-model.number</span>=<span class="tok-str">"age"</span><span class="tok-tag">&gt;</span>          <span class="tok-com">// 转数字</span>
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">v-model.trim</span>=<span class="tok-str">"name"</span><span class="tok-tag">&gt;</span>           <span class="tok-com">// 去空白</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 10 ========== -->
+<section id="s10">
+<h2 data-num="10">Vue 实例生命周期 ⭐⭐</h2>
+
+<div class="diagram">
+<svg width="700" height="280" viewBox="0 0 700 280">
+  <rect x="20"  y="20"  width="140" height="40" fill="#42B883" rx="6"/>
+  <text x="90" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">setup()</text>
+
+  <rect x="180" y="20"  width="140" height="40" fill="#67d99e" rx="6"/>
+  <text x="250" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">onBeforeMount</text>
+
+  <rect x="340" y="20"  width="140" height="40" fill="#42B883" rx="6"/>
+  <text x="410" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">onMounted ✓</text>
+
+  <rect x="500" y="20"  width="180" height="40" fill="#35495E" rx="6"/>
+  <text x="590" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">运行中（响应式）</text>
+
+  <rect x="20"  y="100" width="140" height="40" fill="#67d99e" rx="6"/>
+  <text x="90" y="125" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">onBeforeUpdate</text>
+
+  <rect x="180" y="100" width="140" height="40" fill="#42B883" rx="6"/>
+  <text x="250" y="125" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">onUpdated</text>
+
+  <rect x="340" y="100" width="140" height="40" fill="#dff3e8" stroke="#42B883" stroke-width="2" rx="6"/>
+  <text x="410" y="125" text-anchor="middle" fill="#2f8d62" font-size="13" font-weight="700">onBeforeUnmount</text>
+
+  <rect x="500" y="100" width="180" height="40" fill="#dff3e8" stroke="#42B883" stroke-width="2" rx="6"/>
+  <text x="590" y="125" text-anchor="middle" fill="#2f8d62" font-size="13" font-weight="700">onUnmounted</text>
+
+  <text x="350" y="180" text-anchor="middle" fill="#35495E" font-size="13" font-weight="700">常用：onMounted（发请求） / onUnmounted（清理定时器）</text>
+  <text x="350" y="210" text-anchor="middle" fill="#8492a4" font-size="11">生命周期贯穿"创建 → 挂载 → 更新 → 卸载"</text>
+</svg>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">onMounted</span>, <span class="tok-fn">onUnmounted</span>, <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-fn">setup</span>() {
+    <span class="tok-key">const</span> list = <span class="tok-fn">ref</span>([]);
+
+    <span class="tok-fn">onMounted</span>(<span class="tok-key">async</span> () =&gt; {
+        <span class="tok-key">const</span> r = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">"/api/list"</span>);
+        list.value = <span class="tok-key">await</span> r.<span class="tok-fn">json</span>();
+    });
+
+    <span class="tok-key">let</span> timer;
+    <span class="tok-fn">onMounted</span>(() =&gt; timer = <span class="tok-fn">setInterval</span>(tick, <span class="tok-num">1000</span>));
+    <span class="tok-fn">onUnmounted</span>(() =&gt; <span class="tok-fn">clearInterval</span>(timer));
+
+    <span class="tok-key">return</span> { list };
+}</code></pre>
+</div>
+</section>
+
+<!-- ========== 11 ========== -->
+<section id="s11">
+<h2 data-num="11">单文件组件 SFC ⭐⭐⭐</h2>
+
+<p>真实项目用 <code>.vue</code> 文件，每个组件内含三段：<code>&lt;template&gt;</code> + <code>&lt;script&gt;</code> + <code>&lt;style&gt;</code>。</p>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">App.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"box"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h1&gt;</span>{{ msg }}<span class="tok-tag">&lt;/h1&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"inc"</span><span class="tok-tag">&gt;</span>{{ count }}<span class="tok-tag">&lt;/button&gt;</span>
+    <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+    <span class="tok-key">const</span> msg   = <span class="tok-fn">ref</span>(<span class="tok-str">"Hello Vue"</span>);
+    <span class="tok-key">const</span> count = <span class="tok-fn">ref</span>(<span class="tok-num">0</span>);
+    <span class="tok-key">const</span> inc   = () =&gt; count.value++;
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;style</span> <span class="tok-attr">scoped</span><span class="tok-tag">&gt;</span>
+    <span class="tok-sel">.box</span> { <span class="tok-prop">padding</span>: <span class="tok-val">20</span><span class="tok-unit">px</span>; }
+    <span class="tok-sel">.box h1</span> { <span class="tok-prop">color</span>: <span class="tok-val">#42B883</span>; }
+<span class="tok-tag">&lt;/style&gt;</span></code></pre>
+</div>
+
+<div class="tip">
+<code>scoped</code> 让样式<strong>只作用于当前组件</strong>，避免样式污染。
+</div>
+</section>
+
+<!-- ========== 12 ========== -->
+<section id="s12">
+<h2 data-num="12">组件基础 ⭐⭐⭐</h2>
+
+<h3>12.1 注册与使用</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">MyButton.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">:disabled</span>=<span class="tok-str">"disabled"</span> <span class="tok-attr">class</span>=<span class="tok-str">"btn"</span> <span class="tok-attr">@click</span>=<span class="tok-str">"emit('click')"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;slot</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">defineProps</span>({ <span class="tok-attr">disabled</span>: <span class="tok-key">Boolean</span> });
+    <span class="tok-key">const</span> emit = <span class="tok-key">defineEmits</span>([<span class="tok-str">"click"</span>]);
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;style</span> <span class="tok-attr">scoped</span><span class="tok-tag">&gt;</span>
+    <span class="tok-sel">.btn</span> {
+        <span class="tok-prop">background</span>: <span class="tok-val">#42B883</span>; <span class="tok-prop">color</span>: <span class="tok-val">#fff</span>;
+        <span class="tok-prop">border</span>: <span class="tok-val">none</span>; <span class="tok-prop">border-radius</span>: <span class="tok-val">6</span><span class="tok-unit">px</span>;
+        <span class="tok-prop">padding</span>: <span class="tok-val">8</span><span class="tok-unit">px</span> <span class="tok-val">16</span><span class="tok-unit">px</span>;
+    }
+<span class="tok-tag">&lt;/style&gt;</span></code></pre>
+</div>
+
+<h3>12.2 在父组件使用</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">App.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;MyButton</span> <span class="tok-attr">@click</span>=<span class="tok-str">"onClick"</span><span class="tok-tag">&gt;</span>点我<span class="tok-tag">&lt;/MyButton&gt;</span>
+    <span class="tok-tag">&lt;MyButton</span> <span class="tok-attr">disabled</span><span class="tok-tag">&gt;</span>禁用<span class="tok-tag">&lt;/MyButton&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> <span class="tok-fn">MyButton</span> <span class="tok-key">from</span> <span class="tok-str">"./components/MyButton.vue"</span>;
+    <span class="tok-key">const</span> onClick = () =&gt; <span class="tok-fn">alert</span>(<span class="tok-str">"click"</span>);
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+
+<h3>12.3 全局注册</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">main.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">createApp</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">MyButton</span> <span class="tok-key">from</span> <span class="tok-str">"./components/MyButton.vue"</span>;
+
+<span class="tok-key">const</span> app = <span class="tok-fn">createApp</span>({});
+app.<span class="tok-fn">component</span>(<span class="tok-str">"MyButton"</span>, <span class="tok-fn">MyButton</span>);
+app.<span class="tok-fn">mount</span>(<span class="tok-str">"#app"</span>);</code></pre>
+</div>
+</section>
+
+<!-- ========== 13 ========== -->
+<section id="s13">
+<h2 data-num="13">组件通信：props / emit / slot ⭐⭐⭐</h2>
+
+<h3>13.1 父传子：defineProps</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Child.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">const</span> props = <span class="tok-key">defineProps</span>({
+        <span class="tok-attr">title</span>: { <span class="tok-attr">type</span>: <span class="tok-key">String</span>, <span class="tok-attr">required</span>: <span class="tok-key">true</span> },
+        <span class="tok-attr">count</span>: { <span class="tok-attr">type</span>: <span class="tok-key">Number</span>, <span class="tok-attr">default</span>: <span class="tok-num">0</span> },
+        <span class="tok-attr">tags</span>:  { <span class="tok-attr">type</span>: <span class="tok-key">Array</span>, <span class="tok-attr">default</span>: () =&gt; [] }
+    });
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;h2&gt;</span>{{ props.title }} ({{ props.count }})<span class="tok-tag">&lt;/h2&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+
+<h3>13.2 子传父：defineEmits</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Child.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"send"</span><span class="tok-tag">&gt;</span>发给爸爸<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">const</span> emit = <span class="tok-key">defineEmits</span>([<span class="tok-str">"greet"</span>]);
+    <span class="tok-key">const</span> send = () =&gt; <span class="tok-fn">emit</span>(<span class="tok-str">"greet"</span>, <span class="tok-str">"hi from child"</span>);
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-comment">// 父组件</span>
+<span class="tok-comment">&lt;Child @greet="onGreet" /&gt;</span>
+<span class="tok-comment">const onGreet = (msg) =&gt; console.log(msg);</span></code></pre>
+</div>
+
+<h3>13.3 插槽 slot</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Card.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"card"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"header"</span><span class="tok-tag">&gt;&lt;slot</span> <span class="tok-attr">name</span>=<span class="tok-str">"header"</span> <span class="tok-tag">/&gt;&lt;/div&gt;</span>
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"body"</span><span class="tok-tag">&gt;&lt;slot</span> <span class="tok-tag">/&gt;&lt;/div&gt;</span>
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"footer"</span><span class="tok-tag">&gt;&lt;slot</span> <span class="tok-attr">name</span>=<span class="tok-str">"footer"</span> <span class="tok-tag">/&gt;&lt;/div&gt;</span>
+    <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-comment">&lt;Card&gt;
+  &lt;template #header&gt;标题&lt;/template&gt;
+  &lt;p&gt;默认插槽内容&lt;/p&gt;
+  &lt;template #footer&gt;&lt;button&gt;确定&lt;/button&gt;&lt;/template&gt;
+&lt;/Card&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 14 ========== -->
+<section id="s14">
+<h2 data-num="14">组件通信高级：v-model / provide-inject ⭐⭐</h2>
+
+<h3>14.1 父子 v-model</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">自定义 v-model 组件</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">defineProps</span>([<span class="tok-str">"modelValue"</span>]);
+    <span class="tok-key">const</span> emit = <span class="tok-key">defineEmits</span>([<span class="tok-str">"update:modelValue"</span>]);
+    <span class="tok-key">const</span> input = (e) =&gt; <span class="tok-fn">emit</span>(<span class="tok-str">"update:modelValue"</span>, e.target.value);
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;input</span> <span class="tok-attr">:value</span>=<span class="tok-str">"modelValue"</span> <span class="tok-attr">@input</span>=<span class="tok-str">"input"</span><span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-comment">// 父组件</span>
+<span class="tok-comment">&lt;MyInput v-model="text" /&gt;</span></code></pre>
+</div>
+
+<h3>14.2 provide / inject（跨层级）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">祖</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">provide</span>, <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+    <span class="tok-key">const</span> user = <span class="tok-fn">ref</span>({ <span class="tok-attr">name</span>: <span class="tok-str">"Alice"</span> });
+    <span class="tok-fn">provide</span>(<span class="tok-str">"user"</span>, user);
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-comment">// 孙组件</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">inject</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+    <span class="tok-key">const</span> user = <span class="tok-fn">inject</span>(<span class="tok-str">"user"</span>);
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 15 ========== -->
+<section id="s15">
+<h2 data-num="15">组件设计原则</h2>
+
+<div class="card success">
+<div class="card-title">✅ 良好组件</div>
+<ul>
+<li>职责单一（一个组件做一件事）</li>
+<li>可独立复用，依赖低</li>
+<li>Props 通过 <code>defineProps</code> 显式声明类型</li>
+<li>状态提升到共同父组件</li>
+<li>跨层级通信用 provide/inject 或 状态管理库</li>
+</ul>
+</div>
+
+<div class="card danger">
+<div class="card-title">❌ 反模式</div>
+<ul>
+<li>巨型组件（&gt; 500 行）：拆</li>
+<li>深嵌套 props：考虑 provide/inject</li>
+<li>业务逻辑混在模板里：抽出为 setup 函数</li>
+<li>父子双向直接改 props：永远<strong>不允许</strong></li>
+</ul>
+</div>
+</section>
+
+<!-- ========== 16 ========== -->
+<section id="s16">
+<h2 data-num="16">组合式 API 入门 setup ⭐⭐⭐</h2>
+
+<div class="tip">
+<code>setup</code> 是 Vue 3 推荐的写法。所有逻辑都在这里组织，<strong>而非 Options API 的 data/methods/computed 分块</strong>。这样更易抽离复用。
+</div>
+
+<h3>16.1 setup 两种风格</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue SFC</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-comment">// 顶层变量、函数自动暴露给模板</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+    <span class="tok-key">const</span> n = <span class="tok-fn">ref</span>(<span class="tok-num">0</span>);
+    <span class="tok-key">const</span> double = <span class="tok-fn">computed</span>(() =&gt; n.value * <span class="tok-num">2</span>);
+
+    <span class="tok-key">function</span> <span class="tok-fn">inc</span>() { n.value++; }
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"inc"</span><span class="tok-tag">&gt;</span>{{ n }} × 2 = {{ double }}<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+
+<h3>16.2 抽离逻辑到 composable</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">useMouse.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">onMounted</span>, <span class="tok-fn">onUnmounted</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">export function</span> <span class="tok-fn">useMouse</span>() {
+    <span class="tok-key">const</span> x = <span class="tok-fn">ref</span>(<span class="tok-num">0</span>), y = <span class="tok-fn">ref</span>(<span class="tok-num">0</span>);
+
+    <span class="tok-key">function</span> <span class="tok-fn">upd</span>(e) {
+        x.value = e.clientX;
+        y.value = e.clientY;
+    }
+
+    <span class="tok-fn">onMounted</span>(() =&gt; <span class="tok-fn">window</span>.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"mousemove"</span>, upd));
+    <span class="tok-fn">onUnmounted</span>(() =&gt; <span class="tok-fn">window</span>.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"mousemove"</span>, upd));
+
+    <span class="tok-key">return</span> { x, y };
+}
+
+<span class="tok-comment">// 任何组件都可以：</span>
+<span class="tok-comment">// import { useMouse } from "./useMouse";</span>
+<span class="tok-comment">// const { x, y } = useMouse();</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 17 ========== -->
+<section id="s17">
+<h2 data-num="17">深入：ref vs reactive 的内部原理</h2>
+
+<h3>17.1 ref 的内部</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">示意</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-comment">// ref 内部大致是：</span>
+<span class="tok-key">class</span> <span class="tok-fn">RefImpl</span> {
+    <span class="tok-fn">constructor</span>(value) {
+        <span class="tok-this">this</span>._value = <span class="tok-fn">toReactive</span>(value);
+    }
+    <span class="tok-fn">get value</span>() {
+        <span class="tok-fn">track</span>(<span class="tok-this">this</span>);          <span class="tok-com">// 依赖收集</span>
+        <span class="tok-key">return</span> <span class="tok-this">this</span>._value;
+    }
+    <span class="tok-fn">set value</span>(v) {
+        <span class="tok-this">this</span>._value = <span class="tok-fn">toReactive</span>(v);
+        <span class="tok-fn">trigger</span>(<span class="tok-this">this</span>);         <span class="tok-com">// 通知更新</span>
+    }
+}</code></pre>
+</div>
+
+<h3>17.2 模板自动解包</h3>
+<p><code>&lt;p&gt;{{ count }}&lt;/p&gt;</code> 实际编译为 <code>count.value</code>，但<strong>在子组件或模板中</strong>会自动解包。</p>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">reactive 解包</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">const</span> obj = <span class="tok-fn">reactive</span>({ a: <span class="tok-num">1</span> });
+<span class="tok-key">const</span> wrapped = { x: obj };
+wrapped.x.a;       <span class="tok-com">// ❌ 不响应（被包了一层普通对象）</span>
+wrapped.x.a = <span class="tok-num">2</span>;  <span class="tok-com">// ❌ 不会触发更新</span>
+
+<span class="tok-comment">// 解决：把 reactive 重新赋值给响应式</span>
+wrapped.x = <span class="tok-fn">reactive</span>(wrapped.x);
+wrapped.x.a = <span class="tok-num">2</span>;  <span class="tok-com">// ✅ 响应</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 18 ========== -->
+<section id="s18">
+<h2 data-num="18">ref 在模板与 DOM 的用法 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue SFC</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">ref</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+    <span class="tok-key">const</span> inp = <span class="tok-fn">ref</span>(<span class="tok-key">null</span>);
+
+    <span class="tok-fn">onMounted</span>(() =&gt; inp.value.<span class="tok-fn">focus</span>());
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;input</span> <span class="tok-attr">ref</span>=<span class="tok-str">"inp"</span> <span class="tok-attr">type</span>=<span class="tok-str">"text"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 19 ========== -->
+<section id="s19">
+<h2 data-num="19">Vue Router 路由 ⭐⭐⭐</h2>
+
+<h3>19.1 安装与配置</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">终端</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>npm install vue-router@4</code></pre>
+</div>
+
+<h3>19.2 路由配置</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">router/index.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">createRouter</span>, <span class="tok-fn">createWebHistory</span> } <span class="tok-key">from</span> <span class="tok-str">"vue-router"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">Home</span>    <span class="tok-key">from</span> <span class="tok-str">"../views/Home.vue"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">About</span>   <span class="tok-key">from</span> <span class="tok-str">"../views/About.vue"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">NotFound</span> <span class="tok-key">from</span> <span class="tok-str">"../views/NotFound.vue"</span>;
+
+<span class="tok-key">export default</span> <span class="tok-fn">createRouter</span>({
+    <span class="tok-attr">history</span>: <span class="tok-fn">createWebHistory</span>(),
+    <span class="tok-attr">routes</span>: [
+        { <span class="tok-attr">path</span>: <span class="tok-str">"/"</span>,          <span class="tok-attr">component</span>: <span class="tok-fn">Home</span>,    <span class="tok-attr">name</span>: <span class="tok-str">"home"</span> },
+        { <span class="tok-attr">path</span>: <span class="tok-str">"/about"</span>,     <span class="tok-attr">component</span>: <span class="tok-fn">About</span>,   <span class="tok-attr">name</span>: <span class="tok-str">"about"</span> },
+        { <span class="tok-attr">path</span>: <span class="tok-str">"/user/:id"</span>, <span class="tok-attr">component</span>: <span class="tok-fn">User</span>,    <span class="tok-attr">props</span>: <span class="tok-key">true</span> },
+        { <span class="tok-attr">path</span>: <span class="tok-str">"/:pathMatch(.*)*"</span>, <span class="tok-attr">component</span>: <span class="tok-fn">NotFound</span> }
+    ]
+});</code></pre>
+</div>
+
+<h3>19.3 在模板里使用</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">App.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;nav&gt;</span>
+        <span class="tok-tag">&lt;RouterLink</span> <span class="tok-attr">to</span>=<span class="tok-str">"/"</span><span class="tok-tag">&gt;</span>首页<span class="tok-tag">&lt;/RouterLink&gt;</span>
+        <span class="tok-tag">&lt;RouterLink</span> <span class="tok-attr">:to</span>=<span class="tok-str">"{ name: 'about' }"</span><span class="tok-tag">&gt;</span>关于<span class="tok-tag">&lt;/RouterLink&gt;</span>
+    <span class="tok-tag">&lt;/nav&gt;</span>
+
+    <span class="tok-tag">&lt;main&gt;</span>
+        <span class="tok-tag">&lt;RouterView</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/main&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">useRouter</span>, <span class="tok-fn">useRoute</span> } <span class="tok-key">from</span> <span class="tok-str">"vue-router"</span>;
+    <span class="tok-key">const</span> router = <span class="tok-fn">useRouter</span>();
+
+    <span class="tok-key">function</span> <span class="tok-fn">go</span>() {
+        router.<span class="tok-fn">push</span>(<span class="tok-str">"/about"</span>);
+    }
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+</div>
+
+<h3>19.4 路由参数</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">使用</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-comment">&lt;RouterLink :to="`/user/${user.id}`"&gt;{{ user.name }}&lt;/RouterLink&gt;</span>
+
+<span class="tok-comment">// User.vue</span>
+<span class="tok-key">import</span> { <span class="tok-fn">useRoute</span> } <span class="tok-key">from</span> <span class="tok-str">"vue-router"</span>;
+<span class="tok-key">const</span> route = <span class="tok-fn">useRoute</span>();
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(route.params.id);   <span class="tok-com">// url 上的 id</span>
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(route.query.tab);   <span class="tok-com">// ?tab=xxx</span></code></pre>
+</div>
+
+<h3>19.5 导航守卫</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">router</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>router.<span class="tok-fn">beforeEach</span>((to, from) =&gt; {
+    <span class="tok-key">if</span> (to.<span class="tok-fn">requiresAuth</span> &amp;&amp; !<span class="tok-fn">isLoggedIn</span>())
+        <span class="tok-key">return</span> { <span class="tok-attr">name</span>: <span class="tok-str">"login"</span>, <span class="tok-attr">query</span>: { <span class="tok-attr">redirect</span>: to.fullPath } };
+});</code></pre>
+</div>
+</section>
+
+<!-- ========== 20 ========== -->
+<section id="s20">
+<h2 data-num="20">Pinia 状态管理 ⭐⭐⭐</h2>
+
+<h3>20.1 安装与定义 Store</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">stores/user.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">defineStore</span> } <span class="tok-key">from</span> <span class="tok-str">"pinia"</span>;
+<span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">export const</span> <span class="tok-fn">useUserStore</span> = <span class="tok-fn">defineStore</span>(<span class="tok-str">"user"</span>, () =&gt; {
+    <span class="tok-key">const</span> name    = <span class="tok-fn">ref</span>(<span class="tok-str">"游客"</span>);
+    <span class="tok-key">const</span> token   = <span class="tok-fn">ref</span>(<span class="tok-str">""</span>);
+
+    <span class="tok-key">const</span> isLogin = <span class="tok-fn">computed</span>(() =&gt; !!token.value);
+
+    <span class="tok-key">function</span> <span class="tok-fn">login</span>(u) {
+        name.value  = u.username;
+        token.value = u.token;
+    }
+    <span class="tok-key">function</span> <span class="tok-fn">logout</span>() {
+        name.value = <span class="tok-str">""</span>;
+        token.value = <span class="tok-str">""</span>;
+    }
+
+    <span class="tok-key">return</span> { name, token, isLogin, login, logout };
+});</code></pre>
+</div>
+
+<h3>20.2 在组件中使用</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">任意组件</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">useUserStore</span> } <span class="tok-key">from</span> <span class="tok-str">"@/stores/user"</span>;
+    <span class="tok-key">import</span> { <span class="tok-fn">storeToRefs</span> } <span class="tok-key">from</span> <span class="tok-str">"pinia"</span>;
+
+    <span class="tok-key">const</span> userStore = <span class="tok-fn">useUserStore</span>();
+    <span class="tok-key">const</span> { name, isLogin } = <span class="tok-fn">storeToRefs</span>(userStore);
+    <span class="tok-key">const</span> login = userStore.login;   <span class="tok-com">// 方法直接拿</span>
+
+    <span class="tok-key">function</span> <span class="tok-fn">doLogin</span>() {
+        <span class="tok-fn">login</span>({ <span class="tok-attr">username</span>: <span class="tok-str">"Alice"</span>, <span class="tok-attr">token</span>: <span class="tok-str">"abc"</span> });
+    }
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>欢迎 {{ name }} ({{ isLogin ? <span class="tok-str">"在线"</span> : <span class="tok-str">"离线"</span> }})<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"doLogin"</span><span class="tok-tag">&gt;</span>登录<span class="tok-tag">&lt;/button&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+
+<div class="tip"><strong>对比 Vuex</strong>：Pinia 写法更简洁（TypeScript 友好），是官方推荐。</div>
+</section>
+
+<!-- ========== 21 ========== -->
+<section id="s21">
+<h2 data-num="21">过渡与动画 ⭐⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue SFC</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"show = !show"</span><span class="tok-tag">&gt;</span>切换<span class="tok-tag">&lt;/button&gt;</span>
+    <span class="tok-tag">&lt;Transition</span> <span class="tok-attr">name</span>=<span class="tok-str">"fade"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span> <span class="tok-attr">v-if</span>=<span class="tok-str">"show"</span><span class="tok-tag">&gt;</span>你好<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;/Transition&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;style&gt;</span>
+    <span class="tok-sel">.fade-enter-active</span>, <span class="tok-sel">.fade-leave-active</span> { <span class="tok-prop">transition</span>: opacity <span class="tok-val">0.5</span><span class="tok-unit">s</span>; }
+    <span class="tok-sel">.fade-enter-from</span>,   <span class="tok-sel">.fade-leave-to</span>   { <span class="tok-prop">opacity</span>: <span class="tok-val">0</span>; }
+<span class="tok-tag">&lt;/style&gt;</span></code></pre>
+</div>
+
+<h3>21.1 TransitionGroup 列表过渡</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;TransitionGroup</span> <span class="tok-attr">name</span>=<span class="tok-str">"list"</span> <span class="tok-attr">tag</span>=<span class="tok-str">"ul"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;li</span> <span class="tok-attr">v-for</span>=<span class="tok-str">"t in todos"</span> <span class="tok-attr">:key</span>=<span class="tok-str">"t.id"</span><span class="tok-tag">&gt;</span>{{ t.text }}<span class="tok-tag">&lt;/li&gt;</span>
+<span class="tok-tag">&lt;/TransitionGroup&gt;</span>
+
+<span class="tok-sel">.list-enter-from</span> { <span class="tok-prop">opacity</span>: <span class="tok-val">0</span>; <span class="tok-prop">transform</span>: <span class="tok-fn">translateY</span>(<span class="tok-val">-20</span><span class="tok-unit">px</span>); }
+<span class="tok-sel">.list-leave-to</span>   { <span class="tok-prop">opacity</span>: <span class="tok-val">0</span>; <span class="tok-prop">transform</span>: <span class="tok-fn">translateX</span>(<span class="tok-val">20</span><span class="tok-unit">px</span>); }
+<span class="tok-sel">.list-move</span>       { <span class="tok-prop">transition</span>: transform <span class="tok-val">0.5</span><span class="tok-unit">s</span>; }</code></pre>
+</div>
+</section>
+
+<!-- ========== 22 ========== -->
+<section id="s22">
+<h2 data-num="22">自定义指令 ⭐</h2>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-comment">// 全局</span>
+app.<span class="tok-fn">directive</span>(<span class="tok-str">"focus"</span>, {
+    <span class="tok-fn">mounted</span>(el) { el.<span class="tok-fn">focus</span>(); }
+});
+
+<span class="tok-comment">// 局部</span>
+<span class="tok-key">const</span> vDemo = {
+    <span class="tok-fn">mounted</span>(el, binding) {
+        el.<span class="tok-prop">style</span>.<span class="tok-prop">color</span> = binding.value;
+    }
+};
+
+<span class="tok-tag">&lt;input</span> <span class="tok-attr">v-focus</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;p</span> <span class="tok-attr">v-demo</span>=<span class="tok-str">"color"</span><span class="tok-tag">&gt;</span>看我<span class="tok-tag">&lt;/p&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 23 ========== -->
+<section id="s23">
+<h2 data-num="23">v-once / v-memo 等性能优化 ⭐</h2>
+
+<table>
+<tr><th>指令</th><th>作用</th></tr>
+<tr><td><code>v-once</code></td><td>只渲染一次（极致静态）</td></tr>
+<tr><td><code>v-memo</code></td><td>依数组决定是否更新</td></tr>
+<tr><td><code>v-pre</code></td><td>跳过编译，原样显示</td></tr>
+</table>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">v-once</span><span class="tok-tag">&gt;</span>永远不再变<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">v-pre</span><span class="tok-tag">&gt;</span>{{ 不会编译 }}<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-comment">// v-memo (3.2+)</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">v-memo</span>=<span class="tok-str">"[item.id, item.text]"</span><span class="tok-tag">&gt;</span>{{ item.text }}<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 24 ========== -->
+<section id="s24">
+<h2 data-num="24">Vite 构建工具 ⭐⭐</h2>
+
+<h3>24.1 核心特点</h3>
+<ul>
+<li>基于原生 ESM（浏览器直接 import）→ 启动极快</li>
+<li>HMR 热更新（毫秒级）</li>
+<li>生产用 Rollup 打包</li>
+</ul>
+
+<h3>24.2 常用命令</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vite</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code>npm run dev       <span class="tok-com"># 开发服务器</span>
+npm run build     <span class="tok-com"># 生产构建（dist/）</span>
+npm run preview   <span class="tok-com"># 预览构建结果</span></code></pre>
+</div>
+
+<h3>24.3 vite.config.js</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">vite.config.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">defineConfig</span> } <span class="tok-key">from</span> <span class="tok-str">"vite"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">vue</span> <span class="tok-key">from</span> <span class="tok-str">"@vitejs/plugin-vue"</span>;
+<span class="tok-key">import</span> { <span class="tok-fn">fileURLToPath</span>, <span class="tok-fn">URL</span> } <span class="tok-key">from</span> <span class="tok-str">"node:url"</span>;
+
+<span class="tok-key">export default</span> <span class="tok-fn">defineConfig</span>({
+    <span class="tok-attr">plugins</span>: [<span class="tok-fn">vue</span>()],
+    <span class="tok-attr">resolve</span>: {
+        <span class="tok-attr">alias</span>: {
+            <span class="tok-str">"@"</span>: <span class="tok-fn">fileURLToPath</span>(<span class="tok-key">new</span> <span class="tok-fn">URL</span>(<span class="tok-str">"./src"</span>, <span class="tok-key">import</span>.meta.url))
+        }
+    },
+    <span class="tok-attr">server</span>: { <span class="tok-attr">port</span>: <span class="tok-num">5173</span> }
+});</code></pre>
+</div>
+</section>
+
+<!-- ========== 25 ========== -->
+<section id="s25">
+<h2 data-num="25">插件与混入 ⭐</h2>
+
+<h3>25.1 插件（plugin）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-comment">// 全局属性</span>
+app.<span class="tok-fn">config</span>.<span class="tok-fn">globalProperties</span>.<span class="tok-prop">$http</span> = <span class="tok-fn">axios</span>;
+
+<span class="tok-comment">// install 风格</span>
+<span class="tok-key">export default</span> {
+    <span class="tok-fn">install</span>(app, options) {
+        app.<span class="tok-fn">directive</span>(<span class="tok-str">"demo"</span>, {...});
+        app.<span class="tok-fn">provide</span>(<span class="tok-str">"key"</span>, options);
+    }
+};</code></pre>
+</div>
+
+<h3>25.2 混入 mixin（不推荐）</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">mixin.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">export const</span> <span class="tok-fn">mouseMixin</span> = {
+    <span class="tok-fn">data</span>() { <span class="tok-key">return</span> { <span class="tok-attr">x</span>: <span class="tok-num">0</span>, <span class="tok-attr">y</span>: <span class="tok-num">0</span> }; },
+    <span class="tok-fn">mounted</span>() { <span class="tok-fn">window</span>.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"mousemove"</span>, <span class="tok-this">this</span>.upd); }
+};
+
+<span class="tok-key">import</span> { <span class="tok-fn">mouseMixin</span> } <span class="tok-key">from</span> <span class="tok-str">"./mixin.js"</span>;
+<span class="tok-key">export default</span> { <span class="tok-attr">mixins</span>: [<span class="tok-fn">mouseMixin</span>] };
+
+<span class="tok-comment">// 推荐改写为 composable（见 16 章 useMouse）</span></code></pre>
+</div>
+</section>
+
+<!-- ========== 26 ========== -->
+<section id="s26">
+<h2 data-num="26">项目一：Todo 应用（Composition API）⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 1：Todo List（组合式 API）</div>
+<div class="proj-meta">
+<span>难度：⭐⭐</span><span>核心：ref + computed + v-model</span>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">useTodo.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">export function</span> <span class="tok-fn">useTodo</span>() {
+    <span class="tok-key">const</span> list  = <span class="tok-fn">ref</span>(<span class="tok-fn">JSON</span>.<span class="tok-fn">parse</span>(<span class="tok-fn">localStorage</span>.<span class="tok-fn">getItem</span>(<span class="tok-str">"todo"</span>) || <span class="tok-str">"[]"</span>));
+    <span class="tok-key">const</span> text  = <span class="tok-fn">ref</span>(<span class="tok-str">""</span>);
+    <span class="tok-key">const</span> filter = <span class="tok-fn">ref</span>(<span class="tok-str">"all"</span>);
+
+    <span class="tok-key">function</span> <span class="tok-fn">save</span>() {
+        <span class="tok-fn">localStorage</span>.<span class="tok-fn">setItem</span>(<span class="tok-str">"todo"</span>, <span class="tok-fn">JSON</span>.<span class="tok-fn">stringify</span>(list.value));
+    }
+    <span class="tok-key">function</span> <span class="tok-fn">add</span>() {
+        <span class="tok-key">if</span> (!text.value.<span class="tok-fn">trim</span>()) <span class="tok-key">return</span>;
+        list.value.<span class="tok-fn">push</span>({ <span class="tok-attr">id</span>: <span class="tok-fn">Date</span>.<span class="tok-fn">now</span>(), <span class="tok-attr">text</span>: text.value, <span class="tok-attr">done</span>: <span class="tok-key">false</span> });
+        text.value = <span class="tok-str">""</span>;
+        <span class="tok-fn">save</span>();
+    }
+    <span class="tok-key">function</span> <span class="tok-fn">toggle</span>(id) {
+        <span class="tok-key">const</span> it = list.value.<span class="tok-fn">find</span>(t =&gt; t.id === id);
+        <span class="tok-key">if</span> (it) it.done = !it.done;
+        <span class="tok-fn">save</span>();
+    }
+    <span class="tok-key">function</span> <span class="tok-fn">remove</span>(id) {
+        list.value = list.value.<span class="tok-fn">filter</span>(t =&gt; t.id !== id);
+        <span class="tok-fn">save</span>();
+    }
+
+    <span class="tok-key">const</span> view = <span class="tok-fn">computed</span>(() =&gt;
+        filter.value === <span class="tok-str">"all"</span>     ? list.value :
+        filter.value === <span class="tok-str">"active"</span> ? list.value.<span class="tok-fn">filter</span>(t =&gt; !t.done) :
+                                list.value.<span class="tok-fn">filter</span>(t =&gt;  t.done)
+    );
+
+    <span class="tok-key">return</span> { list, text, filter, view, add, toggle, remove };
+}</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 27 ========== -->
+<section id="s27">
+<h2 data-num="27">项目二：图书管理 SPA ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 2：图书管理（Vue Router + Pinia）</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐⭐</span><span>综合：路由 + 状态管理 + CRUD</span>
+</div>
+
+<h3>27.1 store</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">stores/book.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">defineStore</span> } <span class="tok-key">from</span> <span class="tok-str">"pinia"</span>;
+<span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+
+<span class="tok-key">export const</span> <span class="tok-fn">useBookStore</span> = <span class="tok-fn">defineStore</span>(<span class="tok-str">"book"</span>, () =&gt; {
+    <span class="tok-key">const</span> list = <span class="tok-fn">ref</span>([
+        { <span class="tok-attr">id</span>: <span class="tok-num">1</span>, <span class="tok-attr">title</span>: <span class="tok-str">"Vue 入门"</span>, <span class="tok-attr">author</span>: <span class="tok-str">"张三"</span> },
+        { <span class="tok-attr">id</span>: <span class="tok-num">2</span>, <span class="tok-attr">title</span>: <span class="tok-str">"JavaScript 高级"</span>, <span class="tok-attr">author</span>: <span class="tok-str">"李四"</span> }
+    ]);
+    <span class="tok-key">const</span> count = <span class="tok-fn">computed</span>(() =&gt; list.value.length);
+
+    <span class="tok-key">function</span> <span class="tok-fn">add</span>(book) { list.value.<span class="tok-fn">push</span>({ <span class="tok-attr">id</span>: <span class="tok-fn">Date</span>.<span class="tok-fn">now</span>(), ...book }); }
+    <span class="tok-key">function</span> <span class="tok-fn">del</span>(id) { list.value = list.value.<span class="tok-fn">filter</span>(b =&gt; b.id !== id); }
+    <span class="tok-key">function</span> <span class="tok-fn">find</span>(id) { <span class="tok-key">return</span> list.value.<span class="tok-fn">find</span>(b =&gt; b.id === Number(id)); }
+
+    <span class="tok-key">return</span> { list, count, add, del, find };
+});</code></pre>
+</div>
+
+<h3>27.2 路由 + 视图</h3>
+<div class="codebox">
+<div class="codebox-head"><span class="lang">main.js</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-key">import</span> { <span class="tok-fn">createApp</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+<span class="tok-key">import</span> { <span class="tok-fn">createPinia</span> } <span class="tok-key">from</span> <span class="tok-str">"pinia"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">router</span> <span class="tok-key">from</span> <span class="tok-str">"./router"</span>;
+<span class="tok-key">import</span> <span class="tok-fn">App</span> <span class="tok-key">from</span> <span class="tok-str">"./App.vue"</span>;
+
+<span class="tok-fn">createApp</span>(<span class="tok-fn">App</span>).<span class="tok-fn">use</span>(<span class="tok-fn">createPinia</span>()).<span class="tok-fn">use</span>(router).<span class="tok-fn">mount</span>(<span class="tok-str">"#app"</span>);</code></pre>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">BookList.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">useBookStore</span> } <span class="tok-key">from</span> <span class="tok-str">"@/stores/book"</span>;
+    <span class="tok-key">import</span> { <span class="tok-fn">storeToRefs</span> } <span class="tok-key">from</span> <span class="tok-str">"pinia"</span>;
+    <span class="tok-key">import</span> { <span class="tok-fn">useRouter</span> } <span class="tok-key">from</span> <span class="tok-str">"vue-router"</span>;
+
+    <span class="tok-key">const</span> store = <span class="tok-fn">useBookStore</span>();
+    <span class="tok-key">const</span> { list, count } = <span class="tok-fn">storeToRefs</span>(store);
+    <span class="tok-key">const</span> router = <span class="tok-fn">useRouter</span>();
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;h2&gt;</span>图书列表（{{ count }}）<span class="tok-tag">&lt;/h2&gt;</span>
+    <span class="tok-tag">&lt;RouterLink</span> <span class="tok-attr">to</span>=<span class="tok-str">"/book/new"</span><span class="tok-tag">&gt;</span>新增<span class="tok-tag">&lt;/RouterLink&gt;</span>
+    <span class="tok-tag">&lt;ul&gt;</span>
+        <span class="tok-tag">&lt;li</span> <span class="tok-attr">v-for</span>=<span class="tok-str">"b in list"</span> <span class="tok-attr">:key</span>=<span class="tok-str">"b.id"</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;RouterLink</span> <span class="tok-attr">:to</span>=<span class="tok-str">`/book/${b.id}`"</span><span class="tok-tag">&gt;</span>{{ b.title }}<span class="tok-tag">&lt;/RouterLink&gt;</span>
+            <span class="tok-tag">&lt;button</span> <span class="tok-attr">@click</span>=<span class="tok-str">"store.del(b.id)"</span><span class="tok-tag">&gt;</span>删<span class="tok-tag">&lt;/button&gt;</span>
+        <span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;/ul&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 28 ========== -->
+<section id="s28">
+<h2 data-num="28">项目三：电商商品列表 ⭐⭐⭐</h2>
+
+<div class="proj">
+<div class="proj-title">项目 3：商品列表（Fetch + 过滤 + 详情页）</div>
+<div class="proj-meta">
+<span>难度：⭐⭐⭐</span><span>综合：远程数据 + 响应式过滤</span>
+</div>
+
+<div class="codebox">
+<div class="codebox-head"><span class="lang">Products.vue</span><button class="copy" onclick="cp(this)">复制</button></div>
+<pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">setup</span><span class="tok-tag">&gt;</span>
+    <span class="tok-key">import</span> { <span class="tok-fn">ref</span>, <span class="tok-fn">computed</span>, <span class="tok-fn">onMounted</span> } <span class="tok-key">from</span> <span class="tok-str">"vue"</span>;
+    <span class="tok-key">import</span> <span class="tok-fn">ProductCard</span> <span class="tok-key">from</span> <span class="tok-str">"@/components/ProductCard.vue"</span>;
+
+    <span class="tok-key">const</span> products = <span class="tok-fn">ref</span>([]);
+    <span class="tok-key">const</span> keyword  = <span class="tok-fn">ref</span>(<span class="tok-str">""</span>);
+    <span class="tok-key">const</span> category = <span class="tok-fn">ref</span>(<span class="tok-str">"all"</span>);
+
+    <span class="tok-fn">onMounted</span>(<span class="tok-key">async</span> () =&gt; {
+        <span class="tok-key">const</span> r = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">"https://fakestoreapi.com/products"</span>);
+        products.value = <span class="tok-key">await</span> r.<span class="tok-fn">json</span>();
+    });
+
+    <span class="tok-key">const</span> list = <span class="tok-fn">computed</span>(() =&gt; {
+        <span class="tok-key">const</span> kw = keyword.value.<span class="tok-fn">toLowerCase</span>();
+        <span class="tok-key">return</span> products.value.<span class="tok-fn">filter</span>(p =&gt;
+            (category.value === <span class="tok-str">"all"</span> || p.category === category.value) &amp;&amp;
+            p.title.<span class="tok-fn">toLowerCase</span>().<span class="tok-fn">includes</span>(kw)
+        );
+    });
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;template&gt;</span>
+    <span class="tok-tag">&lt;input</span>     <span class="tok-attr">v-model</span>=<span class="tok-str">"keyword"</span> <span class="tok-attr">placeholder</span>=<span class="tok-str">"搜索"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;select</span>   <span class="tok-attr">v-model</span>=<span class="tok-str">"category"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"all"</span><span class="tok-tag">&gt;</span>全部<span class="tok-tag">&lt;/option&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"electronics"</span><span class="tok-tag">&gt;</span>电子<span class="tok-tag">&lt;/option&gt;</span>
+        <span class="tok-tag">&lt;option</span> <span class="tok-attr">value</span>=<span class="tok-str">"jewelery"</span><span class="tok-tag">&gt;</span>珠宝<span class="tok-tag">&lt;/option&gt;</span>
+    <span class="tok-tag">&lt;/select&gt;</span>
+
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-str">"grid"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;ProductCard</span>
+            <span class="tok-attr">v-for</span>=<span class="tok-str">"p in list"</span> <span class="tok-attr">:key</span>=<span class="tok-str">"p.id"</span> <span class="tok-attr">:product</span>=<span class="tok-str">"p"</span> <span class="tok-tag">/&gt;</span>
+    <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/template&gt;</span>
+
+<span class="tok-tag">&lt;style</span> <span class="tok-attr">scoped</span><span class="tok-tag">&gt;</span>
+    <span class="tok-sel">.grid</span> { <span class="tok-prop">display</span>: <span class="tok-val">grid</span>; <span class="tok-prop">grid-template-columns</span>: <span class="tok-fn">repeat</span>(<span class="tok-val">auto-fill</span>, <span class="tok-fn">minmax</span>(<span class="tok-val">200</span><span class="tok-unit">px</span>, <span class="tok-val">1</span><span class="tok-unit">fr</span>)); <span class="tok-prop">gap</span>: <span class="tok-val">16</span><span class="tok-unit">px</span>; }
+<span class="tok-tag">&lt;/style&gt;</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ========== 29 ========== -->
+<section id="s29">
+<h2 data-num="29">Vue 速查手册 + 课堂训练</h2>
+
+<h3>29.1 API 速查</h3>
+<div class="cheat-grid">
+
+<div class="cheat-cell">
+<h4>响应式</h4>
+<ul>
+<li><code>ref(value)</code></li>
+<li><code>reactive(obj)</code></li>
+<li><code>computed(fn)</code></li>
+<li><code>watch(src, cb)</code></li>
+<li><code>watchEffect(fn)</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>生命周期</h4>
+<ul>
+<li><code>onMounted</code></li>
+<li><code>onUpdated</code></li>
+<li><code>onUnmounted</code></li>
+<li><code>onBeforeMount</code></li>
+<li><code>onErrorCaptured</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>组件</h4>
+<ul>
+<li><code>defineProps()</code></li>
+<li><code>defineEmits()</code></li>
+<li><code>defineExpose()</code></li>
+<li><code>&lt;slot&gt;</code></li>
+<li><code>useSlots/useAttrs</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>指令</h4>
+<ul>
+<li><code>v-if / v-show</code></li>
+<li><code>v-for + :key</code></li>
+<li><code>v-model.lazy/number/trim</code></li>
+<li><code>v-on @ + 修饰符</code></li>
+<li><code>v-bind :</code></li>
+<li><code>v-once / v-memo / v-pre</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>Router</h4>
+<ul>
+<li><code>createRouter()</code></li>
+<li><code>&lt;RouterLink /&gt;</code></li>
+<li><code>&lt;RouterView /&gt;</code></li>
+<li><code>useRouter()</code></li>
+<li><code>useRoute()</code></li>
+<li><code>router.beforeEach</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>Pinia</h4>
+<ul>
+<li><code>defineStore(id, setup)</code></li>
+<li><code>storeToRefs(store)</code></li>
+<li><code>$state / $patch</code></li>
+<li><code>$subscribe / $onAction</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>依赖注入</h4>
+<ul>
+<li><code>provide(key, value)</code></li>
+<li><code>inject(key, default)</code></li>
+</ul>
+</div>
+
+<div class="cheat-cell">
+<h4>工具</h4>
+<ul>
+<li><code>nextTick()</code></li>
+<li><code>useTemplateRef()</code></li>
+<li><code>app.use(plugin)</code></li>
+<li><code>app.component()</code></li>
+<li><code>app.directive()</code></li>
+</ul>
+</div>
+
+</div>
+
+<h3>29.2 课堂训练（12 题）</h3>
+
+<div class="q-card" data-answer="B" id="q1">
+<div class="q-title">Q1. 在 setup 中，ref 与 reactive 的核心区别是？</div>
+<ol>
+<li data-idx="A">A. ref 只能装基本类型，reactive 只能装对象</li>
+<li data-idx="B">B. ref 用 .value 取值；reactive 直接拿属性</li>
+<li data-idx="C">C. 两者完全一样</li>
+<li data-idx="D">D. reactive 是 ES6 proxy 实现</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>ref 任何值通用，模板自动解包；reactive 仅对象，直接拿属性。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q2">
+<div class="q-title">Q2. v-if 与 v-show 的区别？</div>
+<ol>
+<li data-idx="A">A. 完全相同</li>
+<li data-idx="B">B. v-show 不支持 boolean</li>
+<li data-idx="C">C. v-if 在 false 时不创建元素；v-show 始终在，CSS 切换</li>
+<li data-idx="D">D. v-show 性能始终更好</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>v-if 是真渲染/销毁，v-show 是切换 display。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q3">
+<div class="q-title">Q3. v-for 列表必须加 :key，为什么？</div>
+<ol>
+<li data-idx="A">A. 帮助 Vue 高效复用和重排 DOM</li>
+<li data-idx="B">B. 必需否则报错</li>
+<li data-idx="C">C. 纯属风格问题</li>
+<li data-idx="D">D. 必须用 index</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>key 是 diff 算法的标识，最好用稳定 id，不要用 index。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q4">
+<div class="q-title">Q4. 父 → 子传值用？子 → 父传值用？</div>
+<ol>
+<li data-idx="A">A. props / ref</li>
+<li data-idx="B">B. slot / slot</li>
+<li data-idx="C">C. attrs / props</li>
+<li data-idx="D">D. props / emit</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>这是 Vue 组件通信的基础模式。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q5">
+<div class="q-title">Q5. computed 与 method 的差别？</div>
+<ol>
+<li data-idx="A">A. 性能完全相同</li>
+<li data-idx="B">B. computed 有缓存，依赖不变不重算</li>
+<li data-idx="C">C. method 有缓存，computed 没有</li>
+<li data-idx="D">D. computed 不能传参</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>这是 computed 作为"派生数据"的核心优势。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q6">
+<div class="q-title">Q6. onMounted 里适合做什么？</div>
+<ol>
+<li data-idx="A">A. 修改 props</li>
+<li data-idx="B">B. 写响应式数据声明</li>
+<li data-idx="C">C. 发请求、操作 DOM、绑定事件</li>
+<li data-idx="D">D. 都不合适</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>DOM 已渲染好，可以与外部交互。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q7">
+<div class="q-title">Q7. &lt;RouterView&gt; 与 &lt;RouterLink&gt; 的区别？</div>
+<ol>
+<li data-idx="A">A. RouterLink 是路由链接，RouterView 渲染当前路由对应的组件</li>
+<li data-idx="B">B. RouterView 生成链接</li>
+<li data-idx="C">C. 两者一样</li>
+<li data-idx="D">D. RouterLink 是 v-if 的另一种写法</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>记住：Link = a，View = outlet。</div>
+</div>
+
+<div class="q-card" data-answer="D" id="q8">
+<div class="q-title">Q8. Pinia 相较 Vuex 的最大好处？</div>
+<ol>
+<li data-idx="A">A. 支持异步</li>
+<li data-idx="B">B. 更稳定</li>
+<li data-idx="C">C. 体积更小</li>
+<li data-idx="D">D. 写法更简洁，TS 友好，无需 mutations</li>
+</ol>
+<div class="q-explain"><strong>答案：D。</strong>官方推荐 Pinia 替代 Vuex。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q9">
+<div class="q-title">Q9. ref 在模板中会自动 .value 解包，例外是？</div>
+<ol>
+<li data-idx="A">A. v-for 中不会解包</li>
+<li data-idx="B">B. 当 ref 是对象/数组的 reactive 属性时不会解包</li>
+<li data-idx="C">C. 永远不会解包</li>
+<li data-idx="D">D. 在 setup 中不会解包</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>如果 ref 被嵌套为 <code>reactive</code> 对象的属性，将保持 .value 形态。</div>
+</div>
+
+<div class="q-card" data-answer="C" id="q10">
+<div class="q-title">Q10. 想让多个组件共享一份响应式数据，应该？</div>
+<ol>
+<li data-idx="A">A. 每个组件都自己 ref 一次</li>
+<li data-idx="B">B. 用 mixin</li>
+<li data-idx="C">C. 用 Pinia / provide-inject</li>
+<li data-idx="D">D. window 全局变量</li>
+</ol>
+<div class="q-explain"><strong>答案：C。</strong>Pinia 是跨组件/页面共享的最佳答案。</div>
+</div>
+
+<div class="q-card" data-answer="B" id="q11">
+<div class="q-title">Q11. &lt;script setup&gt; 的最大优势？</div>
+<ol>
+<li data-idx="A">A. 提升运行时性能</li>
+<li data-idx="B">B. 顶层变量自动暴露，少写 return，TS 更友好</li>
+<li data-idx="C">C. 兼容老 IE</li>
+<li data-idx="D">D. Vue2 不能用</li>
+</ol>
+<div class="q-explain"><strong>答案：B。</strong>setup 语法糖是 Composition API 的最佳实践。</div>
+</div>
+
+<div class="q-card" data-answer="A" id="q12">
+<div class="q-title">Q12. Vite 相比 webpack 的关键优势？</div>
+<ol>
+<li data-idx="A">A. 基于原生 ESM 启动秒级，开发体验极快</li>
+<li data-idx="B">B. 体积更小</li>
+<li data-idx="C">C. SEO 更好</li>
+<li data-idx="D">D. 服务端渲染更好</li>
+</ol>
+<div class="q-explain"><strong>答案：A。</strong>Vite 已成 Vue 默认工具链。</div>
+</div>
+
+</section>
+
+<!-- ========== 结束语 ========== -->
+<section id="end">
+<h2 data-num="完">写在最后：Vue 是现代化前端的入口</h2>
+
+<div class="card success">
+<div class="card-title">🎓 与本系列衔接</div>
+<pre style="font-size:13px;color:var(--text);background:transparent;line-height:1.8">
+<span style="color:var(--primary);font-weight:700">HTML</span>     → 网页骨架
+<span style="color:var(--primary);font-weight:700">CSS</span>      → 网页样式
+<span style="color:var(--primary);font-weight:700">JavaScript</span>→ 网页交互
+<span style="color:var(--primary);font-weight:700">Vue</span>      → 组件化 + 响应式前端框架
+</pre>
+</div>
+
+<p>学完 Vue 之后，下一步可往 <strong>Nuxt 3 SSR</strong>、<strong>Element Plus / Naive UI</strong>、<strong>Pinia 高级用法</strong>、<strong>TypeScript 强化</strong> 继续深入。</p>
+<div class="tip"><strong>推荐资源：</strong>Vue 官方文档（vuejs.org）、Vue Mastery、Vue School、Vite 官方文档。</div>
+</section>
+
+</main>
+
+<button id="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+const bar = document.getElementById('progress-bar');
+function updateProgress(){
+    const sc = window.scrollY;
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (sh > 0 ? (sc / sh) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', updateProgress);
+
+const toTop = document.getElementById('to-top');
+window.addEventListener('scroll', () =&gt; {
+    toTop.style.display = window.scrollY &gt; 400 ? 'flex' : 'none';
+});
+
+const navLinks = document.querySelectorAll('.topnav a.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () =&gt; {
+    let cur = '';
+    sections.forEach(s =&gt; {
+        if (window.scrollY &gt;= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a =&gt; {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+});
+
+function cp(btn){
+    const code = btn.closest('.codebox').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() =&gt; {
+        const old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() =&gt; btn.textContent = old, 1200);
+    });
+}
+window.cp = cp;
+
+document.querySelectorAll('.q-card').forEach(card =&gt; {
+    const ans = card.dataset.answer;
+    card.querySelectorAll('ol li').forEach(li =&gt; {
+        li.addEventListener('click', () =&gt; {
+            if (card.dataset.done) return;
+            const pick = li.dataset.idx;
+            if (pick === ans) li.classList.add('correct');
+            else {
+                li.classList.add('wrong');
+                card.querySelector(`[data-idx="${ans}"]`)?.classList.add('correct');
+            }
+            card.querySelector('.q-explain').classList.add('show');
+            card.dataset.done = '1';
+        });
+    });
+});
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--text-mute);border-top:1px solid var(--border)">
+  Vue 程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--primary)">返回导航首页</a>
+</footer>
+
+@media print{
+  .topnav,#progress-bar,#to-top,.back-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important;color:#000!important}
+  .hero h1{color:#000!important}
+  .hero p,.hero .meta{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  .codebox{background:#f5f5f5!important;color:#000!important}
+}
+</script>
+</body>
+</html>

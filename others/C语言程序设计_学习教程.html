@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI C语言程序设计学习教程：从 Hello World 到指针、内存、文件操作，覆盖 14 章内容。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>C语言程序设计 · 初学者学习教程</title>
+<style>
+:root {
+  --bg: #f6f4f0;
+  --bg2: #ebe6de;
+  --card: #ffffff;
+  --line: rgba(30, 26, 22, 0.10);
+  --line2: rgba(30, 26, 22, 0.16);
+  --txt: #1a1816;
+  --mut: #3f3a35;
+  --dim: #6a635c;
+  --teal: #0c6b63;
+  --teal-soft: rgba(12, 107, 99, 0.12);
+  --coral: #b53a0a;
+  --coral-soft: rgba(181, 58, 10, 0.12);
+  --violet: #5b21b6;
+  --violet-soft: rgba(91, 33, 182, 0.10);
+  --green: #166534;
+  --green-soft: rgba(22, 101, 52, 0.12);
+  --amber: #a34a08;
+  --amber-soft: rgba(163, 74, 8, 0.12);
+  --code-bg: #1d2421;
+  --code-fg: #e8e6e0;
+  --sans: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", "JetBrains Mono", Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--sans);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(15, 118, 110, 0.18); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--teal-soft);
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: var(--teal);
+}
+h2 { font-size: 1.55rem; line-height: 1.35; font-weight: 700; }
+h3 { font-size: 1.18rem; line-height: 1.4; font-weight: 700; }
+h4 { font-size: 1.02rem; line-height: 1.4; font-weight: 650; }
+
+/* 进度条 */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--teal), #14b8a6);
+  z-index: 2000; transition: width 0.08s linear;
+}
+
+/* 导航 */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(246, 244, 240, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap {
+  display: flex; align-items: center; gap: 14px; height: 58px;
+}
+nav .brand {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800; font-size: 14.5px; white-space: nowrap; color: var(--txt);
+}
+nav .brand b { color: var(--teal); }
+nav .navlinks {
+  display: flex; gap: 1px; overflow-x: auto; scrollbar-width: none; flex: 1;
+}
+nav .navlinks::-webkit-scrollbar { display: none; }
+nav .navlinks a {
+  color: var(--mut); font-size: 13.5px; padding: 6px 9px;
+  border-radius: 7px; white-space: nowrap; transition: 0.15s;
+  text-align: center; line-height: 1.25;
+}
+nav .navlinks a small {
+  display: block; font-size: 10.5px; color: var(--dim); font-weight: 600;
+}
+nav .navlinks a:hover { color: var(--txt); background: var(--bg2); text-decoration: none; }
+nav .navlinks a.cur {
+  color: var(--teal); background: var(--teal-soft); font-weight: 600;
+}
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  padding: 36px 0 28px;
+  background: linear-gradient(165deg, #0a3a35 0%, #1a3530 60%);
+}
+.hero .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.kicker {
+  display: inline-block;
+  font-size: 13px; font-weight: 650; letter-spacing: 0.04em;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border: 1px solid rgba(12, 107, 99, 0.22);
+  padding: 5px 12px; border-radius: 999px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 12px; color: #fff;
+}
+.hero h1 em {
+  font-style: normal;
+  background: rgba(255,255,255,.15);
+  color: #5eead4; padding: 0 6px; border-radius: 6px;
+  border-bottom: 2px solid rgba(94,234,212,.4);
+}
+.hero .sub {
+  font-size: 1.02rem; color: rgba(255,255,255,.75); max-width: 820px;
+  line-height: 1.7; margin-bottom: 26px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; max-width: 760px; }
+.hero-chips .chip {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  flex: 0 1 auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.hero-chips .chip b {
+  display: block; font-size: 14.5px; font-weight: 800;
+  color: #5eead4; line-height: 1.3; margin-bottom: 2px;
+}
+.hero-chips .chip span { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.scrollhint { margin-top: 16px; font-size: 13.5px; color: rgba(255,255,255,.6); }
+
+/* Section */
+section { padding: 36px 0 10px; }
+.sec-head {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 14px;
+}
+.sec-num {
+  width: 42px; height: 42px; border-radius: 12px;
+  border: 2px solid var(--teal); color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px; flex: 0 0 auto;
+}
+.sec-head h2 { margin-bottom: 4px; }
+.sec-lead {
+  font-size: 1rem; color: var(--mut);
+  margin-bottom: 24px; max-width: 880px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 8px rgba(40, 35, 30, 0.03);
+  border-left: 4px solid var(--acc, var(--teal));
+}
+.card h3 {
+  margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+}
+.card h3 .sub { font-size: 0.88rem; font-weight: 500; color: var(--mut); }
+.card h3 .dot {
+  display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; margin-right: 4px;
+}
+.card > p { margin-bottom: 10px; color: var(--mut); font-size: 16px; line-height: 1.75; }
+.card > p b, .card strong { color: var(--txt); }
+.card ul, .card ol { margin: 8px 0 8px 20px; color: var(--mut); font-size: 15.5px; }
+.card ul li, .card ol li { margin-bottom: 5px; line-height: 1.7; }
+.card ul li strong, .card ol li strong { color: var(--txt); }
+
+/* 双栏 */
+.two {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin: 10px 0;
+}
+@media (max-width: 720px) {
+  .two { grid-template-columns: 1fr; }
+}
+
+/* 代码块 */
+.codebox {
+  background: var(--code-bg); color: var(--code-fg);
+  border-radius: 10px; margin: 12px 0;
+  border: 1px solid #2a322e;
+  overflow: hidden;
+}
+.codebox .ch {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #252b28; color: #b8b3a8;
+  font-size: 12.5px; padding: 6px 12px;
+  border-bottom: 1px solid #2a322e;
+  font-family: var(--mono);
+}
+.codebox .ch .copy {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  color: #cfc9bd; padding: 2px 10px; border-radius: 5px;
+  cursor: pointer; font-size: 11.5px; transition: 0.15s;
+}
+.codebox .ch .copy:hover { background: rgba(255,255,255,0.12); }
+.codebox pre {
+  margin: 0; padding: 14px 16px;
+  font-family: var(--mono); font-size: 13.5px;
+  line-height: 1.65; overflow-x: auto;
+  white-space: pre; color: var(--code-fg);
+}
+.codebox code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+/* 简单 C 语法高亮 */
+.tok-kw { color: #f0a050; }     /* 关键字 */
+.tok-ty { color: #6fc1ff; }     /* 类型 */
+.tok-st { color: #b0d99a; }     /* 字符串 */
+.tok-nm { color: #d8a0df; }     /* 数字 */
+.tok-cm { color: #7a8580; font-style: italic; }  /* 注释 */
+.tok-pp { color: #f5c06f; }     /* 预处理 */
+.tok-fn { color: #74c5b3; }    /* 函数名 */
+
+/* 表格 */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; }
+table.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 15px;
+}
+table.tbl th, table.tbl td {
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+table.tbl th {
+  background: var(--bg2); font-weight: 650;
+  color: var(--txt); font-size: 14.5px;
+}
+table.tbl td { color: var(--mut); }
+table.tbl td.hl { color: var(--teal); font-weight: 600; }
+table.tbl tr:hover td { background: rgba(15, 118, 110, 0.03); }
+
+/* 步骤 */
+.steps-v { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.steps-v .step {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 16px; line-height: 1.65;
+}
+.steps-v .step .n {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 26px; border-radius: 8px;
+  background: var(--teal-soft); color: var(--teal);
+  font-size: 13.5px; font-weight: 800; flex: 0 0 auto;
+}
+
+/* 提示框 */
+.warn, .tipbox, .sum1 {
+  border-radius: 12px; padding: 14px 18px; margin: 14px 0;
+  font-size: 16px; line-height: 1.7;
+}
+.warn {
+  background: var(--amber-soft);
+  border: 1px solid rgba(163, 74, 8, 0.28);
+  color: #6b3206;
+}
+.tipbox {
+  background: var(--teal-soft);
+  border: 1px solid rgba(12, 107, 99, 0.25);
+  color: #0a4540;
+}
+.sum1 {
+  background: linear-gradient(135deg, var(--teal-soft), rgba(20, 184, 166, 0.06));
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  font-weight: 500;
+}
+.sum1 b { color: var(--teal); }
+
+/* 小结框 */
+.summary-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 18px 0 22px;
+  border-top: 3px solid var(--acc, var(--teal));
+}
+.summary-box .t {
+  font-weight: 700; font-size: 16px; margin-bottom: 10px;
+  color: var(--txt);
+}
+.summary-box ul {
+  padding-left: 20px; color: var(--mut); font-size: 15.5px;
+}
+.summary-box li { margin-bottom: 6px; line-height: 1.65; }
+
+/* 知识图 / 流程图 */
+.flow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px;
+  margin: 12px 0;
+}
+.flow .node {
+  background: var(--bg);
+  border: 1.5px solid var(--line2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13.5px; font-weight: 650;
+  text-align: center; min-width: 80px;
+}
+.flow .node em {
+  display: block; font-style: normal; font-size: 12px;
+  font-weight: 500; color: var(--mut); margin-top: 2px;
+}
+.flow .arr {
+  color: var(--mut); font-size: 17px; font-weight: 700;
+  line-height: 1; padding: 0 2px; user-select: none;
+}
+
+/* 图示 */
+.fig {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.fig .cap {
+  font-size: 13.5px; color: var(--mut);
+  margin-bottom: 10px; text-align: center;
+}
+.fig svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+/* 练习题 */
+.quiz h4 {
+  font-size: 1rem; margin-bottom: 12px;
+  color: var(--acc, var(--teal));
+}
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.q-head {
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 10px;
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--txt);
+}
+.q-head .qn {
+  background: var(--bg2); color: var(--mut);
+  font-size: 13px; font-weight: 700;
+  min-width: 24px; height: 24px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+}
+.q-opts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+@media (max-width: 640px) {
+  .q-opts { grid-template-columns: 1fr; }
+}
+.q-card .opt {
+  text-align: left; font-family: inherit; font-size: 14.5px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1.5px solid var(--line2);
+  background: var(--bg); color: var(--txt);
+  cursor: pointer; transition: 0.15s;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.q-card .opt:hover:not(.disabled) {
+  border-color: var(--teal); background: var(--teal-soft);
+}
+.q-card .opt .k {
+  font-weight: 700; color: var(--teal); min-width: 18px;
+}
+.q-card .opt.correct {
+  border-color: var(--green); background: var(--green-soft);
+}
+.q-card .opt.wrong {
+  border-color: #dc2626; background: rgba(220, 38, 38, 0.08);
+}
+.q-card .opt.disabled { cursor: default; opacity: 0.95; }
+.q-exp {
+  display: none;
+  margin-top: 10px; padding: 11px 13px;
+  background: var(--bg); border-radius: 9px;
+  font-size: 14.5px; color: var(--mut); line-height: 1.7;
+}
+.q-exp.show { display: block; }
+.q-exp b { color: var(--green); }
+
+/* 关键字/速查标签云 */
+.tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--teal-soft);
+  color: var(--teal);
+  border: 1px solid rgba(12, 107, 99, 0.22);
+  padding: 3px 9px;
+  border-radius: 6px;
+  margin: 2px;
+}
+.tag.coral { background: var(--coral-soft); color: var(--coral); border-color: rgba(181,58,10,0.25); }
+.tag.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(91,33,182,0.22); }
+.tag.amber { background: var(--amber-soft); color: var(--amber); border-color: rgba(163,74,8,0.25); }
+
+/* 进度信息块 */
+.proj {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+.proj h4 { color: var(--teal); margin-bottom: 8px; font-size: 1.05rem; }
+.proj .meta { font-size: 13px; color: var(--dim); margin-bottom: 8px; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 80px;
+  margin-top: 48px;
+  color: var(--dim); font-size: 14px;
+  text-align: center; line-height: 1.9;
+}
+
+/* 返回顶部 */
+.back-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: 0.2s; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.back-top.show { opacity: 1; pointer-events: auto; }
+.back-top:hover { background: var(--bg2); border-color: var(--teal); }
+.back-top svg { width: 20px; height: 20px; color: var(--teal); }
+
+/* 响应式 */
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  section { padding: 36px 0 8px; }
+  .hero { padding: 36px 0 32px; }
+  nav .brand { font-size: 13px; }
+  h2 { font-size: 1.3rem; }
+  .card { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav id="topnav">
+  <div class="wrap">
+    <a href="../../daolun/index.html" class="brand" title="返回 CSAI 导航首页" style="text-decoration:none;display:flex;align-items:center;gap:6px;color:var(--teal)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span><b>CSAI</b> · C语言</span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#s0"><small>00</small>学习指南</a>
+      <a href="#s1"><small>01</small>入门</a>
+      <a href="#s2"><small>02</small>环境</a>
+      <a href="#s3"><small>03</small>基本语法</a>
+      <a href="#s4"><small>04</small>类型</a>
+      <a href="#s5"><small>05</small>控制</a>
+      <a href="#s6"><small>06</small>函数</a>
+      <a href="#s7"><small>07</small>数组</a>
+      <a href="#s8"><small>08</small>指针 ⭐</a>
+      <a href="#s9"><small>09</small>结构体</a>
+      <a href="#s10"><small>10</small>文件</a>
+      <a href="#s11"><small>11</small>标准库</a>
+      <a href="#s12"><small>12</small>算法</a>
+      <a href="#s13"><small>13</small>调试</a>
+      <a href="#s14"><small>14</small>项目</a>
+      <a href="#ref"><small>↗</small>速查</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">大学计算机专业 · 程序设计基础课程</span>
+    <h1>C语言程序设计：<br>从<em>第一个 Hello World</em>到独立完成小项目</h1>
+    <p class="sub">本教程面向<strong>大学一年级</strong>学生，按<strong>基础语法 → 程序设计 → 数据结构 → 指针与内存 → 文件与工程 → 综合实践</strong>的路线展开。完成课程后，你将能够读懂、独立编写中等规模的 C 程序，理解指针、内存与编译原理，并能用 C 完成小型项目。</p>
+    <div class="hero-chips">
+      <div class="chip"><b>1972</b><span>Dennis Ritchie 于贝尔实验室发明</span></div>
+      <div class="chip"><b>编译型</b><span>源码 → 编译 → 链接 → 可执行</span></div>
+      <div class="chip"><b>系统级</b><span>操作系统 / 嵌入式 / 编译器</span></div>
+      <div class="chip"><b>C17 / C23</b><span>当前主流标准的演进</span></div>
+    </div>
+    <div class="scrollhint">↓ 向下滚动，按章节系统学习并完成课堂练习</div>
+  </div>
+</header>
+
+<!-- ============= 00 学习指南 ============= -->
+<section id="s0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet);border-color:rgba(91,33,182,.4)">00</div>
+      <div>
+        <h2>学习指南：为什么学、怎么学、学到什么</h2>
+        <p>在动手写代码之前，先建立全局认知 —— C 的本质、C 在计算机体系中的位置，以及一条循序渐进的学习路线。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>00.1 为什么学习 C 语言</h3>
+      <div class="two">
+        <div>
+          <p>C 语言是一种<strong>通用、过程式、编译型</strong>的编程语言，由 Dennis Ritchie 于 <strong>1972 年</strong>在贝尔实验室为重写 UNIX 操作系统而设计。它具有以下特点：</p>
+          <ul>
+            <li><strong>接近底层</strong>：可直接操作内存地址（指针）、位运算，几乎与汇编一一对应；</li>
+            <li><strong>可移植</strong>：同一份源码可在 Windows / Linux / macOS / 嵌入式平台编译运行；</li>
+            <li><strong>语法相对简洁</strong>：核心关键字仅约 30 个；</li>
+            <li><strong>高性能</strong>：生成的机器码效率与汇编相当，被广泛用于性能敏感场景。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>C 语言的典型应用领域</h4>
+          <ul>
+            <li><strong>操作系统</strong>：Linux、macOS、Windows 内核与大量系统组件；</li>
+            <li><strong>嵌入式系统</strong>：单片机、IoT 设备、汽车电子；</li>
+            <li><strong>编译器与解释器</strong>：GCC、Clang、CPython、Redis 等；</li>
+            <li><strong>驱动程序</strong>、<strong>数据库</strong>（SQLite、Redis）、<strong>高性能计算</strong>；</li>
+            <li><strong>网络程序</strong>：Nginx、libuv、curl 等基础设施；</li>
+            <li><strong>教学语言</strong>：理解计算机系统底层的最佳载体。</li>
+          </ul>
+        </div>
+      </div>
+      <p class="sum1" style="--acc:var(--violet)"><b>一句话总结：</b>C 是连接高级语言与计算机硬件的"枢纽语言"，学会它能让你真正理解程序如何在机器上运行。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>00.2 学习目标 &amp; 路线</h3>
+      <h4>完成本课程后，你将能够：</h4>
+      <ul>
+        <li>读懂中等复杂度的 C 程序；</li>
+        <li>独立编写 200 ~ 500 行的小型 C 程序；</li>
+        <li>熟练使用变量、表达式、控制结构、函数、数组与字符串；</li>
+        <li><strong>深入理解指针与内存模型</strong>（核心难点）；</li>
+        <li>使用结构体组织数据、动态分配与释放内存；</li>
+        <li>读写文件、使用预处理与标准库；</li>
+        <li>使用 gdb / VS Code 调试 C 程序；</li>
+        <li>独立完成 1 ~ 2 个完整的小项目。</li>
+      </ul>
+      <h4 style="margin-top:14px">学习路线（推荐顺序）</h4>
+      <div class="flow" style="margin-top:10px">
+        <div class="node">基础语法<em>第 03 章</em></div><div class="arr">→</div>
+        <div class="node">变量与类型<em>第 04 章</em></div><div class="arr">→</div>
+        <div class="node">控制结构<em>第 05 章</em></div><div class="arr">→</div>
+        <div class="node">函数<em>第 06 章</em></div><div class="arr">→</div>
+        <div class="node">数组与字符串<em>第 07 章</em></div><div class="arr">→</div>
+        <div class="node">指针与内存<em>第 08 章 ⭐</em></div><div class="arr">→</div>
+        <div class="node">结构体<em>第 09 章</em></div><div class="arr">→</div>
+        <div class="node">文件 I/O<em>第 10 章</em></div><div class="arr">→</div>
+        <div class="node">标准库<em>第 11 章</em></div><div class="arr">→</div>
+        <div class="node">算法基础<em>第 12 章</em></div><div class="arr">→</div>
+        <div class="node">综合项目<em>第 14 章</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 01 C语言入门 ============= -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--cyan,#0c6b63);border-color:rgba(15,118,110,.4)">01</div>
+      <div>
+        <h2>C语言入门：起源、特点与第一个程序</h2>
+        <p>认识 C 的诞生、标准演进，以及"Hello, World!"背后的每一个零件。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>1.1 什么是程序</h3>
+      <p>程序 = <strong>数据结构 + 算法</strong>，本质上是一组告诉计算机"做什么、按什么顺序做"的指令。C 程序的生命周期通常为：</p>
+      <div class="flow" style="margin-top:8px">
+        <div class="node">源代码<br><em>.c 文件</em></div><div class="arr">→</div>
+        <div class="node">预处理<em>展开宏 / 头文件</em></div><div class="arr">→</div>
+        <div class="node">编译<em>→ 汇编</em></div><div class="arr">→</div>
+        <div class="node">汇编<em>→ .o 目标文件</em></div><div class="arr">→</div>
+        <div class="node">链接<em>→ 可执行文件</em></div><div class="arr">→</div>
+        <div class="node">运行<em>CPU 执行</em></div>
+      </div>
+      <div class="fig" style="margin-top:8px">
+        <svg viewBox="0 0 600 140" style="width:100%;max-width:600px">
+          <g font-size="13" text-anchor="middle">
+            <rect x="10"  y="40" width="80" height="50" rx="8" fill="#fff" stroke="#0c6b63" stroke-width="1.5"/>
+            <text x="50" y="60" fill="#0c6b63" font-weight="700">源代码</text>
+            <text x="50" y="78" fill="#3f3a35" font-size="11">hello.c</text>
+            <rect x="120" y="40" width="80" height="50" rx="8" fill="#fff" stroke="#a34a08" stroke-width="1.5"/>
+            <text x="160" y="60" fill="#a34a08" font-weight="700">预处理</text>
+            <text x="160" y="78" fill="#3f3a35" font-size="11">.i</text>
+            <rect x="230" y="40" width="80" height="50" rx="8" fill="#fff" stroke="#0c6b63" stroke-width="1.5"/>
+            <text x="270" y="60" fill="#0c6b63" font-weight="700">编译</text>
+            <text x="270" y="78" fill="#3f3a35" font-size="11">.s 汇编</text>
+            <rect x="340" y="40" width="80" height="50" rx="8" fill="#fff" stroke="#a34a08" stroke-width="1.5"/>
+            <text x="380" y="60" fill="#a34a08" font-weight="700">汇编</text>
+            <text x="380" y="78" fill="#3f3a35" font-size="11">.o 目标</text>
+            <rect x="450" y="40" width="80" height="50" rx="8" fill="#fff" stroke="#166534" stroke-width="1.5"/>
+            <text x="490" y="60" fill="#166534" font-weight="700">链接</text>
+            <text x="490" y="78" fill="#3f3a35" font-size="11">可执行</text>
+            <path d="M90 65 L120 65 M200 65 L230 65 M310 65 L340 65 M420 65 L450 65" stroke="#6a635c" stroke-width="1.5" marker-end="url(#arrC)"/>
+            <defs><marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a635c"/></marker></defs>
+            <text x="300" y="120" fill="#6a635c" font-size="11">GCC:  gcc hello.c -o hello    (一键完成上述全部步骤)</text>
+          </g>
+        </svg>
+        <div class="cap">C 程序从源代码到可执行的完整流程</div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>1.2 C 语言发展简史与标准演进</h3>
+      <p>C 诞生于 1970 年代，1989 年由 ANSI 标准化（<strong>ANSI C / C89</strong>），随后 ISO 跟进（<strong>C90</strong>）。其后主流标准演进：</p>
+      <div class="fig">
+        <svg viewBox="0 0 720 120" style="width:100%;max-width:720px">
+          <line x1="30" y1="60" x2="690" y2="60" stroke="#0c6b63" stroke-width="2"/>
+          <g font-size="12" text-anchor="middle">
+            <circle cx="80"  cy="60" r="8" fill="#a34a08"/><text x="80"  y="40" fill="#1a1816" font-weight="700">1972</text><text x="80"  y="90" fill="#3f3a35">C 诞生</text><text x="80"  y="103" fill="#6a635c" font-size="10.5">K&amp;R C</text>
+            <circle cx="200" cy="60" r="8" fill="#a34a08"/><text x="200" y="40" fill="#1a1816" font-weight="700">1989</text><text x="200" y="90" fill="#3f3a35">ANSI C</text><text x="200" y="103" fill="#6a635c" font-size="10.5">C89 / C90</text>
+            <circle cx="320" cy="60" r="8" fill="#0c6b63"/><text x="320" y="40" fill="#1a1816" font-weight="700">1999</text><text x="320" y="90" fill="#3f3a35">C99</text><text x="320" y="103" fill="#6a635c" font-size="10.5">// 注释、long long、&lt;stdint.h&gt;</text>
+            <circle cx="440" cy="60" r="8" fill="#0c6b63"/><text x="440" y="40" fill="#1a1816" font-weight="700">2011</text><text x="440" y="90" fill="#3f3a35">C11</text><text x="440" y="103" fill="#6a635c" font-size="10.5">多线程、泛型宏、_Static_assert</text>
+            <circle cx="560" cy="60" r="8" fill="#0c6b63"/><text x="560" y="40" fill="#1a1816" font-weight="700">2017</text><text x="560" y="90" fill="#3f3a35">C17</text><text x="560" y="103" fill="#6a635c" font-size="10.5">bug 修复，无新特性</text>
+            <circle cx="660" cy="60" r="8" fill="#5b21b6"/><text x="660" y="40" fill="#1a1816" font-weight="700">2023</text><text x="660" y="90" fill="#3f3a35">C23</text><text x="660" y="103" fill="#6a635c" font-size="10.5">新关键字、现代语法</text>
+          </g>
+        </svg>
+        <div class="cap">C 语言标准演进时间轴</div>
+      </div>
+      <p style="margin-top:8px">本教程以 <strong>C17 / C23</strong> 现代 C 视角组织内容，但兼顾 C99 兼容性（编译器默认模式）。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>1.3 第一个 C 程序 —— Hello, World!</h3>
+      <p>几乎所有 C 教材的第一个例子，让我们逐行拆解：</p>
+      <div class="codebox"><div class="ch"><span>hello.c</span><span class="copybtn" data-target="c-hello">复制</span></div><pre id="c-hello"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>          <span class="tok-cm">// 引入标准输入输出头文件</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>)                <span class="tok-cm">// 主函数：程序入口</span>
+{
+    <span class="tok-fn">printf</span>(<span class="tok-st">"Hello, World!\n"</span>);  <span class="tok-cm">// 输出字符串到屏幕</span>
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;                  <span class="tok-cm">// 返回 0 表示正常退出</span>
+}</code></pre></div>
+      <h4>逐行解释</h4>
+      <ul>
+        <li><code>#include &lt;stdio.h&gt;</code>：<strong>预处理指令</strong>，告诉编译器把 stdio.h（标准 I/O 头文件）的内容"粘贴"进来；</li>
+        <li><code>int main(void)</code>：主函数，<strong>每个 C 程序必须有且仅有一个 main</strong>，是程序入口；</li>
+        <li><code>{ }</code>：复合语句块，函数体边界；</li>
+        <li><code>printf(...)</code>：标准库函数，把字符串打印到标准输出；</li>
+        <li><code>\n</code>：转义字符，代表换行；</li>
+        <li><code>return 0;</code>：返回 int 类型的退出码，0 表示正常；</li>
+        <li><code>;</code>：每条<strong>语句</strong>以分号结尾（复合语句的 <code>{ }</code> 后不需要）。</li>
+      </ul>
+      <div class="tipbox"><b>编译运行：</b>在 Linux/macOS 终端执行 <code>gcc hello.c -o hello &amp;&amp; ./hello</code>，在 Windows + MinGW 下同理。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>1.4 注释</h3>
+      <p>C 提供两种注释方式：</p>
+      <div class="codebox"><div class="ch"><span>comments.c</span><span class="copybtn" data-target="c-comments">复制</span></div><pre id="c-comments"><code><span class="tok-cm">// 单行注释：以 // 开头，到行尾结束（C99 引入）</span>
+
+<span class="tok-cm">/*
+ * 多行注释：以 /* 开头，*/</span> 结尾
+ <span class="tok-cm">*  常用于函数说明、临时屏蔽代码块
+ */</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-cm">// printf("暂时不执行\n");</span>
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <div class="warn"><b>注意：</b>多行注释 <strong>不能嵌套</strong>。<code>/* /* */ */</code> 这种写法会让编译器在第一个 <code>*/</code> 处认为注释结束，导致后面的 <code>*/</code> 报错。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 02 开发环境 ============= -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">02</div>
+      <div>
+        <h2>C 语言开发环境：编译器、IDE 与项目结构</h2>
+        <p>从一段文本到一个可运行的二进制，C 程序需要"翻译官"和"工具箱"。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>2.1 主流编译器</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>编译器</th><th>平台</th><th>特点</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">GCC</td><td>Linux/macOS/Windows (MinGW)</td><td>GNU 出品，最常用的开源 C 编译器，本课程默认使用</td></tr>
+          <tr><td class="hl">Clang</td><td>macOS (默认) / Linux / Windows</td><td>Apple 主力，错误提示友好，编译速度快</td></tr>
+          <tr><td class="hl">MSVC</td><td>Windows</td><td>Visual Studio 自带，Windows 平台原生</td></tr>
+          <tr><td class="hl">TCC</td><td>全平台</td><td>Tiny C Compiler，几百 KB，编译极快，适合教学</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>2.2 第一个命令行编译运行</h3>
+      <div class="codebox"><div class="ch"><span>terminal</span><span class="copybtn" data-target="c-cmd">复制</span></div><pre id="c-cmd"><code><span class="tok-cm"># 1. 用文本编辑器写一个 hello.c（见 1.3）</span>
+<span class="tok-cm"># 2. 编译：gcc 把 hello.c 翻译成可执行文件 hello</span>
+$ gcc hello.c -o hello
+
+<span class="tok-cm"># 3. 运行：在当前目录下执行 ./hello</span>
+$ ./hello
+Hello, World!
+
+<span class="tok-cm"># 常用编译选项</span>
+$ gcc -Wall -Wextra -O2 hello.c -o hello    <span class="tok-cm"># 开启警告、优化</span>
+$ gcc -g    hello.c -o hello               <span class="tok-cm"># 生成调试信息（供 gdb 使用）</span>
+$ gcc -std=c17 hello.c -o hello            <span class="tok-cm"># 指定 C 标准版本</span></code></pre></div>
+      <p class="sum1" style="--acc:var(--green)"><b>小贴士：</b>Windows PowerShell 下用 <code>.\hello</code> 运行；Linux/macOS 下通常用 <code>./hello</code>。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>2.3 推荐的开发环境组合</h3>
+      <div class="two">
+        <div>
+          <h4>方案 A：Linux / macOS + VS Code（推荐）</h4>
+          <ul>
+            <li>安装 GCC：Linux 发行版一般自带；macOS <code>xcode-select --install</code>；</li>
+            <li>安装 VS Code + 扩展：C/C++、Code Runner；</li>
+            <li>写代码 → 终端 <code>gcc ... &amp;&amp; ./a.out</code>；</li>
+            <li>调试：用 gdb 或 VS Code 的图形调试。</li>
+          </ul>
+        </div>
+        <div>
+          <h4>方案 B：Windows + MinGW + VS Code</h4>
+          <ul>
+            <li>安装 MinGW-w64（提供 gcc）；</li>
+            <li>把 <code>C:\mingw64\bin</code> 加入 PATH；</li>
+            <li>VS Code 同上；</li>
+            <li>或在 Dev-C++ / Code::Blocks 一体化 IDE 中使用。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>2.4 一个最小的 C 项目结构</h3>
+      <div class="codebox"><div class="ch"><span>tree</span><span class="copybtn" data-target="c-tree">复制</span></div><pre id="c-tree"><code>hello-c/
+├── src/
+│   └── main.c         <span class="tok-cm">// 程序入口与业务逻辑</span>
+├── include/
+│   └── utils.h        <span class="tok-cm">// 自定义头文件（可选）</span>
+├── Makefile           <span class="tok-cm">// 或 CMakeLists.txt，自动化编译</span>
+└── README.md</code></pre></div>
+      <p>随着代码量增长，会进一步引入<strong>多文件</strong>、<strong>头文件保护</strong>、<strong>Makefile</strong> 等工程化概念。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 03 基本语法 ============= -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--amber);border-color:rgba(163,74,8,.4)">03</div>
+      <div>
+        <h2>基本语法：字符集、标识符、关键字与输入输出</h2>
+        <p>C 程序的"词汇表"——所有合法单词都由字符集构造，关键字是语言的保留字。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>3.1 字符集与标识符</h3>
+      <ul>
+        <li><strong>字符集</strong>：C 源文件由 ASCII 字符组成——英文字母、数字、空白符、标点；</li>
+        <li><strong>标识符</strong>（identifier）用来命名变量、函数、类型等：</li>
+      </ul>
+      <div class="codebox"><div class="ch"><span>identifier.c</span><span class="copybtn" data-target="c-iden">复制</span></div><pre id="c-iden"><code><span class="tok-ty">int</span> student;            <span class="tok-cm">// 由字母开头的单词</span>
+<span class="tok-ty">int</span> student_name;       <span class="tok-cm">// 下划线连接多个单词</span>
+<span class="tok-ty">int</span> score1;             <span class="tok-cm">// 字母后接数字</span>
+
+<span class="tok-cm">// ❌ 错误：不能以数字开头</span>
+<span class="tok-cm">// int 1score;</span>
+
+<span class="tok-cm">// ❌ 错误：不能使用关键字</span>
+<span class="tok-cm">// int return;</span>
+
+<span class="tok-cm">// ⚠️ 区分大小写：Student 和 student 是两个不同的标识符</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>3.2 关键字（C 语言保留字）</h3>
+      <p>关键字是 C 语言预定义的有特殊含义的单词，<strong>不能用作标识符</strong>。常见关键字按功能分组：</p>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类别</th><th>关键字</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">数据类型</td><td><span class="tag">char</span> <span class="tag">int</span> <span class="tag">float</span> <span class="tag">double</span> <span class="tag">void</span> <span class="tag">short</span> <span class="tag">long</span> <span class="tag">signed</span> <span class="tag">unsigned</span> <span class="tag">_Bool</span></td></tr>
+          <tr><td class="hl">控制语句</td><td><span class="tag">if</span> <span class="tag">else</span> <span class="tag">switch</span> <span class="tag">case</span> <span class="tag">default</span> <span class="tag">while</span> <span class="tag">do</span> <span class="tag">for</span> <span class="tag">break</span> <span class="tag">continue</span> <span class="tag">return</span> <span class="tag">goto</span></td></tr>
+          <tr><td class="hl">存储与作用域</td><td><span class="tag">auto</span> <span class="tag">static</span> <span class="tag">extern</span> <span class="tag">register</span></td></tr>
+          <tr><td class="hl">构造类型</td><td><span class="tag">struct</span> <span class="tag">union</span> <span class="tag">enum</span> <span class="tag">typedef</span> <span class="tag">sizeof</span></td></tr>
+          <tr><td class="hl">常量与限定</td><td><span class="tag">const</span> <span class="tag">volatile</span> <span class="tag">inline</span> <span class="tag">restrict</span></td></tr>
+          <tr><td class="hl">预处理</td><td><span class="tag coral">#define</span> <span class="tag coral">#include</span> <span class="tag coral">#ifdef</span> <span class="tag coral">#ifndef</span> <span class="tag coral">#endif</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>3.3 常量与字面量</h3>
+      <div class="codebox"><div class="ch"><span>literal.c</span><span class="copybtn" data-target="c-lit">复制</span></div><pre id="c-lit"><code><span class="tok-cm">// 1) 整数常量</span>
+<span class="tok-ty">int</span> a = <span class="tok-nm">100</span>;            <span class="tok-cm">// 十进制</span>
+<span class="tok-ty">int</span> b = <span class="tok-nm">0x1F</span>;           <span class="tok-cm">// 十六进制 (31)</span>
+<span class="tok-ty">int</span> c = <span class="tok-nm">0755</span>;           <span class="tok-cm">// 八进制   (493)</span>
+<span class="tok-ty">long</span> d = <span class="tok-nm">1000L</span>;         <span class="tok-cm">// long 类型</span>
+<span class="tok-ty">unsigned</span> e = <span class="tok-nm">42U</span>;      <span class="tok-cm">// 无符号</span>
+
+<span class="tok-cm">// 2) 浮点常量</span>
+<span class="tok-ty">double</span> pi  = <span class="tok-nm">3.14159</span>;
+<span class="tok-ty">double</span> avo = <span class="tok-nm">6.02e23</span>;   <span class="tok-cm">// 科学计数法</span>
+
+<span class="tok-cm">// 3) 字符常量：用单引号</span>
+<span class="tok-ty">char</span> g = <span class="tok-st">'A'</span>;          <span class="tok-cm">// ASCII 65</span>
+<span class="tok-ty">char</span> nl = <span class="tok-st">'\n'</span>;        <span class="tok-cm">// 换行符</span>
+
+<span class="tok-cm">// 4) 字符串常量：用双引号</span>
+<span class="tok-ty">char</span> msg[] = <span class="tok-st">"Hello"</span>;   <span class="tok-cm">// 末尾自动加 '\0'</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>3.4 输入与输出：printf / scanf</h3>
+      <div class="codebox"><div class="ch"><span>io.c</span><span class="copybtn" data-target="c-io">复制</span></div><pre id="c-io"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>)
+{
+    <span class="tok-ty">int</span>    age;
+    <span class="tok-ty">char</span>  name[<span class="tok-nm">32</span>];
+
+    <span class="tok-fn">printf</span>(<span class="tok-st">"请输入您的姓名和年龄："</span>);
+    <span class="tok-fn">scanf</span>(<span class="tok-st">"%s %d"</span>, name, &amp;age);          <span class="tok-cm">// 注意 &amp;取地址</span>
+
+    <span class="tok-fn">printf</span>(<span class="tok-st">"你好，%s！今年 %d 岁。\n"</span>, name, age);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <h4>常用格式控制符速记</h4>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>占位符</th><th>含义</th><th>占位符</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">%d</td><td>十进制整数 (int)</td><td class="hl">%ld</td><td>long 整数</td></tr>
+          <tr><td class="hl">%f</td><td>浮点数 (double)</td><td class="hl">%c</td><td>单个字符</td></tr>
+          <tr><td class="hl">%s</td><td>字符串</td><td class="hl">%x / %X</td><td>十六进制整数</td></tr>
+          <tr><td class="hl">%u</td><td>无符号整数</td><td class="hl">%p</td><td>指针地址</td></tr>
+          <tr><td class="hl">%lf</td><td>double 读入</td><td class="hl">%%</td><td>输出一个 %</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><b>小心：</b><code>scanf("%d", &amp;x)</code> 中必须传 <strong>地址</strong>（<code>&amp;x</code>），否则会段错误；<code>scanf("%lf", &amp;d)</code> 中 double 必须用 <strong>%lf</strong>（读入时），而 <code>printf</code> 中 double 既可用 %f 也可用 %lf。</div>
+    </div>
+
+    <div class="quiz" data-acc="amber">
+      <h4 style="color:var(--amber)">课堂练习 · 第03章</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="C99 起允许 // 单行注释，主流编译器都支持。">
+        <div class="q-head"><span class="qn">1</span>下列哪个不是 C 语言的合法注释？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>// 注释一行</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span># 井号注释</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>/* 多行注释 */</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>/* 单行 */</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="scanf 读取 double 必须用 %lf，printf 中 %f 与 %lf 等价。">
+        <div class="q-head"><span class="qn">2</span>用 scanf 读取一个 double 变量 d，正确的格式字符串是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>"%f"</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>"%d"</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>"%lf"</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>"%c"</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 04 数据类型与运算符 ============= -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">04</div>
+      <div>
+        <h2>数据类型、变量与运算符</h2>
+        <p>C 是一门<strong>强类型</strong>语言：每个变量都有明确类型，决定了占用内存大小与可执行的操作。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>4.1 基本数据类型与大小</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类型</th><th>含义</th><th>典型大小 (字节)</th><th>取值范围（示意）</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">char</td><td>字符 / 1 字节整数</td><td>1</td><td>-128 ~ 127</td></tr>
+          <tr><td class="hl">short</td><td>短整型</td><td>2</td><td>-32768 ~ 32767</td></tr>
+          <tr><td class="hl">int</td><td>整型</td><td>4</td><td>约 ±2.1 × 10⁹</td></tr>
+          <tr><td class="hl">long</td><td>长整型</td><td>4 或 8</td><td>与平台相关</td></tr>
+          <tr><td class="hl">long long</td><td>更长整型 (C99)</td><td>8</td><td>约 ±9.2 × 10¹⁸</td></tr>
+          <tr><td class="hl">float</td><td>单精度浮点</td><td>4</td><td>约 ±3.4 × 10³⁸（6~7 位有效数字）</td></tr>
+          <tr><td class="hl">double</td><td>双精度浮点</td><td>8</td><td>约 ±1.8 × 10³⁰⁸（15~16 位有效数字）</td></tr>
+          <tr><td class="hl">_Bool / bool</td><td>布尔 (0/1)</td><td>1</td><td>需 <code>&lt;stdbool.h&gt;</code></td></tr>
+        </tbody>
+      </table></div>
+      <p class="sum1" style="--acc:var(--coral)"><b>提示：</b>实际大小可用 <code>sizeof(int)</code> 查询，需要固定宽度整数请用 <code>&lt;stdint.h&gt;</code>：<code>int32_t</code>、<code>uint64_t</code> 等。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>4.2 变量与常量</h3>
+      <div class="codebox"><div class="ch"><span>variable.c</span><span class="copybtn" data-target="c-var">复制</span></div><pre id="c-var"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-cm">// 宏常量：预处理阶段做文本替换</span>
+<span class="tok-pp">#define</span> PI       <span class="tok-nm">3.1415926</span>
+<span class="tok-pp">#define</span> MAX_LEN  <span class="tok-nm">256</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>)
+{
+    <span class="tok-cm">// 变量：值可以改变</span>
+    <span class="tok-ty">int</span>    age    = <span class="tok-nm">18</span>;
+    <span class="tok-ty">float</span>  score  = <span class="tok-nm">95.5</span>;
+    <span class="tok-ty">char</span>   grade  = <span class="tok-st">'A'</span>;
+
+    <span class="tok-cm">// const 常量：运行时不可修改</span>
+    <span class="tok-kw">const</span> <span class="tok-ty">int</span>   MAX_SCORE = <span class="tok-nm">100</span>;
+
+    age = <span class="tok-nm">19</span>;            <span class="tok-cm">// 重新赋值 ✔</span>
+    <span class="tok-cm">// MAX_SCORE = 200;     // ❌ 编译错误：不能修改 const</span>
+
+    <span class="tok-fn">printf</span>(<span class="tok-st">"PI=%.4f, MAX_SCORE=%d\n"</span>, PI, MAX_SCORE);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>4.3 类型转换</h3>
+      <ul>
+        <li><strong>自动转换（隐式）</strong>：运算时低精度自动提升到高精度（如 int + double → double）；</li>
+        <li><strong>强制转换</strong>：<code>(目标类型)表达式</code>，例如 <code>(int)3.7</code> 得 3（截断小数部分）；</li>
+      </ul>
+      <div class="codebox"><div class="ch"><span>cast.c</span><span class="copybtn" data-target="c-cast">复制</span></div><pre id="c-cast"><code><span class="tok-ty">int</span>    a = <span class="tok-nm">10</span>;
+<span class="tok-ty">double</span> b = (<span class="tok-ty">double</span>)a / <span class="tok-nm">3</span>;     <span class="tok-cm">// 3.333...  (true division)</span>
+<span class="tok-ty">int</span>    c = a / <span class="tok-nm">3</span>;             <span class="tok-cm">// 3          (integer division)</span>
+
+<span class="tok-cm">// ⚠️ 精度损失：double → int 时小数部分被截断（非四舍五入）</span>
+<span class="tok-ty">int</span> d = (<span class="tok-ty">int</span>)<span class="tok-nm">3.99</span>;            <span class="tok-cm">// d == 3</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>4.4 运算符一览</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>类别</th><th>运算符（部分）</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">算术</td><td>+ - * / %</td><td>a + b * c</td></tr>
+          <tr><td class="hl">关系</td><td>&gt; &lt; &gt;= &lt;= == !=</td><td>a == b</td></tr>
+          <tr><td class="hl">逻辑</td><td>&amp;&amp; || !</td><td>a &gt; 0 &amp;&amp; b &gt; 0</td></tr>
+          <tr><td class="hl">赋值</td><td>= += -= *= /= %= &lt;&lt;= &gt;&gt;= &amp;= |= ^=</td><td>a += 3</td></tr>
+          <tr><td class="hl">自增自减</td><td>++ --</td><td>i++ (后置), ++i (前置)</td></tr>
+          <tr><td class="hl">条件</td><td>?:</td><td>max = a &gt; b ? a : b;</td></tr>
+          <tr><td class="hl">位运算</td><td>&amp; | ^ ~ &lt;&lt; &gt;&gt;</td><td>flags &amp; 0x0F</td></tr>
+          <tr><td class="hl">逗号</td><td>,</td><td>for(i=0, j=0; ...)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><b>陷阱：</b><code>a == b</code> 中间不能写成 <code>a = b</code>（赋值）；<code>== vs =</code> 是 C 语言最常见的笔误之一。</div>
+    </div>
+
+    <div class="quiz" data-acc="coral">
+      <h4 style="color:var(--coral)">课堂练习 · 第04章</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="整数除法会截断小数部分：10/3 = 3。">
+        <div class="q-head"><span class="qn">3</span>表达式 <code>10 / 3</code>（int 类型）的结果是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>3.33</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>3</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>3.0</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>编译错误</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="D" data-exp="(int)3.99 直接截断小数部分得 3，floor 才是 3，round 是 4。">
+        <div class="q-head"><span class="qn">4</span>下列强制类型转换的结果是？<code>(int)3.99</code></div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>4</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>3.99</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>编译错误</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>3</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 05 控制结构 ============= -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--teal);border-color:rgba(12,107,99,.4)">05</div>
+      <div>
+        <h2>程序控制结构：顺序、选择、循环</h2>
+        <p>从"会写语句"到"会写程序"的关键一步——让代码具备判断与重复执行的能力。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3><span class="dot" style="background:var(--teal)"></span>5.1 顺序结构：程序的默认执行方式</h3>
+      <p>语句按书写顺序依次执行。最简单的程序：输入 → 处理 → 输出。</p>
+      <div class="codebox"><div class="ch"><span>seq.c</span><span class="copybtn" data-target="c-seq">复制</span></div><pre id="c-seq"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-ty">int</span> r;
+    <span class="tok-fn">printf</span>(<span class="tok-st">"请输入半径："</span>);
+    <span class="tok-fn">scanf</span>(<span class="tok-st">"%d"</span>, &amp;r);
+
+    <span class="tok-ty">double</span> area = <span class="tok-nm">3.1415926</span> * r * r;
+    <span class="tok-fn">printf</span>(<span class="tok-st">"半径=%d, 面积=%.2f\n"</span>, r, area);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3><span class="dot" style="background:var(--teal)"></span>5.2 选择结构：if / switch</h3>
+      <div class="two">
+        <div>
+          <h4>if 三种形式</h4>
+          <div class="codebox"><div class="ch"><span>if.c</span><span class="copybtn" data-target="c-if">复制</span></div><pre id="c-if"><code><span class="tok-kw">if</span> (score &gt;= <span class="tok-nm">90</span>)
+    <span class="tok-fn">printf</span>(<span class="tok-st">"A\n"</span>);
+
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-nm">60</span>)
+    <span class="tok-fn">printf</span>(<span class="tok-st">"及格\n"</span>);
+<span class="tok-kw">else</span>
+    <span class="tok-fn">printf</span>(<span class="tok-st">"不及格\n"</span>);
+
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-nm">85</span>)
+    <span class="tok-fn">printf</span>(<span class="tok-st">"优秀\n"</span>);
+<span class="tok-kw">else if</span> (score &gt;= <span class="tok-nm">70</span>)
+    <span class="tok-fn">printf</span>(<span class="tok-st">"良好\n"</span>);
+<span class="tok-kw">else if</span> (score &gt;= <span class="tok-nm">60</span>)
+    <span class="tok-fn">printf</span>(<span class="tok-st">"及格\n"</span>);
+<span class="tok-kw">else</span>
+    <span class="tok-fn">printf</span>(<span class="tok-st">"不及格\n"</span>);</code></pre></div>
+        </div>
+        <div>
+          <h4>switch：多分支离散值</h4>
+          <div class="codebox"><div class="ch"><span>switch.c</span><span class="copybtn" data-target="c-sw">复制</span></div><pre id="c-sw"><code><span class="tok-kw">switch</span> (choice) {
+<span class="tok-kw">case</span> <span class="tok-nm">1</span>:
+    <span class="tok-fn">printf</span>(<span class="tok-st">"新建\n"</span>);
+    <span class="tok-kw">break</span>;
+<span class="tok-kw">case</span> <span class="tok-nm">2</span>:
+    <span class="tok-fn">printf</span>(<span class="tok-st">"打开\n"</span>);
+    <span class="tok-kw">break</span>;
+<span class="tok-kw">case</span> <span class="tok-nm">3</span>:
+<span class="tok-kw">case</span> <span class="tok-nm">4</span>:
+    <span class="tok-fn">printf</span>(<span class="tok-st">"保存 / 另存为\n"</span>);
+    <span class="tok-kw">break</span>;
+<span class="tok-kw">default</span>:
+    <span class="tok-fn">printf</span>(<span class="tok-st">"无效选项\n"</span>);
+}</code></pre></div>
+        </div>
+      </div>
+      <div class="tipbox"><b>注意：</b>每个 case 通常需要 <code>break</code> 跳出，否则会"贯穿"到下一个 case（少数情况是有意为之）。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3><span class="dot" style="background:var(--teal)"></span>5.3 循环结构：while / do-while / for</h3>
+      <div class="three" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div>
+          <h4>while：先判断后执行</h4>
+          <div class="codebox"><div class="ch"><span>while.c</span><span class="copybtn" data-target="c-while">复制</span></div><pre id="c-while"><code><span class="tok-ty">int</span> i = <span class="tok-nm">0</span>;
+<span class="tok-kw">while</span> (i &lt; <span class="tok-nm">5</span>) {
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, i);
+    i++;
+}</code></pre></div>
+        </div>
+        <div>
+          <h4>do-while：先执行后判断</h4>
+          <div class="codebox"><div class="ch"><span>dowhile.c</span><span class="copybtn" data-target="c-do">复制</span></div><pre id="c-do"><code><span class="tok-ty">int</span> n;
+<span class="tok-kw">do</span> {
+    <span class="tok-fn">printf</span>(<span class="tok-st">"输入正数："</span>);
+    <span class="tok-fn">scanf</span>(<span class="tok-st">"%d"</span>, &amp;n);
+} <span class="tok-kw">while</span> (n &lt;= <span class="tok-nm">0</span>);</code></pre></div>
+        </div>
+        <div>
+          <h4>for：经典计数循环</h4>
+          <div class="codebox"><div class="ch"><span>for.c</span><span class="copybtn" data-target="c-for">复制</span></div><pre id="c-for"><code><span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">0</span>; i &lt; <span class="tok-nm">10</span>; i++) {
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%d "</span>, i);
+}
+<span class="tok-fn">printf</span>(<span class="tok-st">"\n"</span>);</code></pre></div>
+        </div>
+      </div>
+      <h4>循环控制</h4>
+      <ul>
+        <li><code>break</code>：<strong>立即跳出</strong>当前循环或 switch；</li>
+        <li><code>continue</code>：<strong>跳过本次</strong>剩余语句，进入下一轮；</li>
+        <li><code>goto label;</code>：跳转到大一通常不推荐使用，容易破坏结构。</li>
+      </ul>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3><span class="dot" style="background:var(--teal)"></span>5.4 经典案例：九九乘法表</h3>
+      <div class="codebox"><div class="ch"><span>9x9.c</span><span class="copybtn" data-target="c-99">复制</span></div><pre id="c-99"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">1</span>; i &lt;= <span class="tok-nm">9</span>; i++) {
+        <span class="tok-kw">for</span> (<span class="tok-ty">int</span> j = <span class="tok-nm">1</span>; j &lt;= i; j++)
+            <span class="tok-fn">printf</span>(<span class="tok-st">"%dx%d=%-2d "</span>, j, i, j*i);
+        <span class="tok-fn">printf</span>(<span class="tok-st">"\n"</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <p class="sum1" style="--acc:var(--teal)"><b>关键：</b>循环嵌套体现"行 × 列"二维结构——外层控制行，内层控制列。</p>
+    </div>
+
+    <div class="quiz" data-acc="teal">
+      <h4 style="color:var(--teal)">课堂练习 · 第05章</h4>
+      <div class="q-card" data-q data-answer="C" data-exp="循环遇到 continue 会立刻跳到下一轮，不执行 printf(i); 输出。">
+        <div class="q-head"><span class="qn">5</span>下面代码的输出是？<br><code>for(int i=0;i&lt;5;i++){ if(i==2) continue; printf("%d ",i); }</code></div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>0 1 2 3 4</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>0 1 3 4</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>0 1 2 3 4 5</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>0 1 3 4 5</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="B" data-exp="每个 case 默认贯穿，除非遇到 break 或 switch 结束。">
+        <div class="q-head"><span class="qn">6</span>关于 switch 语句，下列说法错误的是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>case 标签必须是常量表达式</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>每个 case 都必须写 break</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>default 可省略</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>switch 表达式类型通常为 int</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 06 函数 ============= -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet);border-color:rgba(91,33,182,.4)">06</div>
+      <div>
+        <h2>函数与程序模块化</h2>
+        <p>函数是 C 程序的基本构件——把复杂问题拆成可复用、可独立测试的小单元。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>6.1 函数定义与调用</h3>
+      <div class="codebox"><div class="ch"><span>func.c</span><span class="copybtn" data-target="c-func">复制</span></div><pre id="c-func"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-cm">// 函数定义：返回类型 + 名字 + 参数列表 + 函数体</span>
+<span class="tok-ty">int</span> <span class="tok-fn">add</span>(<span class="tok-ty">int</span> a, <span class="tok-ty">int</span> b) {
+    <span class="tok-kw">return</span> a + b;
+}
+
+<span class="tok-cm">// 没有返回值：void</span>
+<span class="tok-ty">void</span> <span class="tok-fn">say_hello</span>(<span class="tok-ty">const</span> <span class="tok-ty">char</span>* name) {
+    <span class="tok-fn">printf</span>(<span class="tok-st">"Hello, %s!\n"</span>, name);
+}
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-fn">say_hello</span>(<span class="tok-st">"Tom"</span>);
+    <span class="tok-ty">int</span> s = <span class="tok-fn">add</span>(<span class="tok-nm">3</span>, <span class="tok-nm">4</span>);   <span class="tok-cm">// 函数调用</span>
+    <span class="tok-fn">printf</span>(<span class="tok-st">"3+4=%d\n"</span>, s);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <h4>函数声明（原型）</h4>
+      <p>如果函数的定义出现在调用之后，需要先<strong>声明</strong>（告诉编译器函数签名）：</p>
+      <div class="codebox"><div class="ch"><span>prototype.c</span><span class="copybtn" data-target="c-proto">复制</span></div><pre id="c-proto"><code><span class="tok-ty">int</span> <span class="tok-fn">add</span>(<span class="tok-ty">int</span>, <span class="tok-ty">int</span>);    <span class="tok-cm">// 函数原型（参数名可省略）</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, <span class="tok-fn">add</span>(<span class="tok-nm">1</span>, <span class="tok-nm">2</span>));
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}
+
+<span class="tok-ty">int</span> <span class="tok-fn">add</span>(<span class="tok-ty">int</span> a, <span class="tok-ty">int</span> b) { <span class="tok-kw">return</span> a + b; }</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>6.2 参数传递：值传递 vs 地址传递</h3>
+      <p>C 的函数参数默认<strong>值传递</strong>：形参是实参的副本，函数内修改形参不影响实参。</p>
+      <div class="codebox"><div class="ch"><span>swap.c</span><span class="copybtn" data-target="c-swap">复制</span></div><pre id="c-swap"><code><span class="tok-ty">void</span> <span class="tok-fn">swap_wrong</span>(<span class="tok-ty">int</span> a, <span class="tok-ty">int</span> b) {
+    <span class="tok-ty">int</span> t = a; a = b; b = t;   <span class="tok-cm">// 仅交换副本，原变量不变</span>
+}
+
+<span class="tok-ty">void</span> <span class="tok-fn">swap_ok</span>(<span class="tok-ty">int</span> *a, <span class="tok-ty">int</span> *b) {
+    <span class="tok-ty">int</span> t = *a; *a = *b; *b = t;  <span class="tok-cm">// 通过地址真正交换</span>
+}</code></pre></div>
+      <p class="sum1" style="--acc:var(--violet)"><b>记忆：</b>想让函数修改外部变量，必须传<strong>地址</strong>（指针）。这是后续"指针"章节的核心铺垫。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>6.3 作用域与存储类别</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>变量类型</th><th>作用域</th><th>生命周期</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">局部变量</td><td>所在块 { } 内</td><td>块结束时销毁</td><td>函数内定义的变量</td></tr>
+          <tr><td class="hl">全局变量</td><td>从定义处到文件末</td><td>程序整个运行期</td><td>函数外定义，默认初值 0</td></tr>
+          <tr><td class="hl">static 局部</td><td>所在块内</td><td>整个程序运行期</td><td>值在调用之间保留</td></tr>
+          <tr><td class="hl">static 全局</td><td>当前 .c 文件</td><td>整个程序运行期</td><td>不暴露给其他文件</td></tr>
+          <tr><td class="hl">extern</td><td>整个程序（多文件）</td><td>整个程序运行期</td><td>声明在其他文件定义的全局变量</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3><span class="dot" style="background:var(--violet)"></span>6.4 递归函数：自己调用自己</h3>
+      <p>递归 = 终止条件 + 递归步骤。三个经典例子：</p>
+      <div class="codebox"><div class="ch"><span>factorial.c</span><span class="copybtn" data-target="c-fact">复制</span></div><pre id="c-fact"><code><span class="tok-ty">long</span> <span class="tok-fn">factorial</span>(<span class="tok-ty">int</span> n) {
+    <span class="tok-kw">if</span> (n &lt;= <span class="tok-nm">1</span>) <span class="tok-kw">return</span> <span class="tok-nm">1</span>;      <span class="tok-cm">// 终止条件</span>
+    <span class="tok-kw">return</span> n * <span class="tok-fn">factorial</span>(n - <span class="tok-nm">1</span>); <span class="tok-cm">// 递归步骤</span>
+}
+<span class="tok-cm">// factorial(5) = 5*4*3*2*1 = 120</span></code></pre></div>
+      <div class="warn"><b>递归风险：</b>递归太深会<strong>栈溢出</strong>。Fibonacci 的朴素递归就是反例 —— 应改用迭代或记忆化。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 07 数组与字符串 ============= -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">07</div>
+      <div>
+        <h2>数组与字符串</h2>
+        <p>数组 = 同类型元素的连续存储。字符串 = 以 <code>'\0'</code> 结尾的字符数组。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>7.1 一维数组</h3>
+      <div class="codebox"><div class="ch"><span>array1d.c</span><span class="copybtn" data-target="c-a1">复制</span></div><pre id="c-a1"><code><span class="tok-ty">int</span> a[<span class="tok-nm">5</span>];                       <span class="tok-cm">// 声明：5 个 int，未初始化</span>
+<span class="tok-ty">int</span> b[<span class="tok-nm">5</span>] = {<span class="tok-nm">1</span>, <span class="tok-nm">2</span>, <span class="tok-nm">3</span>, <span class="tok-nm">4</span>, <span class="tok-nm">5</span>}; <span class="tok-cm">// 全部初始化</span>
+<span class="tok-ty">int</span> c[<span class="tok-nm">5</span>] = {<span class="tok-nm">0</span>};                <span class="tok-cm">// 全为 0（部分初始化其余补 0）</span>
+<span class="tok-ty">int</span> d[]  = {<span class="tok-nm">10</span>, <span class="tok-nm">20</span>, <span class="tok-nm">30</span>};      <span class="tok-cm">// 自动推导长度 = 3</span>
+
+a[<span class="tok-nm">0</span>] = <span class="tok-nm">100</span>;                  <span class="tok-cm">// 通过下标访问（下标从 0 开始）</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, a[<span class="tok-nm">4</span>]);          <span class="tok-cm">// 最后一个元素</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"size=%zu\n"</span>, <span class="tok-kw">sizeof</span> a); <span class="tok-cm">// 20 (5×4)</span></code></pre></div>
+      <div class="warn"><b>数组越界：</b>C <strong>不会</strong>检查下标越界，访问 <code>a[5]</code>、<code>a[-1]</code> 是未定义行为 —— 后果难以预料。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>7.2 二维与多维数组</h3>
+      <div class="codebox"><div class="ch"><span>array2d.c</span><span class="copybtn" data-target="c-a2">复制</span></div><pre id="c-a2"><code><span class="tok-ty">int</span> matrix[<span class="tok-nm">3</span>][<span class="tok-nm">4</span>] = {              <span class="tok-cm">// 3 行 × 4 列</span>
+    {<span class="tok-nm">1</span>, <span class="tok-nm">2</span>,  <span class="tok-nm">3</span>,  <span class="tok-nm">4</span>},
+    {<span class="tok-nm">5</span>, <span class="tok-nm">6</span>,  <span class="tok-nm">7</span>,  <span class="tok-nm">8</span>},
+    {<span class="tok-nm">9</span>, <span class="tok-nm">10</span>, <span class="tok-nm">11</span>, <span class="tok-nm">12</span>}
+};
+
+<span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">0</span>; i &lt; <span class="tok-nm">3</span>; i++) {
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> j = <span class="tok-nm">0</span>; j &lt; <span class="tok-nm">4</span>; j++)
+        <span class="tok-fn">printf</span>(<span class="tok-st">"%4d"</span>, matrix[i][j]);
+    <span class="tok-fn">printf</span>(<span class="tok-st">"\n"</span>);
+}</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>7.3 字符串与常用函数</h3>
+      <p>C 没有真正的"字符串变量"，字符串是<strong>以 <code>'\0'</code> 结尾的 char 数组</strong>。</p>
+      <div class="codebox"><div class="ch"><span>str.c</span><span class="copybtn" data-target="c-str">复制</span></div><pre id="c-str"><code><span class="tok-ty">char</span> s1[] = <span class="tok-st">"Hello"</span>;              <span class="tok-cm">// 自动加 \0，实际长度 6</span>
+<span class="tok-ty">char</span> s2[<span class="tok-nm">10</span>] = {<span class="tok-st">'H'</span>,<span class="tok-st">'i'</span>,<span class="tok-st">'\0'</span>}; <span class="tok-cm">// 手动构造</span>
+
+<span class="tok-fn">printf</span>(<span class="tok-st">"%zu\n"</span>, <span class="tok-fn">strlen</span>(s1));    <span class="tok-cm">// 5  (不计 \0)</span>
+<span class="tok-fn">strcpy</span>(s2, <span class="tok-st">"Hi"</span>);                 <span class="tok-cm">// 复制（不安全，建议用 strncpy）</span>
+<span class="tok-fn">strcat</span>(s1, <span class="tok-st">", world!"</span>);          <span class="tok-cm">// 拼接</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, <span class="tok-fn">strcmp</span>(<span class="tok-st">"abc"</span>, <span class="tok-st">"abd"</span>)); <span class="tok-cm">// &lt;0</span>
+
+<span class="tok-cm">// 字符分类与转换（ctype.h）</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d %c\n"</span>, <span class="tok-fn">isalpha</span>(<span class="tok-st">'A'</span>), <span class="tok-fn">toupper</span>(<span class="tok-st">'b'</span>)); <span class="tok-cm">// 非零 B</span></code></pre></div>
+      <h4>常用字符串函数速查（&lt;string.h&gt; / &lt;ctype.h&gt;）</h4>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>函数</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">strlen(s)</td><td>返回字符串长度（不含 \0）</td></tr>
+          <tr><td class="hl">strcpy(dst, src) / strncpy</td><td>字符串复制</td></tr>
+          <tr><td class="hl">strcat(dst, src) / strncat</td><td>字符串拼接</td></tr>
+          <tr><td class="hl">strcmp(a, b) / strncmp</td><td>字典序比较</td></tr>
+          <tr><td class="hl">strchr(s, c) / strrchr</td><td>查找字符</td></tr>
+          <tr><td class="hl">strstr(s, sub)</td><td>查找子串</td></tr>
+          <tr><td class="hl">isalpha / isdigit / isspace</td><td>字符分类</td></tr>
+          <tr><td class="hl">toupper / tolower</td><td>大小写转换</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 08 指针与内存 ⭐ ============= -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--amber);border-color:rgba(163,74,8,.4);background:var(--amber-soft)">⭐</div>
+      <div>
+        <h2>指针与内存：整个 C 课程的核心难点</h2>
+        <p>指针 = 存储"内存地址"的变量。掌握 <code>*</code> 与 <code>&amp;</code>，你就掌握了 C 的灵魂。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>8.1 什么是指针</h3>
+      <p>每个变量都占用一段内存，<strong>地址</strong>就是这段内存的"门牌号"。指针变量保存的就是这种地址。</p>
+      <div class="codebox"><div class="ch"><span>ptr.c</span><span class="copybtn" data-target="c-ptr">复制</span></div><pre id="c-ptr"><code><span class="tok-ty">int</span>  a = <span class="tok-nm">10</span>;       <span class="tok-cm">// 整型变量 a，值为 10</span>
+<span class="tok-ty">int</span> *p = &amp;a;        <span class="tok-cm">// p 是指针，指向 a 的地址</span>
+
+<span class="tok-fn">printf</span>(<span class="tok-st">"a      = %d\n"</span>,   a);     <span class="tok-cm">// 10</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"&amp;a     = %p\n"</span>,   &amp;a);   <span class="tok-cm">// a 的地址</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"p      = %p\n"</span>,   p);     <span class="tok-cm">// 同上（p 保存的就是 &amp;a）</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"*p     = %d\n"</span>,   *p);    <span class="tok-cm">// 通过 p 间接访问：10</span>
+
+*p = <span class="tok-nm">99</span>;                       <span class="tok-cm">// 通过指针修改 a</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"a 现在是 %d\n"</span>, a);     <span class="tok-cm">// 99</span></code></pre></div>
+      <div class="fig">
+        <svg viewBox="0 0 460 160" style="width:100%;max-width:460px">
+          <g font-family="var(--mono)" font-size="13">
+            <text x="20" y="35" fill="#1a1816" font-weight="700">a</text>
+            <text x="100" y="35" fill="#0c6b63">值: 10</text>
+            <text x="220" y="35" fill="#a34a08">地址: 0x7ffd</text>
+            <rect x="14" y="42" width="60" height="38" rx="4" fill="#fff" stroke="#0c6b63" stroke-width="1.5"/>
+            <text x="44" y="65" text-anchor="middle" fill="#0c6b63" font-weight="700">10</text>
+            <rect x="180" y="42" width="180" height="38" rx="4" fill="#fff" stroke="#a34a08" stroke-width="1.5"/>
+            <text x="270" y="65" text-anchor="middle" fill="#a34a08" font-weight="700">0x7ffd · · · 4c</text>
+            <text x="20" y="115" fill="#1a1816" font-weight="700">p</text>
+            <rect x="14" y="122" width="60" height="28" rx="4" fill="#fff" stroke="#5b21b6" stroke-width="1.5"/>
+            <text x="44" y="141" text-anchor="middle" fill="#5b21b6" font-weight="700">0x..4c</text>
+            <path d="M76 136 Q120 136 180 60" stroke="#5b21b6" stroke-width="1.5" fill="none" marker-end="url(#pArr)"/>
+            <defs><marker id="pArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b21b6"/></marker></defs>
+            <text x="110" y="100" fill="#5b21b6">p 指向 a</text>
+          </g>
+        </svg>
+        <div class="cap">指针 p 保存了 a 的地址，*p 即"通过地址找值"</div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>8.2 指针运算与数组</h3>
+      <p>数组名 <code>a</code> 在大多数表达式中会<strong>退化为指向首元素的指针</strong>，因此 <code>a[i]</code> 等价于 <code>*(a+i)</code>。</p>
+      <div class="codebox"><div class="ch"><span>ptrarr.c</span><span class="copybtn" data-target="c-ptra">复制</span></div><pre id="c-ptra"><code><span class="tok-ty">int</span> a[<span class="tok-nm">5</span>] = {<span class="tok-nm">10</span>, <span class="tok-nm">20</span>, <span class="tok-nm">30</span>, <span class="tok-nm">40</span>, <span class="tok-nm">50</span>};
+<span class="tok-ty">int</span> *p = a;           <span class="tok-cm">// 等价于 int *p = &amp;a[0];</span>
+
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, *(p + <span class="tok-nm">2</span>));   <span class="tok-cm">// 30  (p 移动 2 个 int 长度)</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, p[<span class="tok-nm">2</span>]);        <span class="tok-cm">// 30  (下标写法)</span>
+
+p++;                    <span class="tok-cm">// p 现在指向 a[1]</span>
+<span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, *p);         <span class="tok-cm">// 20</span></code></pre></div>
+      <div class="tipbox"><b>注意：</b>指针加减的单位是"它指向类型的大小"：<code>int *p; p+1</code> 实际地址加 4 字节（典型 int 大小）。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>8.3 动态内存：malloc / free</h3>
+      <p>当数据大小在编译期未知时，使用<strong>堆</strong>动态分配内存：</p>
+      <div class="codebox"><div class="ch"><span>malloc.c</span><span class="copybtn" data-target="c-malloc">复制</span></div><pre id="c-malloc"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdlib.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-ty">int</span> n;
+    <span class="tok-fn">scanf</span>(<span class="tok-st">"%d"</span>, &amp;n);
+
+    <span class="tok-ty">int</span> *p = <span class="tok-fn">malloc</span>(<span class="tok-kw">sizeof</span>(<span class="tok-ty">int</span>) * n);  <span class="tok-cm">// 申请 n 个 int</span>
+    <span class="tok-kw">if</span> (p == <span class="tok-nm">NULL</span>) <span class="tok-kw">return</span> <span class="tok-nm">1</span>;           <span class="tok-cm">// 必须检查失败</span>
+
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">0</span>; i &lt; n; i++)
+        p[i] = i * i;                          <span class="tok-cm">// 像普通数组一样用</span>
+
+    <span class="tok-fn">free</span>(p);                                  <span class="tok-cm">// 用完必须释放</span>
+    p = <span class="tok-nm">NULL</span>;                             <span class="tok-cm">// 避免悬空指针</span>
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>函数</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">malloc(size)</td><td>申请 size 字节，未初始化，返回 void*</td></tr>
+          <tr><td class="hl">calloc(n, size)</td><td>申请 n×size 字节并清零</td></tr>
+          <tr><td class="hl">realloc(p, new)</td><td>调整已分配内存大小</td></tr>
+          <tr><td class="hl">free(p)</td><td>释放内存（p 必须来自 malloc/calloc/realloc）</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>8.4 常见内存错误（务必警惕）</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>错误类型</th><th>说明</th><th>防范</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">野指针</td><td>未初始化的指针</td><td>声明时即初始化：<code>int *p = NULL;</code></td></tr>
+          <tr><td class="hl">悬空指针</td><td>指向已 free 的内存</td><td>free 后立即 <code>p = NULL;</code></td></tr>
+          <tr><td class="hl">NULL 解引用</td><td>对 NULL 指针使用 *p</td><td>解引用前检查</td></tr>
+          <tr><td class="hl">内存泄漏</td><td>malloc 后忘了 free</td><td>谁申请谁释放；<br>工具：valgrind / ASan</td></tr>
+          <tr><td class="hl">越界访问</td><td>数组 / 缓冲区下标越界</td><td>始终检查下标范围</td></tr>
+          <tr><td class="hl">重复释放</td><td>对同一指针 free 两次</td><td>free 后置 NULL</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><b>调试利器：</b>Linux 下 <code>valgrind --leak-check=full ./a.out</code>；GCC/Clang 编译加 <code>-fsanitize=address</code> 可捕获大多数内存错误。</div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>8.5 函数指针 &amp; 多级指针（拓展）</h3>
+      <div class="codebox"><div class="ch"><span>funcptr.c</span><span class="copybtn" data-target="c-fp">复制</span></div><pre id="c-fp"><code><span class="tok-ty">int</span> <span class="tok-fn">add</span>(<span class="tok-ty">int</span> a, <span class="tok-ty">int</span> b) { <span class="tok-kw">return</span> a + b; }
+<span class="tok-ty">int</span> <span class="tok-fn">sub</span>(<span class="tok-ty">int</span> a, <span class="tok-ty">int</span> b) { <span class="tok-kw">return</span> a - b; }
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-ty">int</span> (*fp)(<span class="tok-ty">int</span>, <span class="tok-ty">int</span>) = add;   <span class="tok-cm">// 函数指针</span>
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, fp(<span class="tok-nm">3</span>, <span class="tok-nm">2</span>));   <span class="tok-cm">// 5  (像函数一样调用)</span>
+    fp = sub;
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%d\n"</span>, fp(<span class="tok-nm">3</span>, <span class="tok-nm">2</span>));   <span class="tok-cm">// 1</span>
+}
+
+<span class="tok-ty">int</span> **pp;   <span class="tok-cm">// 二级指针：指向"指向 int 的指针"</span></code></pre></div>
+    </div>
+
+    <div class="quiz" data-acc="amber">
+      <h4 style="color:var(--amber)">课堂练习 · 第08章（核心）</h4>
+      <div class="q-card" data-q data-answer="B" data-exp="*p 表示通过地址访问值（解引用），&x 表示取 x 的地址。">
+        <div class="q-head"><span class="qn">7</span>已知 <code>int a=5; int *p=&amp;a;</code>，表达式 <code>*p</code> 的含义是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>a 的地址</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>a 的值（5）</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>编译错误</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>p 自身的地址</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="C" data-exp="malloc 失败返回 NULL；不解引用 NULL；同时配对 free。">
+        <div class="q-head"><span class="qn">8</span>关于动态内存，下列说法错误的是？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>malloc 失败会返回 NULL</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>用完的内存必须 free</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>free 后指针立刻消失，再访问也安全</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>同一块内存不能 free 两次</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+      <div class="q-card" data-q data-answer="A" data-exp="a[i] 与 *(a+i) 等价（数组名 a 退化为指针）。">
+        <div class="q-head"><span class="qn">9</span>对于 <code>int a[5]; int *p = a;</code>，哪个表达式等同于 <code>a[3]</code>？</div>
+        <div class="q-opts">
+          <button class="opt" data-v="A"><span class="k">A</span><span>*(p + 3)</span></button>
+          <button class="opt" data-v="B"><span class="k">B</span><span>*p + 3</span></button>
+          <button class="opt" data-v="C"><span class="k">C</span><span>(*p) + 3</span></button>
+          <button class="opt" data-v="D"><span class="k">D</span><span>&amp;p[3]</span></button>
+        </div>
+        <div class="q-exp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 09 结构体 ============= -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">09</div>
+      <div>
+        <h2>结构体、枚举与自定义类型</h2>
+        <p>把相关数据"打包"成一个新的复合类型 —— 让代码更具表达力。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>9.1 结构体（struct）</h3>
+      <div class="codebox"><div class="ch"><span>struct.c</span><span class="copybtn" data-target="c-st">复制</span></div><pre id="c-st"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;string.h&gt;</span>
+<span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-cm">// 定义结构体类型</span>
+<span class="tok-kw">struct</span> <span class="tok-ty">Student</span> {
+    <span class="tok-ty">char</span>  name[<span class="tok-nm">32</span>];
+    <span class="tok-ty">int</span>   age;
+    <span class="tok-ty">float</span> score;
+};
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-kw">struct</span> <span class="tok-ty">Student</span> s1 = {<span class="tok-st">"Tom"</span>, <span class="tok-nm">18</span>, <span class="tok-nm">95.5</span>};
+    <span class="tok-fn">strcpy</span>(s1.name, <span class="tok-st">"Jerry"</span>);        <span class="tok-cm">// 修改成员</span>
+    s1.age = <span class="tok-nm">19</span>;
+
+    <span class="tok-kw">struct</span> <span class="tok-ty">Student</span> *p = &amp;s1;
+    <span class="tok-fn">printf</span>(<span class="tok-st">"%s %d %.1f\n"</span>, p-&gt;name, p-&gt;age, p-&gt;score);
+}</code></pre></div>
+      <p>访问成员的两种写法：<code>s.age</code>（变量）或 <code>p-&gt;age</code>（指针）。</p>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>9.2 typedef —— 给类型起别名</h3>
+      <div class="codebox"><div class="ch"><span>typedef.c</span><span class="copybtn" data-target="c-td">复制</span></div><pre id="c-td"><code><span class="tok-kw">typedef</span> <span class="tok-kw">struct</span> {
+    <span class="tok-ty">int</span>   id;
+    <span class="tok-ty">char</span>  name[<span class="tok-nm">32</span>];
+} Student;                  <span class="tok-cm">// 现在 Student 是一个类型名</span>
+
+Student s = {<span class="tok-nm">1</span>, <span class="tok-st">"Alice"</span>};  <span class="tok-cm">// 不再写 struct Student</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--green)">
+      <h3><span class="dot" style="background:var(--green)"></span>9.3 枚举 enum / 共用体 union（拓展）</h3>
+      <div class="codebox"><div class="ch"><span>enum_union.c</span><span class="copybtn" data-target="c-en">复制</span></div><pre id="c-en"><code><span class="tok-kw">enum</span> <span class="tok-ty">Color</span> { RED, GREEN, BLUE };   <span class="tok-cm">// 默认 0,1,2</span>
+<span class="tok-kw">enum</span> <span class="tok-ty">Color</span> c = GREEN;
+
+<span class="tok-kw">union</span> <span class="tok-ty">Data</span> {                     <span class="tok-cm">// 共用一块内存，按最大成员解释</span>
+    <span class="tok-ty">int</span>   i;
+    <span class="tok-ty">float</span> f;
+    <span class="tok-ty">char</span>  c[<span class="tok-nm">4</span>];
+};</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 10 文件与预处理 ============= -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--cyan,#0c6b63);border-color:rgba(15,118,110,.4)">10</div>
+      <div>
+        <h2>文件 I/O 与预处理</h2>
+        <p>让程序与磁盘交互；用宏和条件编译写出可移植、可维护的代码。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>10.1 文件读写：文本与二进制</h3>
+      <div class="codebox"><div class="ch"><span>file.c</span><span class="copybtn" data-target="c-file">复制</span></div><pre id="c-file"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-cm">// 写文本</span>
+    <span class="tok-ty">FILE</span> *fp = <span class="tok-fn">fopen</span>(<span class="tok-st">"out.txt"</span>, <span class="tok-st">"w"</span>);
+    <span class="tok-kw">if</span> (!fp) <span class="tok-kw">return</span> <span class="tok-nm">1</span>;
+    <span class="tok-fn">fprintf</span>(fp, <span class="tok-st">"Hello, %d\n"</span>, <span class="tok-nm">42</span>);
+    <span class="tok-fn">fclose</span>(fp);
+
+    <span class="tok-cm">// 读文本</span>
+    <span class="tok-ty">char</span> buf[<span class="tok-nm">128</span>];
+    fp = <span class="tok-fn">fopen</span>(<span class="tok-st">"out.txt"</span>, <span class="tok-st">"r"</span>);
+    <span class="tok-fn">fgets</span>(buf, <span class="tok-kw">sizeof</span> buf, fp);   <span class="tok-cm">// 读一行</span>
+    <span class="tok-fn">fclose</span>(fp);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+      <h4>文件打开模式速查</h4>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>模式</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">"r" / "w" / "a"</td><td>读 / 写（清空）/ 追加，文本模式</td></tr>
+          <tr><td class="hl">"rb" / "wb" / "ab"</td><td>同上，二进制模式</td></tr>
+          <tr><td class="hl">"r+" / "w+" / "a+"</td><td>读写</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--cyan,#0c6b63)">
+      <h3><span class="dot" style="background:#0c6b63"></span>10.2 预处理：宏与条件编译</h3>
+      <div class="codebox"><div class="ch"><span>preproc.c</span><span class="copybtn" data-target="c-pp">复制</span></div><pre id="c-pp"><code><span class="tok-pp">#define</span> PI       <span class="tok-nm">3.14159</span>
+<span class="tok-pp">#define</span> <span class="tok-fn">SQR</span>(x)  ((x)*(x))            <span class="tok-cm">// 函数式宏（注意括号）</span>
+<span class="tok-pp">#define</span> <span class="tok-fn">MAX</span>(a,b) ((a)&gt;(b)?(a):(b))
+
+<span class="tok-pp">#ifdef</span> DEBUG
+<span class="tok-fn">printf</span>(<span class="tok-st">"[debug] x=%d\n"</span>, x);   <span class="tok-cm">// 仅在 DEBUG 定义时编译</span>
+<span class="tok-pp">#endif</span></code></pre></div>
+      <h4>头文件保护（避免重复包含）</h4>
+      <div class="codebox"><div class="ch"><span>utils.h</span><span class="copybtn" data-target="c-hdr">复制</span></div><pre id="c-hdr"><code><span class="tok-pp">#ifndef</span> UTILS_H
+<span class="tok-pp">#define</span> UTILS_H
+
+<span class="tok-cm">// 函数声明</span>
+<span class="tok-ty">int</span> <span class="tok-fn">add</span>(<span class="tok-ty">int</span>, <span class="tok-ty">int</span>);
+<span class="tok-ty">void</span> <span class="tok-fn">greet</span>(<span class="tok-ty">const</span> <span class="tok-ty">char</span>*);
+
+<span class="tok-pp">#endif</span></code></pre></div>
+      <div class="tipbox"><b>C23 简化：</b><code>#pragma once</code> 也能起到头文件保护的作用，被现代编译器广泛支持。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 11 标准库 ============= -->
+<section id="s11">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--violet);border-color:rgba(91,33,182,.4)">11</div>
+      <div>
+        <h2>C 标准库速查：按头文件分类</h2>
+        <p>C 标准库就是 C 语言的"自带工具箱"——按头文件使用，常用的不到 10 个。</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>头文件</th><th>常用内容</th><th>典型函数</th></tr></thead>
+      <tbody>
+        <tr><td class="hl">&lt;stdio.h&gt;</td><td>标准 I/O</td><td>printf, scanf, fopen, fclose, fgets, fputs, fprintf, fscanf, fread, fwrite</td></tr>
+        <tr><td class="hl">&lt;stdlib.h&gt;</td><td>通用工具</td><td>malloc, calloc, realloc, free, rand, srand, exit, atoi, qsort, bsearch</td></tr>
+        <tr><td class="hl">&lt;string.h&gt;</td><td>字符串与内存</td><td>strlen, strcpy, strncpy, strcat, strcmp, strchr, strstr, memcpy, memset</td></tr>
+        <tr><td class="hl">&lt;math.h&gt;</td><td>数学函数</td><td>sqrt, pow, sin, cos, log, log10, fabs, ceil, floor</td></tr>
+        <tr><td class="hl">&lt;time.h&gt;</td><td>时间日期</td><td>time, clock, difftime, mktime, strftime</td></tr>
+        <tr><td class="hl">&lt;ctype.h&gt;</td><td>字符分类</td><td>isalpha, isdigit, isspace, islower, isupper, tolower, toupper</td></tr>
+        <tr><td class="hl">&lt;stdbool.h&gt;</td><td>布尔类型 (C99)</td><td>bool, true, false</td></tr>
+        <tr><td class="hl">&lt;stdint.h&gt;</td><td>固定宽度整数</td><td>int8_t, int16_t, int32_t, int64_t, uint8_t ...</td></tr>
+        <tr><td class="hl">&lt;limits.h&gt;</td><td>类型极值</td><td>INT_MAX, INT_MIN, CHAR_BIT ...</td></tr>
+        <tr><td class="hl">&lt;float.h&gt;</td><td>浮点极值</td><td>DBL_MAX, FLT_EPSILON ...</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============= 12 算法基础 ============= -->
+<section id="s12">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--amber);border-color:rgba(163,74,8,.4)">12</div>
+      <div>
+        <h2>算法基础：查找、排序与递归</h2>
+        <p>掌握 5 ~ 8 个基础算法，足以应对大一编程作业与面试入门。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>12.1 顺序查找 &amp; 二分查找</h3>
+      <div class="two">
+        <div>
+          <h4>顺序查找 O(n)</h4>
+          <div class="codebox"><div class="ch"><span>linear.c</span><span class="copybtn" data-target="c-lin">复制</span></div><pre id="c-lin"><code><span class="tok-ty">int</span> <span class="tok-fn">linear_search</span>(<span class="tok-ty">int</span> a[], <span class="tok-ty">int</span> n, <span class="tok-ty">int</span> key) {
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">0</span>; i &lt; n; i++)
+        <span class="tok-kw">if</span> (a[i] == key) <span class="tok-kw">return</span> i;
+    <span class="tok-kw">return</span> -<span class="tok-nm">1</span>;
+}</code></pre></div>
+        </div>
+        <div>
+          <h4>二分查找 O(log n)（要求数组有序）</h4>
+          <div class="codebox"><div class="ch"><span>binary.c</span><span class="copybtn" data-target="c-bin">复制</span></div><pre id="c-bin"><code><span class="tok-ty">int</span> <span class="tok-fn">binary_search</span>(<span class="tok-ty">int</span> a[], <span class="tok-ty">int</span> n, <span class="tok-ty">int</span> key) {
+    <span class="tok-ty">int</span> lo = <span class="tok-nm">0</span>, hi = n - <span class="tok-nm">1</span>;
+    <span class="tok-kw">while</span> (lo &lt;= hi) {
+        <span class="tok-ty">int</span> mid = (lo + hi) / <span class="tok-nm">2</span>;
+        <span class="tok-kw">if</span> (a[mid] == key)   <span class="tok-kw">return</span> mid;
+        <span class="tok-kw">else if</span> (a[mid] &lt; key) lo = mid + <span class="tok-nm">1</span>;
+        <span class="tok-kw">else</span>                 hi = mid - <span class="tok-nm">1</span>;
+    }
+    <span class="tok-kw">return</span> -<span class="tok-nm">1</span>;
+}</code></pre></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>12.2 基础排序：冒泡 / 选择 / 插入</h3>
+      <div class="codebox"><div class="ch"><span>bubble.c</span><span class="copybtn" data-target="c-bub">复制</span></div><pre id="c-bub"><code><span class="tok-cm">// 冒泡排序：相邻元素两两比较交换，每轮把最大元素"冒"到末尾</span>
+<span class="tok-ty">void</span> <span class="tok-fn">bubble_sort</span>(<span class="tok-ty">int</span> a[], <span class="tok-ty">int</span> n) {
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">0</span>; i &lt; n - <span class="tok-nm">1</span>; i++)
+        <span class="tok-kw">for</span> (<span class="tok-ty">int</span> j = <span class="tok-nm">0</span>; j &lt; n - <span class="tok-nm">1</span> - i; j++)
+            <span class="tok-kw">if</span> (a[j] &gt; a[j + <span class="tok-nm">1</span>]) {
+                <span class="tok-ty">int</span> t = a[j]; a[j] = a[j+<span class="tok-nm">1</span>]; a[j+<span class="tok-nm">1</span>] = t;
+            }
+}</code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3><span class="dot" style="background:var(--amber)"></span>12.3 经典递归：阶乘 / Fibonacci / 汉诺塔</h3>
+      <div class="codebox"><div class="ch"><span>fib.c</span><span class="copybtn" data-target="c-fib">复制</span></div><pre id="c-fib"><code><span class="tok-cm">// 朴素递归 Fibonacci（教学示例，效率极低）</span>
+<span class="tok-ty">int</span> <span class="tok-fn">fib</span>(<span class="tok-ty">int</span> n) {
+    <span class="tok-kw">if</span> (n &lt; <span class="tok-nm">2</span>) <span class="tok-kw">return</span> n;
+    <span class="tok-kw">return</span> <span class="tok-fn">fib</span>(n - <span class="tok-nm">1</span>) + <span class="tok-fn">fib</span>(n - <span class="tok-nm">2</span>);
+}
+
+<span class="tok-cm">// 迭代版：O(n) 时间 O(1) 空间（推荐）</span>
+<span class="tok-ty">long</span> <span class="tok-fn">fib_iter</span>(<span class="tok-ty">int</span> n) {
+    <span class="tok-kw">if</span> (n &lt; <span class="tok-nm">2</span>) <span class="tok-kw">return</span> n;
+    <span class="tok-ty">long</span> a = <span class="tok-nm">0</span>, b = <span class="tok-nm">1</span>;
+    <span class="tok-kw">for</span> (<span class="tok-ty">int</span> i = <span class="tok-nm">2</span>; i &lt;= n; i++) {
+        <span class="tok-ty">long</span> c = a + b;
+        a = b; b = c;
+    }
+    <span class="tok-kw">return</span> b;
+}</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 13 调试与编程规范 ============= -->
+<section id="s13">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--coral);border-color:rgba(181,58,10,.4)">13</div>
+      <div>
+        <h2>调试与编程规范</h2>
+        <p>写出能跑的代码只是开始 —— 写出<strong>易调试、可维护</strong>的代码才是工程能力。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>13.1 常见错误类型</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>阶段</th><th>典型错误</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">编译错误</td><td>语法 / 类型错误</td><td>缺分号、未声明标识符、类型不匹配</td></tr>
+          <tr><td class="hl">链接错误</td><td>找不到符号</td><td><code>undefined reference to 'foo'</code></td></tr>
+          <tr><td class="hl">运行错误</td><td>程序崩溃</td><td>段错误（Segmentation fault）、除零、非法内存访问</td></tr>
+          <tr><td class="hl">逻辑错误</td><td>结果不对</td><td>边界条件 off-by-one、算法错误、== 写成 =</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>13.2 调试工具与方法</h3>
+      <ul>
+        <li><strong>printf 调试</strong>：在关键位置打印变量值，最朴素但有效；</li>
+        <li><strong>gdb / lldb</strong>：交互式调试器，支持<strong>断点、单步、查看变量、查看调用栈</strong>；</li>
+        <li><strong>VS Code 调试</strong>：图形界面下断点 + 变量窗口；</li>
+        <li><strong>valgrind</strong>：检测内存泄漏与越界；</li>
+        <li><strong>AddressSanitizer</strong>：编译加 <code>-fsanitize=address</code>，运行时自动报警；</li>
+        <li><strong>静态分析</strong>：<code>gcc -Wall -Wextra</code>、<code>clang-tidy</code>。</li>
+      </ul>
+      <div class="codebox"><div class="ch"><span>gdb session</span><span class="copybtn" data-target="c-gdb">复制</span></div><pre id="c-gdb"><code><span class="tok-cm"># 1. 编译带调试信息</span>
+$ gcc -g hello.c -o hello
+
+<span class="tok-cm"># 2. 启动 gdb</span>
+$ gdb ./hello
+
+(gdb) <span class="tok-kw">break</span> main         <span class="tok-cm"># 设置断点</span>
+(gdb) <span class="tok-kw">run</span>                <span class="tok-cm"># 运行</span>
+(gdb) <span class="tok-kw">next</span>               <span class="tok-cm"># 单步（不进入函数）</span>
+(gdb) <span class="tok-kw">step</span>               <span class="tok-cm"># 单步（进入函数）</span>
+(gdb) <span class="tok-kw">print</span> x            <span class="tok-cm"># 查看变量</span>
+(gdb) <span class="tok-kw">continue</span>           <span class="tok-cm"># 继续执行</span>
+(gdb) <span class="tok-kw">quit</span>               <span class="tok-cm"># 退出</span></code></pre></div>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3><span class="dot" style="background:var(--coral)"></span>13.3 编程规范建议</h3>
+      <ul>
+        <li><strong>命名</strong>：变量小写、函数驼峰或下划线、常量全大写；避免单字母（除循环计数 i/j/k）；</li>
+        <li><strong>缩进</strong>：统一 4 空格或 1 Tab；</li>
+        <li><strong>注释</strong>：解释"为什么"而不是"是什么"；公开 API 必须有注释；</li>
+        <li><strong>函数长度</strong>：尽量不超过一屏（≈ 50 行）；</li>
+        <li><strong>模块化</strong>：一个函数做一件事；高内聚低耦合；</li>
+        <li><strong>错误处理</strong>：每个系统调用、malloc、文件操作都检查返回值；</li>
+        <li><strong>避免魔数</strong>：用 <code>#define</code> 或 <code>const</code> 给数值起名。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 14 综合项目 ============= -->
+<section id="s14">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--green);border-color:rgba(22,101,52,.4)">14</div>
+      <div>
+        <h2>综合项目：从练习到作品</h2>
+        <p>把零散语法整合成完整的小项目 —— 这是从"会写代码"到"能交付代码"的关键一跳。</p>
+      </div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--coral)">
+      <h4>项目一：猜数字游戏 🎲</h4>
+      <div class="meta">难度 ★☆☆ · 涉及：循环 / 条件 / 随机数 / 函数</div>
+      <p>程序随机生成 1 ~ 100 的整数，玩家循环输入猜测，程序给出"大了 / 小了"提示，直到猜中。</p>
+      <div class="codebox"><div class="ch"><span>guess.c</span><span class="copybtn" data-target="c-guess">复制</span></div><pre id="c-guess"><code><span class="tok-pp">#include</span> <span class="tok-st">&lt;stdio.h&gt;</span>
+<span class="tok-pp">#include</span> <span class="tok-st">&lt;stdlib.h&gt;</span>
+<span class="tok-pp">#include</span> <span class="tok-st">&lt;time.h&gt;</span>
+
+<span class="tok-ty">int</span> <span class="tok-fn">main</span>(<span class="tok-ty">void</span>) {
+    <span class="tok-fn">srand</span>((<span class="tok-ty">unsigned</span>)<span class="tok-fn">time</span>(<span class="tok-nm">NULL</span>));
+    <span class="tok-ty">int</span> target = <span class="tok-fn">rand</span>() % <span class="tok-nm">100</span> + <span class="tok-nm">1</span>;
+    <span class="tok-ty">int</span> guess, tries = <span class="tok-nm">0</span>;
+
+    <span class="tok-kw">do</span> {
+        <span class="tok-fn">printf</span>(<span class="tok-st">"猜一个 1-100 的数："</span>);
+        <span class="tok-fn">scanf</span>(<span class="tok-st">"%d"</span>, &amp;guess);
+        tries++;
+        <span class="tok-kw">if</span> (guess &gt; target)      <span class="tok-fn">printf</span>(<span class="tok-st">"大了！\n"</span>);
+        <span class="tok-kw">else if</span> (guess &lt; target) <span class="tok-fn">printf</span>(<span class="tok-st">"小了！\n"</span>);
+    } <span class="tok-kw">while</span> (guess != target);
+
+    <span class="tok-fn">printf</span>(<span class="tok-st">"恭喜！用了 %d 次猜中。\n"</span>, tries);
+    <span class="tok-kw">return</span> <span class="tok-nm">0</span>;
+}</code></pre></div>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--teal)">
+      <h4>项目二：简易计算器 🧮</h4>
+      <div class="meta">难度 ★★☆ · 涉及：switch / 函数 / 函数指针</div>
+      <p>支持 + - × ÷ 与连续运算，尝试把每个运算封装成函数，再用函数指针数组调度。</p>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--amber)">
+      <h4>项目三：通讯录管理系统 📇</h4>
+      <div class="meta">难度 ★★★ · 涉及：结构体 / 数组 / 文件 / 字符串 / 排序</div>
+      <p>每个联系人含姓名、电话、邮箱；支持增删改查、按姓名排序、保存到文件、从文件加载。</p>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--violet)">
+      <h4>项目四：学生成绩管理系统 📊</h4>
+      <div class="meta">难度 ★★★★ · 综合运用</div>
+      <p>结构体数组存储多名学生；统计平均分、最高分、按成绩排序；用文件持久化。</p>
+    </div>
+
+    <div class="proj" style="border-left:4px solid var(--green)">
+      <h4>项目五：图书管理系统 📚</h4>
+      <div class="meta">难度 ★★★★★ · 完整工程</div>
+      <p>多文件工程（main.c + book.c/h + io.c/h）；借阅 / 归还状态机；链表或数组两种实现可选。</p>
+    </div>
+
+    <div class="summary-box" style="--acc:var(--green)">
+      <div class="t">综合项目学习建议</div>
+      <ul>
+        <li>从最小可用版本开始（MVP），再逐步加功能；</li>
+        <li>每完成一个功能就跑一次测试，不要攒到最后；</li>
+        <li>用 <code>git</code> 做版本管理，每次功能提交一次；</li>
+        <li>遇到 bug 先 <strong>复现</strong>，再定位，再修复；</li>
+        <li>完成后写一份 README：功能列表、编译运行方法、已知问题。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 速查表 ============= -->
+<section id="ref">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num" style="color:var(--dim);border-color:var(--line2)">↗</div>
+      <div>
+        <h2>C 语言速查表（Cheat Sheet）</h2>
+        <p>最后一块"索引"——写代码时随手翻一翻，胜过每次去搜。</p>
+      </div>
+    </div>
+
+    <div class="card" style="--acc:var(--teal)">
+      <h3>关键字（共 32 个 · C17）</h3>
+      <p style="margin-bottom:8px">
+        <span class="tag">auto</span><span class="tag">break</span><span class="tag">case</span><span class="tag">char</span><span class="tag">const</span><span class="tag">continue</span><span class="tag">default</span><span class="tag">do</span><span class="tag">double</span><span class="tag">else</span><span class="tag">enum</span><span class="tag">extern</span><span class="tag">float</span><span class="tag">for</span><span class="tag">goto</span><span class="tag">if</span><span class="tag">inline</span><span class="tag">int</span><span class="tag">long</span><span class="tag">register</span><span class="tag">restrict</span><span class="tag">return</span><span class="tag">short</span><span class="tag">signed</span><span class="tag">sizeof</span><span class="tag">static</span><span class="tag">struct</span><span class="tag">switch</span><span class="tag">typedef</span><span class="tag">union</span><span class="tag">unsigned</span><span class="tag">void</span><span class="tag">volatile</span><span class="tag">while</span>
+      </p>
+    </div>
+
+    <div class="card" style="--acc:var(--coral)">
+      <h3>运算符优先级（从高到低，前几档最常用）</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>优先级</th><th>运算符</th><th>结合性</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">1 (最高)</td><td>() [] -&gt; .</td><td>左</td></tr>
+          <tr><td class="hl">2</td><td>! ~ ++ -- + - * &amp; (type) sizeof</td><td>右</td></tr>
+          <tr><td class="hl">3</td><td>* / %</td><td>左</td></tr>
+          <tr><td class="hl">4</td><td>+ -</td><td>左</td></tr>
+          <tr><td class="hl">5</td><td>&lt;&lt; &gt;&gt;</td><td>左</td></tr>
+          <tr><td class="hl">6</td><td>&lt; &lt;= &gt; &gt;=</td><td>左</td></tr>
+          <tr><td class="hl">7</td><td>== !=</td><td>左</td></tr>
+          <tr><td class="hl">8</td><td>&amp;</td><td>左</td></tr>
+          <tr><td class="hl">9</td><td>^</td><td>左</td></tr>
+          <tr><td class="hl">10</td><td>|</td><td>左</td></tr>
+          <tr><td class="hl">11</td><td>&amp;&amp;</td><td>左</td></tr>
+          <tr><td class="hl">12</td><td>||</td><td>左</td></tr>
+          <tr><td class="hl">13</td><td>?:</td><td>右</td></tr>
+          <tr><td class="hl">14</td><td>= += -= ...</td><td>右</td></tr>
+          <tr><td class="hl">15 (最低)</td><td>,</td><td>左</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--violet)">
+      <h3>常用转义字符</h3>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>转义</th><th>含义</th><th>转义</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">\n</td><td>换行</td><td class="hl">\t</td><td>制表符 (Tab)</td></tr>
+          <tr><td class="hl">\r</td><td>回车</td><td class="hl">\\</td><td>反斜杠</td></tr>
+          <tr><td class="hl">\'</td><td>单引号</td><td class="hl">\"</td><td>双引号</td></tr>
+          <tr><td class="hl">\0</td><td>空字符</td><td class="hl">\xhh</td><td>十六进制字节</td></tr>
+          <tr><td class="hl">\ooo</td><td>八进制字节</td><td class="hl">\?</td><td>问号（避免被识别为三字母词）</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="--acc:var(--amber)">
+      <h3>常见错误自查清单</h3>
+      <ul>
+        <li>❌ <code>if (a = b)</code> — 应写 <code>if (a == b)</code></li>
+        <li>❌ <code>scanf("%d", x)</code> — 应写 <code>scanf("%d", &amp;x)</code></li>
+        <li>❌ <code>char s[5] = "hello";</code> — "hello" 需要 6 字节（含 <code>\0</code>）</li>
+        <li>❌ <code>while (n = 0)</code> — 赋值为 0，循环立即结束；改成 <code>n == 0</code></li>
+        <li>❌ <code>int *p; *p = 10;</code> — p 指向未初始化地址；应 <code>p = &amp;x;</code></li>
+        <li>❌ 函数忘了 <code>return</code>，返回值未定义</li>
+        <li>❌ 头文件忘记保护，导致重复定义</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>C语言程序设计 · 初学者学习教程</b> · 大学计算机专业大一基础课程</p>
+    <p>本教程基于 C17 / C23 现代 C 视角组织内容，与课堂讲义配套使用，建议按章节顺序学习并完成每章课堂练习。</p>
+    <p style="margin-top:8px">参考：菜鸟教程 · 王道 C 语言教程 · K&amp;R《The C Programming Language》· cppreference.com</p>
+  </div>
+</footer>
+
+<div class="back-top" id="backTop" title="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</div>
+
+<script>
+/* ====== 进度条 + 返回顶部 ====== */
+(function () {
+  var progress = document.getElementById('progress');
+  var backTop = document.getElementById('backTop');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (progress) progress.style.width = p + '%';
+    if (backTop) backTop.classList.toggle('show', h.scrollTop > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  if (backTop) backTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* ====== 当前节高亮 ====== */
+(function () {
+  var links = document.querySelectorAll('#navlinks a');
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var sec = document.getElementById(id);
+    if (sec) sections.push({ id: id, el: sec, link: a });
+  });
+  function update() {
+    var top = window.scrollY + 80;
+    var cur = sections[0];
+    sections.forEach(function (s) {
+      if (s.el.offsetTop <= top) cur = s;
+    });
+    links.forEach(function (a) { a.classList.remove('cur'); });
+    if (cur) cur.link.classList.add('cur');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+/* ====== 课堂练习交互 ====== */
+(function () {
+  var cards = document.querySelectorAll('.q-card');
+  cards.forEach(function (card) {
+    var answer = card.getAttribute('data-answer');
+    var expText = card.getAttribute('data-exp') || '';
+    var opts = card.querySelectorAll('.opt');
+    var exp = card.querySelector('.q-exp');
+    opts.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        if (card.classList.contains('answered')) return;
+        card.classList.add('answered');
+        var chosen = opt.getAttribute('data-v');
+        opts.forEach(function (o) { o.classList.add('disabled'); });
+        if (chosen === answer) {
+          opt.classList.add('correct');
+          exp.innerHTML = '<b>参考答案：' + answer + '</b> · ' + expText;
+        } else {
+          opt.classList.add('wrong');
+          opts.forEach(function (o) {
+            if (o.getAttribute('data-v') === answer) o.classList.add('correct');
+          });
+          exp.innerHTML = '<b>参考答案：' + answer + '</b>（你选了 ' + chosen + '）· ' + expText;
+        }
+        exp.classList.add('show');
+      });
+    });
+  });
+})();
+
+/* ====== 代码复制按钮 ====== */
+(function () {
+  document.querySelectorAll('.copybtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-target');
+      var el = document.getElementById(id);
+      if (!el) return;
+      var text = el.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        var old = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        btn.style.color = '#74c5b3';
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.style.color = '';
+        }, 1500);
+      }, function () {
+        btn.textContent = '复制失败';
+      });
+    });
+  });
+})();
+</script>
+
+<footer style="max-width:1080px;margin:0 auto;padding:20px 24px;text-align:center;font-size:13px;color:var(--mut);border-top:1px solid var(--line)">
+  C语言程序设计 · 学习教程 · <a href="../../daolun/index.html" style="color:var(--teal)">返回导航首页</a>
+</footer>
+
+@media print{
+  #topnav,#progress,.back-top{display:none!important}
+  .hero{padding:20px 0!important;background:none!important;color:#000!important}
+  .hero h1{color:#000!important}
+  .hero .sub,.hero .hero-chips{color:#333!important}
+  section{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  pre{background:#f5f5f5!important;color:#000!important}
+}
+</body>
+</html>

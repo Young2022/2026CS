@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSAI  · 二级 C 语言程序设计（科目24）考点与真题 2021–2026：覆盖数据类型/指针/数组/函数全部考纲。">
+<!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>二级 C 语言程序设计（24）· 考点与真题 2021–2026</title>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --bg-card: #ffffff;
+    --bg-soft: #f0ede6;
+    --bg-code: #1e2430;
+    --ink: #1a1c1e;
+    --ink-2: #2c3038;
+    --ink-3: #5a606c;
+    --ink-4: #8a909c;
+    --line: #e2ddd4;
+    --line-strong: #c8c2b6;
+    --accent: #c45c4a;
+    --accent-soft: #f3e8e5;
+    --ok: #2d6a4f;
+    --ok-bg: #e8f0eb;
+    --warn: #b45309;
+    --chip-1: #d97706;
+    --chip-2: #7c3aed;
+    --chip-3: #0284c7;
+    --chip-4: #dc2626;
+    --chip-5: #ca8a04;
+    --chip-6: #059669;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+            "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #d4e5d8; color: var(--ink); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c5bfb4; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a8a296; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--accent); z-index: 2000;
+    transition: width 0.1s linear;
+  }
+
+  aside {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 228px;
+    border-right: 1px solid var(--line);
+    padding: 24px 14px 18px;
+    display: flex; flex-direction: column;
+    background: var(--bg-card);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  .brand { margin-bottom: 6px; padding: 0 6px; }
+  .brand .code {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .brand h1 {
+    font-family: var(--serif); font-size: 20px; font-weight: 700;
+    line-height: 1.35; margin-top: 8px; color: var(--ink);
+  }
+  .brand .sub {
+    font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.5;
+  }
+  nav { margin-top: 18px; flex: 1; }
+  nav a {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 7px 10px; margin-bottom: 1px;
+    text-decoration: none; color: var(--ink-3);
+    font-size: 13.5px; border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav a .n {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4);
+    width: 18px; flex: none;
+  }
+  nav a:hover { background: var(--bg-soft); color: var(--ink); }
+  nav a.active { background: var(--ink); color: #faf8f5; }
+  nav a.active .n { color: #a8d5b5; }
+  .side-foot {
+    font-size: 11px; color: var(--ink-4); line-height: 1.65;
+    border-top: 1px solid var(--line); padding: 12px 6px 4px; margin-top: 12px;
+  }
+
+  main { margin-left: 228px; }
+  .wrap { max-width: 820px; padding: 0 48px 0 52px; }
+
+  header.hero { padding: 40px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .hero h2 {
+    font-family: var(--serif); font-weight: 800;
+    font-size: clamp(28px, 4.2vw, 40px); line-height: 1.22;
+    color: var(--ink);
+  }
+  .hero h2 em { font-style: normal; color: var(--accent); }
+  .hero .lede {
+    margin-top: 14px; max-width: 620px; color: var(--ink-3);
+    font-size: 15px; line-height: 1.8;
+  }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+
+  .meta-grid {
+    margin-top: 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    background: var(--bg-card);
+  }
+  .meta-grid div { padding: 12px 14px 10px; border-right: 1px solid var(--line); }
+  .meta-grid div:last-child { border-right: none; }
+  .meta-grid .k {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--ink-4); text-transform: uppercase;
+  }
+  .meta-grid .v {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    margin-top: 4px; color: var(--ink);
+  }
+  .meta-grid .v small {
+    font-size: 12px; font-family: var(--sans); font-weight: 400;
+    color: var(--ink-3); margin-left: 3px;
+  }
+  .hero-note { margin-top: 14px; font-size: 13.5px; color: var(--ink-3); }
+
+  .divider {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 44px 0 0; padding: 8px 0 6px;
+    border-top: 2px solid var(--ink);
+  }
+  .divider .no {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+  .divider .t {
+    font-family: var(--serif); font-size: 14px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--ink);
+  }
+  .divider .dots {
+    flex: 1; border-bottom: 1px dashed var(--line-strong);
+    transform: translateY(-3px);
+  }
+  .divider .pg { font-family: var(--mono); font-size: 11px; color: var(--ink-4); }
+
+  section.chapter { padding: 20px 0 4px; }
+  .ch-head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+  .chip {
+    width: 44px; height: 44px; flex: none; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 14px; font-weight: 700; color: #fff;
+  }
+  .ch-head h3 {
+    font-family: var(--serif); font-size: 26px; font-weight: 800;
+    line-height: 1.3; color: var(--ink);
+  }
+  .ch-head .tag {
+    margin-left: auto; font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.1em; border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 12px; color: var(--ink-3);
+    white-space: nowrap; background: var(--bg-card);
+  }
+  .ch-intro {
+    color: var(--ink-3); max-width: 660px; margin: 4px 0 20px;
+    font-size: 15.5px; line-height: 1.75;
+  }
+
+  h4 {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
+    color: var(--ink);
+  }
+  h4::before {
+    content: ""; width: 7px; height: 7px; background: var(--accent);
+    flex: none; transform: rotate(45deg);
+  }
+  h5 { font-size: 15px; font-weight: 700; margin: 18px 0 6px; color: var(--ink-2); }
+  p { margin: 8px 0; }
+  ul.plain { margin: 6px 0; list-style: none; }
+  ul.plain li {
+    padding: 3px 0 3px 18px; position: relative; color: var(--ink);
+    font-size: 15.5px;
+  }
+  ul.plain li::before {
+    content: "–"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+  }
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+
+  mark { background: #dce9df; color: var(--ink); padding: 1px 5px; border-radius: 3px; }
+  .key {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 12px 16px; margin: 14px 0; font-size: 15px;
+    border-radius: 0 8px 8px 0;
+  }
+  .key strong { color: var(--accent); }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    font-size: 14.5px; background: var(--bg-card);
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  th {
+    text-align: left; font-family: var(--mono); font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #f5f2ec; background: var(--ink-2);
+    padding: 10px 14px; font-weight: 500;
+  }
+  td {
+    padding: 9px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--ink);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf9f6; }
+  td code, p code, li code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: var(--bg-soft); padding: 1px 5px;
+    border-radius: 4px; border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+
+  pre {
+    background: var(--bg-code); color: #e8e4d9;
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+    padding: 16px 18px; margin: 12px 0; border-radius: 8px;
+    overflow-x: auto; position: relative;
+  }
+  pre .lab {
+    position: absolute; top: 0; right: 0;
+    font-size: 10px; letter-spacing: 0.16em; color: var(--bg-code);
+    background: #a8d5b5; padding: 2px 10px; border-radius: 0 8px 0 6px;
+  }
+  pre .cm { color: rgba(232, 228, 217, 0.45); }
+  pre .kw { color: #8fd0a5; }
+  pre .st { color: #e8b86d; }
+  pre .at { color: #9fb8ff; }
+
+  .flow {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; margin: 16px 0; padding: 8px 0;
+  }
+  .flow .step {
+    border: 1.5px solid var(--ink-2); background: var(--bg-card);
+    padding: 8px 22px; font-size: 14px; font-weight: 600;
+    border-radius: 999px; color: var(--ink);
+  }
+  .flow .arr { color: var(--accent); font-size: 16px; line-height: 1.5; }
+
+  .stars {
+    font-family: var(--mono); color: var(--accent);
+    letter-spacing: 0.1em; font-size: 13px;
+  }
+
+  details.acc {
+    border: 1px solid var(--line); border-radius: 8px;
+    margin: 8px 0; background: var(--bg-card); overflow: hidden;
+  }
+  details.acc summary {
+    cursor: pointer; list-style: none; padding: 12px 16px;
+    font-weight: 600; font-size: 15px;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.15s; color: var(--ink);
+  }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::before {
+    content: "+"; font-family: var(--mono); font-size: 15px;
+    color: var(--accent); width: 20px; height: 20px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); border-radius: 5px;
+  }
+  details.acc[open] summary::before { content: "–"; }
+  details.acc summary:hover { background: var(--bg-soft); }
+  details.acc .acc-body { padding: 2px 16px 14px; border-top: 1px dashed var(--line); }
+
+  .year-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 4px; }
+  .year-tabs button {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line-strong); background: var(--bg-card);
+    color: var(--ink-2); transition: all 0.15s;
+  }
+  .year-tabs button:hover { background: var(--bg-soft); border-color: var(--ink-3); }
+  .year-tabs button.on { background: var(--ink); color: #faf8f5; border-color: var(--ink); }
+  .quiz-meta {
+    font-size: 13px; color: var(--ink-3); margin: 8px 0 16px;
+    font-family: var(--mono);
+  }
+  .quiz-meta b { color: var(--accent); }
+
+  .q {
+    border: 1px solid var(--line); border-radius: 10px; margin: 12px 0;
+    background: var(--bg-card); overflow: hidden;
+  }
+  .q .q-head {
+    display: flex; gap: 8px; align-items: center;
+    padding: 10px 16px; border-bottom: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  }
+  .q .y { background: var(--ink); color: #faf8f5; padding: 2px 8px; border-radius: 4px; }
+  .q .tp {
+    border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px;
+    color: var(--ink-3);
+  }
+  .q .src { margin-left: auto; color: var(--ink-4); }
+  .q .q-body { padding: 14px 16px 16px; }
+  .q .qt {
+    font-weight: 600; font-size: 15.5px; margin-bottom: 10px;
+    color: var(--ink); line-height: 1.65;
+  }
+  .q .opts { display: grid; gap: 6px; }
+  .q .opt {
+    text-align: left; font-family: var(--sans); font-size: 14.5px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; border-radius: 7px;
+    padding: 9px 12px; display: flex; gap: 10px; align-items: baseline;
+    transition: all 0.12s; color: var(--ink);
+  }
+  .q .opt .L {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-4); flex: none;
+  }
+  .q .opt:hover:not(:disabled) { border-color: var(--ink-3); background: var(--bg-soft); }
+  .q .opt:disabled { cursor: default; opacity: 0.85; }
+  .q .opt.right { background: var(--ok-bg); border-color: var(--ok); opacity: 1; }
+  .q .opt.wrong { background: #f8e8e6; border-color: var(--accent); opacity: 1; }
+  .q .opt.right .L, .q .opt.wrong .L { color: var(--ink); }
+  .q .ans {
+    display: none; margin-top: 12px; padding: 11px 14px; font-size: 14px;
+    background: var(--ok-bg); border-left: 3px solid var(--ok);
+    border-radius: 0 7px 7px 0; line-height: 1.7; color: var(--ink-2);
+  }
+  .q .ans.show { display: block; }
+  .q .ans b { color: var(--ok); }
+  .q .ans pre { margin: 10px 0 4px; }
+  .q .toggle-ans {
+    margin-top: 10px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.08em; background: none; border: none;
+    color: var(--accent); cursor: pointer; padding: 3px 0;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  .demo {
+    border: 1.5px solid var(--ink-2); border-radius: 10px;
+    overflow: hidden; margin: 16px 0; background: var(--bg-card);
+  }
+  .demo .bar {
+    background: var(--ink-2); color: #f5f2ec; font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.16em; padding: 7px 14px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .demo .bar i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #e07a6a; display: inline-block;
+  }
+  .demo .bar i:nth-child(2) { background: #e0b060; }
+  .demo .bar i:nth-child(3) { background: #6bc48a; }
+  .demo .stage {
+    padding: 20px; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; align-items: start;
+  }
+  .demo .panel {
+    border: 1px dashed var(--line-strong); border-radius: 8px;
+    min-height: 130px; padding: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: #faf9f6;
+  }
+  .demo .ctrl button {
+    font-family: var(--mono); font-size: 12px; margin: 0 6px 6px 0;
+    padding: 7px 12px; border: 1px solid var(--line-strong);
+    background: var(--bg-card); border-radius: 999px; cursor: pointer;
+    transition: all 0.12s; color: var(--ink-2);
+  }
+  .demo .ctrl button:hover {
+    background: var(--ink); color: #faf8f5; border-color: var(--ink);
+  }
+
+  footer {
+    margin-top: 48px; border-top: 2px solid var(--ink);
+    padding: 28px 0 48px; font-size: 13px; color: var(--ink-3);
+  }
+  footer .src { margin-top: 10px; line-height: 1.9; }
+
+  @media (max-width: 960px) {
+    aside {
+      position: static; width: auto; border-right: none;
+      border-bottom: 1px solid var(--line); padding: 16px 18px;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 3px; }
+    nav a { padding: 5px 9px; font-size: 12.5px; }
+    main { margin-left: 0; }
+    .wrap { padding: 0 20px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta-grid div:nth-child(2) { border-right: none; }
+    .cols2 { grid-template-columns: 1fr; }
+    .demo .stage { grid-template-columns: 1fr; }
+    .ch-head .tag { display: none; }
+    .hero h2 { font-size: 28px; }
+  }
+  @media print {
+    aside { display: none; }
+    main { margin-left: 0; }
+    #progress { display: none; }
+    .hero { padding: 20px 0 16px; border-bottom: 1px solid #ccc; }
+    .hero h2 { font-size: 24px; }
+    .divider { margin-top: 32px; }
+    pre { break-inside: avoid; }
+    .acc[open] .acc-body { break-inside: avoid; }
+    .q { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<aside>
+  <div class="brand">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></span>
+      <a href="../daolun/index.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap" title="返回导航首页">
+        <span style="background:linear-gradient(135deg,#0f172a 0%,#0284c7 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:13px;font-weight:800">CSAI · </span>
+      </a>
+    </div>
+    <div class="code">NCRE · Level 2 · Subject 24</div>
+    <h1>二级 C 语言<br>程序设计</h1>
+    <div class="sub">考点清单 × 真题题库<br>2021 — 2026</div>
+  </div>
+  <nav id="nav">
+    <a href="#ch00"><span class="n">00</span>考试概览</a>
+    <a href="#ch01"><span class="n">01</span>C 语言概述</a>
+    <a href="#ch02"><span class="n">02</span>数据类型与运算符</a>
+    <a href="#ch03"><span class="n">03</span>输入输出</a>
+    <a href="#ch04"><span class="n">04</span>选择结构</a>
+    <a href="#ch05"><span class="n">05</span>循环结构</a>
+    <a href="#ch06"><span class="n">06</span>数组</a>
+    <a href="#ch07"><span class="n">07</span>函数</a>
+    <a href="#ch08"><span class="n">08</span>指针</a>
+    <a href="#ch09"><span class="n">09</span>字符串</a>
+    <a href="#ch10"><span class="n">10</span>结构体与文件</a>
+    <a href="#ch11"><span class="n">11</span>编译预处理</a>
+    <a href="#ch12"><span class="n">12</span>公共基础知识</a>
+    <a href="#ch13"><span class="n">13</span>备考优先级</a>
+    <a href="#quiz"><span class="n">14</span>真题题库 21–26</a>
+  </nav>
+  <div class="side-foot">
+    依据《全国计算机等级考试二级 C 语言程序设计考试大纲》整理<br>
+    所有资料来源于网络资源 · 仅供学习交流
+  </div>
+</aside>
+
+<main>
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="ch00">
+  <div class="kicker">全国计算机等级考试 · 复习系统</div>
+  <h2>二级 C 语言程序设计<br><em>科目 24</em> · 考点与真题</h2>
+  <p class="lede">
+    二级 C 语言不是只背语法就能通过的考试——它考的是 <strong>数据类型与运算符 + 三大程序结构 + 数组 + 函数 + 指针 + 字符串/结构体/文件 + 编译预处理 + 公共基础知识</strong>。
+    其中真正决定通过与否的是 <strong>指针、数组、函数、循环</strong> 的代码能力。
+    本页按官方大纲组织知识点，并收录 2021–2026 年真题与样题。
+  </p>
+  <div class="meta-grid">
+    <div><div class="k">科目代码</div><div class="v">24</div></div>
+    <div><div class="k">考试时长</div><div class="v">120<small>分钟 · 上机</small></div></div>
+    <div><div class="k">题型分值</div><div class="v">40<small>选择</small> + 60<small>操作</small></div></div>
+    <div><div class="k">考试环境</div><div class="v" style="font-size:14px;line-height:1.45;padding-top:2px">Visual C++ 2010<br>学习版</div></div>
+  </div>
+  <p class="hero-note">
+    选择题 40 分中含 <mark>公共基础知识 10 分</mark>；操作题 60 分 = 程序填空题 18 分 + 程序修改题 18 分 + 程序设计题 24 分。
+  </p>
+</header>
+
+<!-- ============ 01 概述 ============ -->
+<div class="divider"><span class="no">01</span><span class="t">C 语言概述</span><span class="dots"></span><span class="pg">01 / 14</span></div>
+<section class="chapter" id="ch01">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">01</div>
+    <h3>C 语言概述</h3>
+    <span class="tag">理论 · 选择题为主</span>
+  </div>
+  <p class="ch-intro">大纲要求：C 程序的结构、main 函数、注释、标识符命名规则、程序的开发流程。</p>
+
+  <h4>最小可运行的 C 程序（必须默写）</h4>
+  <pre><span class="lab">C</span><span class="at">#include</span> <span class="st">&lt;stdio.h&gt;</span>            <span class="cm">/* 预处理命令：引入标准输入输出库 */</span>
+
+<span class="kw">int</span> <span class="at">main</span>(<span class="kw">void</span>)                  <span class="cm">/* main 函数：程序入口，有且仅有一个 */</span>
+{
+    <span class="kw">int</span> a = 10, b = 20;         <span class="cm">/* 变量：先定义，后使用 */</span>
+    <span class="kw">int</span> sum;
+    sum = a + b;                <span class="cm">/* 每条语句以分号结尾 */</span>
+    <span class="at">printf</span>(<span class="st">"sum = %d\n"</span>, sum);  <span class="cm">/* 注释不参与编译 */</span>
+    <span class="kw">return</span> 0;
+}</pre>
+
+  <h4>C 程序的开发流程（必背）</h4>
+  <div class="flow">
+    <div class="step">hello.c 源程序</div><div class="arr">↓ 编译</div>
+    <div class="step">hello.obj 目标文件</div><div class="arr">↓ 链接（连接库函数）</div>
+    <div class="step">hello.exe 可执行文件</div><div class="arr">↓ 运行</div>
+    <div class="step">输出结果</div>
+  </div>
+
+  <h4>必懂概念清单</h4>
+  <div class="cols2">
+    <ul class="plain">
+      <li>程序从 <code>main</code> 函数开始执行</li>
+      <li>一个程序有且仅有一个 main 函数</li>
+      <li>语句以分号 <code>;</code> 结尾</li>
+      <li>注释 <code>/* */</code> 与 <code>//</code>，不能嵌套</li>
+    </ul>
+    <ul class="plain">
+      <li>C 程序的基本组成单位是<strong>函数</strong></li>
+      <li>函数可以嵌套调用，不能嵌套定义</li>
+      <li>C 语言区分大小写</li>
+      <li>每行可以有多条语句</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <strong>考点：标识符规则</strong>——由字母、数字、下划线组成，<strong>第一个字符不能是数字</strong>，
+    不能使用关键字（如 <code>int</code>、<code>case</code>）。<code>printf</code>、<code>scanf</code>
+    是库函数名，<strong>可以</strong>作标识符。
+  </div>
+</section>
+
+<!-- ============ 02 数据类型与运算符 ============ -->
+<div class="divider"><span class="no">02</span><span class="t">数据类型与运算符</span><span class="dots"></span><span class="pg">02 / 14</span></div>
+<section class="chapter" id="ch02">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">02</div>
+    <h3>数据类型与运算符</h3>
+    <span class="tag">选择题高频 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：基本数据类型、常量与变量、运算符与表达式、类型转换。这是选择题出题密度最高的一章。</p>
+
+  <h4>基本数据类型</h4>
+  <table>
+    <tr><th>类型</th><th>关键字</th><th>字节（常见）</th><th>说明</th></tr>
+    <tr><td>整型</td><td><code>int</code></td><td>4</td><td>还有 <code>short</code>(2)、<code>long</code>、<code>unsigned</code></td></tr>
+    <tr><td>字符型</td><td><code>char</code></td><td>1</td><td>本质是小整数，可参与算术运算</td></tr>
+    <tr><td>单精度</td><td><code>float</code></td><td>4</td><td>约 7 位有效数字</td></tr>
+    <tr><td>双精度</td><td><code>double</code></td><td>8</td><td>约 16 位有效数字</td></tr>
+  </table>
+
+  <h4>常量的写法（易错点集中）</h4>
+  <pre><span class="lab">C</span><span class="cm">/* 整型常量：三种进制，注意——没有二进制写法！ */</span>
+12        <span class="cm">/* 十进制 */</span>
+012       <span class="cm">/* 八进制：以 0 开头，等于十进制 10 */</span>
+0x12      <span class="cm">/* 十六进制：以 0x 开头，等于十进制 18 */</span>
+
+<span class="cm">/* 实型常量 */</span>
+3.14   .5   5.   1.2e3    <span class="cm">/* e 前必须有数字，e 后必须是整数 */</span>
+
+<span class="cm">/* 字符常量与字符串常量 */</span>
+<span class="st">'a'</span>   <span class="st">'\n'</span>   <span class="st">'\x41'</span>       <span class="cm">/* 占 1 字节 */</span>
+<span class="st">"abc"</span>                     <span class="cm">/* 占 4 字节：a b c \0 */</span></pre>
+  <div class="key"><strong>易错：</strong>C 语言<strong>没有二进制常量</strong>（0b101 非法）；<code>'a'</code> 占 1 字节，<code>"a"</code> 占 2 字节；<code>1e2</code> 合法，<code>e2</code>、<code>1e2.5</code> 非法。</div>
+
+  <h4>常用转义字符</h4>
+  <table>
+    <tr><th>写法</th><th>含义</th><th>写法</th><th>含义</th></tr>
+    <tr><td><code>\n</code></td><td>换行</td><td><code>\\</code></td><td>反斜杠本身</td></tr>
+    <tr><td><code>\t</code></td><td>水平制表</td><td><code>\'</code></td><td>单引号</td></tr>
+    <tr><td><code>\0</code></td><td>空字符（串尾）</td><td><code>\"</code></td><td>双引号</td></tr>
+    <tr><td><code>\101</code></td><td>八进制转义 → 'A'</td><td><code>\x41</code></td><td>十六进制转义 → 'A'</td></tr>
+  </table>
+
+  <h4>运算符与优先级（速查）</h4>
+  <table>
+    <tr><th>类别</th><th>运算符</th><th>必考要点</th></tr>
+    <tr><td>算术</td><td><code>+ - * / %</code></td><td><code>%</code> 两侧必须为整数；<code>5/2</code>=2；<code>5.0/2</code>=2.5；<code>-5/2</code>=-2（向零取整）</td></tr>
+    <tr><td>自增自减</td><td><code>++ --</code></td><td>前置：先加后用；后置：先用后加</td></tr>
+    <tr><td>关系</td><td><code>&gt; &lt; &gt;= &lt;= == !=</code></td><td>结果为 1（真）或 0（假）；<code>=</code> 与 <code>==</code> 别混</td></tr>
+    <tr><td>逻辑</td><td><code>! &amp;&amp; ||</code></td><td>短路求值：<code>a &amp;&amp; b</code> 中 a 为假则不算 b</td></tr>
+    <tr><td>位运算</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td><td>按二进制位运算，如 <code>5|3</code>=7、<code>5&amp;3</code>=1、<code>5^3</code>=6</td></tr>
+    <tr><td>赋值</td><td><code>= += -= *= /= %=</code></td><td>结合性自右向左；<code>a=b=c=5</code> 合法</td></tr>
+    <tr><td>条件</td><td><code>? :</code></td><td><code>max = (a&gt;b) ? a : b;</code></td></tr>
+    <tr><td>逗号</td><td><code>,</code></td><td>依次求值，整个表达式取<strong>最后一个</strong>的值</td></tr>
+    <tr><td>求字节</td><td><code>sizeof</code></td><td><code>sizeof(int)</code>=4；是运算符不是函数</td></tr>
+  </table>
+  <div class="key">
+    <strong>优先级口诀：</strong>括号最高 → 单目 → 算术 → 移位 → 关系 → 位与或异 → 逻辑 → 条件 → 赋值 → 逗号。
+    记不住就加括号，但<strong>读程序题必须按这个顺序算</strong>。
+  </div>
+
+  <h4>类型转换</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> i = 3.9;              <span class="cm">/* 自动转换：舍去小数 → i = 3（不是四舍五入） */</span>
+<span class="kw">double</span> d = (<span class="kw">double</span>)5 / 2;  <span class="cm">/* 强制转换 → 2.5 */</span>
+<span class="cm">/* 自动提升方向：char/short → int → unsigned → long → float → double */</span></pre>
+</section>
+
+<!-- ============ 03 输入输出 ============ -->
+<div class="divider"><span class="no">03</span><span class="t">输入输出</span><span class="dots"></span><span class="pg">03 / 14</span></div>
+<section class="chapter" id="ch03">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">03</div>
+    <h3>输入输出</h3>
+    <span class="tag">printf/scanf · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：格式化输入输出、字符输入输出。printf 和 scanf 是操作题中出现率最高的库函数，格式符必须一一对应。</p>
+
+  <h4>printf 格式符速查</h4>
+  <table>
+    <tr><th>格式符</th><th>用途</th><th>示例</th><th>输出</th></tr>
+    <tr><td><code>%d</code></td><td>十进制整数</td><td><code>printf("%d", 123);</code></td><td>123</td></tr>
+    <tr><td><code>%f</code></td><td>小数（默认 6 位）</td><td><code>printf("%f", 3.14);</code></td><td>3.140000</td></tr>
+    <tr><td><code>%.2f</code></td><td>保留 2 位小数</td><td><code>printf("%.2f", 3.14159);</code></td><td>3.14</td></tr>
+    <tr><td><code>%c</code></td><td>单个字符</td><td><code>printf("%c", 'A');</code></td><td>A</td></tr>
+    <tr><td><code>%s</code></td><td>字符串</td><td><code>printf("%s", "hi");</code></td><td>hi</td></tr>
+    <tr><td><code>%o / %x</code></td><td>八进制 / 十六进制</td><td><code>printf("%x", 255);</code></td><td>ff</td></tr>
+    <tr><td><code>%u</code></td><td>无符号十进制</td><td><code>printf("%u", 10);</code></td><td>10</td></tr>
+    <tr><td><code>%%</code></td><td>输出 % 本身</td><td><code>printf("100%%");</code></td><td>100%</td></tr>
+  </table>
+  <p>附加格式：<code>%5d</code> 宽度 5 右对齐（左补空格）、<code>%-5d</code> 左对齐、<code>%5.2f</code> 宽度 5 精度 2。</p>
+
+  <h4>scanf 注意事项（每年必考）</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> a;  <span class="kw">float</span> x;  <span class="kw">char</span> s[20];
+
+<span class="at">scanf</span>(<span class="st">"%d"</span>, &amp;a);          <span class="cm">/* 普通变量前必须加取地址符 &amp; */</span>
+<span class="at">scanf</span>(<span class="st">"%d%f"</span>, &amp;a, &amp;x);    <span class="cm">/* 输入时用空格分隔：12 3.5 */</span>
+<span class="at">scanf</span>(<span class="st">"%d,%d"</span>, &amp;a, &amp;b);   <span class="cm">/* 格式串有逗号，输入也必须输逗号 */</span>
+<span class="at">scanf</span>(<span class="st">"%s"</span>, s);           <span class="cm">/* 数组名本身就是地址，不加 &amp; */</span></pre>
+  <div class="key">
+    <strong>易错：</strong>scanf 中 <code>%f</code> 对应 float、<code>%lf</code> 对应 double；
+    <code>%c</code> 会把<strong>空格和回车</strong>也读进去（连续输入字符要小心残留回车）。
+  </div>
+
+  <h4>字符输入输出</h4>
+  <pre><span class="lab">C</span><span class="kw">char</span> c;
+c = <span class="at">getchar</span>();          <span class="cm">/* 读一个字符（含回车） */</span>
+<span class="at">putchar</span>(c);             <span class="cm">/* 输出一个字符 */</span>
+<span class="at">gets</span>(s);                <span class="cm">/* 读一行字符串（可含空格） */</span>
+<span class="at">puts</span>(s);                <span class="cm">/* 输出字符串并换行 */</span></pre>
+
+  <h4>亲手试一试 · printf 格式符演示</h4>
+  <div class="demo">
+    <div class="bar"><i></i><i></i><i></i>&nbsp;LIVE DEMO — printf 格式符模拟器</div>
+    <div class="stage">
+      <div class="panel" style="flex-direction:column;align-items:flex-start;justify-content:center;gap:10px">
+        <div id="pfCode" style="font-family:var(--mono);font-size:13.5px;color:var(--ink-2)"></div>
+        <div style="width:100%;border-top:1px dashed var(--line-strong)"></div>
+        <div style="font-size:11px;color:var(--ink-4);font-family:var(--mono);letter-spacing:0.2em">OUTPUT</div>
+        <div id="pfOut" style="font-family:var(--mono);font-size:15px;color:var(--ink);white-space:pre-wrap"></div>
+      </div>
+      <div class="ctrl">
+        <button onclick="pf('d')">printf("%d", 123)</button>
+        <button onclick="pf('f2')">printf("%.2f", 3.14159)</button>
+        <button onclick="pf('w')">printf("%5d", 42)</button>
+        <button onclick="pf('c')">printf("%c%c", 'A','B')</button>
+        <button onclick="pf('s')">printf("%s", "C语言")</button>
+        <button onclick="pf('pct')">printf("100%%")</button>
+        <button onclick="pf('n')">printf("A\nB")</button>
+        <p style="font-size:12.5px;color:var(--ink-3);margin-top:6px">格式符与输出项个数、类型必须一一对应——这是读程序题的高频出题点。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 选择结构 ============ -->
+<div class="divider"><span class="no">04</span><span class="t">选择结构</span><span class="dots"></span><span class="pg">04 / 14</span></div>
+<section class="chapter" id="ch04">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">04</div>
+    <h3>选择结构</h3>
+    <span class="tag">if / switch · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：if 语句的三种形式、嵌套 if、switch 语句、条件运算符。</p>
+
+  <pre><span class="lab">C</span><span class="kw">if</span> (score &gt;= 90)       <span class="at">printf</span>(<span class="st">"A"</span>);
+<span class="kw">else if</span> (score &gt;= 80)  <span class="at">printf</span>(<span class="st">"B"</span>);
+<span class="kw">else</span>                   <span class="at">printf</span>(<span class="st">"C"</span>);
+
+<span class="cm">/* 条件运算符（唯一的三目运算符） */</span>
+max = (a &gt; b) ? a : b;
+
+<span class="cm">/* switch：表达式只能是整型或字符型 */</span>
+<span class="kw">switch</span> (grade) {
+    <span class="kw">case</span> <span class="st">'A'</span>: <span class="at">printf</span>(<span class="st">"优"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="st">'B'</span>: <span class="at">printf</span>(<span class="st">"良"</span>); <span class="kw">break</span>;
+    <span class="kw">default</span> : <span class="at">printf</span>(<span class="st">"中"</span>);
+}</pre>
+
+  <div class="key">
+    <strong>必背易错点：</strong>① case 后只能是<strong>整型/字符型常量</strong>且互不相同；
+    ② 漏写 <code>break</code> 会继续向下"贯穿"执行；③ <code>if(x=5)</code> 是赋值，恒为真；
+    ④ <code>else</code> 总是与它<strong>前面最近的、未配对的 if</strong> 配对（缩进不代表配对关系）。
+  </div>
+</section>
+
+<!-- ============ 05 循环结构 ============ -->
+<div class="divider"><span class="no">05</span><span class="t">循环结构</span><span class="dots"></span><span class="pg">05 / 14</span></div>
+<section class="chapter" id="ch05">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">05</div>
+    <h3>循环结构</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：for、while、do-while 三种循环，break 与 continue，循环嵌套。所有操作题都建立在循环之上。</p>
+
+  <h4>三种循环对比</h4>
+  <table>
+    <tr><th></th><th>for</th><th>while</th><th>do-while</th></tr>
+    <tr><td>执行顺序</td><td>先判断后执行</td><td>先判断后执行</td><td>先执行后判断</td></tr>
+    <tr><td>最少执行次数</td><td>0 次</td><td>0 次</td><td><strong>1 次</strong></td></tr>
+    <tr><td>适合场景</td><td>次数已知</td><td>次数不定</td><td>至少执行一次</td></tr>
+  </table>
+
+  <pre><span class="lab">C</span><span class="kw">int</span> i, sum = 0;
+<span class="kw">for</span> (i = 1; i &lt;= 100; i++)   <span class="cm">/* 初值; 条件; 步进 */</span>
+    sum += i;                <span class="cm">/* 1+2+…+100 = 5050 */</span>
+
+i = 1;
+<span class="kw">while</span> (i &lt;= 100) { sum += i; i++; }
+
+<span class="kw">do</span> { sum += i; i++; } <span class="kw">while</span> (i &lt;= 100);   <span class="cm">/* 注意末尾分号！ */</span></pre>
+
+  <h4>break 与 continue</h4>
+  <pre><span class="lab">C</span><span class="kw">for</span> (i = 1; i &lt;= 10; i++) {
+    <span class="kw">if</span> (i % 2 == 0) <span class="kw">continue</span>;  <span class="cm">/* 跳过本次循环体，进入下一次循环 */</span>
+    <span class="kw">if</span> (i &gt; 7) <span class="kw">break</span>;          <span class="cm">/* 终止整个循环 */</span>
+    <span class="at">printf</span>(<span class="st">"%d "</span>, i);          <span class="cm">/* 输出：1 3 5 7 */</span>
+}</pre>
+
+  <h4>经典必刷题型：判断素数</h4>
+  <details class="acc" open>
+    <summary>isPrime —— 操作题、填空题双高频</summary>
+    <div class="acc-body">
+      <pre><span class="lab">C</span><span class="kw">int</span> <span class="at">isPrime</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">int</span> i;
+    <span class="kw">if</span> (n &lt; 2) <span class="kw">return</span> 0;
+    <span class="kw">for</span> (i = 2; i * i &lt;= n; i++)     <span class="cm">/* 只需试除到 √n */</span>
+        <span class="kw">if</span> (n % i == 0) <span class="kw">return</span> 0;    <span class="cm">/* 找到因数 → 不是素数 */</span>
+    <span class="kw">return</span> 1;                        <span class="cm">/* 没有因数 → 是素数 */</span>
+}</pre>
+      <p><b>思路：</b>素数 = 只能被 1 和自身整除。设一个标志位或直接 return，是填空题最爱挖空的位置。</p>
+    </div>
+  </details>
+
+  <h4>其他必须会写的经典循环</h4>
+  <div class="cols2">
+    <ul class="plain">
+      <li>累加 ∑ 与累乘 n!（初值 0 / 1）</li>
+      <li>Fibonacci 数列：1 1 2 3 5 8…</li>
+      <li>水仙花数：153 = 1³+5³+3³</li>
+      <li>最大公约数：辗转相除法</li>
+    </ul>
+    <ul class="plain">
+      <li>九九乘法表（双重循环）</li>
+      <li>统计位数 / 逆序输出整数</li>
+      <li>求数组最大值 / 最小值 / 平均值</li>
+      <li>判断回文串</li>
+    </ul>
+  </div>
+  <div class="key"><strong>细节：</strong><code>do {…} while(条件);</code> 末尾<strong>有分号</strong>；<code>for(;;)</code> 和 <code>while(1)</code> 都是死循环；循环体内修改循环变量是常见的"输出几行"考题。</div>
+</section>
+
+<!-- ============ 06 数组 ============ -->
+<div class="divider"><span class="no">06</span><span class="t">数组</span><span class="dots"></span><span class="pg">06 / 14</span></div>
+<section class="chapter" id="ch06">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-6)">06</div>
+    <h3>数组</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：一维数组、二维数组的定义/初始化/引用，数组与循环结合的常用算法（排序、查找、逆置、移动）。</p>
+
+  <h4>定义与初始化</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> a[5] = {1, 2, 3, 4, 5};   <span class="cm">/* 下标范围 0 ~ 4 */</span>
+<span class="kw">int</span> b[5] = {1, 2};            <span class="cm">/* 未初始化的元素自动为 0 */</span>
+<span class="kw">int</span> c[]  = {1, 2, 3};         <span class="cm">/* 长度自动确定为 3 */</span>
+
+<span class="kw">int</span> m[2][3] = {{1,2,3},{4,5,6}};  <span class="cm">/* 二维数组：按行存放 */</span>
+m[1][2] = 6;                      <span class="cm">/* 第 2 行第 3 列 */</span></pre>
+  <div class="key">
+    <strong>必背：</strong>下标从 <strong>0</strong> 开始；定义时长度必须是<strong>常量</strong>，引用时下标可以是变量；
+    C 语言<strong>不检查下标越界</strong>（a[5]、m[2][3] 都能编译通过但结果不可预料）——选择题常考"下面哪个引用是错误的"。
+  </div>
+
+  <h4>经典必刷：冒泡排序（填空题最爱）</h4>
+  <pre><span class="lab">C</span><span class="kw">void</span> <span class="at">sort</span>(<span class="kw">int</span> a[], <span class="kw">int</span> n)
+{
+    <span class="kw">int</span> i, j, t;
+    <span class="kw">for</span> (i = 0; i &lt; n - 1; i++)            <span class="cm">/* 共 n-1 趟 */</span>
+        <span class="kw">for</span> (j = 0; j &lt; n - 1 - i; j++)    <span class="cm">/* 每趟少比一次 */</span>
+            <span class="kw">if</span> (a[j] &gt; a[j + 1]) {         <span class="cm">/* 前大后小则交换 */</span>
+                t = a[j]; a[j] = a[j+1]; a[j+1] = t;
+            }
+}</pre>
+
+  <h4>其他高频算法</h4>
+  <ul class="plain">
+    <li>求最值：<code>if (a[i] &gt; max) max = a[i];</code></li>
+    <li>数组逆置：首尾交换 <code>for (i=0; i&lt;n/2; i++) swap(a[i], a[n-1-i])</code></li>
+    <li>插入 / 删除元素、数组元素移动（操作题常客）</li>
+    <li>杨辉三角、矩阵转置（二维数组）</li>
+  </ul>
+</section>
+
+<!-- ============ 07 函数 ============ -->
+<div class="divider"><span class="no">07</span><span class="t">函数</span><span class="dots"></span><span class="pg">07 / 14</span></div>
+<section class="chapter" id="ch07">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">07</div>
+    <h3>函数</h3>
+    <span class="tag">操作题核心 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：函数定义/声明/调用、参数传递、递归、变量的作用域与生存期。操作题的三大题型全部围绕"函数"展开。</p>
+
+  <h4>定义、声明与调用</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> <span class="at">add</span>(<span class="kw">int</span> x, <span class="kw">int</span> y)     <span class="cm">/* 形参 */</span>
+{
+    <span class="kw">return</span> x + y;
+}
+
+<span class="kw">int</span> main(<span class="kw">void</span>)
+{
+    <span class="kw">int</span> s = add(3, 5);      <span class="cm">/* 实参：把 3、5 的值复制给形参 */</span>
+    <span class="kw">return</span> 0;
+}</pre>
+
+  <h4>递归（选择题年年考）</h4>
+  <pre><span class="lab">C</span><span class="kw">long</span> <span class="at">fac</span>(<span class="kw">int</span> n)                 <span class="cm">/* n 的阶乘 */</span>
+{
+    <span class="kw">if</span> (n &lt;= 1) <span class="kw">return</span> 1;       <span class="cm">/* 递归出口：必须有！ */</span>
+    <span class="kw">return</span> n * fac(n - 1);      <span class="cm">/* 自己调用自己 */</span>
+}
+<span class="cm">/* fac(4) = 4*fac(3) = 4*3*fac(2) = 4*3*2*fac(1) = 24 */</span></pre>
+
+  <h4>变量的作用域与生存期</h4>
+  <table>
+    <tr><th>变量</th><th>作用域</th><th>生存期</th><th>要点</th></tr>
+    <tr><td>局部变量</td><td>所在函数/复合语句内</td><td>函数调用期间</td><td>不同函数中同名互不影响</td></tr>
+    <tr><td>全局变量</td><td>定义处到文件末尾</td><td>整个程序运行期间</td><td>与局部变量同名时局部优先</td></tr>
+    <tr><td><code>static</code> 局部</td><td>函数内</td><td>整个程序运行期间</td><td><strong>只初始化一次</strong>，值保留到下次调用</td></tr>
+  </table>
+  <div class="key">
+    <strong>必背：</strong>① 函数<strong>不能嵌套定义</strong>，但可以嵌套调用；
+    ② <strong>值传递是单向的</strong>——形参改变不影响实参，想改变实参必须传地址（见指针章）；
+    ③ 函数若无 return 语句，类型应写 <code>void</code>。
+  </div>
+</section>
+
+<!-- ============ 08 指针 ============ -->
+<div class="divider"><span class="no">08</span><span class="t">指针</span><span class="dots"></span><span class="pg">08 / 14</span></div>
+<section class="chapter" id="ch08">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-2)">08</div>
+    <h3>指针</h3>
+    <span class="tag">重中之重 · ★★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：指针的定义与引用、指针与数组、指针作函数参数。指针是二级 C 区分度最大的考点，操作题离不开它。</p>
+
+  <h4>基本用法</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> a = 10;
+<span class="kw">int</span> *p = &amp;a;         <span class="cm">/* p 存放 a 的地址；此处 * 表示"指针" */</span>
+
+*p = 20;             <span class="cm">/* 此处 * 表示"解引用"，等价于 a = 20 */</span>
+<span class="at">printf</span>(<span class="st">"%d %d"</span>, a, *p);   <span class="cm">/* 输出 20 20 */</span></pre>
+
+  <h4>指针与数组（核心中的核心）</h4>
+  <pre><span class="lab">C</span><span class="kw">int</span> a[5] = {1,2,3,4,5}, *p;
+p = a;                    <span class="cm">/* 等价于 p = &amp;a[0]，数组名 = 首地址 */</span>
+
+<span class="cm">/* 以下四种写法完全等价，都表示 a[2] */</span>
+a[2]      *(a + 2)        p[2]        *(p + 2)</pre>
+
+  <h4>传地址：让函数真正改变外面的变量</h4>
+  <pre><span class="lab">C</span><span class="kw">void</span> <span class="at">swap</span>(<span class="kw">int</span> *x, <span class="kw">int</span> *y)
+{
+    <span class="kw">int</span> t = *x;
+    *x = *y;
+    *y = t;
+}
+<span class="cm">/* 调用：swap(&amp;a, &amp;b); —— 传地址，a、b 真正交换 */</span>
+<span class="cm">/* 错误：swap(a, b);   —— 传值，只交换了形参 */</span></pre>
+
+  <div class="key">
+    <strong>必背易错：</strong>① <code>int *p; *p = 10;</code> 是错的——p 没指向任何地址（野指针）；
+    ② <code>*p++</code> 等价于 <code>*(p++)</code>：取值后指针后移，<strong>a 不变</strong>；
+    ③ <code>(*p)++</code> 才是 a 自增；④ 数组名是地址常量，<strong>不能</strong> <code>a++</code>。
+  </div>
+</section>
+
+<!-- ============ 09 字符串 ============ -->
+<div class="divider"><span class="no">09</span><span class="t">字符串</span><span class="dots"></span><span class="pg">09 / 14</span></div>
+<section class="chapter" id="ch09">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-3)">09</div>
+    <h3>字符串</h3>
+    <span class="tag">字符数组 · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：字符数组与字符串的关系、字符串结束标志、常用字符串处理函数、手动实现字符串算法。</p>
+
+  <h4>字符串的存储（结束标志 '\0'）</h4>
+  <pre><span class="lab">C</span><span class="kw">char</span> s[10] = <span class="st">"hello"</span>;   <span class="cm">/* 总共占 10 字节，有效 5 + \0 */</span>
+<span class="kw">char</span> t[]  = <span class="st">"hello"</span>;    <span class="cm">/* 长度自动为 6（含 \0） */</span></pre>
+  <table>
+    <tr><th>下标</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+    <tr><th>内容</th><td><code>'h'</code></td><td><code>'e'</code></td><td><code>'l'</code></td><td><code>'l'</code></td><td><code>'o'</code></td><td><code>'\0'</code></td></tr>
+  </table>
+
+  <h4>常用字符串函数（需 <code>#include &lt;string.h&gt;</code>）</h4>
+  <table>
+    <tr><th>函数</th><th>功能</th><th>返回值 / 说明</th></tr>
+    <tr><td><code>strlen(s)</code></td><td>求长度</td><td><strong>不含 '\0'</strong>；"hello" → 5</td></tr>
+    <tr><td><code>strcpy(s1, s2)</code></td><td>复制</td><td>把 s2 复制到 s1（s1 必须足够大）</td></tr>
+    <tr><td><code>strcat(s1, s2)</code></td><td>连接</td><td>把 s2 接到 s1 末尾</td></tr>
+    <tr><td><code>strcmp(s1, s2)</code></td><td>比较</td><td>相同返回 <strong>0</strong>；s1&gt;s2 返回正值；s1&lt;s2 返回负值</td></tr>
+  </table>
+
+  <h4>手动实现（操作题高频）</h4>
+  <details class="acc" open>
+    <summary>求长度 · 逆序 —— 填空/设计题经典</summary>
+    <div class="acc-body">
+      <pre><span class="lab">C</span><span class="kw">int</span> <span class="at">myLen</span>(<span class="kw">char</span> s[])            <span class="cm">/* 求字符串长度 */</span>
+{
+    <span class="kw">int</span> i = 0;
+    <span class="kw">while</span> (s[i] != <span class="st">'\0'</span>) i++;
+    <span class="kw">return</span> i;
+}
+
+<span class="kw">void</span> <span class="at">reverse</span>(<span class="kw">char</span> s[])          <span class="cm">/* 字符串逆置 */</span>
+{
+    <span class="kw">int</span> i = 0, j = myLen(s) - 1;
+    <span class="kw">char</span> t;
+    <span class="kw">while</span> (i &lt; j) {
+        t = s[i]; s[i] = s[j]; s[j] = t;
+        i++;  j--;
+    }
+}</pre>
+    </div>
+  </details>
+
+  <div class="key">
+    <strong>高频陷阱：</strong><code>strlen("abc\0def")</code> = <strong>3</strong>（遇 '\0' 即结束）；
+    对 <code>char s[]="abcdef"</code>：<code>sizeof(s)</code>=7 而 <code>strlen(s)</code>=6；
+    判断字符串相等要用 <code>strcmp</code>，<code>s1 == s2</code> 比较的是<strong>地址</strong>。
+  </div>
+</section>
+
+<!-- ============ 10 结构体与文件 ============ -->
+<div class="divider"><span class="no">10</span><span class="t">结构体与文件</span><span class="dots"></span><span class="pg">10 / 14</span></div>
+<section class="chapter" id="ch10">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-4)">10</div>
+    <h3>结构体与文件</h3>
+    <span class="tag">操作题常考 · ★★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：结构体类型的定义与使用、typedef、链表概念、共用体、文件的基本读写操作。</p>
+
+  <h4>结构体</h4>
+  <pre><span class="lab">C</span><span class="kw">struct</span> <span class="at">Student</span> {
+    <span class="kw">int</span>    num;
+    <span class="kw">char</span>   name[20];
+    <span class="kw">float</span>  score;
+};
+
+<span class="kw">struct</span> Student s1 = {1001, <span class="st">"Tom"</span>, 90.5};
+<span class="kw">struct</span> Student *p = &amp;s1;
+
+s1.num        <span class="cm">/* 结构体变量用 . 访问成员 */</span>
+p-&gt;num        <span class="cm">/* 指针用 -&gt; 访问，等价 (*p).num */</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> Student STU;   <span class="cm">/* 类型别名 */</span>
+STU s2;</pre>
+
+  <h4>链表结点（了解结构即可）</h4>
+  <pre><span class="lab">C</span><span class="kw">struct</span> <span class="at">Node</span> {
+    <span class="kw">int</span> data;
+    <span class="kw">struct</span> Node *next;    <span class="cm">/* 指向下一个结点 */</span>
+};
+<span class="cm">/* 删除 head 之后的结点：head-&gt;next = head-&gt;next-&gt;next; */</span></pre>
+
+  <h4>文件操作</h4>
+  <pre><span class="lab">C</span>FILE *fp;
+fp = <span class="at">fopen</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>);   <span class="cm">/* 打开失败返回 NULL */</span>
+<span class="kw">if</span> (fp == NULL) <span class="kw">return</span>;
+<span class="cm">/* …… 读写 …… */</span>
+<span class="at">fclose</span>(fp);                      <span class="cm">/* 用完必须关闭 */</span></pre>
+
+  <table>
+    <tr><th>打开方式</th><th>含义</th><th>文件不存在时</th></tr>
+    <tr><td><code>"r"</code></td><td>只读</td><td>打开失败（返回 NULL）</td></tr>
+    <tr><td><code>"w"</code></td><td>只写</td><td>新建；<strong>已存在则清空原内容！</strong></td></tr>
+    <tr><td><code>"a"</code></td><td>追加</td><td>新建</td></tr>
+    <tr><td><code>"r+" / "w+" / "a+"</code></td><td>读写</td><td>同上对应规则</td></tr>
+    <tr><td><code>"rb" / "wb"</code></td><td>二进制读写</td><td>配 fread / fwrite 使用</td></tr>
+  </table>
+
+  <h4>常用读写函数</h4>
+  <div class="cols2">
+    <ul class="plain">
+      <li><code>fgetc(fp) / fputc(ch, fp)</code> 字符</li>
+      <li><code>fgets(s, n, fp) / fputs(s, fp)</code> 字符串</li>
+    </ul>
+    <ul class="plain">
+      <li><code>fscanf(fp, "%d", &amp;x) / fprintf(fp, "%d", x)</code></li>
+      <li><code>fread / fwrite</code> 二进制块读写</li>
+    </ul>
+  </div>
+  <div class="key">
+    <strong>必背：</strong><code>feof(fp)</code> 读到文件末尾返回<strong>非 0</strong>；<code>fgetc</code> 读到末尾返回 <code>EOF</code>（即 -1）。
+    忘记 <code>fclose</code> 是操作题常见扣分点。
+  </div>
+</section>
+
+<!-- ============ 11 预处理 ============ -->
+<div class="divider"><span class="no">11</span><span class="t">编译预处理</span><span class="dots"></span><span class="pg">11 / 14</span></div>
+<section class="chapter" id="ch11">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-5)">11</div>
+    <h3>编译预处理</h3>
+    <span class="tag">概念与宏 · ★★★</span>
+  </div>
+  <p class="ch-intro">大纲要求：宏定义（不带参 / 带参）、文件包含。预处理在<strong>编译之前</strong>进行纯文本替换。</p>
+
+  <pre><span class="lab">C</span><span class="at">#define</span> PI 3.14159              <span class="cm">/* 不带参宏：末尾不写分号！ */</span>
+<span class="at">#define</span> S(x) ((x) * (x))         <span class="cm">/* 带参宏：参数和整体都要加括号 */</span>
+
+<span class="at">#include</span> <span class="st">&lt;stdio.h&gt;</span>                <span class="cm">/* 尖括号：到系统目录找 */</span>
+<span class="at">#include</span> <span class="st">"myfun.h"</span>                <span class="cm">/* 双引号：先到用户当前目录找 */</span>
+
+<span class="at">printf</span>(<span class="st">"%f"</span>, S(3));               <span class="cm">/* 编译前替换为 ((3)*(3)) → 9.000000 */</span></pre>
+
+  <div class="key">
+    <strong>经典陷阱：</strong>若定义 <code>#define MUL(x) x*x</code>，则 <code>MUL(2+3)</code>
+    展开为 <code>2+3*2+3 = 11</code>（不是 25！）。宏只做<strong>文本替换</strong>，不做计算、不管优先级。
+    规范写法必须给参数加括号：<code>((x)*(x))</code>。
+  </div>
+</section>
+
+<!-- ============ 12 公共基础 ============ -->
+<div class="divider"><span class="no">12</span><span class="t">公共基础知识</span><span class="dots"></span><span class="pg">12 / 14</span></div>
+<section class="chapter" id="ch12">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-6)">12</div>
+    <h3>公共基础知识</h3>
+    <span class="tag">选择题 10 分 · 别丢</span>
+  </div>
+  <p class="ch-intro">虽然只有 10 分，但属于系统复习后比较容易拿到的分数，不要忽略。</p>
+  <div class="cols2">
+    <div>
+      <h5>数据结构</h5>
+      <ul class="plain">
+        <li>栈（后进先出）/ 队列（先进先出）</li>
+        <li>线性表 / 树 / 二叉树</li>
+        <li>二叉树性质：叶子结点 n0 = n2 + 1</li>
+        <li>查找（二分查找 O(log₂n)）/ 排序</li>
+      </ul>
+      <h5>程序设计基础</h5>
+      <ul class="plain">
+        <li>算法：有穷性、确定性、可行性</li>
+        <li>时间复杂度 / 空间复杂度</li>
+        <li>结构化设计：顺序、选择、循环</li>
+      </ul>
+    </div>
+    <div>
+      <h5>软件工程</h5>
+      <ul class="plain">
+        <li>软件生命周期</li>
+        <li>需求分析 → 概要设计 → 详细设计 → 测试 → 维护</li>
+        <li>黑盒测试 / 白盒测试</li>
+      </ul>
+      <h5>数据库基础</h5>
+      <ul class="plain">
+        <li>数据模型 / 关系数据库</li>
+        <li>关系 / 元组 / 属性 / 主键</li>
+        <li>E-R 图：实体—联系</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 优先级 ============ -->
+<div class="divider"><span class="no">13</span><span class="t">备考优先级</span><span class="dots"></span><span class="pg">13 / 14</span></div>
+<section class="chapter" id="ch13">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--chip-1)">13</div>
+    <h3>按重要性排序复习</h3>
+    <span class="tag">不要平均用力</span>
+  </div>
+  <table>
+    <tr><th style="width:120px">优先级</th><th>内容</th><th>说明</th></tr>
+    <tr><td><span class="stars">★★★★★</span></td><td>指针 · 数组 · 函数 · 循环结构</td><td>操作题 60 分的核心，程序设计题几乎必考</td></tr>
+    <tr><td><span class="stars">★★★★</span></td><td>字符串 · 结构体 · 文件 · 输入输出</td><td>程序填空、程序修改的高频素材</td></tr>
+    <tr><td><span class="stars">★★★</span></td><td>数据类型与运算符 · 选择结构 · 预处理</td><td>选择题高频，表达式求值必须练熟</td></tr>
+    <tr><td><span class="stars">★★★</span></td><td>公共基础知识</td><td>10 分，系统复习易拿分</td></tr>
+  </table>
+  <div class="key" style="font-size:15.5px">
+    <strong>核心闭环：</strong>读程序写结果 → 程序填空（补表达式）→ 程序修改（改 2 处错误）→ 程序设计（独立写函数）。
+    二级 C 的操作题本质就是 <strong>循环 + 数组 + 指针 + 函数</strong> 的组合运用——把这四样练到肌肉记忆，60 分就稳了。
+  </div>
+</section>
+
+<!-- ============ 14 真题 ============ -->
+<div class="divider"><span class="no">14</span><span class="t">真题题库</span><span class="dots"></span><span class="pg">14 / 14</span></div>
+<section class="chapter" id="quiz">
+  <div class="ch-head">
+    <div class="chip" style="background:var(--accent)">14</div>
+    <h3>真题与样题 · 2021–2026</h3>
+    <span class="tag">点击选项即判分</span>
+  </div>
+  <p class="ch-intro">
+    收录 2021–2024 年考生回忆版真题、2025 年官方样题，以及依据最新大纲编写的 2026 模拟预测题。
+    选择题点击选项立即判分；操作题点击「查看参考答案」展开解析。
+  </p>
+
+  <div class="year-tabs" id="yearTabs">
+    <button class="on" data-y="all">全部</button>
+    <button data-y="2021">2021</button>
+    <button data-y="2022">2022</button>
+    <button data-y="2023">2023</button>
+    <button data-y="2024">2024</button>
+    <button data-y="2025">2025 官方样题</button>
+    <button data-y="2026">2026 模拟</button>
+  </div>
+  <div class="quiz-meta">已作答 <b id="doneCnt">0</b> 题 ｜ 答对 <b id="rightCnt">0</b> 题</div>
+
+  <div id="qlist">
+
+    <!-- ===== 2021 ===== -->
+    <div class="q" data-y="2021" data-t="op">
+      <div class="q-head"><span class="y">2021</span><span class="tp">程序填空题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">给定程序中，函数 fun 的功能是：计算 n!（n 的阶乘）。例如 n=5 时结果为 120.000000。请在三处下划线填入正确内容，使程序完整得出正确结果。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">C</span><span class="kw">double</span> <span class="at">fun</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">double</span> f = <u>___(1)___</u>;      <span class="cm">/* 填：1（或 1.0） */</span>
+    <span class="kw">int</span> i;
+    <span class="kw">for</span> (i = 1; <u>___(2)___</u>; i++)  <span class="cm">/* 填：i &lt;= n */</span>
+        <u>___(3)___</u>;               <span class="cm">/* 填：f *= i （或 f = f * i） */</span>
+    <span class="kw">return</span> f;
+}</pre>
+          <b>解析：</b>累乘器初值必须是 <code>1</code>（写成 0 结果恒为 0）；循环条件 <code>i &lt;= n</code> 保证最后一项不漏；
+          累乘用 <code>f *= i</code>。这三个空是"初值—条件—累乘"经典三连挖空。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2021" data-t="op">
+      <div class="q-head"><span class="y">2021</span><span class="tp">程序修改题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">给定程序 MODI1.C 中函数 fun 的功能是：计算 s = 1/1 + 1/2 + 1/3 + … + 1/n 的值（例如 n=10 时 s=2.928968）。程序中有两处错误（/****found****/ 之后），请改正。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">C</span><span class="kw">double</span> <span class="at">fun</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">double</span> s = 0.0;
+    <span class="kw">int</span> i;
+    <span class="kw">for</span> (i = 1; i &lt; n; i++)        <span class="cm">/* found：应改为 i &lt;= n */</span>
+        s = s + 1 / i;             <span class="cm">/* found：应改为 1.0 / i */</span>
+    <span class="kw">return</span> s;
+}</pre>
+          <b>解析：</b>① <code>1/i</code> 中两边都是 int，结果为整数除法（除 i=1 外全为 0），必须写成
+          <code>1.0/i</code> 或 <code>(double)1/i</code>；② <code>i &lt; n</code> 漏加了最后一项 1/n，应改为 <code>i &lt;= n</code>。
+          "整数除法丢小数"与"循环边界差一"是修改题最经典的两种错误。
+        </div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2021" data-t="op">
+      <div class="q-head"><span class="y">2021</span><span class="tp">程序设计题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">编写函数 fun，其功能是：将两个两位正整数 a、b 合并成一个整数放在 c 中。合并方式：将 a 的十位和个位依次放在 c 的千位和十位上，b 的十位和个位依次放在 c 的百位和个位上。例如 a=45、b=12 时，调用后 c=4152。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">C</span><span class="kw">void</span> <span class="at">fun</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">long</span> *c)
+{
+    *c = (a / 10) * 1000      <span class="cm">/* a 的十位 → 千位 */</span>
+       + (b / 10) * 100       <span class="cm">/* b 的十位 → 百位 */</span>
+       + (a % 10) * 10        <span class="cm">/* a 的个位 → 十位 */</span>
+       + (b % 10);            <span class="cm">/* b 的个位 → 个位 */</span>
+}</pre>
+          <b>解析：</b>拆位用整除 <code>/10</code> 取十位、取余 <code>%10</code> 取个位；
+          注意形参 c 是<strong>指针</strong>，结果要通过 <code>*c</code> 带回主函数。验证：4000+100+50+2 = 4152 ✓。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2022 ===== -->
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">以下选项中，不能用作用户标识符的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>_123</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>scanf</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>Double</button>
+          <button class="opt" data-ok="1"><span class="L">D</span>case</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 D。</b>case 是关键字，不能作标识符。C 语言区分大小写，Double 不是关键字；scanf 是库函数名，可以用作标识符；下划线开头的 _123 合法。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">若有定义 <code>int a=3, b=2, c=1;</code>，以下选项中<strong>错误的</strong>赋值表达式是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="1"><span class="L">A</span>a = (b = 4) = 3</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>a = b = c + 1</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>a = (b = 4) + c</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>a = 1 + (b = c = 4)</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 A。</b>赋值号左边必须是变量，<code>(b=4)</code> 是赋值表达式，不能再被赋值。<code>a=b=c+1</code> 因结合性自右向左而合法。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">设有定义 <code>int k=0;</code>，以下四个表达式中，与其他三个表达式<strong>值不相同</strong>的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="1"><span class="L">A</span>k++</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>k += 1</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>++k</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>k + 1</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 A。</b>k++ 是后置自增：表达式的值是自增前的 0；其余三个表达式的值都是 1。后置"先用后加"是每年必考的陷阱。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2022" data-t="mc">
+      <div class="q-head"><span class="y">2022</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">已知大写字母 A 的 ASCII 码值为 65，字符变量 c 中存有一个大写字母。要将它转换为对应的小写字母，正确的表达式是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>c + 65</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>c - 32</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>c - 'A' + 'a'</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>c + ('A' - 'a')</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>小写字母比对应大写字母大 32，即 'a' - 'A' = 32，所以 c - 'A' + 'a' 正确。B 方向反了（那是小写转大写），D 符号错误。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2023 ===== -->
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">若有定义 <code>int m[]={5,4,3,2,1}, i=4;</code>，下列对 m 数组元素的引用中<strong>错误</strong>的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>m[--i]</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>m[2*2]</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>m[m[0]]</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>m[m[i]]</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>m[0]=5，m[5] 越界（合法下标是 0~4）。A 中 m[3]=2 合法；B 即 m[4]=1；D 中 m[4]=1，再取 m[1]=4 合法。数组下标越界是高频考法。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">若有定义 <code>char s1[]="abcdef", s2[]={'a','b','c','d','e','f'};</code>，则下列叙述正确的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>s1 与 s2 完全相同</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>s1 数组长度为 7，s2 为 6</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>s1 长度为 6，s2 为 7</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>s1 和 s2 都没有结束标志</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>用字符串常量初始化时系统自动在末尾补 '\0'，s1 占 7 字节；用字符逐个初始化时不会补 '\0'，s2 占 6 字节。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">设有定义 <code>int a=1, *p=&amp;a;</code>，下列语句中<strong>不能</strong>使 a 的值变为 2 的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>*p = *p + 1;</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>++*p;</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>*p++;</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>(*p)++;</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>*p++ 按 ++ 的优先级高于解引用的结合顺序解析为 *(p++)：先取 *p 的值，然后指针 p 后移，a 不变。D 中括号强制先解引用，a 自增。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2023" data-t="mc">
+      <div class="q-head"><span class="y">2023</span><span class="tp">单项选择题</span><span class="src">真题精选</span></div>
+      <div class="q-body">
+        <div class="qt">有以下程序段，输出结果是？<br>
+        <code>int x=3; do { printf("%d,", x-=2); } while (!(--x));</code></div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>1</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>1,-2</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>3,1</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>死循环</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>第一次循环：x=3-2=1，输出 1；--x 得 0，!0 为真，继续。第二次：x=1-2=-2，输出 -2；--x 得 -3，!(-3) 为假，退出。注意 do-while 至少执行一次。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2024 ===== -->
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">关于 <code>static</code> 局部变量，下列叙述正确的是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>每次调用函数时都重新初始化</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>只在第一次调用时初始化一次，其值保留到下一次调用</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>它的值不能被修改</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>与普通局部变量完全相同</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>static 局部变量存放在静态存储区，生存期为整个程序运行期间，只初始化一次，函数调用结束后值不丢失——"统计函数被调用次数"的题就靠它。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">设有定义 <code>struct S { int x; int y; } d[2]={{1,2},{3,4}};</code>，则表达式 <code>d[1].y - d[0].x</code> 的值是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>1</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>2</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>3</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>4</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>d[1] = {3,4}，所以 d[1].y = 4；d[0].x = 1；4 - 1 = 3。结构体数组的成员访问是结构体章节的标准考法。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="mc">
+      <div class="q-head"><span class="y">2024</span><span class="tp">单项选择题</span><span class="src">题库精选</span></div>
+      <div class="q-body">
+        <div class="qt">若 fp 是指向某文件的指针，当已读到文件末尾时，函数 <code>feof(fp)</code> 的返回值是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>0</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>非 0 值</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>EOF</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>NULL</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>feof(fp)：读到文件末尾返回非 0（真），否则返回 0。注意区分：fgetc 读到末尾返回的是 EOF（-1）。循环读文件的经典写法：<code>while(!feof(fp))</code>。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2024" data-t="op">
+      <div class="q-head"><span class="y">2024</span><span class="tp">程序设计题</span><span class="src">考生回忆版</span></div>
+      <div class="q-body">
+        <div class="qt">编写函数 fun，其功能是：求出 1~1000 之内能被 7 或 11 整除、但不能同时被 7 和 11 整除的所有整数，依次存入数组 a 中，个数通过形参 n 返回。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">C</span><span class="kw">void</span> <span class="at">fun</span>(<span class="kw">int</span> a[], <span class="kw">int</span> *n)
+{
+    <span class="kw">int</span> i, k = 0;
+    <span class="kw">for</span> (i = 1; i &lt;= 1000; i++)
+        <span class="kw">if</span> ((i % 7 == 0 || i % 11 == 0) &amp;&amp; i % 77 != 0)
+            a[k++] = i;
+    *n = k;
+}</pre>
+          <b>解析：</b>"能被 7 或 11 整除"用 <code>||</code>，"不能同时整除"即不是 77 的倍数 <code>i % 77 != 0</code>；
+          个数通过指针 <code>*n</code> 带回。"筛选类"程序设计题的通用套路：循环 + 条件筛选 + 计数器。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2025 ===== -->
+    <div class="q" data-y="2025" data-t="mc">
+      <div class="q-head"><span class="y">2025</span><span class="tp">单项选择题</span><span class="src">官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">有以下函数定义，调用 <code>f(4)</code> 的返回值是？<br>
+        <code>int f(int n) { if (n==1) return 1; return n * f(n-1); }</code></div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>4</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>10</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>24</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>120</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>这是递归求阶乘：f(4)=4×f(3)=4×3×f(2)=4×3×2×f(1)=4×3×2×1=24。120 是 5!，别数错层数。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="mc">
+      <div class="q-head"><span class="y">2025</span><span class="tp">单项选择题</span><span class="src">官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">表达式 <code>5 | 3</code> 的值是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>1</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>6</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>7</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>8</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>按位或：0101 | 0011 = 0111 = 7。同组常考：<code>5&amp;3</code>=1（按位与），<code>5^3</code>=6（按位异或），<code>5&lt;&lt;1</code>=10（左移一位相当于乘 2）。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2025" data-t="mc">
+      <div class="q-head"><span class="y">2025</span><span class="tp">单项选择题</span><span class="src">官方样题</span></div>
+      <div class="q-body">
+        <div class="qt">调用 <code>strcmp(s1, s2)</code>，当两个字符串相同时，返回值是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>1</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>0</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>-1</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>非 0 值</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>strcmp 相等返回 0，s1&gt;s2 返回正值，s1&lt;s2 返回负值。判断相等要写 <code>strcmp(s1,s2)==0</code>，不能写 s1==s2（那比较的是地址）。</div>
+      </div>
+    </div>
+
+    <!-- ===== 2026 ===== -->
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测</span></div>
+      <div class="q-body">
+        <div class="qt">有以下宏定义 <code>#define MUL(x) x*x</code>，则表达式 <code>MUL(2+3)</code> 的值是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>25</button>
+          <button class="opt" data-ok="1"><span class="L">B</span>11</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>10</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>16</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 B。</b>宏展开为 2+3*2+3 = 11。想得到 25 必须定义 <code>#define MUL(x) ((x)*(x))</code>。宏只做文本替换、不做计算——这是预处理章头号陷阱。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测</span></div>
+      <div class="q-body">
+        <div class="qt">链表结点定义为 <code>struct Node { int data; struct Node *next; };</code>，head 指向首结点。要删除 head 之后的那个结点（该结点存在），正确的语句是？</div>
+        <div class="opts">
+          <button class="opt" data-ok="1"><span class="L">A</span>head-&gt;next = head-&gt;next-&gt;next;</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>head = head-&gt;next;</button>
+          <button class="opt" data-ok="0"><span class="L">C</span>head-&gt;next = head;</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>head-&gt;next-&gt;data = 0;</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 A。</b>让首结点的 next 跳过第二个结点直接指向第三个结点，即完成"摘链"。B 只移动了 head 指针，什么都没删；C 会形成自环。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="mc">
+      <div class="q-head"><span class="y">2026</span><span class="tp">单项选择题</span><span class="src">模拟预测</span></div>
+      <div class="q-body">
+        <div class="qt">有以下程序，输出结果是？<br>
+        <code>int a[3][3]={{1,2,3},{4,5,6},{7,8,9}}, i, s=0;<br>
+        for (i=0; i&lt;3; i++) s += a[i][2-i];<br>
+        printf("%d", s);</code></div>
+        <div class="opts">
+          <button class="opt" data-ok="0"><span class="L">A</span>6</button>
+          <button class="opt" data-ok="0"><span class="L">B</span>12</button>
+          <button class="opt" data-ok="1"><span class="L">C</span>15</button>
+          <button class="opt" data-ok="0"><span class="L">D</span>45</button>
+        </div>
+        <button class="toggle-ans">查看解析 +</button>
+        <div class="ans"><b>答案 C。</b>累加的是副对角线：a[0][2]=3、a[1][1]=5、a[2][0]=7，3+5+7=15。（本题主对角线 1+5+9 恰好也是 15。）"a[i][2-i] 求副对角线"是二维数组的经典套路。</div>
+      </div>
+    </div>
+
+    <div class="q" data-y="2026" data-t="op">
+      <div class="q-head"><span class="y">2026</span><span class="tp">程序修改题</span><span class="src">模拟预测</span></div>
+      <div class="q-body">
+        <div class="qt">给定程序 MODI1.C 中函数 fun 的功能是：判断整数 m 是否为素数，若是返回 1，否则返回 0。程序中有两处错误（/****found****/ 之后），请改正。</div>
+        <button class="toggle-ans">查看参考答案 +</button>
+        <div class="ans">
+<pre><span class="lab">C</span><span class="kw">int</span> <span class="at">fun</span>(<span class="kw">int</span> m)
+{
+    <span class="kw">int</span> k;
+    <span class="kw">for</span> (k = 2; k &lt;= m - 1; k++)
+        <span class="kw">if</span> (m % k = 0)       <span class="cm">/* found：应改为 m % k == 0 */</span>
+            <span class="kw">return</span> 0;
+    <span class="kw">return</span>;                  <span class="cm">/* found：应改为 return 1; */</span>
+}</pre>
+          <b>解析：</b>① <code>=</code> 是赋值，判断相等必须写 <code>==</code>——这是修改题出现率第一的错误；
+          ② 函数返回类型为 int 且约定"是素数返回 1"，空 return 无法返回整数，应写 <code>return 1;</code>。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div><strong>资料来源声明</strong></div>
+  <div class="src">
+    ⚠ <strong>所有资料均来源于网络资源</strong>，包括：历年真题考生回忆版（各考试论坛、培训机构公开资料）、
+    网络公开题库整理、教育考试院公布的官方样题与考试大纲。
+    本页面仅供个人学习交流使用，不用于任何商业用途；如有侵权，请联系删除。<br>
+    整理依据：《全国计算机等级考试二级 C 语言程序设计考试大纲》 · 真题覆盖 2021–2026 · 题目以考生回忆版为准，可能与原题略有出入<br>
+    <a href="../daolun/index.html">二级 C 语言程序设计 · 返回导航首页</a>
+  </div>
+</footer>
+
+</div>
+</div>
+</main>
+
+<script>
+/* ---------- 进度条 + 导航高亮 ---------- */
+var secs = Array.prototype.slice.call(document.querySelectorAll('header[id], section[id]'));
+function onScroll() {
+  var h = document.documentElement;
+  var p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = p + '%';
+  var cur = secs[0];
+  for (var i = 0; i < secs.length; i++) {
+    if (secs[i].getBoundingClientRect().top <= 140) cur = secs[i];
+  }
+  document.querySelectorAll('#nav a').forEach(function (a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id);
+  });
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+
+/* ---------- printf 演示 ---------- */
+var PF = {
+  d:   ['printf("%d", 123);',      '123'],
+  f2:  ['printf("%.2f", 3.14159);','3.14    ← 保留两位小数，四舍五入'],
+  w:   ['printf("%5d", 42);',      '␣␣␣42   ← 宽度5，右对齐左补空格'],
+  c:   ["printf(\"%c%c\", 'A','B');", 'AB     ← %c 输出单个字符'],
+  s:   ['printf("%s", "C语言");',  'C语言   ← %s 输出字符串'],
+  pct: ['printf("100%%");',        '100%    ← %% 输出 % 本身'],
+  n:   ['printf("A\\nB");',        'A↵B     ← \\n 换行']
+};
+function pf(k) {
+  document.getElementById('pfCode').textContent = PF[k][0];
+  document.getElementById('pfOut').textContent = PF[k][1];
+}
+pf('d');
+
+/* ---------- 真题判分 ---------- */
+var done = 0, right = 0;
+var doneEl = document.getElementById('doneCnt');
+var rightEl = document.getElementById('rightCnt');
+
+document.querySelectorAll('#qlist .q').forEach(function (q) {
+  var opts = q.querySelectorAll('.opt');
+  var ans = q.querySelector('.ans');
+  var t = q.querySelector('.toggle-ans');
+
+  if (t && ans) {
+    var label = t.textContent;
+    t.addEventListener('click', function () {
+      var show = ans.classList.toggle('show');
+      t.textContent = show ? '收起解析 −' : label;
+    });
+  }
+
+  if (!opts.length) return;
+  opts.forEach(function (o) {
+    o.addEventListener('click', function () {
+      if (q.classList.contains('answered')) return;
+      q.classList.add('answered');
+      done++;
+      if (o.dataset.ok === '1') right++;
+      opts.forEach(function (x) {
+        x.disabled = true;
+        if (x.dataset.ok === '1') x.classList.add('right');
+      });
+      if (o.dataset.ok !== '1') o.classList.add('wrong');
+      if (ans) ans.classList.add('show');
+      if (t) t.textContent = '收起解析 −';
+      doneEl.textContent = done;
+      rightEl.textContent = right;
+    });
+  });
+});
+
+/* ---------- 年份筛选 ---------- */
+document.querySelectorAll('#yearTabs button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('#yearTabs button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    var y = b.dataset.y;
+    document.querySelectorAll('#qlist .q').forEach(function (q) {
+      q.style.display = (y === 'all' || q.dataset.y === y) ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>

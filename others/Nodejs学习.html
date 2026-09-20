@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSAI Node.js 核心知识与复习小站：事件循环、模块系统、Express、数据库操作。">
+    <!-- 安全说明：本页为自包含页面，需保留内联样式与脚本；X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，正式发布时须由服务器以 HTTP 响应头下发 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Node.js 核心知识与复习小站</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --primary-color: #339933; /* Node.js 经典绿 */
+            --primary-dark: #267326;
+            --text-color: #2c3e50;
+            --border-color: #e2e8f0;
+            --code-bg: #272822;
+            --accent: #026e00;
+            --success: #28a745;
+            --warn: #d97706;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #e0e0e0;
+            color: var(--text-color);
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2::before {
+            content: attr(data-num);
+            background: var(--primary-color);
+            color: white;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .card h3 {
+            color: var(--primary-dark);
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .card h4 {
+            color: var(--text-color);
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-size: 1em;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(51, 153, 51, 0.1);
+            color: var(--primary-dark);
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 4px;
+            border: 1px solid rgba(51, 153, 51, 0.2);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.9em;
+            position: relative;
+        }
+
+        .code-wrap {
+            position: relative;
+        }
+
+        .code-copy {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 3px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.75em;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .code-copy:hover { opacity: 1; }
+
+        /* 训练题 */
+        .quiz-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .quiz-choices {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .quiz-choices li {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+
+        .quiz-choices li:hover {
+            border-color: var(--primary-color);
+            transform: translateX(3px);
+        }
+
+        .quiz-choices li.correct {
+            background: #e6f4ea;
+            border-color: var(--success);
+            color: #1e7e34;
+        }
+
+        .quiz-choices li.wrong {
+            background: #fde2e2;
+            border-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .btn-toggle {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+
+        .btn-toggle:hover {
+            background-color: #2d3748;
+        }
+
+        .answer-block {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e6f4ea;
+            border-radius: 4px;
+            border: 1px solid #b7eb8f;
+        }
+
+        .answer-block strong { color: var(--primary-dark); }
+
+        /* 提示框 */
+        .tip {
+            background: rgba(51, 153, 51, 0.05);
+            border-left: 3px solid var(--primary-color);
+            padding: 10px 14px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        .tip strong { color: var(--primary-dark); }
+
+        /* 速查表 */
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin: 14px 0;
+        }
+        .cheat-cell {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+        .cheat-cell h4 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+        .cheat-cell ul { margin: 0 0 0 16px; padding: 0; }
+        .cheat-cell li { font-size: 0.85em; color: var(--text-color); margin-bottom: 3px; }
+        .cheat-cell code {
+            background: var(--code-bg);
+            color: #a8e6a3;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.85em;
+        }
+
+        /* 回到顶部 */
+        #to-top {
+            position: fixed;
+            bottom: 24px; right: 24px;
+            background: var(--primary-color);
+            color: white;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: none;
+            display: none;
+            align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(51,153,51,0.4);
+        }
+        #to-top:hover { background: var(--primary-dark); }
+
+        /* 进度条 */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent));
+            width: 0%;
+            z-index: 999;
+            transition: width 0.1s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.92em;
+        }
+        table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        table td {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+        }
+        table tr:nth-child(even) td { background: #f9faf9; }
+
+        @media (max-width: 640px) {
+            body { padding: 10px; }
+            .nav-tabs { gap: 6px; }
+            .tab-btn { padding: 8px 12px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="container">
+    <header>
+        <h1><a href="../../daolun/index.html" title="返回 CSAI 导航首页" style="text-decoration:none;color:var(--primary-color)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>CSAI</a> Node.js 知识点与复习小站</h1>
+        <p>掌握 Node.js 核心概念，提升后端开发技能</p>
+    </header>
+
+    <!-- 标签切换 -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('knowledge', this)">知识点梳理</button>
+        <button class="tab-btn" onclick="switchTab('quiz', this)">复习练习题</button>
+        <button class="tab-btn" onclick="switchTab('cheatsheet', this)">速查手册</button>
+    </div>
+
+    <!-- ========== 知识点模块 ========== -->
+    <div id="knowledge" class="tab-content active">
+
+        <!-- 1. 事件循环（原有） -->
+        <div class="card">
+            <h2 data-num="1">事件循环（Event Loop）</h2>
+            <p>Node.js 是单线程非阻塞 I/O 模型。事件循环负责调度异步任务的执行，主要包含以下关键阶段：</p>
+            <ul>
+                <li><strong>Timers：</strong>执行 <code>setTimeout</code> 和 <code>setInterval</code> 的回调。</li>
+                <li><strong>Pending Callbacks：</strong>执行延迟到下一个循环迭代的 I/O 回调。</li>
+                <li><strong>Poll：</strong>检索新的 I/O 事件，执行与 I/O 相关的回调。</li>
+                <li><strong>Check：</strong>执行 <code>setImmediate()</code> 的回调。</li>
+                <li><strong>Close Callbacks：</strong>关闭回调（如 <code>socket.on('close')</code>）。</li>
+            </ul>
+            <p><em>注意：<code>process.nextTick()</code> 和 Promise 微任务会在当前阶段切换前优先清空执行。</em></p>
+        </div>
+
+        <!-- 2. 模块化（原有） -->
+        <div class="card">
+            <h2 data-num="2">模块化：CommonJS vs ES Modules</h2>
+            <p>Node.js 支持两种主流模块化规范：</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>// CommonJS (传统)
+const fs = require('fs');
+module.exports = { myFunction };
+
+// ES Modules (现代，需要在 package.json 设置 "type": "module")
+import fs from 'fs';
+export default myFunction;</code></pre>
+            </div>
+            <div class="tip">
+                <strong>注意：</strong>混合使用会报错。<code>require()</code> 不能加载 ESM 模块；动态 <code>import()</code> 可以从 CJS 文件加载 ESM。
+            </div>
+        </div>
+
+        <!-- 3. 流与缓冲区（原有） -->
+        <div class="card">
+            <h2 data-num="3">流与缓冲区（Buffer & Stream）</h2>
+            <p><strong>Buffer：</strong>在内存中开辟固定大小的空间，用于处理二进制数据流。</p>
+            <p><strong>Stream：</strong>按块（chunk）处理数据的抽象接口，适合处理大文件，避免内存溢出。</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const fs = require('fs');
+// 使用管道（Pipe）实现文件复制
+const readStream = fs.createReadStream('input.txt');
+const writeStream = fs.createWriteStream('output.txt');
+readStream.pipe(writeStream);</code></pre>
+            </div>
+            <p>四种流类型：<strong>Readable</strong>（可读）、<strong>Writable</strong>（可写）、<strong>Duplex</strong>（双工）、<strong>Transform</strong>（转换，常见如 zlib、crypto）。</p>
+        </div>
+
+        <!-- 4. 异步编程三阶段 -->
+        <div class="card">
+            <h2 data-num="4">异步编程三阶段演进</h2>
+            <h3>① 回调函数（Callback）</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>fs.readFile('a.txt', (err, data) => {
+    if (err) return console.error(err);
+    fs.readFile('b.txt', (err2, data2) => {
+        if (err2) return console.error(err2);
+        // 嵌套 7-8 层 —— 著名的"回调地狱"
+    });
+});</code></pre>
+            </div>
+            <h3>② Promise</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>fetch('https://api.example.com/user/1')
+    .then(r =&gt; r.json())
+    .then(user =&gt; fetch(`/api/posts?uid=${user.id}`))
+    .then(r =&gt; r.json())
+    .then(posts =&gt; console.log(posts))
+    .catch(err =&gt; console.error(err));</code></pre>
+            </div>
+            <h3>③ async / await（现代推荐）</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>async function loadPosts() {
+    try {
+        const r    = await fetch('https://api.example.com/user/1');
+        const user = await r.json();
+        const r2   = await fetch(`/api/posts?uid=${user.id}`);
+        const posts = await r2.json();
+        return posts;
+    } catch (err) {
+        console.error(err);
+    }
+}</code></pre>
+            </div>
+            <div class="tip"><strong>建议：</strong>现代 Node.js 代码统一用 <code>async/await</code>，错误用 <code>try/catch</code>。</div>
+        </div>
+
+        <!-- 5. process 与全局对象 -->
+        <div class="card">
+            <h2 data-num="5">process 对象与全局变量</h2>
+            <p><code>process</code> 是 Node.js 进程对象，提供运行时信息与控制能力。</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>// 常用成员
+process.argv          // 命令行参数数组
+process.env          // 环境变量对象
+process.cwd()        // 当前工作目录
+process.pid          // 进程 ID
+process.platform     // 'linux' / 'darwin' / 'win32'
+process.version      // Node.js 版本
+process.exit(code)   // 退出进程
+
+// 事件
+process.on('exit',   code => console.log('即将退出', code));
+process.on('uncaughtException', err => console.error(err));
+process.on('SIGINT', () => process.exit(0));   // Ctrl+C 优雅退出
+
+// 旧 __dirname / __filename（CommonJS）
+console.log(__dirname);   // 当前文件所在目录
+console.log(__filename);  // 当前文件路径</code></pre>
+            </div>
+        </div>
+
+        <!-- 6. 全局对象 -->
+        <div class="card">
+            <h2 data-num="6">常用全局 API</h2>
+            <table>
+                <tr><th>API</th><th>作用</th></tr>
+                <tr><td><code>console</code></td><td>日志（log / warn / error / table / time）</td></tr>
+                <tr><td><code>setTimeout / setInterval</code></td><td>定时器</td></tr>
+                <tr><td><code>setImmediate</code></td><td>在 I/O 后立即执行</td></tr>
+                <tr><td><code>process.nextTick</code></td><td>当前操作结束后立刻执行</td></tr>
+                <tr><td><code>queueMicrotask</code></td><td>把回调加入微任务队列</td></tr>
+                <tr><td><code>URL / URLSearchParams</code></td><td>URL 解析（无需引入包）</td></tr>
+                <tr><td><code>Buffer</code></td><td>二进制数据缓冲</td></tr>
+                <tr><td><code>global</code></td><td>全局命名空间（类似 window）</td></tr>
+            </table>
+        </div>
+
+        <!-- 7. fs 文件系统 -->
+        <div class="card">
+            <h2 data-num="7">fs 文件系统模块</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const fs = require('fs');
+const fsPromises = require('fs').promises;
+
+// 同步（阻塞）
+const data = fs.readFileSync('a.txt', 'utf8');
+
+// 异步回调（Node 早期风格）
+fs.readFile('a.txt', 'utf8', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+});
+
+// Promise（推荐）
+async function read() {
+    const buf = await fsPromises.readFile('a.txt');
+    console.log(buf.toString());
+}
+
+// 写文件
+await fsPromises.writeFile('b.txt', 'Hello World');
+
+// 目录
+await fsPromises.mkdir('sub', { recursive: true });
+await fsPromises.readdir('.');          // 列出文件
+await fsPromises.stat('a.txt');         // 元信息（大小、时间戳）
+await fsPromises.unlink('b.txt');       // 删除
+
+// 文件监听
+fs.watch('a.txt', (eventType, filename) =&gt; {
+    console.log(eventType, filename);
+});</code></pre>
+            </div>
+            <div class="tip"><strong>最佳实践：</strong>优先用 <code>fs/promises</code> 异步 API，避免阻塞主线程。</div>
+        </div>
+
+        <!-- 8. path 路径 -->
+        <div class="card">
+            <h2 data-num="8">path 路径处理</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const path = require('path');
+
+path.join('a', 'b', 'c.txt')     // 'a/b/c.txt'           拼接
+path.resolve('a', 'b')           // 绝对路径（基于 cwd）
+path.basename('/a/b/c.txt')      // 'c.txt'               文件名
+path.dirname('/a/b/c.txt')       // '/a/b'                目录名
+path.extname('a.txt')            // '.txt'                后缀
+path.parse('/a/b/c.txt')         // { root, dir, base, ext, name }
+path.sep                         // '/' (win32 为 '\\')
+
+// path.join vs path.resolve
+path.join('a', '/b', 'c')        // 'a/b/c'      只拼接
+path.resolve('a', '/b', 'c')     // '/b/c'       遇到绝对路径就重置起点
+
+// ES Modules 下需用
+import path from 'node:path';</code></pre>
+            </div>
+        </div>
+
+        <!-- 9. http 模块 -->
+        <div class="card">
+            <h2 data-num="9">http 模块：手写一个 Web 服务</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const http = require('http');
+
+const server = http.createServer((req, res) =&gt; {
+    // req: IncomingMessage；res: ServerResponse
+    console.log(req.method, req.url);
+
+    // 简易路由
+    if (req.url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end('&lt;h1&gt;首页&lt;/h1&gt;');
+    } else if (req.url === '/api/time') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ now: Date.now() }));
+    } else {
+        res.writeHead(404);
+        res.end('Not Found');
+    }
+});
+
+server.listen(3000, () =&gt; {
+    console.log('http://localhost:3000');
+});</code></pre>
+            </div>
+            <div class="tip"><strong>request</strong> 常用属性：<code>url</code> / <code>method</code> / <code>headers</code>；POST 请求体通过 <code>data</code> 事件流式接收。</div>
+        </div>
+
+        <!-- 10. Express 入门 -->
+        <div class="card">
+            <h2 data-num="10">Express 入门</h2>
+            <p>Node.js 原生 http 处理路由繁琐，<strong>Express</strong> 是事实标准的轻量框架。</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>// 安装：npm install express
+const express = require('express');
+const app = express();
+
+app.use(express.json());   // 解析 JSON 请求体
+
+// 路由
+app.get('/',    (req, res) =&gt; res.send('Hello'));
+app.get('/api/users', (req, res) =&gt; res.json([{ id: 1, name: 'Alice' }]));
+app.post('/api/users', (req, res) =&gt; {
+    console.log(req.body);
+    res.status(201).json({ id: Date.now(), ...req.body });
+});
+app.put('/api/users/:id', (req, res) =&gt; res.json({ ok: true }));
+app.delete('/api/users/:id', (req, res) =&gt; res.status(204).end());
+
+// 错误处理（4 参数）
+app.use((err, req, res, next) =&gt; {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+});
+
+app.listen(3000, () =&gt; console.log('Listening on 3000'));</code></pre>
+            </div>
+        </div>
+
+        <!-- 11. 中间件 -->
+        <div class="card">
+            <h2 data-num="11">中间件机制 ⭐⭐⭐</h2>
+            <p>中间件是 Express 的核心——请求 → 中间件链 → 响应。每个中间件能访问 <code>req</code>、<code>res</code>、<code>next</code>。</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>// 日志中间件
+app.use((req, res, next) =&gt; {
+    console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+    next();   // 交给下一个，否则请求会卡住
+});
+
+// 鉴权中间件
+function auth(req, res, next) {
+    if (req.headers.token === 'secret') next();
+    else res.status(401).json({ error: 'Unauthorized' });
+}
+app.get('/api/private', auth, (req, res) =&gt; res.json({ ok: true }));
+
+// 错误处理中间件（必须 4 个参数）
+app.use((err, req, res, next) =&gt; {
+    res.status(500).json({ error: err.message });
+});</code></pre>
+            </div>
+            <div class="tip"><strong>顺序很重要：</strong>通用中间件放前面，错误处理放最后；调用了 <code>next(err)</code> 会跳过中间件链直接到错误处理。</div>
+        </div>
+
+        <!-- 12. npm 与 package.json -->
+        <div class="card">
+            <h2 data-num="12">npm 与 package.json</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>npm init -y                // 初始化 package.json
+npm install express         // 装到 dependencies
+npm install -D nodemon      // 装到 devDependencies
+npm install -g pnpm         // 全局安装
+npm run dev                 // 执行 package.json 的 scripts
+npm outdated                // 检查过期
+npm update express          // 升级
+npm uninstall lodash        // 卸载</code></pre>
+            </div>
+            <h3>package.json 关键字段</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>{
+  "name": "my-app",
+  "version": "1.0.0",
+  "type": "module",             // "commonjs" 或 "module"
+  "main": "index.js",           // 入口
+  "scripts": {
+    "start":  "node index.js",
+    "dev":    "nodemon index.js",
+    "test":   "jest",
+    "build":  "tsc"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": "&gt;=18"
+  }
+}</code></pre>
+            </div>
+            <table>
+                <tr><th>版本号</th><th>含义</th></tr>
+                <tr><td><code>^1.2.3</code></td><td>兼容次版本（≥1.2.3 &lt;2.0.0）</td></tr>
+                <tr><td><code>~1.2.3</code></td><td>只允许补丁号变</td></tr>
+                <tr><td><code>1.2.3</code></td><td>固定</td></tr>
+                <tr><td><code>*</code></td><td>最新</td></tr>
+            </table>
+        </div>
+
+        <!-- 13. 错误处理 -->
+        <div class="card">
+            <h2 data-num="13">错误处理 ⭐⭐⭐</h2>
+            <h3>三种核心模式</h3>
+            <h4>① error-first callback（Node 传统）</h4>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>fs.readFile('a.txt', (err, data) =&gt; {
+    if (err) return console.error('读取失败', err);
+    console.log(data);
+});</code></pre>
+            </div>
+            <h4>② try / catch（同步 + async/await）</h4>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>try {
+    JSON.parse('{坏数据');
+} catch (err) {
+    console.error(err.message);
+}</code></pre>
+            </div>
+            <h4>③ 自定义 Error + 中间件</h4>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>class HttpError extends Error {
+    constructor(status, message) {
+        super(message);
+        this.status = status;
+    }
+}
+
+// Express
+app.use((err, req, res, next) =&gt; {
+    if (err instanceof HttpError)
+        return res.status(err.status).json({ error: err.message });
+    res.status(500).json({ error: 'Internal' });
+});</code></pre>
+            </div>
+            <div class="tip"><strong>原则：</strong>任何可能失败的操作都要处理错误；异步函数要么 <code>await + try/catch</code>，要么 <code>.catch()</code>；未捕获的 Promise 拒绝会触发 <code>unhandledRejection</code>。</div>
+        </div>
+
+        <!-- 14. EventEmitter -->
+        <div class="card">
+            <h2 data-num="14">EventEmitter 事件机制</h2>
+            <p>Node.js 大量内置模块基于事件：<code>http</code>、<code>stream</code>、<code>net</code>、<code>process</code>……</p>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
+const e = new MyEmitter();
+
+// 监听
+e.on('hello', (name) =&gt; console.log(`hi, ${name}`));
+e.once('once-event', () =&gt; console.log('只触发一次'));
+
+// 触发
+e.emit('hello', 'Alice');     // hi, Alice
+e.emit('hello', 'Bob');       // hi, Bob
+e.emit('once-event');         // 只触发一次
+e.emit('once-event');         // 不会再次触发
+
+// 一次性事件
+e.removeAllListeners('hello');
+e.listenerCount('hello');     // 0</code></pre>
+            </div>
+            <div class="tip"><strong>内存泄漏陷阱：</strong>如果监听器数量持续增长（&gt;10）Node 会打印 <em>MaxListenersExceededWarning</em>，记得及时 <code>removeListener</code> 或用 <code>AbortController</code>。</div>
+        </div>
+
+        <!-- 15. 子进程 -->
+        <div class="card">
+            <h2 data-num="15">子进程 child_process</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const { spawn, exec, execFile, fork } = require('child_process');
+
+// spawn：流式（适合大输出）
+const ls = spawn('ls', ['-lh', '/usr']);
+ls.stdout.on('data', chunk =&gt; console.log(chunk.toString()));
+
+// exec：缓冲整段输出（适合小命令）
+exec('git status', (err, stdout) =&gt; {
+    if (err) return console.error(err);
+    console.log(stdout);
+});
+
+// fork：专门跑另一个 Node 脚本（带 IPC 通道）
+const child = fork('./worker.js');
+child.on('message', m =&gt; console.log('子进程消息:', m));
+child.send({ type: 'start' });
+
+// 同步版本（阻塞）
+const { execSync } = require('child_process');
+const out = execSync('whoami').toString();</code></pre>
+            </div>
+            <div class="tip"><strong>选择：</strong>大输出 + 流式 → <code>spawn</code>；小命令 → <code>exec</code>；Node 脚本通信 → <code>fork</code>。</div>
+        </div>
+
+        <!-- 16. 调试 -->
+        <div class="card">
+            <h2 data-num="16">调试技巧</h2>
+            <h3>console 三件套</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>console.log('普通日志');
+console.warn('警告');
+console.error('错误');
+console.table([{name:'A',age:18},{name:'B',age:20}]);
+console.time('耗时');
+// ... 业务代码 ...
+console.timeEnd('耗时');      // 耗时: 12.345ms
+console.trace('调用栈');</code></pre>
+            </div>
+            <h3>Node Inspector（VS Code 断点）</h3>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code># 启动调试
+node --inspect-brk app.js        # 默认 9229 端口
+
+# VS Code 中：
+# 1. 点左侧调试图标
+# 2. "create launch.json" → Node.js
+# 3. 直接 F5 / 加断点</code></pre>
+            </div>
+            <div class="tip"><strong>线上调试慎用：</strong><code>--inspect</code> 会暴露调试端口，建议仅在开发环境开启。</div>
+        </div>
+
+        <!-- 17. URL 与查询字符串 -->
+        <div class="card">
+            <h2 data-num="17">URL 与查询字符串</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const u = new URL('https://example.com/path?a=1&amp;b=2#hash');
+
+u.protocol        // 'https:'
+u.host            // 'example.com'
+u.pathname        // '/path'
+u.search          // '?a=1&amp;b=2'
+u.hash            // '#hash'
+u.searchParams.get('a')      // '1'
+u.searchParams.set('a', '99')
+u.searchParams.toString()    // 'a=99&amp;b=2'
+
+// querystring（旧 API，仍然好用）
+const querystring = require('querystring');
+querystring.parse('a=1&amp;b=2');              // { a: '1', b: '2' }
+querystring.stringify({ x: 1, y: 'hi' });   // 'x=1&amp;y=hi'</code></pre>
+            </div>
+        </div>
+
+        <!-- 18. 测试基础 -->
+        <div class="card">
+            <h2 data-num="18">测试基础（Node 内置 assert）</h2>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code>const assert = require('node:assert/strict');
+const { test } = require('node:test');
+
+test('两数相加', () =&gt; {
+    assert.equal(2 + 2, 4);
+    assert.deepEqual({ a: 1 }, { a: 1 });
+    assert.throws(() =&gt; { throw new Error('x'); });
+});
+
+test('异步', async () =&gt; {
+    const r = await fetch('https://api.example.com/health');
+    assert.equal(r.status, 200);
+});
+
+// 运行
+// node --test</code></pre>
+            </div>
+            <div class="tip">Node 18+ 内置 <code>node:test</code>，无需装第三方测试框架就能跑单元测试。</div>
+        </div>
+
+        <!-- 19. 部署与生态 -->
+        <div class="card">
+            <h2 data-num="19">部署与生产实践</h2>
+            <table>
+                <tr><th>工具</th><th>作用</th></tr>
+                <tr><td><strong>PM2</strong></td><td>进程守护（崩溃自动重启、日志、负载均衡）</td></tr>
+                <tr><td><strong>nodemon</strong></td><td>开发热重启（改代码自动 reload）</td></tr>
+                <tr><td><strong>dotenv</strong></td><td>从 <code>.env</code> 读取环境变量</td></tr>
+                <tr><td><strong>helmet</strong></td><td>Express 安全中间件</td></tr>
+                <tr><td><strong>cors</strong></td><td>跨域处理</td></tr>
+                <tr><td><strong>compression</strong></td><td>gzip 压缩响应</td></tr>
+                <tr><td><strong>winston / pino</strong></td><td>专业日志库</td></tr>
+            </table>
+            <div class="code-wrap">
+                <button class="code-copy" onclick="copyCode(this)">复制</button>
+                <pre><code># 安装与使用
+npm install -g pm2
+pm2 start app.js --name myapp
+pm2 list                  # 查看进程
+pm2 logs                  # 实时日志
+pm2 restart myapp
+pm2 stop myapp
+pm2 startup               # 开机自启
+
+# 用 ecosystem 文件
+pm2 init                  # 生成 ecosystem.config.js
+pm2 start ecosystem.config.js</code></pre>
+            </div>
+        </div>
+
+        <!-- 20. 安全与性能 -->
+        <div class="card">
+            <h2 data-num="20">安全与性能要点</h2>
+            <ul>
+                <li><strong>永远不要 <code>eval()</code></strong> 用户输入，会执行任意代码。</li>
+                <li><strong>SQL 注入</strong>：用参数化查询或 ORM；<strong>NoSQL 注入</strong>：校验输入类型。</li>
+                <li><strong>XSS</strong>：模板引擎默认转义；前端 <code>textContent</code> 替代 <code>innerHTML</code>。</li>
+                <li><strong>CSRF</strong>：用 token；现代框架（Next/Nuxt）内置。</li>
+                <li><strong>helmet</strong>：HTTP 头加固。</li>
+                <li><strong>rate-limit</strong>：防爆破。</li>
+                <li><strong>bcrypt</strong>：密码哈希（不要自己写）。</li>
+                <li><strong>jwt</strong>：token；存敏感信息放服务端，token 只放 ID。</li>
+            </ul>
+            <div class="tip"><strong>性能：</strong>用 <code>--inspect</code> + Chrome DevTools 找热点；缓存（<code>node-cache</code> / Redis）；数据库加索引；用 stream 处理大文件。</div>
+        </div>
+
+    </div>
+
+    <!-- ========== 练习题模块 ========== -->
+    <div id="quiz" class="tab-content">
+
+        <div class="card">
+            <h2>自我检测练习题</h2>
+
+            <!-- Q1 (原有) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q1: 下列代码的输出顺序是什么？为什么？</div>
+                <div class="code-wrap">
+                    <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    <pre><code>console.log('1');
+
+setTimeout(() =&gt; {
+  console.log('2');
+}, 0);
+
+Promise.resolve().then(() =&gt; {
+  console.log('3');
+});
+
+process.nextTick(() =&gt; {
+  console.log('4');
+});
+
+console.log('5');</code></pre>
+                </div>
+                <button class="btn-toggle" onclick="toggleAnswer('ans1')">显示 / 隐藏答案</button>
+                <div id="ans1" class="answer-block">
+                    <strong>答案：</strong> <code>1 → 5 → 4 → 3 → 2</code><br>
+                    <strong>解析：</strong>
+                    <ol>
+                        <li>同步代码优先执行：打印 <code>1</code> 和 <code>5</code>。</li>
+                        <li>主线程同步代码结束后，清空微任务队列：<code>process.nextTick</code> 优先级高于普通 Promise，因此先打印 <code>4</code>，再打印 <code>3</code>。</li>
+                        <li>最后在 Timers 阶段执行定时器回调，打印 <code>2</code>。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Q2 (原有) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q2: 在 Node.js 中，<code>fs.readFile</code> 和 <code>fs.createReadStream</code> 的主要区别是什么？在大文件处理时应该选择哪一个？</div>
+                <button class="btn-toggle" onclick="toggleAnswer('ans2')">显示 / 隐藏答案</button>
+                <div id="ans2" class="answer-block">
+                    <strong>答案：</strong><br>
+                    - <code>fs.readFile</code> 会将整个文件内容一次性加载到内存中，成功后再调用回调函数。<br>
+                    - <code>fs.createReadStream</code> 以流（Stream）的形式分块读取文件，逐块处理数据。<br>
+                    - <strong>选择：</strong>处理大文件时应优先使用 <code>fs.createReadStream</code>，以避免耗尽系统内存。
+                </div>
+            </div>
+
+            <!-- Q3 (原有) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q3: 如何用内置的 <code>http</code> 模块创建一个简单的 HTTP 服务器并返回 JSON 数据？请写出关键代码。</div>
+                <button class="btn-toggle" onclick="toggleAnswer('ans3')">显示 / 隐藏答案</button>
+                <div id="ans3" class="answer-block">
+                    <strong>参考代码：</strong>
+                    <div class="code-wrap">
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                        <pre><code>const http = require('http');
+
+const server = http.createServer((req, res) =&gt; {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: "Hello World", status: "success" }));
+});
+
+server.listen(3000, () =&gt; {
+    console.log('Server running at http://localhost:3000/');
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q4: <code>process.nextTick</code> 与 <code>setImmediate</code> 的执行顺序如何？</div>
+                <ul class="quiz-choices" data-answer="B">
+                    <li data-idx="A">A. setImmediate 先于 process.nextTick</li>
+                    <li data-idx="B">B. process.nextTick 先于 setImmediate，且在每个阶段切换前都会清空</li>
+                    <li data-idx="C">C. 二者永远交替执行</li>
+                    <li data-idx="D">D. 完全无法预测</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans4')">显示 / 隐藏答案</button>
+                <div id="ans4" class="answer-block">
+                    <strong>答案：B。</strong><code>process.nextTick</code> 的回调拥有<strong>最高优先级</strong>——在当前操作完成、阶段切换前就会清空整个 <code>nextTick</code> 队列。
+                    <code>setImmediate</code> 则在事件循环的 <em>Check</em> 阶段执行。
+                </div>
+            </div>
+
+            <!-- Q5 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q5: CommonJS 中，模块会被加载几次？</div>
+                <ul class="quiz-choices" data-answer="C">
+                    <li data-idx="A">A. 每次 require 都重新执行</li>
+                    <li data-idx="B">B. 仅第一次加载</li>
+                    <li data-idx="C">C. 第一次 require 时加载并缓存，后续直接读取缓存</li>
+                    <li data-idx="D">D. 永不加载</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans5')">显示 / 隐藏答案</button>
+                <div id="ans5" class="answer-block">
+                    <strong>答案：C。</strong>CommonJS 模块首次加载会执行模块代码，结果放入 <code>require.cache</code>，下次 <code>require</code> 拿到同一对象。
+                    想重新加载可用 <code>delete require.cache[require.resolve('./m')]</code>（慎用）。
+                </div>
+            </div>
+
+            <!-- Q6 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q6: 如何把 Buffer 转成 UTF-8 字符串？反之？</div>
+                <ul class="quiz-choices" data-answer="A">
+                    <li data-idx="A">A. buf.toString('utf8') 和 Buffer.from(str, 'utf8')</li>
+                    <li data-idx="B">B. JSON.parse 和 JSON.stringify</li>
+                    <li data-idx="C">C. buf.text() 和 String.fromBuffer()</li>
+                    <li data-idx="D">D. 没有内置 API</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans6')">显示 / 隐藏答案</button>
+                <div id="ans6" class="answer-block">
+                    <strong>答案：A。</strong>
+                    <pre style="margin:6px 0;background:#1f2937;color:#f8f8f2;padding:8px;border-radius:4px"><code>Buffer.from('hi', 'utf8').toString('utf8')   // 'hi'</code></pre>
+                    Buffer 默认就是 UTF-8，所以 <code>.toString()</code> 也行；显式带编码参数更稳。
+                </div>
+            </div>
+
+            <!-- Q7 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q7: <code>path.join('/a', '/c', 'd')</code> 和 <code>path.resolve('/a', '/c', 'd')</code> 的结果分别是？</div>
+                <ul class="quiz-choices" data-answer="D">
+                    <li data-idx="A">A. 相同，都是 '/a/c/d'</li>
+                    <li data-idx="B">B. join 得到 '/c/d'，resolve 得到 '/a/c/d'</li>
+                    <li data-idx="C">C. join 报错，resolve 正常</li>
+                    <li data-idx="D">D. join 得到 '/a/c/d'，resolve 得到 '/c/d'</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans7')">显示 / 隐藏答案</button>
+                <div id="ans7" class="answer-block">
+                    <strong>答案：D。</strong>
+                    <ul>
+                        <li><code>join</code> 只是把片段用平台分隔符拼起来，<strong>不</strong>读绝对路径。</li>
+                        <li><code>resolve</code> 从右往左拼接，<strong>遇到绝对路径就把它当作新起点</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q8 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q8: Express 中间件不调用 <code>next()</code> 会发生什么？</div>
+                <ul class="quiz-choices" data-answer="C">
+                    <li data-idx="A">A. 抛错并崩溃</li>
+                    <li data-idx="B">B. 下一个自动执行</li>
+                    <li data-idx="C">C. 请求挂起，客户端超时</li>
+                    <li data-idx="D">D. 直接跳到错误处理</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans8')">显示 / 隐藏答案</button>
+                <div id="ans8" class="answer-block">
+                    <strong>答案：C。</strong>除非中间件调用了 <code>res.send()</code>/<code>res.end()</code> 主动结束响应，
+                    否则必须显式 <code>next()</code> 把控制权交给下一个中间件，否则请求将<strong>永远挂起</strong>。
+                </div>
+            </div>
+
+            <!-- Q9 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q9: 什么是 error-first callback（错误优先回调）？</div>
+                <ul class="quiz-choices" data-answer="B">
+                    <li data-idx="A">A. 第一个参数是数据</li>
+                    <li data-idx="B">B. 第一个参数是 err，成功时为 null</li>
+                    <li data-idx="C">C. 用 try/catch 替代</li>
+                    <li data-idx="D">D. Node.js 8 后被废弃</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans9')">显示 / 隐藏答案</button>
+                <div id="ans9" class="answer-block">
+                    <strong>答案：B。</strong>Node.js 异步 API 的标准约定：<code>callback(err, data)</code>，错误在前。
+                    仍然推荐使用，但现代异步代码更推荐 <code>Promise</code> / <code>async-await</code>。
+                </div>
+            </div>
+
+            <!-- Q10 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q10: <code>__dirname</code> 与 <code>process.cwd()</code> 的区别？</div>
+                <ul class="quiz-choices" data-answer="A">
+                    <li data-idx="A">A. __dirname 是当前文件所在目录，process.cwd() 是启动进程时的工作目录</li>
+                    <li data-idx="B">B. 两者都返回当前工作目录</li>
+                    <li data-idx="C">C. __dirname 在 ESM 中可用，process.cwd() 不能</li>
+                    <li data-idx="D">D. process.cwd() 是文件路径</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans10')">显示 / 隐藏答案</button>
+                <div id="ans10" class="answer-block">
+                    <strong>答案：A。</strong>
+                    <ul>
+                        <li><code>__dirname</code>：<strong>当前文件</strong>所在的绝对目录（CommonJS 才有）。</li>
+                        <li><code>process.cwd()</code>：<strong>启动 node 命令时</strong>所在目录。</li>
+                    </ul>
+                    ESM 中用 <code>import.meta.url</code> + <code>fileURLToPath</code> 来得到 __dirname 等价路径。
+                </div>
+            </div>
+
+            <!-- Q11 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q11: <code>npm install --save</code> 在 npm 5+ 还有必要加吗？</div>
+                <ul class="quiz-choices" data-answer="D">
+                    <li data-idx="A">A. 必须加，否则不入 package.json</li>
+                    <li data-idx="B">B. 完全等价</li>
+                    <li data-idx="C">C. 只对 devDependencies 有用</li>
+                    <li data-idx="D">D. 默认就是 --save，无需显式声明；想放 devDependencies 用 -D</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans11')">显示 / 隐藏答案</button>
+                <div id="ans11" class="answer-block">
+                    <strong>答案：D。</strong>npm 5+（2017 年）起，<code>npm install xxx</code> 默认就写入 <code>dependencies</code>。
+                    想放 <code>devDependencies</code>（仅开发用，如 jest、nodemon）才需要 <code>-D</code> 或 <code>--save-dev</code>。
+                </div>
+            </div>
+
+            <!-- Q12 (新增) -->
+            <div class="quiz-item">
+                <div class="quiz-question">Q12: EventEmitter 用得不当会产生什么常见陷阱？</div>
+                <ul class="quiz-choices" data-answer="C">
+                    <li data-idx="A">A. 单线程崩溃</li>
+                    <li data-idx="B">B. 事件名拼写错误</li>
+                    <li data-idx="C">C. 监听器持续累加导致内存泄漏（MaxListenersExceededWarning）</li>
+                    <li data-idx="D">D. 事件循环停止</li>
+                </ul>
+                <button class="btn-toggle" onclick="toggleAnswer('ans12')">显示 / 隐藏答案</button>
+                <div id="ans12" class="answer-block">
+                    <strong>答案：C。</strong>常见场景：长连接、定时器、缓存里持续添加 <code>on('data', ...)</code>。
+                    解法：监听完成后 <code>removeListener</code>，或用 <code>AbortController</code> 控制生命周期。
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========== 速查手册 ========== -->
+    <div id="cheatsheet" class="tab-content">
+        <div class="card">
+            <h2>速查手册</h2>
+            <div class="cheat-grid">
+
+                <div class="cheat-cell">
+                    <h4>模块化</h4>
+                    <ul>
+                        <li><code>require()</code></li>
+                        <li><code>module.exports</code></li>
+                        <li><code>__dirname</code></li>
+                        <li><code>__filename</code></li>
+                        <li><code>import.meta.url</code>（ESM）</li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>文件系统</h4>
+                    <ul>
+                        <li><code>fs.readFile</code> / <code>writeFile</code></li>
+                        <li><code>fs.readdir</code> / <code>mkdir</code></li>
+                        <li><code>fs.watch</code></li>
+                        <li><code>createReadStream</code></li>
+                        <li><code>fs.promises</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>路径 / URL</h4>
+                    <ul>
+                        <li><code>path.join</code></li>
+                        <li><code>path.resolve</code></li>
+                        <li><code>path.basename</code></li>
+                        <li><code>new URL()</code></li>
+                        <li><code>URLSearchParams</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>HTTP</h4>
+                    <ul>
+                        <li><code>http.createServer</code></li>
+                        <li><code>https.request</code></li>
+                        <li><code>req.url / method</code></li>
+                        <li><code>res.writeHead</code></li>
+                        <li><code>res.end</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>异步</h4>
+                    <ul>
+                        <li><code>setTimeout / setInterval</code></li>
+                        <li><code>setImmediate</code></li>
+                        <li><code>process.nextTick</code></li>
+                        <li><code>queueMicrotask</code></li>
+                        <li><code>Promise / async-await</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>进程 / 系统</h4>
+                    <ul>
+                        <li><code>process.argv / env</code></li>
+                        <li><code>process.exit</code></li>
+                        <li><code>os.cpus / totalmem</code></li>
+                        <li><code>child_process.spawn</code></li>
+                        <li><code>cluster</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>Express 常用</h4>
+                    <ul>
+                        <li><code>app.use</code></li>
+                        <li><code>app.get/post/put/del</code></li>
+                        <li><code>req.body / params / query</code></li>
+                        <li><code>res.json / status</code></li>
+                        <li><code>next(err)</code></li>
+                    </ul>
+                </div>
+
+                <div class="cheat-cell">
+                    <h4>常用第三方包</h4>
+                    <ul>
+                        <li><code>express</code> — Web 框架</li>
+                        <li><code>axios</code> — HTTP 客户端</li>
+                        <li><code>mongoose</code> — MongoDB</li>
+                        <li><code>jsonwebtoken</code> — JWT</li>
+                        <li><code>nodemon / pm2</code></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="tip" style="margin-top:20px">
+                <strong>学习路线：</strong>基础语法 → fs/path/http → npm → Express → 数据库 → 鉴权 → 部署。<br>
+                推荐实战项目：① Todo API ② 博客 URL ④ 实时聊天（WebSocket）③ 简易电商后端 ⑤ 文件上传服务。
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button id="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+    // 标签页切换
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // 答案显示/隐藏
+    function toggleAnswer(ansId) {
+        const target = document.getElementById(ansId);
+        target.style.display = (target.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // 单选训练题点击作答
+    document.querySelectorAll('.quiz-choices').forEach(ul => {
+        const ans = ul.dataset.answer;
+        ul.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', () => {
+                if (ul.dataset.done) return;
+                const pick = li.dataset.idx;
+                if (pick === ans) li.classList.add('correct');
+                else {
+                    li.classList.add('wrong');
+                    ul.querySelector(`[data-idx="${ans}"]`)?.classList.add('correct');
+                }
+                ul.dataset.done = '1';
+            });
+        });
+    });
+
+    // 代码复制
+    function copyCode(btn) {
+        const pre = btn.parentElement.querySelector('pre');
+        navigator.clipboard.writeText(pre.innerText).then(() => {
+            const old = btn.textContent;
+            btn.textContent = '已复制 ✓';
+            setTimeout(() => btn.textContent = old, 1200);
+        });
+    }
+    window.copyCode = copyCode;
+
+    // 回到顶部 + 进度条
+    const bar = document.getElementById('progress-bar');
+    const toTop = document.getElementById('to-top');
+    window.addEventListener('scroll', () => {
+        const sh = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (sh > 0 ? (window.scrollY / sh) * 100 : 0) + '%';
+        toTop.style.display = window.scrollY > 400 ? 'flex' : 'none';
+    });
+</script>
+
+<footer style="max-width:900px;margin:0 auto;padding:20px;text-align:center;font-size:13px;color:#666;border-top:1px solid var(--border-color)">
+  Node.js 核心知识与复习小站 · <a href="../../daolun/index.html" style="color:var(--primary-color)">返回导航首页</a>
+</footer>
+
+@media print{
+  .nav-tabs,#progress-bar,#to-top{display:none!important}
+  header{padding:10px 0!important;border-bottom:1px solid #ccc!important}
+  .card{break-inside:avoid;box-shadow:none!important;border:1px solid #ccc!important}
+  pre{background:#f5f5f5!important;color:#000!important}
+}
+</body>
+</html>
