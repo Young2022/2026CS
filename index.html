@@ -276,23 +276,7 @@
 </div>
         </div>
     </footer>
-<script>
-    // 确保页面 DOM 完全加载后再执行，防止找不到元素
-    document.addEventListener('DOMContentLoaded', function() {
-        // 获取我们刚才设置的专属 ID
-        var contactLink = document.getElementById('footer-contact-email');
-        
-        // 安全检查：确保元素存在再绑定事件
-        if (contactLink) {
-            contactLink.addEventListener('click', function(e) {
-                e.preventDefault(); // 阻止 a 标签的默认跳转行为
-                
-                // 动态拼接邮箱，防止网页源码中出现完整的邮箱字符串（防爬虫）
-                var email = 'ai' + '@' + 'csai' + '.' + 'top';
-                alert('联系我们：' + email);
-            });
-        }
-    });
+
 </script>
 </body>
 </html>
