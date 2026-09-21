@@ -1,4 +1,5 @@
 // --- 主题切换逻辑 ---
+console.log("=== main.js 文件已加载 ===");
 var themeToggleBtn = document.getElementById('themeToggleBtn');
 var themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
 
