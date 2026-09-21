@@ -23,18 +23,19 @@ if (themeToggleBtn) {
         applyThemeIcon();
     });
 }
-// 在 js/main.js 文件末尾添加以下代码：
-document.addEventListener('DOMContentLoaded', function() {
-    var contactLink = document.getElementById('footer-contact-email');
+// ==========================================
+// 添加在 main.js 最末尾：联系我们点击弹窗 (事件委托写法)
+// ==========================================
+document.addEventListener('click', function(e) {
+    // 使用 closest 寻找点击目标
+    var contactLink = e.target.closest('#footer-contact-email');
     
     if (contactLink) {
-        contactLink.addEventListener('click', function(e) {
-            e.preventDefault(); // 阻止默认跳转
-            
-            // 动态拼接邮箱，防止爬虫抓取
-            // 注意：请将 'contact' 换成你真实的邮箱前缀
-            var email = 'contact' + '@' + 'csai' + '.' + 'top'; 
-            alert('联系我们：' + email);
-        });
+        e.preventDefault(); // 阻止默认跳转
+        
+        // 动态拼接邮箱
+        var email = 'contact' + '@' + 'csai' + '.' + 'top'; // 替换为你真实的邮箱
+        
+        alert('联系我们：' + email);
     }
 });
