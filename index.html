@@ -241,7 +241,6 @@
                 <details open>
                     <summary>
                         <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i> 2026 年文章</span>
-                        <span class="blog-date">2 篇</span>
                     </summary>
                     <ul class="blog-list">
 
@@ -262,19 +261,40 @@
                 <p><strong>CSAI Navigation</strong> <span class="version-badge">v1.3.0</span></p>
                 <p>&copy; 2026 CSAI Team. 保留所有权利。</p>
             </div>
-           <div class="footer-contact">
-                <!-- TODO: 发布前替换为真实联系方式，并为隐私政策创建 privacy.html -->
-         <a href="javascript:void(0);" 
-            onclick="alert(&#x27;联系我们：&#x27; + &#x27;ai&#x27; + &#x27;@&#x27; + &#x27;csai.top&#x27;)"> 
-            <i class="fa-solid fa-envelope" aria-hidden="true"></i> 联系我们
-         </a>
-                   
-         <a href="https://github.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
-         <a href="javascript:void(0);"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 隐私政策</a>
-           </div>
+<div class="footer-contact">
+    <!-- 移除了 onclick，添加了 id="footer-contact-email" -->
+    <a href="javascript:void(0);" id="footer-contact-email"> 
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i> 联系我们
+    </a>
+    
+    <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+    </a>
+    
+    <a href="javascript:void(0);">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 隐私政策
+    </a>
+</div>
 
         </div>
     </footer>
-
+<script>
+    // 确保页面 DOM 完全加载后再执行，防止找不到元素
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取我们刚才设置的专属 ID
+        var contactLink = document.getElementById('footer-contact-email');
+        
+        // 安全检查：确保元素存在再绑定事件
+        if (contactLink) {
+            contactLink.addEventListener('click', function(e) {
+                e.preventDefault(); // 阻止 a 标签的默认跳转行为
+                
+                // 动态拼接邮箱，防止网页源码中出现完整的邮箱字符串（防爬虫）
+                var email = 'ai' + '@' + 'csai' + '.' + 'top';
+                alert('联系我们：' + email);
+            });
+        }
+    });
+</script>
 </body>
 </html>
