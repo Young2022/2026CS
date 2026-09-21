@@ -34,7 +34,7 @@ document.addEventListener('click', function(e) {
         e.preventDefault(); // 阻止默认跳转
         
         // 动态拼接邮箱
-        var email = 'contact' + '@' + 'csai' + '.' + 'top'; // 替换为你真实的邮箱
+        var email = 'ai' + '@' + 'csai' + '.' + 'top'; // 替换为你真实的邮箱
         
         alert('联系我们：' + email);
     }
