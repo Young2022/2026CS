@@ -1130,7 +1130,7 @@ $ gcc -std=c17 hello.c -o hello            <span class="tok-cm"># 指定 C 标�
 
     <div class="quiz" data-acc="teal">
       <h4 style="color:var(--teal)">课堂练习 · 第05章</h4>
-      <div class="q-card" data-q data-answer="C" data-exp="循环遇到 continue 会立刻跳到下一轮，不执行 printf(i); 输出。">
+      <div class="q-card" data-q data-answer="B" data-exp="continue 会跳过 printf，所以 i=2 时不会打印 2。">
         <div class="q-head"><span class="qn">5</span>下面代码的输出是？<br><code>for(int i=0;i&lt;5;i++){ if(i==2) continue; printf("%d ",i); }</code></div>
         <div class="q-opts">
           <button class="opt" data-v="A"><span class="k">A</span><span>0 1 2 3 4</span></button>
