@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五子棋 · Gomoku</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --wood1: #e8b96f;
+    --wood2: #d9a44f;
+    --line: #6b4a1e;
+    --panel: rgba(255, 255, 255, 0.14);
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 20% 10%, #2c3e50, #0f1620 70%);
+    color: #f3f3f3;
+    padding: 24px;
+  }
+  .app {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .board-wrap {
+    position: relative;
+    padding: 18px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, var(--wood1), var(--wood2));
+    box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  canvas { display: block; border-radius: 8px; cursor: pointer; }
+  .panel {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  h1 {
+    font-size: 26px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ffd97a, #ff9d4d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sub { font-size: 12px; opacity: .6; letter-spacing: 1px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 16px;
+    backdrop-filter: blur(8px);
+  }
+  .turn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    box-shadow: inset -2px -3px 6px rgba(0,0,0,.5), inset 2px 2px 4px rgba(255,255,255,.5), 0 3px 6px rgba(0,0,0,.4);
+  }
+  .dot.black { background: radial-gradient(circle at 35% 30%, #6a6a6a, #000); }
+  .dot.white { background: radial-gradient(circle at 35% 30%, #ffffff, #c9c9c9); }
+  .status { margin-top: 8px; font-size: 14px; min-height: 20px; color: #ffd97a; font-weight: 600; }
+  .row { display: flex; gap: 10px; }
+  button {
+    flex: 1;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: linear-gradient(145deg, #3b4a5e, #263140);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s, background .2s;
+  }
+  button:hover { background: linear-gradient(145deg, #4a5c74, #2f3d4f); }
+  button:active { transform: translateY(1px) scale(.98); }
+  button.primary {
+    background: linear-gradient(145deg, #ffb347, #ff8c00);
+    border-color: #ffd08a;
+    color: #2b1a00;
+  }
+  button.primary:hover { background: linear-gradient(145deg, #ffc266, #ff9d1a); }
+  .modes { display: flex; flex-direction: column; gap: 10px; }
+  .mode-label { font-size: 12px; opacity: .65; letter-spacing: 1px; }
+  .switch { display: flex; gap: 8px; }
+  .switch button.on { background: linear-gradient(145deg, #ffb347, #ff8c00); color: #2b1a00; border-color: #ffd08a; }
+  .hint { font-size: 12px; opacity: .55; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="board-wrap">
+    <canvas id="board"></canvas>
+  </div>
+  <div class="panel">
+    <div>
+      <h1>五子棋</h1>
+      <div class="sub">GOMOKU · 五子连珠</div>
+    </div>
+
+    <div class="card">
+      <div class="turn">
+        <span id="turnDot" class="dot black"></span>
+        <span id="turnText">黑棋落子</span>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+
+    <div class="card modes">
+      <div class="mode-label">对战模式</div>
+      <div class="switch">
+        <button id="pvp" class="on">双人对战</button>
+        <button id="pve">人机对战</button>
+      </div>
+    </div>
+
+    <div class="card modes">
+      <div class="mode-label">执子（人机模式）</div>
+      <div class="switch">
+        <button id="humanBlack" class="on">我执黑</button>
+        <button id="humanWhite">我执白</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <button id="undo">悔棋</button>
+      <button id="restart" class="primary">重新开始</button>
+    </div>
+
+    <div class="hint">黑棋先行。横、竖、斜任意方向连成五子即获胜。</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const N = 15;
+  const CELL = 38;
+  const PAD = 24;
+  const SIZE = (N - 1) * CELL + PAD * 2;
+  const STAR = [3, 7, 11];
+
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  canvas.style.width = SIZE + 'px';
+  canvas.style.height = SIZE + 'px';
+  ctx.scale(dpr, dpr);
+
+  const turnDot = document.getElementById('turnDot');
+  const turnText = document.getElementById('turnText');
+  const statusEl = document.getElementById('status');
+  const btnPvp = document.getElementById('pvp');
+  const btnPve = document.getElementById('pve');
+  const btnHumanBlack = document.getElementById('humanBlack');
+  const btnHumanWhite = document.getElementById('humanWhite');
+
+  let grid, current, history, gameOver, winLine;
+  let mode = 'pvp';
+  let humanColor = 1;
+  let aiThinking = false;
+
+  function reset() {
+    grid = Array.from({ length: N }, () => new Array(N).fill(0));
+    current = 1;
+    history = [];
+    gameOver = false;
+    winLine = null;
+    aiThinking = false;
+    statusEl.textContent = '';
+    updateTurn();
+    draw();
+    maybeAiMove();
+  }
+
+  function updateTurn() {
+    turnDot.className = 'dot ' + (current === 1 ? 'black' : 'white');
+    turnText.textContent = current === 1 ? '黑棋落子' : '白棋落子';
+  }
+
+  function pos(i) { return PAD + i * CELL; }
+
+  function draw() {
+    ctx.clearRect(0, 0, SIZE, SIZE);
+
+    const g = ctx.createLinearGradient(0, 0, SIZE, SIZE);
+    g.addColorStop(0, '#eec078');
+    g.addColorStop(1, '#d9a44f');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, SIZE, SIZE);
+
+    ctx.strokeStyle = 'rgba(107,74,30,.85)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < N; i++) {
+      ctx.beginPath();
+      ctx.moveTo(pos(0), pos(i));
+      ctx.lineTo(pos(N - 1), pos(i));
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pos(i), pos(0));
+      ctx.lineTo(pos(i), pos(N - 1));
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = 'rgba(60,40,10,.9)';
+    STAR.forEach(r => STAR.forEach(c => {
+      ctx.beginPath();
+      ctx.arc(pos(c), pos(r), 3.2, 0, Math.PI * 2);
+      ctx.fill();
+    }));
+
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        if (grid[r][c]) drawStone(c, r, grid[r][c]);
+      }
+    }
+
+    if (winLine) {
+      const a = winLine[0], b = winLine[winLine.length - 1];
+      ctx.strokeStyle = 'rgba(255,60,60,.9)';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(pos(a[1]), pos(a[0]));
+      ctx.lineTo(pos(b[1]), pos(b[0]));
+      ctx.stroke();
+    }
+
+    const last = history[history.length - 1];
+    if (last && !winLine) {
+      ctx.strokeStyle = 'rgba(255,80,80,.95)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(pos(last.c), pos(last.r), 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawStone(c, r, color) {
+    const x = pos(c), y = pos(r), rad = CELL * 0.42;
+    ctx.beginPath();
+    ctx.ellipse(x + 2, y + 3, rad, rad * 0.9, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,.28)';
+    ctx.fill();
+
+    const g = ctx.createRadialGradient(x - rad * .35, y - rad * .4, rad * .1, x, y, rad);
+    if (color === 1) {
+      g.addColorStop(0, '#7a7a7a');
+      g.addColorStop(.5, '#2b2b2b');
+      g.addColorStop(1, '#000');
+    } else {
+      g.addColorStop(0, '#ffffff');
+      g.addColorStop(.7, '#e6e6e6');
+      g.addColorStop(1, '#b8b8b8');
+    }
+    ctx.beginPath();
+    ctx.arc(x, y, rad, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.strokeStyle = color === 1 ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.25)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  function place(r, c, color) {
+    grid[r][c] = color;
+    history.push({ r, c, color });
+    const line = checkWin(r, c, color);
+    if (line) {
+      winLine = line;
+      gameOver = true;
+      statusEl.textContent = (color === 1 ? '黑棋' : '白棋') + '获胜！';
+    } else if (history.length === N * N) {
+      gameOver = true;
+      statusEl.textContent = '平局！';
+    } else {
+      current = -color;
+    }
+    updateTurn();
+    draw();
+  }
+
+  function checkWin(r, c, color) {
+    const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+    for (const [dr, dc] of dirs) {
+      const cells = [[r, c]];
+      for (const s of [1, -1]) {
+        let rr = r + dr * s, cc = c + dc * s;
+        while (rr >= 0 && rr < N && cc >= 0 && cc < N && grid[rr][cc] === color) {
+          cells.push([rr, cc]);
+          rr += dr * s; cc += dc * s;
+        }
+      }
+      if (cells.length >= 5) {
+        cells.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+        return cells;
+      }
+    }
+    return null;
+  }
+
+  function clickToCell(ev) {
+    const rect = canvas.getBoundingClientRect();
+    const x = ev.clientX - rect.left;
+    const y = ev.clientY - rect.top;
+    const c = Math.round((x - PAD) / CELL);
+    const r = Math.round((y - PAD) / CELL);
+    if (r < 0 || r >= N || c < 0 || c >= N) return null;
+    return { r, c };
+  }
+
+  canvas.addEventListener('click', ev => {
+    if (gameOver || aiThinking) return;
+    if (mode === 'pve' && current !== humanColor) return;
+    const cell = clickToCell(ev);
+    if (!cell) return;
+    if (grid[cell.r][cell.c]) return;
+    place(cell.r, cell.c, current);
+    maybeAiMove();
+  });
+
+  function maybeAiMove() {
+    if (mode !== 'pve' || gameOver || current === humanColor) return;
+    aiThinking = true;
+    setTimeout(() => {
+      const move = bestMove(current);
+      aiThinking = false;
+      if (move && !gameOver) place(move.r, move.c, current);
+    }, 260);
+  }
+
+  function bestMove(color) {
+    const opp = -color;
+    let best = null, bestScore = -Infinity;
+
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        if (grid[r][c]) continue;
+        if (!hasNeighbor(r, c, 2)) continue;
+        const my = scorePoint(r, c, color);
+        const th = scorePoint(r, c, opp);
+        let score = my * 1.05 + th + Math.random() * 2;
+        if (score > bestScore) { bestScore = score; best = { r, c }; }
+      }
+    }
+
+    if (!best) {
+      const mid = Math.floor(N / 2);
+      if (!grid[mid][mid]) return { r: mid, c: mid };
+      for (let r = 0; r < N; r++)
+        for (let c = 0; c < N; c++)
+          if (!grid[r][c]) return { r, c };
+    }
+    return best;
+  }
+
+  function hasNeighbor(r, c, dist) {
+    for (let dr = -dist; dr <= dist; dr++)
+      for (let dc = -dist; dc <= dist; dc++) {
+        const rr = r + dr, cc = c + dc;
+        if (rr >= 0 && rr < N && cc >= 0 && cc < N && grid[rr][cc]) return true;
+      }
+    return false;
+  }
+
+  function scorePoint(r, c, color) {
+    const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+    let total = 0;
+    for (const [dr, dc] of dirs) {
+      let count = 1, open = 0, blocked = 0;
+      for (const s of [1, -1]) {
+        let rr = r + dr * s, cc = c + dc * s;
+        while (rr >= 0 && rr < N && cc >= 0 && cc < N && grid[rr][cc] === color) {
+          count++; rr += dr * s; cc += dc * s;
+        }
+        if (rr >= 0 && rr < N && cc >= 0 && cc < N) {
+          if (grid[rr][cc] === 0) open++; else blocked++;
+        } else blocked++;
+      }
+      total += patternScore(count, open, blocked);
+    }
+    return total;
+  }
+
+  function patternScore(count, open, blocked) {
+    if (count >= 5) return 1000000;
+    if (count === 4) {
+      if (open >= 2) return 100000;
+      if (open === 1) return 10000;
+      return 0;
+    }
+    if (count === 3) {
+      if (open >= 2) return 8000;
+      if (open === 1) return 800;
+      return 0;
+    }
+    if (count === 2) {
+      if (open >= 2) return 500;
+      if (open === 1) return 80;
+      return 0;
+    }
+    if (count === 1) return open * 8;
+    return 0;
+  }
+
+  function undo() {
+    if (aiThinking) return;
+    if (mode === 'pve') {
+      let steps = 0;
+      while (history.length && steps < 2) {
+        const m = history.pop();
+        grid[m.r][m.c] = 0;
+        current = m.color;
+        steps++;
+        if (current === humanColor) break;
+      }
+      gameOver = false;
+      winLine = null;
+      statusEl.textContent = '';
+      updateTurn();
+      draw();
+    } else {
+      if (!history.length) return;
+      const m = history.pop();
+      grid[m.r][m.c] = 0;
+      current = m.color;
+      gameOver = false;
+      winLine = null;
+      statusEl.textContent = '';
+      updateTurn();
+      draw();
+    }
+  }
+
+  function setMode(m) {
+    mode = m;
+    btnPvp.classList.toggle('on', m === 'pvp');
+    btnPve.classList.toggle('on', m === 'pve');
+    reset();
+  }
+
+  function setHumanColor(c) {
+    humanColor = c;
+    btnHumanBlack.classList.toggle('on', c === 1);
+    btnHumanWhite.classList.toggle('on', c === -1);
+    if (mode === 'pve') reset();
+  }
+
+  btnPvp.addEventListener('click', () => setMode('pvp'));
+  btnPve.addEventListener('click', () => setMode('pve'));
+  btnHumanBlack.addEventListener('click', () => setHumanColor(1));
+  btnHumanWhite.addEventListener('click', () => setHumanColor(-1));
+  document.getElementById('undo').addEventListener('click', undo);
+  document.getElementById('restart').addEventListener('click', reset);
+
+  reset();
+})();
+</script>
+</body>
+</html>
