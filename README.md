@@ -1,0 +1,1 @@
+This repository serves as a supportive educational resource for students studying Introduction to Computer Science and preparing for computer science proficiency exams in China, such as the National Computer Rank Examination (Level 2). It draws on both self-compiled teaching materials and official textbooks.
