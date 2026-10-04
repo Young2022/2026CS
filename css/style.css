@@ -538,3 +538,16 @@ footer {
     .footer-content { flex-direction: column; text-align: center; }
     .footer-contact { justify-content: center; flex-wrap: wrap; }
 }
+/* 书籍下载链接 */
+.book-download {
+    font-size: 16px;
+    font-weight: normal;
+    margin-left: 12px;
+    text-decoration: none;
+    color: #c70d9f;
+    white-space: nowrap;
+}
+
+.book-download:hover {
+    text-decoration: underline;
+}
