@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="计算机基础：数制、编码、布尔代数与位掩码 - 二进制与进制转换、补码表示、ASCII/Unicode/UTF-8、布尔定律与逻辑化简、位掩码操作，含交互练习与综合测验。">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="robots" content="index, follow">
+
+    <!-- 安全说明：X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，发布时须在服务器 HTTP 响应头中配置 -->
+    <!-- 本页为单文件教学模块（含内联样式表、内联脚本与 onclick 内联事件），因此在 style-src / script-src 中放开 'unsafe-inline'；
+         若将样式与脚本改为外链（css/sc2.css、js/sc2.js），即可删除这两处 'unsafe-inline' 恢复严格 CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>计算机基础：数制、编码、布尔代数与位掩码 | CSAI</title>
+
+    <!-- 主题初始化：必须在样式表加载前执行，避免暗色用户闪白屏 (FOUC) -->
+    <script src="../js/theme-init.js"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/template2.css">
+    <script src="../js/main.js" defer></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4694546652618195"
+     crossorigin="anonymous"></script>
+
+
+<style>
+/* =====================================================================
+   Scoped styles for the "数制 / 编码 / 布尔代数 / 位掩码" teaching module.
+   Every selector is prefixed with .sc-page so the site stylesheets
+   (style.css / template2.css: `*` reset, .card, header/nav/footer element
+   rules, body flex column) cannot leak into the module - and the module
+   cannot leak into the site navbar / footer.
+   ===================================================================== */
+.sc-page{--bg:#f5f7fb;--paper:#fff;--ink:#263449;--muted:#64748b;--blue:#2563eb;--blue-light:#eaf1ff;--teal:#0f9488;--orange:#d97706;--red:#dc4444;--line:#e2e8f0;--shadow:0 5px 22px rgba(30,50,80,.07);margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Microsoft YaHei",sans-serif;line-height:1.75}
+/* hero banner (style.css also targets the bare <header> element) */
+.sc-page header{background:linear-gradient(120deg,#173b72,#2868bd);color:white;padding:48px 20px 38px;text-align:center;margin:0;position:relative}
+.sc-page header h1{font-size:clamp(27px,4vw,42px);margin:0 0 10px;color:#fff;font-weight:800}
+.sc-page header p{margin:5px auto;max-width:760px;color:#e1ebff;font-weight:400}
+.sc-page header .tag{display:inline-block;border:1px solid #ffffff66;border-radius:20px;padding:4px 13px;font-size:13px;margin-top:15px}
+/* two column layout: sticky sidebar + content */
+.sc-page .layout{max-width:1200px;margin:25px auto;padding:0 18px;display:grid;grid-template-columns:245px minmax(0,1fr);gap:24px}
+.sc-page nav{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;height:max-content;position:sticky;top:78px;box-shadow:var(--shadow)}
+.sc-page nav strong{display:block;margin-bottom:10px}
+.sc-page nav a{display:block;text-decoration:none;color:#475569;padding:7px 9px;border-radius:7px;font-size:14px}
+.sc-page nav a:hover{background:var(--blue-light);color:var(--blue)}
+.sc-page .sc-main{min-width:0}
+.sc-page section{background:var(--paper);padding:28px 30px;margin-bottom:22px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);scroll-margin-top:18px}
+/* headings + text */
+.sc-page h2{font-size:25px;margin:0 0 18px;color:#173b72;border-bottom:2px solid var(--blue-light);padding-bottom:10px}
+.sc-page h3{font-size:19px;margin:24px 0 10px;color:#254b7e}
+.sc-page h4{margin:14px 0 7px}
+.sc-page p{margin:9px 0}
+.sc-page ul,.sc-page ol{padding-left:24px}
+.sc-page li{margin:3px 0}
+.sc-page .lead{font-size:16px;color:#52647c}
+.sc-page .small{font-size:13px;color:var(--muted)}
+.sc-page .en{color:var(--blue);font-weight:600}
+/* blocks */
+.sc-page .card{background:#f8faff;border:1px solid #e1eaf8;border-radius:10px;padding:16px;margin:14px 0;display:block;position:static;text-decoration:none;color:var(--ink)}
+.sc-page .card:hover{transform:none;border-color:#e1eaf8;box-shadow:none}
+.sc-page .tip{border-left:4px solid var(--teal);background:#effaf8;padding:13px 16px;border-radius:6px;margin:15px 0}
+.sc-page .warning{border-left:4px solid var(--orange);background:#fff8eb;padding:13px 16px;border-radius:6px;margin:15px 0}
+.sc-page .formula{background:#edf3ff;padding:13px 16px;border-radius:8px;text-align:center;font-family:Consolas,monospace;font-size:18px;margin:12px 0;overflow-x:auto}
+/* tables */
+.sc-page table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+.sc-page th,.sc-page td{border:1px solid var(--line);padding:9px 11px;text-align:left}
+.sc-page th{background:#edf3ff;color:#234875}
+.sc-page tr:nth-child(even) td{background:#fafcff}
+/* code */
+.sc-page code,.sc-page .mono{font-family:Consolas,monospace;background:#eef2f7;padding:2px 5px;border-radius:4px}
+/* controls */
+.sc-page button{border:0;background:var(--blue);color:white;border-radius:7px;padding:9px 16px;cursor:pointer;font-size:14px;margin:5px 4px 5px 0;font-family:inherit}
+.sc-page button:hover{filter:brightness(.92)}
+.sc-page button.secondary{background:#e8eef8;color:#294568}
+.sc-page input,.sc-page select{padding:9px 11px;border:1px solid #cbd5e1;border-radius:7px;font-size:15px;max-width:100%;background:white;font-family:inherit}
+.sc-page input:focus,.sc-page select:focus{outline:2px solid #bfdbfe;border-color:var(--blue)}
+/* exercises + quiz */
+.sc-page .exercise{background:#f8fafc;border:1px solid var(--line);padding:16px;border-radius:10px;margin:15px 0}
+.sc-page .result{margin-top:10px;font-weight:600;min-height:25px}
+.sc-page .correct{color:#0f8a62}
+.sc-page .wrong{color:var(--red)}
+.sc-page .steps{counter-reset:step;list-style:none;padding:0}
+.sc-page .steps li{counter-increment:step;margin:12px 0;padding:10px 12px 10px 46px;position:relative;background:#f8fafc;border-radius:8px}
+.sc-page .steps li:before{content:counter(step);position:absolute;left:12px;top:10px;background:var(--blue);color:white;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:13px}
+.sc-page .quiz-q{padding:14px 0;border-bottom:1px solid var(--line)}
+.sc-page .quiz-q label{display:block;margin:5px 0;cursor:pointer}
+/* credit line (the page's own <footer> is replaced by the site footer) */
+.sc-page .sc-credit{text-align:center;color:var(--muted);font-size:13px;margin:26px 18px 0;padding-top:16px;border-top:1px solid var(--line)}
+@media(max-width:850px){.sc-page .layout{grid-template-columns:1fr}.sc-page nav{position:static}.sc-page nav div{display:grid;grid-template-columns:1fr 1fr}.sc-page section{padding:21px 17px}}
+@media(max-width:480px){.sc-page nav div{grid-template-columns:1fr}.sc-page table{font-size:12px}.sc-page th,.sc-page td{padding:7px}}
+</style>
+</head>
+<body>
+
+<nav class="navbar" aria-label="主导航">
+        <a href="../" class="brand-logo" aria-label="CSAI 首页">
+            <div class="logo-icon-wrapper"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
+            <div class="brand-text">
+                <span class="brand-title">CSAI</span>
+                <span class="brand-subtitle">CS &amp; AI LEARNING</span>
+            </div>
+        </a>
+
+        <div class="nav-right-container">
+            <div class="nav-menu-wrapper">
+                <ul class="nav-menu">
+                    <li><a href="../index.html#cn-ai-tools">国产 AI 工具</a></li>
+                    <li><a href="../index.html#global-ai-tools">国际 AI 工具</a></li>
+                    <li><a href="../index.html#cs-intro">计算机导论</a></li>
+                    <li><a href="../index.html#cs-overview">计算机概论</a></li>
+                    <li><a href="../index.html#languages">编程语言</a></li>
+                    <li><a href="../index.html#web-dev">Web开发</a></li>
+                    <li><a href="../index.html#competitions">竞赛考试</a></li>
+                    <li><a href="../index.html#blog">动态资讯</a></li>
+                </ul>
+            </div>
+            <!-- 夜间模式切换按钮 -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="切换明暗主题" title="切换明暗主题">
+                <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <main class="about-page">
+
+    <nav class="about-breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <a href="../index.html#cs-intro">计算机导论</a>
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <span aria-current="page">数制、编码与逻辑代数</span>
+    </nav>
+
+        <div class="sc-page">
+
+<header>
+  <h1>计算机基础：数制、编码、布尔代数与位掩码</h1>
+  <p>Number Systems · Data Representation · Character Encoding · Boolean Algebra · Bit Masks</p>
+  <p>从数字表示到逻辑运算与位操作，理解计算机如何表示、存储和处理信息</p>
+  <span class="tag">大学一年级 · 计算机基础课程</span>
+</header>
+
+<div class="layout">
+<nav>
+  <strong>课程目录 Contents</strong>
+  <div>
+    <a href="#intro">学习目标</a>
+    <a href="#number">01 数制基础</a>
+    <a href="#conversion">02 进制转换</a>
+    <a href="#signed">03 整数与补码</a>
+    <a href="#codes">04 常用编码</a>
+    <a href="#unicode">05 Unicode 与 UTF-8</a>
+    <a href="#boolean">06 布尔代数</a>
+    <a href="#laws">07 布尔代数定律</a>
+    <a href="#simplify">08 逻辑表达式化简</a>
+    <a href="#mask">09 位掩码</a>
+    <a href="#practice">10 课堂练习</a>
+    <a href="#quiz">11 综合测验</a>
+  </div>
+</nav>
+
+<div class="sc-main">
+<section id="intro">
+<h2>学习目标 Learning Objectives</h2>
+<p class="lead">本讲讨论计算机中非常基础的问题：信息如何用二进制表示？计算机如何通过逻辑运算和位操作处理信息？</p>
+<div class="card">
+  <h3>完成本讲后，你应该能够：</h3>
+  <ul>
+    <li>理解二进制、八进制、十进制和十六进制的表示方法。</li>
+    <li>熟练进行不同进制之间的转换。</li>
+    <li>理解原码、反码和补码的基本概念。</li>
+    <li>区分 ASCII、Unicode 和 UTF-8。</li>
+    <li>掌握布尔代数的基本运算和常用定律。</li>
+    <li>利用布尔代数定律化简逻辑表达式。</li>
+    <li>理解位掩码的概念，并能使用掩码进行置位、清零、检测和翻转操作。</li>
+  </ul>
+</div>
+<div class="tip"><b>核心思想：</b>计算机内部使用二进制表示数据，逻辑电路通过布尔运算实现数据处理，位掩码则利用按位逻辑运算高效地选择和操作特定比特位。</div>
+</section>
+
+<section id="number">
+<h2>01 数制基础 Number Systems</h2>
+<h3>1. 什么是数制？</h3>
+<p>数制（Number System）是表示数值的一套规则。不同数制的主要区别在于使用的数字符号以及进位规则。</p>
+<table>
+<tr><th>数制</th><th>英文名称</th><th>基数</th><th>使用的数字</th></tr>
+<tr><td>二进制</td><td>Binary</td><td>2</td><td>0、1</td></tr>
+<tr><td>八进制</td><td>Octal</td><td>8</td><td>0–7</td></tr>
+<tr><td>十进制</td><td>Decimal</td><td>10</td><td>0–9</td></tr>
+<tr><td>十六进制</td><td>Hexadecimal</td><td>16</td><td>0–9、A–F</td></tr>
+</table>
+
+<h3>2. 位权（Positional Weight）</h3>
+<p>在位置计数法中，一个数字的实际数值取决于它所在的位置。每一位的权值是基数的相应次方。</p>
+<div class="formula">
+(1011)₂ = 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = (11)₁₀
+</div>
+<p>同理：</p>
+<div class="formula">
+(325)₈ = 3×8² + 2×8¹ + 5×8⁰ = (213)₁₀
+</div>
+<div class="formula">
+(2A)₁₆ = 2×16¹ + 10×16⁰ = (42)₁₀
+</div>
+
+<h3>3. 为什么计算机使用二进制？</h3>
+<p>计算机硬件主要由数字电路构成。数字电路容易区分两种稳定状态，例如：</p>
+<div class="card">
+  <table>
+    <tr><th>逻辑状态</th><th>典型电压示意</th><th>二进制表示</th></tr>
+    <tr><td>低电平（Low）</td><td>接近 0 V</td><td>0</td></tr>
+    <tr><td>高电平（High）</td><td>接近某个规定的高电压</td><td>1</td></tr>
+  </table>
+  <p class="small">说明：实际电压范围取决于具体芯片的逻辑电平标准，并非所有计算机都使用相同电压。</p>
+</div>
+<p>二进制的优点包括：电路实现相对简单、抗干扰能力较好、便于实现逻辑运算。</p>
+</section>
+
+<section id="conversion">
+<h2>02 进制转换 Number Conversion</h2>
+<h3>1. 任意进制转换为十进制</h3>
+<p>方法：每一位数字乘以对应位权，然后将结果相加。</p>
+<div class="card">
+  <b>例题：将 (110101)₂ 转换为十进制。</b>
+  <div class="formula">
+  1×2⁵ + 1×2⁴ + 0×2³ + 1×2² + 0×2¹ + 1×2⁰
+  </div>
+  <div class="formula">32 + 16 + 4 + 1 = (53)₁₀</div>
+</div>
+
+<h3>2. 十进制整数转换为二进制</h3>
+<p>方法：不断除以 2，记录每次的余数，最后从下向上读取余数。</p>
+<div class="card">
+  <b>例题：将 (25)₁₀ 转换为二进制。</b>
+  <table>
+    <tr><th>计算</th><th>商</th><th>余数</th></tr>
+    <tr><td>25 ÷ 2</td><td>12</td><td>1</td></tr>
+    <tr><td>12 ÷ 2</td><td>6</td><td>0</td></tr>
+    <tr><td>6 ÷ 2</td><td>3</td><td>0</td></tr>
+    <tr><td>3 ÷ 2</td><td>1</td><td>1</td></tr>
+    <tr><td>1 ÷ 2</td><td>0</td><td>1</td></tr>
+  </table>
+  <div class="formula">(25)₁₀ = (11001)₂</div>
+</div>
+
+<h3>3. 二进制与八进制、十六进制转换</h3>
+<p>二进制转八进制：从右向左，每 3 位分成一组。</p>
+<div class="formula">110 101 011₂ = 6 5 3₈ = (653)₈</div>
+<p>二进制转十六进制：从右向左，每 4 位分成一组。</p>
+<div class="formula">0010 1101 1010₂ = 2 D A₁₆ = (2DA)₁₆</div>
+<div class="tip">记忆方法：八进制对应 3 个二进制位，十六进制对应 4 个二进制位。</div>
+
+<h3>4. 进制转换交互练习</h3>
+<div class="exercise">
+  <p>输入一个非负整数，并选择原始进制，自动查看转换结果。</p>
+  <input id="baseInput" value="101101" aria-label="输入数值">
+  <select id="baseSelect" aria-label="原始进制">
+    <option value="2">二进制</option>
+    <option value="8">八进制</option>
+    <option value="10">十进制</option>
+    <option value="16">十六进制</option>
+  </select>
+  <button onclick="convertBase()">转换</button>
+  <div id="baseResult" class="result"></div>
+</div>
+</section>
+
+<section id="signed">
+<h2>03 整数表示与补码 Signed Integers</h2>
+<h3>1. 为什么需要有符号数？</h3>
+<p>计算机不仅需要表示正数，还需要表示负数。常见的有符号数表示方法包括原码、反码和补码。</p>
+<h3>2. 原码 Sign-Magnitude</h3>
+<p>最高位作为符号位：0 表示正数，1 表示负数；其余位表示数值大小。</p>
+<table>
+<tr><th>十进制数</th><th>8 位原码</th></tr>
+<tr><td>+5</td><td><code>00000101</code></td></tr>
+<tr><td>-5</td><td><code>10000101</code></td></tr>
+</table>
+<h3>3. 反码 One's Complement</h3>
+<p>正数的反码与原码相同；负数的反码是其正数原码按位取反（符号位也取反）。</p>
+<div class="formula">+5：00000101　　-5：11111010</div>
+<h3>4. 补码 Two's Complement</h3>
+<p>正数的补码与原码相同。负数的补码可以通过以下步骤获得：</p>
+<ol class="steps">
+  <li>写出对应正数的二进制表示。</li>
+  <li>对每一位进行取反，得到反码。</li>
+  <li>在反码基础上加 1，得到补码。</li>
+</ol>
+<div class="card">
+  <b>例题：求 -5 的 8 位补码。</b>
+  <p>+5 的二进制：<code>00000101</code></p>
+  <p>取反：<code>11111010</code></p>
+  <p>加 1：<code>11111011</code></p>
+  <div class="formula">(-5) 的 8 位补码 = 11111011</div>
+</div>
+<h3>5. 8 位补码的表示范围</h3>
+<div class="formula">-2⁷ ≤ x ≤ 2⁷ - 1，即 -128 ≤ x ≤ 127</div>
+<div class="warning">注意：8 位补码中，10000000 表示 -128，而不是 -0。补码只有一个 0。</div>
+</section>
+
+<section id="codes">
+<h2>04 常用编码 Character Codes</h2>
+<h3>1. 什么是编码？</h3>
+<p>编码（Encoding）是为字符、数字或其他信息分配特定二进制表示的规则。计算机通过编码将人类可读的信息转换为可以存储和处理的数据。</p>
+<h3>2. BCD 编码</h3>
+<p>BCD（Binary-Coded Decimal）使用 4 位二进制表示一个十进制数字。</p>
+<table>
+<tr><th>十进制数字</th><th>BCD 编码</th></tr>
+<tr><td>0</td><td>0000</td></tr>
+<tr><td>1</td><td>0001</td></tr>
+<tr><td>2</td><td>0010</td></tr>
+<tr><td>3</td><td>0011</td></tr>
+<tr><td>4</td><td>0100</td></tr>
+<tr><td>5</td><td>0101</td></tr>
+<tr><td>6</td><td>0110</td></tr>
+<tr><td>7</td><td>0111</td></tr>
+<tr><td>8</td><td>1000</td></tr>
+<tr><td>9</td><td>1001</td></tr>
+</table>
+<div class="card">
+  <b>例题：十进制数 59 的 BCD 编码。</b>
+  <div class="formula">5 → 0101，9 → 1001</div>
+  <div class="formula">59 的 BCD = 0101 1001</div>
+  <p class="small">注意：BCD 的 0101 1001 与数值 59 的纯二进制 00111011 不同。</p>
+</div>
+
+<h3>3. ASCII 编码</h3>
+<p>ASCII（American Standard Code for Information Interchange）是早期广泛使用的字符编码标准。</p>
+<ul>
+  <li>标准 ASCII 使用 7 位二进制。</li>
+  <li>可以表示 128 个字符。</li>
+  <li>包括英文字母、数字、标点符号和控制字符。</li>
+</ul>
+<table>
+<tr><th>字符</th><th>十进制编码</th><th>7 位二进制</th><th>十六进制</th></tr>
+<tr><td>A</td><td>65</td><td>1000001</td><td>41</td></tr>
+<tr><td>B</td><td>66</td><td>1000010</td><td>42</td></tr>
+<tr><td>a</td><td>97</td><td>1100001</td><td>61</td></tr>
+<tr><td>0</td><td>48</td><td>0110000</td><td>30</td></tr>
+<tr><td>空格</td><td>32</td><td>0100000</td><td>20</td></tr>
+</table>
+</section>
+
+<section id="unicode">
+<h2>05 Unicode 与 UTF-8</h2>
+<h3>1. 为什么需要 Unicode？</h3>
+<p>ASCII 主要满足英文字符的编码需求，但世界上存在大量语言和文字。不同地区曾经使用不同字符编码，容易造成文本显示错误。</p>
+<p>Unicode（统一码）为世界上绝大多数现代文字系统中的字符分配统一的码点（Code Point）。</p>
+<h3>2. Unicode 与 UTF-8 有什么区别？</h3>
+<div class="card">
+  <p><b>Unicode：</b>定义字符对应的码点，例如字母 A 对应 U+0041。</p>
+  <p><b>UTF-8：</b>一种将 Unicode 码点编码为字节序列的方式。</p>
+  <p><b>UTF-16：</b>另一种 Unicode 编码方式，使用一个或两个 16 位代码单元表示一个码点。</p>
+</div>
+<h3>3. UTF-8 的编码长度</h3>
+<table>
+<tr><th>Unicode 码点范围</th><th>UTF-8 字节数</th></tr>
+<tr><td>U+0000 – U+007F</td><td>1 字节</td></tr>
+<tr><td>U+0080 – U+07FF</td><td>2 字节</td></tr>
+<tr><td>U+0800 – U+FFFF</td><td>3 字节</td></tr>
+<tr><td>U+10000 – U+10FFFF</td><td>4 字节</td></tr>
+</table>
+<h3>4. 字符编码观察器</h3>
+<div class="exercise">
+  <p>输入英文、中文或其他字符，观察其 Unicode 码点与 UTF-8 字节。</p>
+  <input id="charInput" value="A中" aria-label="输入字符">
+  <button onclick="showEncoding()">查看编码</button>
+  <div id="encodingResult"></div>
+</div>
+<div class="tip">UTF-8 对 ASCII 字符保持兼容。因此，字母 A 在 ASCII 和 UTF-8 中都使用一个字节 0x41。</div>
+</section>
+
+<section id="boolean">
+<h2>06 布尔代数 Boolean Algebra</h2>
+<h3>1. 什么是布尔代数？</h3>
+<p>布尔代数（Boolean Algebra）是一种研究逻辑变量和逻辑运算的数学系统。逻辑变量只有两种取值：</p>
+<div class="formula">0 = False（假）　　1 = True（真）</div>
+<h3>2. 三种基本逻辑运算</h3>
+<table>
+<tr><th>运算</th><th>符号</th><th>含义</th></tr>
+<tr><td>逻辑与 AND</td><td>A · B 或 AB</td><td>两个输入都为 1，输出才为 1</td></tr>
+<tr><td>逻辑或 OR</td><td>A + B</td><td>至少一个输入为 1，输出就为 1</td></tr>
+<tr><td>逻辑非 NOT</td><td>Ā 或 ¬A</td><td>将输入取反</td></tr>
+</table>
+<h3>3. 真值表 Truth Table</h3>
+<table>
+<tr><th>A</th><th>B</th><th>AND (AB)</th><th>OR (A+B)</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</table>
+<table>
+<tr><th>A</th><th>NOT (Ā)</th></tr>
+<tr><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td></tr>
+</table>
+<h3>4. 复合逻辑表达式</h3>
+<p>例如：</p>
+<div class="formula">Y = A · B + C</div>
+<p>运算顺序：先计算 AND，再计算 OR。也可以使用括号明确运算顺序。</p>
+<div class="card">
+  <b>例题：A=1，B=0，C=1，求 Y。</b>
+  <p>Y = 1 × 0 + 1 = 0 + 1 = 1</p>
+</div>
+</section>
+
+<section id="laws">
+<h2>07 布尔代数公理与常用定律</h2>
+<p>布尔代数定律是逻辑表达式化简的基础。以下使用 <code>+</code> 表示 OR，<code>·</code> 表示 AND，横线或 <code>¬</code> 表示 NOT。</p>
+<table>
+<tr><th>定律</th><th>逻辑与表达式</th><th>逻辑或表达式</th></tr>
+<tr><td>恒等律 Identity</td><td>A·1 = A</td><td>A+0 = A</td></tr>
+<tr><td>支配律 Domination</td><td>A·0 = 0</td><td>A+1 = 1</td></tr>
+<tr><td>幂等律 Idempotent</td><td>A·A = A</td><td>A+A = A</td></tr>
+<tr><td>互补律 Complement</td><td>A·Ā = 0</td><td>A+Ā = 1</td></tr>
+<tr><td>双重否定 Involution</td><td colspan="2">¬(¬A) = A</td></tr>
+<tr><td>交换律 Commutative</td><td>A·B = B·A</td><td>A+B = B+A</td></tr>
+<tr><td>结合律 Associative</td><td>(AB)C = A(BC)</td><td>(A+B)+C = A+(B+C)</td></tr>
+<tr><td>分配律 Distributive</td><td colspan="2">A(B+C) = AB+AC；A+BC = (A+B)(A+C)</td></tr>
+<tr><td>吸收律 Absorption</td><td colspan="2">A+AB = A；A(A+B) = A</td></tr>
+</table>
+<h3>德摩根定律 De Morgan's Laws</h3>
+<div class="formula">¬(A·B) = ¬A + ¬B</div>
+<div class="formula">¬(A+B) = ¬A · ¬B</div>
+<p>含义：一个整体的 AND 取反，等于各变量分别取反后进行 OR；一个整体的 OR 取反，等于各变量分别取反后进行 AND。</p>
+<div class="tip">记忆方法：整体取反时，AND 和 OR 互换，括号内每个变量也要取反。</div>
+</section>
+
+<section id="simplify">
+<h2>08 布尔表达式化简 Simplification</h2>
+<h3>1. 为什么要化简逻辑表达式？</h3>
+<p>复杂的逻辑表达式通常需要更多逻辑门电路。化简表达式可以减少逻辑门数量、降低电路复杂度，并有助于降低功耗和延迟。</p>
+<h3>2. 例题一：利用吸收律</h3>
+<div class="card">
+  <b>化简：Y = A + AB</b>
+  <ol class="steps">
+    <li>原式：Y = A + AB</li>
+    <li>提取公因子：Y = A(1+B)</li>
+    <li>利用支配律：1+B = 1</li>
+    <li>最终结果：<b>Y = A</b></li>
+  </ol>
+</div>
+<h3>3. 例题二：利用分配律与互补律</h3>
+<div class="card">
+  <b>化简：Y = AB + A B̄</b>
+  <ol class="steps">
+    <li>原式：Y = AB + A B̄</li>
+    <li>提取公因子 A：Y = A(B+B̄)</li>
+    <li>利用互补律：B+B̄ = 1</li>
+    <li>利用恒等律：A·1 = A</li>
+    <li>最终结果：<b>Y = A</b></li>
+  </ol>
+</div>
+<h3>4. 例题三：利用德摩根定律</h3>
+<div class="card">
+  <b>化简：Y = ¬(A+B) + A</b>
+  <ol class="steps">
+    <li>使用德摩根定律：Y = Ā·B̄ + A</li>
+    <li>利用分配律：Y = (A+Ā)(A+B̄)</li>
+    <li>利用互补律：A+Ā = 1</li>
+    <li>利用恒等律：Y = 1·(A+B̄)</li>
+    <li>最终结果：<b>Y = A+B̄</b></li>
+  </ol>
+</div>
+<h3>5. 例题四：较复杂的化简</h3>
+<div class="card">
+  <b>化简：Y = AB + ĀB + AB̄</b>
+  <ol class="steps">
+    <li>合并前两项：Y = B(A+Ā) + AB̄</li>
+    <li>利用互补律：Y = B + AB̄</li>
+    <li>利用分配律：Y = (B+A)(B+B̄)</li>
+    <li>利用互补律：Y = (A+B)·1</li>
+    <li>最终结果：<b>Y = A+B</b></li>
+  </ol>
+</div>
+<h3>6. 化简的基本策略</h3>
+<ul>
+  <li>寻找可以提取的公因子。</li>
+  <li>寻找互补项，如 A+Ā 或 AĀ。</li>
+  <li>使用吸收律消除多余项。</li>
+  <li>使用德摩根定律处理复杂的取反表达式。</li>
+  <li>通过真值表验证化简前后的表达式是否等价。</li>
+</ul>
+</section>
+
+<section id="mask">
+<h2>09 位掩码 Bit Masks</h2>
+<p class="lead">位掩码（Bitmask / Mask）是计算机中利用二进制位进行高效状态管理与数据筛选的核心技术，与布尔代数中的按位运算紧密相关。</p>
+
+<h3>1. 什么是掩码？</h3>
+<p><b>掩码</b>是一串二进制数字，通过与目标数据的<strong>按位操作</strong>（AND、OR、XOR、NOT），可以有选择地保留、清除、设置或翻转某些比特位，从而达到“屏蔽”或“提取”指定位的目的。</p>
+<div class="tip">形象理解：掩码就像一把“遮罩”，把你不关心的位遮住（变成 0），只留下需要关注的位。</div>
+
+<h3>2. 掩码与布尔代数的关系</h3>
+<p>位掩码的操作本质上就是布尔代数中按位与、或、非、异或运算的实际应用：</p>
+<table>
+<tr><th>操作</th><th>运算符</th><th>掩码作用</th><th>布尔代数对应</th></tr>
+<tr><td>按位与 AND</td><td>&amp;</td><td>清零指定位 / 检测位</td><td>A · B</td></tr>
+<tr><td>按位或 OR</td><td>|</td><td>置位（设为 1）</td><td>A + B</td></tr>
+<tr><td>按位异或 XOR</td><td>^</td><td>翻转指定位</td><td>A ⊕ B</td></tr>
+<tr><td>按位取反 NOT</td><td>~</td><td>生成掩码的补码形式</td><td>¬A</td></tr>
+</table>
+
+<h3>3. 四种核心操作</h3>
+<div class="card">
+  <h4>（1）置位（Set Bit）—— 使用 OR</h4>
+  <p>想把某几位置为 1，其他位保持不变，就用“或”运算。</p>
+  <div class="formula">结果 = 原数 | 掩码</div>
+  <p>例：把 8 位数 <code>0100 1010</code> 的第 0 位和第 3 位置 1：</p>
+  <div class="formula">0100 1010 | 0000 1001 = 0100 1011</div>
+</div>
+
+<div class="card">
+  <h4>（2）清零（Clear Bit）—— 使用 AND + NOT</h4>
+  <p>想把某几位清为 0，其他位保持不变，就用“与”运算配合掩码的取反。</p>
+  <div class="formula">结果 = 原数 &amp; (~掩码)</div>
+  <p>例：把 <code>0100 1010</code> 的第 1 位和第 3 位清零（掩码 = 0000 1010）：</p>
+  <div class="formula">0100 1010 &amp; 1111 0101 = 0100 0000</div>
+</div>
+
+<div class="card">
+  <h4>（3）检测（Test / Check Bit）—— 使用 AND</h4>
+  <p>判断某一位是否为 1：</p>
+  <div class="formula">若 (原数 &amp; 掩码) ≠ 0，则该位为 1</div>
+  <p>例：判断 <code>0100 1010</code> 的第 3 位是否为 1（掩码 = 0000 1000）：</p>
+  <div class="formula">0100 1010 &amp; 0000 1000 = 0000 1000 ≠ 0 → 是 1</div>
+</div>
+
+<div class="card">
+  <h4>（4）翻转（Toggle Bit）—— 使用 XOR</h4>
+  <p>把指定位取反，其他位不变：</p>
+  <div class="formula">结果 = 原数 ^ 掩码</div>
+  <p>例：翻转 <code>0100 1010</code> 的第 1 位和第 4 位：</p>
+  <div class="formula">0100 1010 ^ 0001 0010 = 0101 1000</div>
+</div>
+
+<h3>4. 生成掩码的常用技巧</h3>
+<ul>
+  <li><code>1 &lt;&lt; n</code>：生成第 n 位为 1 的掩码（从右往左，从 0 开始计数）</li>
+  <li><code>(1 &lt;&lt; k) - 1</code>：生成低 k 位全为 1 的掩码</li>
+  <li>多个位掩码可用 OR 合并：<code>mask = (1&lt;&lt;2) | (1&lt;&lt;5)</code></li>
+</ul>
+
+<h3>5. 经典应用示例</h3>
+<div class="card">
+  <b>例题 1：权限管理（状态标志）</b>
+  <p>用一个整数的低 4 位分别表示读、写、执行、删除权限：</p>
+  <table>
+    <tr><th>权限</th><th>掩码</th><th>二进制</th></tr>
+    <tr><td>读 READ</td><td>1 &lt;&lt; 0</td><td>0001</td></tr>
+    <tr><td>写 WRITE</td><td>1 &lt;&lt; 1</td><td>0010</td></tr>
+    <tr><td>执行 EXECUTE</td><td>1 &lt;&lt; 2</td><td>0100</td></tr>
+    <tr><td>删除 DELETE</td><td>1 &lt;&lt; 3</td><td>1000</td></tr>
+  </table>
+  <p>用户权限 = READ | WRITE = 0011（十进制 3）</p>
+  <p>检查是否有写权限：<code>(权限 &amp; WRITE) != 0</code> → 真</p>
+  <p>增加删除权限：<code>权限 = 权限 | DELETE</code> → 1011</p>
+  <p>取消写权限：<code>权限 = 权限 &amp; ~WRITE</code> → 1001</p>
+</div>
+
+<div class="card">
+  <b>例题 2：提取低 4 位（屏蔽高位）</b>
+  <p>原数 <code>1101 0110</code>，只想保留低 4 位：</p>
+  <div class="formula">掩码 = 0000 1111</div>
+  <div class="formula">1101 0110 &amp; 0000 1111 = 0000 0110</div>
+</div>
+
+<div class="card">
+  <b>例题 3：子网掩码（网络中的应用）</b>
+  <p>IP 地址与子网掩码做按位与运算，可得到网络地址。例如：</p>
+  <p>IP：192.168.1.100 → <code>11000000.10101000.00000001.01100100</code></p>
+  <p>掩码：255.255.255.0 → <code>11111111.11111111.11111111.00000000</code></p>
+  <p>网络地址 = IP &amp; 掩码 = 192.168.1.0</p>
+  <p class="small">这是掩码在计算机网络中的典型应用，本质上仍是位掩码的 AND 操作。</p>
+</div>
+
+<h3>6. 常见考试 / 考点提示</h3>
+<ul>
+  <li>能根据题目要求写出正确的掩码（如“清除第 2、5 位”应使用什么掩码）。</li>
+  <li>熟练掌握四种基本操作对应的运算符。</li>
+  <li>理解 <code>1 &lt;&lt; n</code> 的含义及位编号从右向左从 0 开始。</li>
+  <li>能解释为什么用 <code>&amp; ~mask</code> 清零而不是直接用某个数。</li>
+  <li>在权限、状态寄存器、标志位、位域等场景中识别掩码的使用。</li>
+</ul>
+<div class="warning">注意：在有符号整数中使用 <code>~</code> 取反时要小心符号扩展问题；实际编程中常使用无符号类型或明确位数。</div>
+</section>
+
+<section id="practice">
+<h2>10 课堂练习 Exercises</h2>
+<h3>练习一：数制转换</h3>
+<div class="exercise">
+  <p><b>问题 1：</b>(101101)₂ 转换为十进制是多少？</p>
+  <input id="p1" placeholder="输入答案">
+  <button onclick="checkText('p1','45','r1')">检查答案</button>
+  <div id="r1" class="result"></div>
+</div>
+<div class="exercise">
+  <p><b>问题 2：</b>(156)₁₀ 转换为十六进制是多少？</p>
+  <input id="p2" placeholder="输入答案，例如 9C">
+  <button onclick="checkText('p2','9c','r2')">检查答案</button>
+  <div id="r2" class="result"></div>
+</div>
+<div class="exercise">
+  <p><b>问题 3：</b>8 位补码 11111011 表示的十进制数是多少？</p>
+  <input id="p3" placeholder="输入答案">
+  <button onclick="checkText('p3','-5','r3')">检查答案</button>
+  <div id="r3" class="result"></div>
+</div>
+
+<h3>练习二：布尔代数化简</h3>
+<div class="exercise">
+  <p><b>问题 4：</b>化简 Y = A + A·B。</p>
+  <button class="secondary" onclick="toggleAnswer('a4')">显示参考答案</button>
+  <div id="a4" hidden>Y = A（利用吸收律 A+AB=A）</div>
+</div>
+<div class="exercise">
+  <p><b>问题 5：</b>化简 Y = A·B + A·B̄。</p>
+  <button class="secondary" onclick="toggleAnswer('a5')">显示参考答案</button>
+  <div id="a5" hidden>Y = A(B+B̄) = A·1 = A</div>
+</div>
+<div class="exercise">
+  <p><b>问题 6：</b>化简 Y = (A+B)(A+Ā)。</p>
+  <button class="secondary" onclick="toggleAnswer('a6')">显示参考答案</button>
+  <div id="a6" hidden>Y = (A+B)·1 = A+B</div>
+</div>
+
+<h3>练习三：位掩码</h3>
+<div class="exercise">
+  <p><b>问题 7：</b>要把 8 位二进制数的第 2 位（从右往左，从 0 开始）置为 1，应使用的掩码是？（用二进制或十进制均可）</p>
+  <input id="p7" placeholder="例如 00000100 或 4">
+  <button onclick="checkMask('p7',['4','00000100','100'],'r7')">检查答案</button>
+  <div id="r7" class="result"></div>
+</div>
+<div class="exercise">
+  <p><b>问题 8：</b>已知 x = 0b10110110，执行 x &amp; 0b00001111 后结果是多少？（二进制）</p>
+  <input id="p8" placeholder="输入二进制结果">
+  <button onclick="checkText('p8','00000110','r8')">检查答案</button>
+  <div id="r8" class="result"></div>
+</div>
+<div class="exercise">
+  <p><b>问题 9：</b>要清除 x 的第 0 位和第 3 位，应执行 x = x &amp; ? （写出掩码的二进制或十进制）</p>
+  <input id="p9" placeholder="例如 11110110 或 246">
+  <button onclick="checkMask('p9',['246','11110110','f6'],'r9')">检查答案</button>
+  <div id="r9" class="result"></div>
+</div>
+<div class="exercise">
+  <p><b>问题 10：</b>判断一个数是否为偶数，最常用的掩码操作是什么？</p>
+  <button class="secondary" onclick="toggleAnswer('a10')">显示参考答案</button>
+  <div id="a10" hidden>x &amp; 1 == 0（检测最低位是否为 0）</div>
+</div>
+</section>
+
+<section id="quiz">
+<h2>11 综合测验 Quiz</h2>
+<p>完成以下 12 道单选题，点击提交后查看得分和参考答案。</p>
+<form id="quizForm">
+<div id="quizQuestions"></div>
+<button type="button" onclick="submitQuiz()">提交测验</button>
+<button type="reset" class="secondary" onclick="resetQuiz()">重新答题</button>
+</form>
+<div id="quizResult" class="result"></div>
+<div id="quizReview"></div>
+</section>
+</div>
+</div>
+
+<p class="sc-credit">计算机基础课程 · Number Systems, Codes, Boolean Algebra and Bit Masks<br>建议：先理解概念，再完成计算练习，最后通过测验检查掌握情况。</p>
+
+        </div>
+
+    </main>
+
+<footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p><strong>CSAI Navigation</strong> <span class="version-badge">v1.3.0</span></p>
+                <p>&copy; 2026 CSAI Team. 保留所有权利。</p>
+            </div>
+        <div class="footer-contact">
+    <a href="../AboutUs.html">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i> About Us
+    </a>
+    <!-- 修改这里：加上 id，去掉 href="mailto:..." -->
+    <a href="javascript:void(0);" id="footer-contact-email">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i> 联系我们
+    </a> 
+    <a href="https://github.com/Young2022/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+    </a>
+    <a href="../posts/PrivacyPolicy.html">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 隐私政策
+    </a>
+    <a href="../posts/Disclaimer.html">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> 免责声明
+    </a>
+    </div>
+    </div>
+    </footer>
+
+
+
+<script>
+function convertBase(){
+  const raw=document.getElementById('baseInput').value.trim();
+  const base=Number(document.getElementById('baseSelect').value);
+  const out=document.getElementById('baseResult');
+  if(!raw){out.textContent='请输入数值。';out.className='result wrong';return;}
+  const n=parseInt(raw,base);
+  if(!Number.isSafeInteger(n)||n<0||n.toString(base)!==raw.toLowerCase()){
+    out.textContent='输入无效，请检查数字是否符合所选进制。';
+    out.className='result wrong';return;
+  }
+  out.className='result correct';
+  out.innerHTML='十进制：<b>'+n+'</b><br>二进制：<b>'+n.toString(2)+'</b><br>八进制：<b>'+n.toString(8)+'</b><br>十六进制：<b>'+n.toString(16).toUpperCase()+'</b>';
+}
+function showEncoding(){
+  const s=document.getElementById('charInput').value;
+  const out=document.getElementById('encodingResult');
+  if(!s){out.textContent='请先输入字符。';return;}
+  let html='<table><tr><th>字符</th><th>Unicode 码点</th><th>UTF-8 字节</th></tr>';
+  for(const ch of s){
+    const bytes=Array.from(new TextEncoder().encode(ch))
+      .map(b=>'0x'+b.toString(16).toUpperCase().padStart(2,'0')).join(' ');
+    html+='<tr><td>'+escapeHTML(ch)+'</td><td>U+'+
+      ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')+
+      '</td><td><code>'+bytes+'</code></td></tr>';
+  }
+  out.innerHTML=html+'</table>';
+}
+function escapeHTML(s){
+  return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function checkText(inputId,answer,resultId){
+  const v=document.getElementById(inputId).value.trim().toLowerCase();
+  const el=document.getElementById(resultId);
+  if(v===answer.toLowerCase()){
+    el.textContent='正确！';el.className='result correct';
+  }else{
+    el.textContent='还不正确，请重新计算。';el.className='result wrong';
+  }
+}
+function checkMask(inputId,answers,resultId){
+  const v=document.getElementById(inputId).value.trim().toLowerCase().replace(/^0b/,'').replace(/^0x/,'');
+  const el=document.getElementById(resultId);
+  if(answers.some(a=>v===a.toLowerCase())){
+    el.textContent='正确！';el.className='result correct';
+  }else{
+    el.textContent='还不正确，请重新思考掩码的构造。';el.className='result wrong';
+  }
+}
+function toggleAnswer(id){
+  const e=document.getElementById(id);e.hidden=!e.hidden;
+}
+const questions=[
+ {q:'二进制数 (1010)₂ 对应的十进制数是？',o:['8','10','12','14'],a:1,e:'1×8+0×4+1×2+0×1=10。'},
+ {q:'十进制数 15 的二进制表示是？',o:['1010','1100','1111','1001'],a:2,e:'15=8+4+2+1，因此是 1111。'},
+ {q:'十六进制中的字母 A 对应十进制多少？',o:['8','9','10','11'],a:2,e:'十六进制 A 表示十进制 10。'},
+ {q:'二进制转八进制时，每几位分为一组？',o:['2 位','3 位','4 位','8 位'],a:1,e:'八进制基数为 8=2³，因此每 3 位一组。'},
+ {q:'8 位补码能够表示的最小整数是？',o:['-127','-128','-255','-256'],a:1,e:'8 位补码范围是 -128 到 +127。'},
+ {q:'标准 ASCII 使用多少位？',o:['6 位','7 位','8 位','16 位'],a:1,e:'标准 ASCII 使用 7 位，可以表示 128 个编码。'},
+ {q:'UTF-8 编码一个普通英文字母通常占几个字节？',o:['1','2','3','4'],a:0,e:'ASCII 范围内的字符在 UTF-8 中占 1 字节。'},
+ {q:'A + 0 在布尔代数中等于？',o:['0','1','A','Ā'],a:2,e:'根据恒等律，A+0=A。'},
+ {q:'A·Ā 的结果是？',o:['0','1','A','Ā'],a:0,e:'根据互补律，A·Ā=0。'},
+ {q:'根据吸收律，A+AB 等于？',o:['AB','A','B','A+B'],a:1,e:'A+AB=A。'},
+ {q:'要把某位置为 1，其他位不变，应使用哪种位运算？',o:['AND','OR','XOR','NOT'],a:1,e:'置位使用 OR（|）运算。'},
+ {q:'判断最低位是否为 1，常用的操作是？',o:['x | 1','x & 1','x ^ 1','~x'],a:1,e:'x & 1 可检测最低位，结果非 0 表示是奇数（最低位为 1）。'}
+];
+function renderQuiz(){
+  const box=document.getElementById('quizQuestions');
+  box.innerHTML=questions.map((q,i)=>
+    '<div class="quiz-q"><b>'+(i+1)+'. '+q.q+'</b>'+
+    q.o.map((v,j)=>'<label><input type="radio" name="q'+i+'" value="'+j+'"> '+String.fromCharCode(65+j)+'. '+v+'</label>').join('')+
+    '</div>'
+  ).join('');
+}
+function submitQuiz(){
+  let score=0,answered=0,review='';
+  questions.forEach((q,i)=>{
+    const selected=document.querySelector('input[name="q'+i+'"]:checked');
+    if(selected)answered++;
+    const ok=selected&&Number(selected.value)===q.a;
+    if(ok)score++;
+    review+='<div class="quiz-q"><b>'+(i+1)+'. '+(ok?'✓ 正确':'✗ 未答对')+
+      '</b><br>正确答案：'+String.fromCharCode(65+q.a)+'. '+q.o[q.a]+
+      '<br><span class="small">'+q.e+'</span></div>';
+  });
+  document.getElementById('quizResult').innerHTML=
+    '得分：'+score+' / 12　|　已答：'+answered+' / 12';
+  document.getElementById('quizResult').className=
+    'result '+(score>=7?'correct':'wrong');
+  document.getElementById('quizReview').innerHTML=
+    '<h3>答案解析</h3>'+review;
+}
+function resetQuiz(){
+  setTimeout(()=>{
+    document.getElementById('quizResult').textContent='';
+    document.getElementById('quizReview').innerHTML='';
+  },0);
+}
+renderQuiz();
+</script>
+
+</body>
+</html>
