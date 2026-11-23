@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Simple Computer - an interactive teaching module on CPU architecture, instruction sets, the fetch-decode-execute cycle, worked examples, a step-by-step simulator and a self-check quiz.">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="robots" content="index, follow">
+
+    <!-- 安全说明：X-Frame-Options、X-Content-Type-Options、frame-ancestors 无法通过 meta 生效，发布时须在服务器 HTTP 响应头中配置 -->
+    <!-- 本页为单文件教学模块（含内联样式表与内联脚本），因此在 style-src / script-src 中放开 'unsafe-inline'；
+         若将样式与脚本改为外链（css/sc.css、js/sc.js），即可删除这两处 'unsafe-inline' 恢复严格 CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>A Simple Computer - Instruction Processing | CSAI</title>
+
+    <!-- 主题初始化：必须在样式表加载前执行，避免暗色用户闪白屏 (FOUC) -->
+    <script src="../js/theme-init.js"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/template2.css">
+    <script src="../js/main.js" defer></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4694546652618195"
+     crossorigin="anonymous"></script>
+
+
+<style>
+/* =====================================================================
+   Scoped styles for the "A Simple Computer" teaching module.
+   Every selector is prefixed with .sc-page so that the site stylesheets
+   (style.css / template2.css: `*` reset, .card, header/nav/footer element
+   rules, body flex column) cannot leak into the module - and the module
+   cannot leak into the site navbar / footer.
+   ===================================================================== */
+:root{--ink:#182338;--muted:#627089;--line:#dce4ef;--paper:#f5f8fc;--card:#fff;--blue:#2864dc;--blue2:#eaf1ff;--teal:#087f8c;--green:#16834b;--amber:#a65b08;--red:#b42318;--shadow:0 8px 28px rgba(25,45,80,.07)}
+.sc-page{background:var(--paper);color:var(--ink);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;max-width:1120px;margin:0 auto;padding-bottom:30px}
+/* hero banner (style.css also targets the bare <header> element) */
+.sc-page header{background:linear-gradient(120deg,#142b52,#2459a9);color:#fff;padding:54px 22px 46px;margin:0;text-align:left;position:relative}
+.sc-page .hero{max-width:1120px;margin:auto}
+.sc-page .eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:.78rem;font-weight:800;color:#bcd2ff}
+.sc-page .hero h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin:12px 0;color:#fff;font-weight:800}
+.sc-page .hero p{max-width:780px;color:#e0eaff;font-size:1.08rem;font-weight:400}
+.sc-page .pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.sc-page .pill{border:1px solid #7897ca;border-radius:30px;padding:5px 12px;font-size:.85rem;color:#f3f7ff}
+/* in-page sticky navigation (the site navbar is fixed and 60px tall) */
+.sc-page nav{position:sticky;top:60px;z-index:10;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);overflow:auto}
+.sc-page .navinner{max-width:1120px;margin:auto;display:flex;gap:6px;padding:9px 16px;white-space:nowrap}
+.sc-page nav a{color:#40516c;text-decoration:none;padding:7px 11px;border-radius:8px;font-size:.88rem;font-weight:650}
+.sc-page nav a:hover{background:var(--blue2);color:var(--blue)}
+/* sections + cards */
+.sc-page .section{margin:30px 0 42px;scroll-margin-top:60px}
+.sc-page .section h2{font-size:1.75rem;line-height:1.2;margin:0 0 10px}
+.sc-page .lead{color:var(--muted);max-width:850px;margin:0 0 20px}
+.sc-page .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0;box-shadow:var(--shadow);display:block;position:static;text-decoration:none;color:var(--ink)}
+.sc-page .card:hover{transform:none;border-color:var(--line);box-shadow:var(--shadow)}
+.sc-page .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.sc-page .col6{grid-column:span 6}
+.sc-page .col4{grid-column:span 4}
+.sc-page .col8{grid-column:span 8}
+.sc-page .col12{grid-column:span 12}
+@media(max-width:760px){.sc-page .col6,.sc-page .col4,.sc-page .col8{grid-column:span 12}.sc-page .card{padding:17px}}
+.sc-page h3{margin:0 0 9px;font-size:1.17rem}
+.sc-page h4{margin:12px 0 5px}
+.sc-page p{margin:8px 0}
+.sc-page ul,.sc-page ol{padding-left:23px}
+.sc-page li{margin:5px 0}
+.sc-page .muted{color:var(--muted)}
+.sc-page .small{font-size:.88rem}
+.sc-page .tag{display:inline-block;background:var(--blue2);color:#214fae;border-radius:6px;padding:2px 8px;font-size:.78rem;font-weight:750}
+.sc-page .callout{border-left:4px solid var(--blue);background:#f0f5ff;padding:13px 16px;border-radius:8px;margin:14px 0}
+.sc-page .warn{border-left-color:#d18a21;background:#fff8eb}
+.sc-page .success{border-left-color:var(--green);background:#effaf3}
+.sc-page .diagram{width:100%;height:auto;display:block;background:#f8faff;border:1px solid var(--line);border-radius:12px}
+/* code + tables */
+.sc-page code,.sc-page pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.sc-page pre{white-space:pre-wrap;background:#101d32;color:#eaf1ff;border-radius:12px;padding:17px;overflow:auto;font-size:.92rem}
+.sc-page code{background:#edf2f9;padding:2px 5px;border-radius:5px;color:#193c78}
+.sc-page table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.94rem}
+.sc-page th,.sc-page td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.sc-page th{background:#f2f6fc;color:#33435c;font-weight:750}
+/* flow diagram */
+.sc-page .flow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+.sc-page .flow .node{padding:12px 18px;border-radius:10px;background:var(--blue2);border:1px solid #cbdcff;font-weight:800}
+.sc-page .flow .arrow{font-size:1.3rem;color:var(--blue)}
+/* controls */
+.sc-page .controls{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.sc-page button,.sc-page select{font:inherit}
+.sc-page button{border:0;border-radius:9px;padding:10px 15px;background:var(--blue);color:#fff;font-weight:750;cursor:pointer}
+.sc-page button.secondary{background:#eaf0f8;color:#273a58}
+.sc-page button:disabled{opacity:.45;cursor:not-allowed}
+.sc-page button:hover:not(:disabled){filter:brightness(.95)}
+.sc-page select{padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+/* simulator */
+.sc-page .simgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+@media(max-width:760px){.sc-page .simgrid{grid-template-columns:1fr}}
+.sc-page .panel{border:1px solid var(--line);border-radius:12px;padding:15px;background:#fbfdff}
+.sc-page .panel h4{margin-top:0}
+.sc-page .memoryrow,.sc-page .regrow{display:flex;justify-content:space-between;gap:12px;padding:7px 9px;border-bottom:1px solid #e9eef5;font-family:ui-monospace,monospace}
+.sc-page .memoryrow.active{background:#fff2d9;outline:1px solid #efc36f;border-radius:6px}
+.sc-page .memoryrow.current{background:#eaf1ff}
+.sc-page .memoryrow span:last-child,.sc-page .regrow span:last-child{font-weight:800}
+.sc-page .status{padding:12px;border-radius:9px;background:#edf5ff;margin:10px 0;min-height:58px}
+.sc-page .stepbadge{font-size:.78rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.sc-page .progress{height:8px;background:#e7edf6;border-radius:9px;overflow:hidden}
+.sc-page .progress>div{height:100%;width:0;background:var(--blue);transition:width .25s}
+/* quiz */
+.sc-page .quizq{border-top:1px solid var(--line);padding:18px 0}
+.sc-page .quizq:first-child{border-top:0}
+.sc-page .options{display:grid;gap:8px;margin:12px 0}
+.sc-page .option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer}
+.sc-page .option:hover{background:#f7faff}
+.sc-page .option input{margin-top:5px;accent-color:var(--blue)}
+.sc-page .feedback{display:none;padding:10px 12px;border-radius:8px;margin-top:9px}
+.sc-page .feedback.show{display:block}
+.sc-page .correct{background:#edf9f1;color:#17643b}
+.sc-page .incorrect{background:#fff1ef;color:#992c24}
+.sc-page .score{font-weight:800;font-size:1.15rem}
+/* misc */
+.sc-page details{border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:10px 0;background:#fff}
+.sc-page summary{cursor:pointer;font-weight:750}
+.sc-page .kbd{font-family:monospace;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:#fff}
+.sc-page .sc-credit{text-align:center;color:var(--muted);font-size:.9rem;margin:34px 18px 0;padding-top:18px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<nav class="navbar" aria-label="主导航">
+        <a href="../index.html" class="brand-logo" aria-label="CSAI 首页">
+            <div class="logo-icon-wrapper"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
+            <div class="brand-text">
+                <span class="brand-title">CSAI</span>
+                <span class="brand-subtitle">CS &amp; AI LEARNING</span>
+            </div>
+        </a>
+
+        <div class="nav-right-container">
+            <div class="nav-menu-wrapper">
+                <ul class="nav-menu">
+                    <li><a href="../index.html#cn-ai-tools">国产 AI 工具</a></li>
+                    <li><a href="../index.html#global-ai-tools">国际 AI 工具</a></li>
+                    <li><a href="../index.html#cs-intro">计算机导论</a></li>
+                    <li><a href="../index.html#cs-overview">计算机概论</a></li>
+                    <li><a href="../index.html#languages">编程语言</a></li>
+                    <li><a href="../index.html#web-dev">Web开发</a></li>
+                    <li><a href="../index.html#competitions">竞赛考试</a></li>
+                    <li><a href="../index.html#blog">动态资讯</a></li>
+                </ul>
+            </div>
+            <!-- 夜间模式切换按钮 -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="切换明暗主题" title="切换明暗主题">
+                <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <main class="about-page">
+
+    <nav class="about-breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Home</a>
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <a href="../index.html#cs-intro">计算机导论</a>
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <span aria-current="page">A Simple Computer</span>
+    </nav>
+
+        <div class="sc-page">
+
+<header>
+ <div class="hero">
+  <div class="eyebrow">Principles of Computer Composition · Learning module</div>
+  <h1>A Simple Computer</h1>
+  <p>How a processor fetches, decodes, and executes instructions — from the architecture and instruction set to data movement, arithmetic, memory writes, and jumps.</p>
+  <div class="pills"><span class="pill">First-year undergraduate</span><span class="pill">Worked examples</span><span class="pill">Interactive simulator</span><span class="pill">Self-check quiz</span></div>
+ </div>
+</header>
+<nav><div class="navinner">
+<a href="#overview">Overview</a><a href="#architecture">Architecture</a><a href="#isa">Instruction set</a><a href="#cycle">Instruction cycle</a><a href="#examples">Worked examples</a><a href="#simulator">Simulator</a><a href="#quiz">Quiz</a>
+</div></nav>
+<div class="sc-content">
+<section class="section" id="overview">
+ <h2>1. Learning goals and the big idea</h2>
+ <p class="lead">A computer program is a sequence of instructions stored in memory. The processor repeatedly retrieves an instruction, interprets what it means, and performs the required operation.</p>
+ <div class="grid">
+  <div class="card col4"><h3>Understand the machine</h3><p>Identify the CPU, memory, input/output, buses, and key registers.</p></div>
+  <div class="card col4"><h3>Read instructions</h3><p>Recognize opcodes, operands, instruction categories, and addressing modes.</p></div>
+  <div class="card col4"><h3>Trace execution</h3><p>Follow the PC, IR, registers, ALU, and memory through each instruction.</p></div>
+ </div>
+ <div class="callout"><strong>Central idea:</strong> The CPU does not “understand” a high-level statement such as <code>C = A + B</code>. A compiler or assembler translates a program into machine instructions that the processor's instruction set defines.</div>
+</section>
+
+<section class="section" id="architecture">
+ <h2>2. Architecture of a simple computer</h2>
+ <p class="lead">The architecture describes the major components and how they cooperate to execute a program.</p>
+ <div class="card">
+  <svg class="diagram" viewBox="0 0 900 420" role="img" aria-label="Simple computer architecture showing input, output, memory, CPU, ALU, control unit and registers">
+   <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="#2864dc"/></marker></defs>
+   <rect x="35" y="145" width="135" height="95" rx="12" fill="#eaf1ff" stroke="#9db9ef" stroke-width="2"/><text x="102" y="183" text-anchor="middle" font-size="19" font-weight="bold" fill="#183d7a">Input</text><text x="102" y="207" text-anchor="middle" font-size="13" fill="#52627b">keyboard, sensors</text>
+   <rect x="730" y="145" width="135" height="95" rx="12" fill="#eaf1ff" stroke="#9db9ef" stroke-width="2"/><text x="797" y="183" text-anchor="middle" font-size="19" font-weight="bold" fill="#183d7a">Output</text><text x="797" y="207" text-anchor="middle" font-size="13" fill="#52627b">screen, printer</text>
+   <rect x="350" y="35" width="200" height="95" rx="12" fill="#effaf3" stroke="#83c69d" stroke-width="2"/><text x="450" y="73" text-anchor="middle" font-size="20" font-weight="bold" fill="#17643b">Main memory</text><text x="450" y="98" text-anchor="middle" font-size="14" fill="#52627b">instructions + data</text>
+   <rect x="275" y="185" width="350" height="185" rx="15" fill="#f2f6fc" stroke="#9baec8" stroke-width="2"/><text x="450" y="212" text-anchor="middle" font-size="20" font-weight="bold" fill="#263d60">CPU</text>
+   <rect x="300" y="235" width="135" height="95" rx="9" fill="#fff4df" stroke="#e8bd69"/><text x="367" y="270" text-anchor="middle" font-size="16" font-weight="bold" fill="#80500a">Control Unit</text><text x="367" y="294" text-anchor="middle" font-size="12" fill="#725c3b">coordinates actions</text>
+   <rect x="465" y="235" width="135" height="95" rx="9" fill="#eaf1ff" stroke="#9db9ef"/><text x="532" y="270" text-anchor="middle" font-size="17" font-weight="bold" fill="#183d7a">ALU</text><text x="532" y="294" text-anchor="middle" font-size="12" fill="#52627b">arithmetic + logic</text>
+   <path d="M170 192 H275" stroke="#2864dc" stroke-width="3" marker-end="url(#arr)"/><path d="M625 192 H730" stroke="#2864dc" stroke-width="3" marker-end="url(#arr)"/>
+   <path d="M450 130 V185" stroke="#16834b" stroke-width="3" marker-end="url(#arr)"/><path d="M450 185 V130" stroke="#16834b" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+   <text x="190" y="176" font-size="12" fill="#52627b">Input data</text><text x="650" y="176" font-size="12" fill="#52627b">Results</text><text x="462" y="157" font-size="12" fill="#17643b">Address / data / control</text>
+   <text x="450" y="400" text-anchor="middle" font-size="13" fill="#52627b">Registers (PC, IR, general-purpose registers) are inside the CPU.</text>
+  </svg>
+  <p class="small muted">Conceptual diagram: actual computer designs differ in their internal organization and bus implementation.</p>
+ </div>
+ <div class="grid">
+  <div class="card col6"><h3>CPU: the processor</h3><ul><li><strong>Control Unit (CU):</strong> interprets instructions and coordinates operations.</li><li><strong>Arithmetic Logic Unit (ALU):</strong> performs arithmetic and logical operations.</li><li><strong>Registers:</strong> very small, fast storage locations inside the CPU.</li></ul></div>
+  <div class="card col6"><h3>Main memory</h3><p>Stores the instructions and data currently needed by the program. Each address identifies a location in memory.</p><p class="muted small">In a classic stored-program model, instructions and data share the same memory address space.</p></div>
+ </div>
+ <div class="card">
+  <h3>Important CPU registers</h3>
+  <table><thead><tr><th>Register</th><th>Full name</th><th>Purpose</th></tr></thead><tbody>
+   <tr><td><strong>PC</strong></td><td>Program Counter</td><td>Holds the address of the next instruction to fetch.</td></tr>
+   <tr><td><strong>IR</strong></td><td>Instruction Register</td><td>Holds the instruction currently being decoded/executed.</td></tr>
+   <tr><td><strong>MAR</strong></td><td>Memory Address Register</td><td>Holds the memory address being accessed.</td></tr>
+   <tr><td><strong>MDR</strong></td><td>Memory Data Register</td><td>Holds data being transferred to or from memory.</td></tr>
+   <tr><td><strong>R0, R1…</strong></td><td>General-purpose registers</td><td>Hold operands and intermediate results.</td></tr>
+   <tr><td><strong>Flags</strong></td><td>Status register</td><td>Record conditions such as zero, carry, or negative results.</td></tr>
+  </tbody></table>
+ </div>
+ <div class="card">
+  <h3>System buses</h3>
+  <div class="grid">
+   <div class="col4"><span class="tag">Address bus</span><p>Specifies the memory or I/O location to access.</p></div>
+   <div class="col4"><span class="tag">Data bus</span><p>Transfers instruction and data values.</p></div>
+   <div class="col4"><span class="tag">Control bus</span><p>Carries signals such as memory Read and Write.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="isa">
+ <h2>3. Instruction sets: the language of the CPU</h2>
+ <p class="lead">An instruction set is the collection of operations a processor is designed to recognize. The programmer-visible specification is commonly called the Instruction Set Architecture (ISA).</p>
+ <div class="card">
+  <h3>3.1 Opcode and operands</h3>
+  <pre>ADD R2, R0, R1
+│   │   │   └── second source operand
+│   │   └────── first source operand
+│   └────────── destination operand
+└────────────── opcode (operation)</pre>
+  <p>The opcode says <em>what to do</em>; the operands say <em>which data or locations are involved</em>.</p>
+  <p class="small muted">Instruction syntax varies by processor and assembler. In this teaching notation, the destination register is written first.</p>
+ </div>
+ <div class="card">
+  <h3>3.2 Common instruction categories</h3>
+  <table><thead><tr><th>Category</th><th>Examples</th><th>Typical effect</th></tr></thead><tbody>
+   <tr><td>Data transfer</td><td><code>LOAD</code>, <code>STORE</code>, <code>MOV</code></td><td>Move values between memory and registers.</td></tr>
+   <tr><td>Arithmetic</td><td><code>ADD</code>, <code>SUB</code>, <code>MUL</code></td><td>Calculate numeric results.</td></tr>
+   <tr><td>Logical / bitwise</td><td><code>AND</code>, <code>OR</code>, <code>XOR</code>, <code>NOT</code></td><td>Operate on individual bits.</td></tr>
+   <tr><td>Shift</td><td><code>SHL</code>, <code>SHR</code></td><td>Shift bits left or right.</td></tr>
+   <tr><td>Compare</td><td><code>CMP</code></td><td>Compare values and update status flags.</td></tr>
+   <tr><td>Control flow</td><td><code>JMP</code>, <code>JZ</code>, <code>JNZ</code></td><td>Change which instruction executes next.</td></tr>
+   <tr><td>Processor control</td><td><code>HALT</code></td><td>Stop the teaching program.</td></tr>
+  </tbody></table>
+ </div>
+ <div class="card">
+  <h3>3.3 Addressing modes</h3>
+  <table><thead><tr><th>Mode</th><th>Example</th><th>Meaning</th></tr></thead><tbody>
+   <tr><td>Immediate</td><td><code>MOV R0, #5</code></td><td>The value 5 is part of the instruction.</td></tr>
+   <tr><td>Register</td><td><code>ADD R2, R0, R1</code></td><td>Operands are in registers.</td></tr>
+   <tr><td>Direct</td><td><code>LOAD R0, [40]</code></td><td>The instruction specifies memory address 40.</td></tr>
+   <tr><td>Register indirect</td><td><code>LOAD R0, [R1]</code></td><td>R1 contains the memory address.</td></tr>
+   <tr><td>Indexed / base + offset</td><td><code>LOAD R0, [R1+4]</code></td><td>The effective address is calculated from a register plus an offset.</td></tr>
+  </tbody></table>
+ </div>
+ <div class="callout warn"><strong>About the teaching machine used below:</strong> To make the execution steps visible, this page defines a small illustrative assembly language. Its mnemonics and semantics are pedagogical, not a claim that the exact syntax or binary encodings belong to Forouzan's textbook, x86, ARM, or another commercial ISA. We use one instruction per address for easy tracing.</div>
+ <div class="card">
+  <h3>3.4 The teaching instruction set</h3>
+  <table><thead><tr><th>Instruction</th><th>Meaning</th><th>Effect</th></tr></thead><tbody>
+   <tr><td><code>LOAD Rd, [a]</code></td><td>Read memory</td><td><code>Rd ← Memory[a]</code></td></tr>
+   <tr><td><code>STORE [a], Rs</code></td><td>Write memory</td><td><code>Memory[a] ← Rs</code></td></tr>
+   <tr><td><code>ADD Rd, Ra, Rb</code></td><td>Add registers</td><td><code>Rd ← Ra + Rb</code></td></tr>
+   <tr><td><code>SUB Rd, Ra, Rb</code></td><td>Subtract registers</td><td><code>Rd ← Ra − Rb</code></td></tr>
+   <tr><td><code>MOVI Rd, #n</code></td><td>Load a constant</td><td><code>Rd ← n</code></td></tr>
+   <tr><td><code>CMP Ra, Rb</code></td><td>Compare registers</td><td>Sets a zero flag if <code>Ra = Rb</code>.</td></tr>
+   <tr><td><code>JMP a</code></td><td>Unconditional jump</td><td><code>PC ← a</code></td></tr>
+   <tr><td><code>JZ a</code></td><td>Jump if zero flag is set</td><td>If equal/zero, <code>PC ← a</code>.</td></tr>
+   <tr><td><code>HALT</code></td><td>Stop</td><td>Stops the teaching program.</td></tr>
+  </tbody></table>
+ </div>
+</section>
+
+<section class="section" id="cycle">
+ <h2>4. The instruction cycle: Fetch → Decode → Execute</h2>
+ <p class="lead">The CPU repeats this cycle to process a program. The exact internal micro-operations vary by processor, but the basic idea is widely applicable.</p>
+ <div class="flow" aria-label="Instruction cycle">
+  <div class="node">FETCH</div><div class="arrow">→</div><div class="node">DECODE</div><div class="arrow">→</div><div class="node">EXECUTE</div><div class="arrow">↻</div>
+ </div>
+ <div class="grid">
+  <div class="card col4"><span class="tag">Stage 1</span><h3>Fetch</h3><ol><li>PC contains the next instruction address.</li><li>CPU sends that address to memory.</li><li>Memory returns the instruction.</li><li>Instruction is placed in IR.</li><li>PC advances to the next sequential instruction (unless control flow changes it).</li></ol></div>
+  <div class="card col4"><span class="tag">Stage 2</span><h3>Decode</h3><ol><li>Control Unit examines the opcode.</li><li>It identifies source and destination operands.</li><li>It determines whether registers, ALU, memory, or flags are needed.</li><li>It prepares the required control signals.</li></ol></div>
+  <div class="card col4"><span class="tag">Stage 3</span><h3>Execute</h3><ol><li>ALU performs arithmetic/logic, or data is transferred.</li><li>Result is written to a register or memory.</li><li>Status flags may be updated.</li><li>CPU proceeds to the next instruction.</li></ol></div>
+ </div>
+ <div class="card">
+  <h3>4.1 A closer look at a memory read</h3>
+  <ol>
+   <li><strong>PC → address path:</strong> the address of the next instruction is selected.</li>
+   <li><strong>Memory Read:</strong> the control unit requests a memory read.</li>
+   <li><strong>Memory → IR:</strong> the fetched instruction is transferred into the instruction register.</li>
+   <li><strong>PC update:</strong> the PC is advanced to the next instruction address in this simple sequential model.</li>
+  </ol>
+  <p class="small muted">In a real processor, fetching may involve caches, pipelines, instruction prefetch, and several internal stages.</p>
+ </div>
+ <div class="card">
+  <h3>4.2 Instruction flow animation</h3>
+  <p class="muted small">Press Play to watch a simplified instruction move through the stages. The animation is conceptual rather than a timing-accurate processor simulation.</p>
+  <svg class="diagram" viewBox="0 0 820 205" role="img" aria-label="Animated instruction cycle from memory to control unit to ALU">
+   <defs><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="#2864dc"/></marker></defs>
+   <rect x="35" y="55" width="175" height="95" rx="12" fill="#eaf1ff" stroke="#9db9ef"/><text x="122" y="91" text-anchor="middle" font-weight="bold" fill="#183d7a" font-size="17">Memory</text><text x="122" y="116" text-anchor="middle" fill="#52627b" font-size="13">Instruction at PC</text>
+   <rect x="322" y="55" width="175" height="95" rx="12" fill="#fff4df" stroke="#e8bd69"/><text x="409" y="91" text-anchor="middle" font-weight="bold" fill="#80500a" font-size="17">Control Unit</text><text x="409" y="116" text-anchor="middle" fill="#725c3b" font-size="13">Decode opcode</text>
+   <rect x="610" y="55" width="175" height="95" rx="12" fill="#effaf3" stroke="#83c69d"/><text x="697" y="91" text-anchor="middle" font-weight="bold" fill="#17643b" font-size="17">ALU / Registers</text><text x="697" y="116" text-anchor="middle" fill="#52627b" font-size="13">Execute operation</text>
+   <path d="M210 102 H315 M497 102 H603" stroke="#2864dc" stroke-width="3" marker-end="url(#arr2)"/>
+   <circle id="traveller" cx="122" cy="28" r="10" fill="#2864dc"><animate attributeName="cx" values="122;409;697;122" dur="6s" repeatCount="indefinite"/></circle>
+   <text x="410" y="185" text-anchor="middle" fill="#52627b" font-size="13">Fetch → Decode → Execute → repeat</text>
+  </svg>
+  <div class="controls"><button id="animPlay">Play animation</button><button class="secondary" id="animPause">Pause animation</button></div>
+ </div>
+</section>
+
+<section class="section" id="examples">
+ <h2>5. Worked examples: follow every instruction</h2>
+ <p class="lead">The examples use the teaching instruction set defined above. The address numbers identify instruction locations; the data addresses 40, 41, and 42 hold program data.</p>
+ <div class="card">
+  <h3>Example 1 — LOAD: copy a value from memory to a register</h3>
+  <pre>Memory[40] = 161
+
+LOAD R0, [40]</pre>
+  <table><thead><tr><th>Stage</th><th>What happens</th><th>Result</th></tr></thead><tbody>
+   <tr><td>Fetch</td><td>Read the instruction at the PC and place it in IR.</td><td>IR = LOAD R0, [40]</td></tr>
+   <tr><td>Decode</td><td>Identify LOAD, destination R0, source address 40.</td><td>Read Memory[40]</td></tr>
+   <tr><td>Execute</td><td>Transfer the value at address 40 into R0.</td><td>R0 = 161</td></tr>
+  </tbody></table>
+  <div class="callout success"><strong>Remember:</strong> LOAD copies data into a register. It does not erase the original value in memory.</div>
+ </div>
+ <div class="card">
+  <h3>Example 2 — Addition: 161 + 254</h3>
+  <p>Initial data: <code>Memory[40] = 161</code>, <code>Memory[41] = 254</code>.</p>
+  <pre>00: LOAD  R0, [40]
+01: LOAD  R1, [41]
+02: ADD   R2, R0, R1
+03: STORE [42], R2
+04: HALT</pre>
+  <h4>Instruction-by-instruction trace</h4>
+  <table><thead><tr><th>PC</th><th>Instruction</th><th>Operation</th><th>State after execution</th></tr></thead><tbody>
+   <tr><td>00</td><td>LOAD R0, [40]</td><td>Read Memory[40]</td><td>R0 = 161</td></tr>
+   <tr><td>01</td><td>LOAD R1, [41]</td><td>Read Memory[41]</td><td>R1 = 254</td></tr>
+   <tr><td>02</td><td>ADD R2, R0, R1</td><td>ALU: 161 + 254</td><td>R2 = 415</td></tr>
+   <tr><td>03</td><td>STORE [42], R2</td><td>Write R2 to Memory[42]</td><td>Memory[42] = 415</td></tr>
+   <tr><td>04</td><td>HALT</td><td>Stop the program</td><td>Execution halted</td></tr>
+  </tbody></table>
+  <div class="callout"><strong>Follow the data:</strong> Memory → R0 and R1 → ALU → R2 → Memory[42].</div>
+ </div>
+ <div class="card">
+  <h3>Example 3 — SUB and bitwise logic</h3>
+  <p>Suppose <code>R0 = 25</code> and <code>R1 = 10</code>. In 8-bit binary:</p>
+  <pre>25 = 00011001
+10 = 00001010
+
+SUB: 25 - 10 = 15
+AND: 00001000 = 8
+ OR: 00011011 = 27</pre>
+  <p>The ALU is not only an arithmetic calculator. It also performs Boolean operations on bit patterns.</p>
+ </div>
+ <div class="card">
+  <h3>Example 4 — JMP: change the normal instruction sequence</h3>
+  <pre>00: MOVI R0, #7
+01: JMP  04
+02: MOVI R1, #99
+03: STORE [41], R1
+04: HALT</pre>
+  <p>After the jump at address 01, the PC is set to 04. Instructions at addresses 02 and 03 are skipped. Therefore R1 is not loaded with 99, and address 41 is not written by this program.</p>
+ </div>
+ <div class="card">
+  <h3>Example 5 — Conditional jump</h3>
+  <pre>00: MOVI R0, #5
+01: MOVI R1, #5
+02: CMP  R0, R1
+03: JZ   05
+04: MOVI R2, #0
+05: HALT</pre>
+  <ol><li><code>CMP R0, R1</code> compares the two register values.</li><li>Because both values are 5, the teaching machine sets its zero/equal flag.</li><li><code>JZ 05</code> takes the branch to address 05.</li><li>Address 04 is skipped; R2 is not changed by that instruction.</li></ol>
+  <p class="small muted">Real ISAs differ in how comparison results and condition flags are represented.</p>
+ </div>
+</section>
+
+<section class="section" id="simulator">
+ <h2>6. Interactive instruction simulator</h2>
+ <p class="lead">Run the program one micro-step at a time. Watch the PC, IR, registers, memory, and execution explanation change. The simulator uses the teaching ISA described on this page.</p>
+ <div class="card">
+  <div class="controls">
+   <label for="programSelect"><strong>Choose a program:</strong></label>
+   <select id="programSelect"><option value="add">Add two numbers and store the result</option><option value="jump">Unconditional jump (skip instructions)</option><option value="branch">Conditional jump (compare and branch)</option></select>
+   <button id="resetSim" class="secondary">Reset</button><button id="stepSim">Next step</button><button id="runSim">Run program</button>
+  </div>
+  <div class="progress"><div id="simProgress"></div></div>
+  <div class="simgrid" style="margin-top:16px">
+   <div class="panel">
+    <div class="stepbadge" id="stageLabel">Ready</div>
+    <h3 id="currentInstruction">Program not started</h3>
+    <div class="status" id="explanation" aria-live="polite">Press “Next step” to begin. Each click performs one Fetch, Decode, or Execute stage.</div>
+    <h4>Program memory (instructions)</h4>
+    <div id="programMemory"></div>
+   </div>
+   <div class="panel">
+    <h4>CPU state</h4>
+    <div class="regrow"><span>PC</span><span id="pcVal">00</span></div>
+    <div class="regrow"><span>IR</span><span id="irVal">—</span></div>
+    <div class="regrow"><span>Zero flag</span><span id="flagVal">0</span></div>
+    <h4 style="margin-top:16px">Registers</h4>
+    <div id="registers"></div>
+    <h4 style="margin-top:16px">Data memory</h4>
+    <div id="dataMemory"></div>
+   </div>
+  </div>
+  <p class="small muted">One click performs one stage. A complete instruction normally takes three clicks in this simplified model. Branches may change the next PC.</p>
+ </div>
+</section>
+
+<section class="section" id="quiz">
+ <h2>7. Knowledge check</h2>
+ <p class="lead">Answer the questions and submit to see your score and explanations. Try the questions before revisiting the relevant sections.</p>
+ <div class="card">
+  <div class="score" id="quizScore">0 / 10 answered correctly</div>
+  <div class="progress"><div id="quizProgress"></div></div>
+  <form id="quizForm">
+   <div class="quizq" data-answer="B" data-explain="The Program Counter holds the address of the next instruction to be fetched. The IR holds the current instruction.">
+    <strong>1. What is the primary role of the Program Counter (PC)?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q1" value="A"> A. Store the result of the most recent ALU operation</label><label class="option"><input type="radio" name="q1" value="B"> B. Hold the address of the next instruction</label><label class="option"><input type="radio" name="q1" value="C"> C. Decode the opcode</label><label class="option"><input type="radio" name="q1" value="D"> D. Store all program data permanently</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="C" data-explain="The opcode identifies the operation, such as ADD or LOAD. Operands identify the data or locations involved.">
+    <strong>2. In an instruction, what does the opcode specify?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q2" value="A"> A. The physical location of the CPU</label><label class="option"><input type="radio" name="q2" value="B"> B. The size of main memory</label><label class="option"><input type="radio" name="q2" value="C"> C. The operation to be performed</label><label class="option"><input type="radio" name="q2" value="D"> D. The next program address in every case</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="A" data-explain="The ALU performs arithmetic and logical operations. The Control Unit coordinates and controls execution.">
+    <strong>3. Which CPU component performs addition and bitwise AND?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q3" value="A"> A. Arithmetic Logic Unit</label><label class="option"><input type="radio" name="q3" value="B"> B. Program Counter</label><label class="option"><input type="radio" name="q3" value="C"> C. Memory Address Register</label><label class="option"><input type="radio" name="q3" value="D"> D. Input Unit</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="D" data-explain="In the teaching notation, LOAD R0, [40] copies the contents of memory address 40 into register R0.">
+    <strong>4. If Memory[40] = 73, what happens after LOAD R0, [40] executes?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q4" value="A"> A. Memory[40] becomes 0</label><label class="option"><input type="radio" name="q4" value="B"> B. R0 becomes the address 40</label><label class="option"><input type="radio" name="q4" value="C"> C. The ALU adds 40 and 73</label><label class="option"><input type="radio" name="q4" value="D"> D. R0 becomes 73 and memory remains unchanged</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="B" data-explain="STORE [42], R2 writes the value in R2 to memory location 42.">
+    <strong>5. What is the effect of STORE [42], R2?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q5" value="A"> A. R2 receives the address 42</label><label class="option"><input type="radio" name="q5" value="B"> B. Memory[42] receives the contents of R2</label><label class="option"><input type="radio" name="q5" value="C"> C. The contents of memory 42 are added to R2</label><label class="option"><input type="radio" name="q5" value="D"> D. The PC is always set to 42</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="A" data-explain="161 + 254 = 415. The ADD instruction places that result in its destination register R2.">
+    <strong>6. Given R0 = 161 and R1 = 254, what is the result of ADD R2, R0, R1?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q6" value="A"> A. R2 = 415</label><label class="option"><input type="radio" name="q6" value="B"> B. R2 = 4150</label><label class="option"><input type="radio" name="q6" value="C"> C. R2 = 93</label><label class="option"><input type="radio" name="q6" value="D"> D. R2 = 254</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="C" data-explain="JMP 05 unconditionally changes the PC to address 05, so the next instruction is fetched from that address.">
+    <strong>7. What does JMP 05 do in this teaching machine?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q7" value="A"> A. Stores the number 5 in memory location 0</label><label class="option"><input type="radio" name="q7" value="B"> B. Adds 5 to the current instruction</label><label class="option"><input type="radio" name="q7" value="C"> C. Sets the PC to address 05</label><label class="option"><input type="radio" name="q7" value="D"> D. Stops the processor immediately</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="D" data-explain="The data bus transfers data and instructions. The address bus identifies the location being accessed.">
+    <strong>8. Which bus carries the value being read from memory to the CPU?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q8" value="A"> A. Address bus</label><label class="option"><input type="radio" name="q8" value="B"> B. Control bus</label><label class="option"><input type="radio" name="q8" value="C"> C. Clock bus</label><label class="option"><input type="radio" name="q8" value="D"> D. Data bus</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="A" data-explain="In the simplified Fetch–Decode–Execute model, the CPU first retrieves the instruction identified by the PC.">
+    <strong>9. Which stage retrieves the next instruction from memory?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q9" value="A"> A. Fetch</label><label class="option"><input type="radio" name="q9" value="B"> B. Decode</label><label class="option"><input type="radio" name="q9" value="C"> C. Execute</label><label class="option"><input type="radio" name="q9" value="D"> D. Output</label></div><div class="feedback"></div>
+   </div>
+   <div class="quizq" data-answer="C" data-explain="A conditional branch such as JZ takes the jump only when its specified condition (here, the zero/equal flag) is set.">
+    <strong>10. When does JZ 08 take the branch in this teaching machine?</strong>
+    <div class="options"><label class="option"><input type="radio" name="q10" value="A"> A. Whenever the PC is even</label><label class="option"><input type="radio" name="q10" value="B"> B. Whenever memory address 08 is empty</label><label class="option"><input type="radio" name="q10" value="C"> C. When the zero/equal flag is set</label><label class="option"><input type="radio" name="q10" value="D"> D. After every STORE instruction</label></div><div class="feedback"></div>
+   </div>
+   <div class="controls"><button type="submit">Submit answers</button><button type="button" class="secondary" id="resetQuiz">Try again</button></div>
+  </form>
+ </div>
+</section>
+
+<section class="section" id="summary">
+ <h2>8. Summary: what students should remember</h2>
+ <div class="card">
+  <ol>
+   <li>A computer executes instructions stored in memory.</li>
+   <li>The CPU contains a Control Unit, ALU, and registers.</li>
+   <li>The instruction set defines the operations available to software.</li>
+   <li>An instruction includes an opcode and operand information.</li>
+   <li>The PC identifies the next instruction; the IR holds the current instruction.</li>
+   <li>LOAD moves data from memory to a register; STORE moves data from a register to memory.</li>
+   <li>The ALU performs arithmetic and logical operations.</li>
+   <li>Jumps change the normal sequence by changing the PC.</li>
+   <li>The simplified instruction cycle is Fetch → Decode → Execute.</li>
+  </ol>
+ </div>
+ <details><summary>Instructor note: connection to real processors</summary>
+  <p>This module intentionally uses a small, transparent teaching ISA and a one-instruction-per-address model. Actual processors have architecture-specific instruction encodings, registers, addressing rules, status flags, and execution details. Modern CPUs may overlap instruction stages through pipelining and use caches, branch prediction, and out-of-order execution. Introduce those topics only after students can confidently trace the simple model.</p>
+ </details>
+ <details><summary>Suggested follow-up topics</summary>
+  <p>Binary instruction encoding, machine-code translation, Boolean logic in the ALU, signed integer arithmetic, memory hierarchy, interrupts, pipelining, and the relationship between assembly language and high-level programming languages.</p>
+ </details>
+</section>
+</div>
+
+<p class="sc-credit">Principles of Computer Composition · A beginner-friendly interactive teaching module</p>
+
+        </div>
+
+    </main>
+
+<footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p><strong>CSAI Navigation</strong> <span class="version-badge">v1.3.0</span></p>
+                <p>&copy; 2026 CSAI Team. 保留所有权利。</p>
+            </div>
+        <div class="footer-contact">
+    <a href="../AboutUs.html">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i> About Us
+    </a>
+    <!-- 修改这里：加上 id，去掉 href="mailto:..." -->
+    <a href="javascript:void(0);" id="footer-contact-email">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i> 联系我们
+    </a> 
+    <a href="https://github.com/Young2022/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+    </a>
+    <a href="../posts/PrivacyPolicy.html">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 隐私政策
+    </a>
+    <a href="../posts/Disclaimer.html">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> 免责声明
+    </a>
+    </div>
+    </div>
+    </footer>
+
+
+
+<script>
+const programs = {
+ add:{
+  code:["LOAD R0, [40]","LOAD R1, [41]","ADD R2, R0, R1","STORE [42], R2","HALT"],
+  data:{40:161,41:254,42:"—"},
+  regs:{R0:"—",R1:"—",R2:"—",R3:"—"},
+  explain:"The program loads two values, adds them, stores the result, and halts."
+ },
+ jump:{
+  code:["MOVI R0, #7","JMP 04","MOVI R1, #99","STORE [41], R1","HALT"],
+  data:{41:"—"},
+  regs:{R0:"—",R1:"—",R2:"—",R3:"—"},
+  explain:"The jump changes the PC to address 04. Instructions at addresses 02 and 03 are skipped."
+ },
+ branch:{
+  code:["MOVI R0, #5","MOVI R1, #5","CMP R0, R1","JZ 05","MOVI R2, #0","HALT"],
+  data:{},
+  regs:{R0:"—",R1:"—",R2:"—",R3:"—"},
+  explain:"The program compares two values. If they are equal, JZ branches to address 05."
+ }
+};
+let sim={name:"add",pc:0,ir:"—",regs:{},mem:{},flag:0,stage:0,halt:false,log:""};
+const $=id=>document.getElementById(id);
+function parseInstruction(s){return s.trim().split(/\s+/)[0].toUpperCase()}
+function initSim(){
+ const p=programs[sim.name];sim.pc=0;sim.ir="—";sim.regs={...p.regs};sim.mem={...p.data};sim.flag=0;sim.stage=0;sim.halt=false;sim.log="Program initialized. Press Next step to fetch the first instruction.";renderSim();
+}
+function renderSim(){
+ const p=programs[sim.name];$("pcVal").textContent=String(sim.pc).padStart(2,"0");$("irVal").textContent=sim.ir;$("flagVal").textContent=sim.flag;
+ $("registers").innerHTML=Object.entries(sim.regs).map(([k,v])=>`<div class="regrow"><span>${k}</span><span>${v}</span></div>`).join("");
+ $("dataMemory").innerHTML=Object.entries(sim.mem).map(([k,v])=>`<div class="memoryrow"><span>Memory[${k}]</span><span>${v}</span></div>`).join("")||'<p class="muted small">No data memory locations used.</p>';
+ $("programMemory").innerHTML=p.code.map((s,i)=>`<div class="memoryrow ${i===sim.pc&&!sim.halt?"active":""}"><span>${String(i).padStart(2,"0")}</span><span>${s}</span></div>`).join("");
+ $("stageLabel").textContent=sim.halt?"Halted":(["Ready","Fetch","Decode","Execute"][sim.stage]||"Ready");
+ $("currentInstruction").textContent=sim.halt?"Program halted":(sim.ir==="—"?"Ready to fetch":sim.ir);
+ $("explanation").textContent=sim.log;
+ $("simProgress").style.width=(sim.halt?100:Math.min(100,(sim.pc/p.code.length)*100))+"%";
+ $("stepSim").disabled=sim.halt;$("runSim").disabled=sim.halt;
+}
+function nextStep(){
+ if(sim.halt)return;
+ const p=programs[sim.name],ins=p.code[sim.pc];
+ if(sim.stage===0){
+  if(ins===undefined){sim.halt=true;sim.log="The PC points beyond the loaded program. Execution stops.";renderSim();return}
+  sim.ir=ins;sim.stage=1;sim.log=`FETCH: PC = ${sim.pc}. The instruction at address ${sim.pc} is read from program memory and placed in IR.`;
+ }else if(sim.stage===1){
+  sim.stage=2;sim.log=`DECODE: The Control Unit interprets “${sim.ir}”, identifies its operands, and prepares the required operation.`;
+ }else{
+  const parts=sim.ir.replace(/,/g,"").replace(/\[/g,"").replace(/\]/g,"").split(/\s+/),op=parts[0];
+  let msg="";
+  if(op==="LOAD"){let r=parts[1],a=parts[2];sim.regs[r]=sim.mem[a]??0;msg=`EXECUTE: Read Memory[${a}] and copy ${sim.regs[r]} into ${r}.`}
+  else if(op==="STORE"){let a=parts[1],r=parts[2];sim.mem[a]=sim.regs[r];msg=`EXECUTE: Write ${r} (${sim.regs[r]}) to Memory[${a}].`}
+  else if(op==="ADD"){let [_,d,a,b]=parts;sim.regs[d]=Number(sim.regs[a])+Number(sim.regs[b]);sim.flag=sim.regs[d]===0?1:0;msg=`EXECUTE: The ALU adds ${a} (${sim.regs[a]}) and ${b} (${sim.regs[b]}). ${d} = ${sim.regs[d]}.`}
+  else if(op==="SUB"){let [_,d,a,b]=parts;sim.regs[d]=Number(sim.regs[a])-Number(sim.regs[b]);sim.flag=sim.regs[d]===0?1:0;msg=`EXECUTE: The ALU subtracts ${b} from ${a}. ${d} = ${sim.regs[d]}.`}
+  else if(op==="MOVI"){let r=parts[1],v=Number(parts[2].replace("#",""));sim.regs[r]=v;msg=`EXECUTE: The immediate constant ${v} is copied into ${r}.`}
+  else if(op==="CMP"){let a=parts[1],b=parts[2];sim.flag=sim.regs[a]===sim.regs[b]?1:0;msg=`EXECUTE: Compare ${a} (${sim.regs[a]}) with ${b} (${sim.regs[b]}). Zero/equal flag = ${sim.flag}.`}
+  else if(op==="JMP"){let a=Number(parts[1]);sim.pc=a-1;msg=`EXECUTE: Unconditional jump. The next instruction address is changed to ${a}.`}
+  else if(op==="JZ"){let a=Number(parts[1]);if(sim.flag===1){sim.pc=a-1;msg=`EXECUTE: Zero/equal flag is set, so the branch is taken to ${a}.`}else{msg="EXECUTE: Zero/equal flag is not set, so execution continues sequentially."}}
+  else if(op==="HALT"){sim.halt=true;msg="EXECUTE: HALT is recognized. The teaching program stops."}
+  sim.log=msg;
+  if(!sim.halt)sim.pc++;
+  sim.stage=0;
+ }
+ renderSim();
+}
+$("programSelect").addEventListener("change",e=>{sim.name=e.target.value;initSim()});
+$("resetSim").addEventListener("click",initSim);
+$("stepSim").addEventListener("click",nextStep);
+$("runSim").addEventListener("click",()=>{let n=0;while(!sim.halt&&n<100){nextStep();n++}});
+initSim();
+
+$("animPlay").addEventListener("click",()=>{document.querySelector("#traveller animate").beginElement()});
+$("animPause").addEventListener("click",()=>{const a=document.querySelector("#traveller animate");if(a)a.endElement()});
+
+const quizForm=$("quizForm");
+function updateQuizProgress(){
+ const qs=[...document.querySelectorAll(".quizq")],answered=qs.filter(q=>q.querySelector("input:checked")).length;
+ $("quizProgress").style.width=(answered/qs.length*100)+"%";
+}
+quizForm.addEventListener("change",updateQuizProgress);
+quizForm.addEventListener("submit",e=>{
+ e.preventDefault();const qs=[...document.querySelectorAll(".quizq")];let score=0;
+ qs.forEach(q=>{
+  const chosen=q.querySelector("input:checked"),fb=q.querySelector(".feedback"),correct=q.dataset.answer;
+  fb.className="feedback show "+(chosen&&chosen.value===correct?"correct":"incorrect");
+  if(chosen&&chosen.value===correct){score++;fb.textContent="Correct. "+q.dataset.explain}
+  else{fb.textContent=(chosen?"Not quite. ":"No answer selected. ")+q.dataset.explain}
+ });
+ $("quizScore").textContent=`${score} / ${qs.length} correct`;
+ $("quizProgress").style.width="100%";
+});
+$("resetQuiz").addEventListener("click",()=>{
+ quizForm.reset();document.querySelectorAll(".feedback").forEach(f=>{f.className="feedback";f.textContent=""});
+ $("quizScore").textContent="0 / 10 answered correctly";updateQuizProgress();
+});
+</script>
+
+</body>
+</html>
